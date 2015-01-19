@@ -1,0 +1,59 @@
+<?php
+ // module/Album/view/album/album/add.phtml:
+
+ $title = 'Welcome !';
+ $this->headTitle($title);
+ ?>
+
+<h1><?php
+  echo $this->escapeHtml($title);
+?></h1>
+
+<br><br>
+
+<!-- if logged in -->
+<?php
+  if ($isAuthenticated)
+  {
+ ?>
+
+Glad to see you, <?php echo $username;?>.
+<br>
+You can <a href="<?php echo $this->url('traveler',
+  array('action'=>'edit', 'id' => $id));?>">edit your account</a>
+<br>
+
+You can see the list of <a href="<?php echo $this->url('traveler',
+  array('action'=>'all'));?>">all other travelers</a>
+<br>
+
+You can also <a href="<?php echo $this->url('traveler',
+  array('action'=>'logout'));?>">log out</a>
+if you are done.
+<br>
+
+<!-- if not logged in -->
+<?php
+  } else {
+ ?>
+
+If you have no account, go ahead and
+<a href="<?php echo $this->url('traveler',
+  array('action'=>'add'));?>">
+  create an account
+</a>
+<br>
+
+If you already have an account, you can
+<a href="<?php echo $this->url('traveler',
+  array('action'=>'log'),
+  array('query' => array('origAction' => 'index')));?>">
+  log in
+</a>
+
+<?php
+  }
+ ?>
+
+
+

@@ -3,7 +3,7 @@ composer.phar
 vendor/
 
 # Local configs
-config/autoload/*.local.php
+config/autoload/*local.php
 
 # Binary gettext files
 *.mo
@@ -18,3 +18,11 @@ temp/
 # Legacy ZF1
 demos/
 extras/documentation
+
+# modified files
+*~
+
+composer.*
+
+# SQL tables creation
+data/scripts/creation.sql
