@@ -1,4 +1,4 @@
-<?php namespace App\Commands;
+<?php namespace Jetlag\Commands;
 
 abstract class Command {
 

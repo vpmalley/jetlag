@@ -1,5 +1,5 @@
 suites:
     main:
-        namespace: App
-        psr4_prefix: App
+        namespace: Jetlag
+        psr4_prefix: Jetlag
         src_path: app

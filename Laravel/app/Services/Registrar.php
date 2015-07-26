@@ -1,6 +1,6 @@
-<?php namespace App\Services;
+<?php namespace Jetlag\Services;
 
-use App\User;
+use Jetlag\User;
 use Validator;
 use Illuminate\Contracts\Auth\Registrar as RegistrarContract;
 
