@@ -1,6 +1,7 @@
 <?php namespace Jetlag\Http\Controllers\Auth;
 
 use Validator;
+use Hash;
 use Jetlag\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\Registrar;
@@ -53,11 +54,10 @@ class AuthController extends Controller {
    */
   public function create(array $user)
   {
-     //'name' => 'Yoyo', 'email' => 'yoyo@yopmail.com', 'password' => 'yoyo', 'password_confirmation' => 'yoyo'))) in RegistersUsers.php line 38
     $newUser = new User;
     $newUser->name = $user['name'];
     $newUser->email = $user['email'];
-    $newUser->password = $user['password'];
+    $newUser->password = Hash::make($user['password']);
     $newUser->save();
     return $newUser;
   }
