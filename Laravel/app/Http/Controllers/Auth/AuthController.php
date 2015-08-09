@@ -44,7 +44,11 @@ class AuthController extends Controller {
    */
   public function validator(array $user)
   {
-    $validator = Validator::make($user, []);
+    $validator = Validator::make($user, [
+        'name' => 'required|alpha_dash|min:3|max:200',
+        'email' => 'required|email|unique:users,email|max:200',
+        'password' => 'required|confirmed|min:5|max:100',
+    ]);
     return $validator;
   }
 
