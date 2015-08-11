@@ -37,7 +37,7 @@ class RedirectIfAuthenticated {
 		{
       if ($this->auth->user()) 
       {
-        $url = '/traveller/' . $this->auth->user()->id;
+        $url = '/traveller/' . $this->auth->user()->id . '/edit';
         return new RedirectResponse(url($url));
       }
 			return new RedirectResponse(url('/home'));

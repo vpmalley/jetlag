@@ -30,6 +30,7 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 Route::get('traveller/{id}', 'Web\TravellerController@getSocial');
 Route::get('traveller/{id}/social', 'Web\TravellerController@getSocial');
 Route::get('traveller/{id}/edit', 'Web\TravellerController@getEdit');
+Route::post('traveller/{id}/edit', 'Web\TravellerController@postEdit');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',
