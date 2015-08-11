@@ -68,7 +68,7 @@ class UserPublic extends Model
    * @param  int  $userId the id for the requested user
    * @return  array
    */
-  public static function getForDisplay($publicUser, $userId)
+  public static function getForDisplay($publicUser, $userId, $defaultContent = '')
   {
     $display = [];
     if ($publicUser)
@@ -76,16 +76,21 @@ class UserPublic extends Model
       foreach ($publicUser->fillable as $property)
       {
         $display[$property] = $publicUser[$property];
+        if ('' == $display[$property])
+        {
+          $display[$property] = $defaultContent;
+        }
       }
     } else 
     {
       $publicUser = new UserPublic;
       foreach ($publicUser->fillable as $property)
       {
-        $display[$property] = '';
+        $display[$property] = $defaultContent;
       }
       $display['userId'] = $userId;
     }
+    $display['saved'] = false;
     return $display;
   }
 

@@ -27,8 +27,8 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
   // Traveller routes
-Route::get('traveller/{id}', 'Web\TravellerController@getSocial');
-Route::get('traveller/{id}/social', 'Web\TravellerController@getSocial');
+Route::get('traveller/{id}', 'Web\TravellerController@getIndex');
+Route::get('traveller/{id}/display', 'Web\TravellerController@getDisplay');
 Route::get('traveller/{id}/edit', 'Web\TravellerController@getEdit');
 Route::post('traveller/{id}/edit', 'Web\TravellerController@postEdit');
 

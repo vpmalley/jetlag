@@ -37,17 +37,22 @@ class TravellerController extends Controller {
    */
   public function getIndex($id)
   {
-    return $this->getSocial($id);
+    if (Auth::user()->id == $id)
+    {
+      return $this->getEdit($id);
+    }
+    return $this->getDisplay($id);
   }
   
   /**
-   * Display the page for social activity
+   * Display the public profile
    * 
    * @param  int  $id
    */
-  public function getSocial($id)
+  public function getDisplay($id)
   {
-		return view('welcome'); 
+    $publicUser = UserPublic::where('userId', $id)->first();
+    return view('web.user.display', UserPublic::getForDisplay($publicUser, $id, 'This user prefers to keep some mystery about that ...'));
   }
   
   /**
@@ -86,8 +91,9 @@ class TravellerController extends Controller {
     ]);
     
     $publicUser = UserPublic::getFromRequestAndPersist($request, $id);
-    
-    return view('web.user.edit', UserPublic::getForDisplay($publicUser, $publicUser->userId));
+    $display = UserPublic::getForDisplay($publicUser, $publicUser->userId);
+    $display['saved'] = true;
+    return view('web.user.edit', $display);
   }
 
 }

@@ -17,6 +17,12 @@
 							</ul>
 						</div>
 					@endif
+          
+					@if ($saved)
+						<div class="alert alert-success">
+							Your changes have been saved.
+						</div>
+					@endif
 
 					<form class="form-horizontal" role="form" method="POST" action="{{ url('/traveller/' . $userId . '/edit') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
