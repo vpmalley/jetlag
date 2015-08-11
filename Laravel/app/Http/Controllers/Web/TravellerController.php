@@ -1,11 +1,13 @@
 <?php namespace Jetlag\Http\Controllers\Web;
 
-use Jetlag\Http\Controllers\Controller;
 use Auth;
-use Jetlag\UserPublic;
 use Input;
-use Illuminate\Http\Request;
 use Response;
+use Validator;
+use Illuminate\Http\Request;
+
+use Jetlag\Http\Controllers\Controller;
+use Jetlag\UserPublic;
 
 class TravellerController extends Controller {
 
@@ -27,9 +29,6 @@ class TravellerController extends Controller {
 	{
 		$this->middleware('auth');
 	}
-  
-  // do not display the same information depending on who is logged
-	//	$this->middleware('guest', ['except' => 'getLogout']);
   
   /**
    * Redirects to the default user page
@@ -60,7 +59,7 @@ class TravellerController extends Controller {
   {
     if (Auth::user()->id != $id)
     {
-      return Response::make('401 wrong user: you are not authorized to modify this user'); // return 401
+      return Response::make('You are trying to modify the wrong traveller', 403);
     }
     
     $user = Auth::user();
@@ -85,8 +84,13 @@ class TravellerController extends Controller {
   {
     if (Auth::user()->id != $id)
     {
-      return Response::make('401 wrong user: you are not authorized to modify this user'); // return 401
+      return Response::make('You are trying to modify the wrong traveller', 403);
     }
+    
+    $this->validate($request, [
+        'name' => 'required|alpha_dash|min:3|max:200',
+        'country' => 'required|alpha_dash|min:3|max:200',
+    ]);
     
     $publicUser = UserPublic::where('userId', $id)->first();
     if (!$publicUser)
