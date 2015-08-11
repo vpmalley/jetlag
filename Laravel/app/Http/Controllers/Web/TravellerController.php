@@ -64,14 +64,7 @@ class TravellerController extends Controller {
     
     $user = Auth::user();
     $publicUser = UserPublic::where('userId', $user->id)->first();
-    $name = $user->name;
-    $country = '';
-    if ($publicUser)
-    {
-      $name = $publicUser->name;
-      $country = $publicUser->country;
-    }
-		return view('web.user.edit', ['id' => $user->id, 'name' => $name, 'country' => $country]);
+    return view('web.user.edit', UserPublic::getForDisplay($publicUser, $user->id));
   }
   
   /**
@@ -92,31 +85,9 @@ class TravellerController extends Controller {
         'country' => 'required|alpha_dash|min:3|max:200',
     ]);
     
-    $publicUser = UserPublic::where('userId', $id)->first();
-    if (!$publicUser)
-    {
-      $publicUser = new UserPublic;
-      $publicUser->userId = $id;
-    }
+    $publicUser = UserPublic::getFromRequestAndPersist($request, $id);
     
-    if ($request->has('name'))
-    {
-      $publicUser->name = $request->input('name');
-    }
-    if ($request->has('country'))
-    {
-      $publicUser->country = $request->input('country');
-    }
-    
-    if ($publicUser->id)
-    {
-      $publicUser->update();
-    } else
-    {
-      $publicUser->save();
-    }
-    
-		return view('web.user.edit', ['id' => $publicUser->userId, 'name' => $publicUser->name, 'country' => $publicUser->country]);
+    return view('web.user.edit', UserPublic::getForDisplay($publicUser, $publicUser->userId));
   }
 
 }

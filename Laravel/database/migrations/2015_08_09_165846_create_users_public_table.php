@@ -17,9 +17,9 @@ class CreateUsersPublicTable extends Migration
             $table->timestamps();
             $table->bigInteger('userId');
             $table->string('name', 200);
-            $table->bigInteger('profilePicId');
-            $table->bigInteger('coverPicId');
+            $table->string('profilePicUrl', 200);
             $table->string('country', 100);
+            $table->string('city', 100);
        });
     }
 
