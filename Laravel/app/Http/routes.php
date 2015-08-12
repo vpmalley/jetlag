@@ -32,6 +32,10 @@ Route::get('traveller/{id}/display', 'Web\TravellerController@getDisplay');
 Route::get('traveller/{id}/edit', 'Web\TravellerController@getEdit');
 Route::post('traveller/{id}/edit', 'Web\TravellerController@postEdit');
 
+Route::get('me', 'Web\TravellerController@getMe');
+Route::get('me/display', 'Web\TravellerController@getMyDisplay');
+Route::get('me/edit', 'Web\TravellerController@getMyEdit');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

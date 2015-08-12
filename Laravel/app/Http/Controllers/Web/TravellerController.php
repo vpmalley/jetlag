@@ -45,6 +45,15 @@ class TravellerController extends Controller {
   }
   
   /**
+   * Redirects to the default user page for the authenticated user
+   * 
+   */
+  public function getMe()
+  {
+    return $this->getEdit(Auth::user()->id);
+  }
+  
+  /**
    * Display the public profile
    * 
    * @param  int  $id
@@ -53,6 +62,15 @@ class TravellerController extends Controller {
   {
     $publicUser = UserPublic::where('userId', $id)->first();
     return view('web.user.display', UserPublic::getForDisplay($publicUser, $id, 'This user prefers to keep some mystery about that ...'));
+  }
+  
+  /**
+   * Redirects to the public information display page for the authenticated user
+   * 
+   */
+  public function getMyDisplay()
+  {
+    return $this->getDisplay(Auth::user()->id);
   }
   
   /**
@@ -70,6 +88,15 @@ class TravellerController extends Controller {
     $user = Auth::user();
     $publicUser = UserPublic::where('userId', $user->id)->first();
     return view('web.user.edit', UserPublic::getForDisplay($publicUser, $user->id));
+  }
+  
+  /**
+   * Redirects to the public information edition page for the authenticated user
+   * 
+   */
+  public function getMyEdit()
+  {
+    return $this->getEdit(Auth::user()->id);
   }
   
   /**
