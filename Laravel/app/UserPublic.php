@@ -27,6 +27,15 @@ class UserPublic extends Model
 	protected $fillable = ['id', 'name', 'profilePicUrl', 'country', 'city'];
   
   /**
+   * The rules for validating input
+   */
+  const rules = [
+        'name' => 'required|min:3|max:200',
+        'country' => 'required|min:3|max:100',
+        'city' => 'required|min:3|max:100',
+    ];
+  
+  /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
    * 
    * @param  int  $userId the id for the requested user

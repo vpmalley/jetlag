@@ -112,11 +112,7 @@ class TravellerController extends Controller {
       return Response::make('You are trying to modify the wrong traveller', 403);
     }
     
-    $this->validate($request, [
-        'name' => 'required|alpha_dash|min:3|max:200',
-        'country' => 'required|alpha_dash|min:3|max:100',
-        'city' => 'required|alpha_dash|min:3|max:100',
-    ]);
+    $this->validate($request, UserPublic::rules);
     
     $publicUser = UserPublic::getFromRequestAndPersist($request, $id);
     $display = UserPublic::getForDisplay($publicUser, $publicUser->userId);
