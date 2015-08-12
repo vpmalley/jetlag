@@ -24,7 +24,7 @@ class UserPublic extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['userId', 'name', 'profilePicUrl', 'country', 'city'];
+	protected $fillable = ['id', 'name', 'profilePicUrl', 'country', 'city'];
   
   /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
@@ -35,11 +35,10 @@ class UserPublic extends Model
    */
   public static function getFromRequestAndPersist(Request $request, $userId)
   {
-    $publicUser = UserPublic::where('userId', $userId)->first();
+    $publicUser = UserPublic::where('id', $userId)->first();
     if (!$publicUser)
     {
       $publicUser = new UserPublic;
-      $publicUser->userId = $userId;
     }
 
     foreach ($publicUser->fillable as $property)
@@ -55,6 +54,7 @@ class UserPublic extends Model
       $publicUser->update();
     } else
     {
+      $publicUser->id = $userId;
       $publicUser->save();
     }
     
@@ -88,7 +88,7 @@ class UserPublic extends Model
       {
         $display[$property] = $defaultContent;
       }
-      $display['userId'] = $userId;
+      $display['id'] = $userId;
     }
     $display['saved'] = false;
     return $display;

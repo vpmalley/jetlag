@@ -24,7 +24,7 @@
 						</div>
 					@endif
 
-					<form class="form-horizontal" role="form" method="POST" action="{{ url('/traveller/' . $userId . '/edit') }}">
+					<form class="form-horizontal" role="form" method="POST" action="{{ url('/traveller/' . $id . '/edit') }}">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">

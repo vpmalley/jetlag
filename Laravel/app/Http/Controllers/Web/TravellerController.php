@@ -86,7 +86,7 @@ class TravellerController extends Controller {
     }
     
     $user = Auth::user();
-    $publicUser = UserPublic::where('userId', $user->id)->first();
+    $publicUser = UserPublic::where('id', $user->id)->first();
     return view('web.user.edit', UserPublic::getForDisplay($publicUser, $user->id));
   }
   
@@ -114,7 +114,8 @@ class TravellerController extends Controller {
     
     $this->validate($request, [
         'name' => 'required|alpha_dash|min:3|max:200',
-        'country' => 'required|alpha_dash|min:3|max:200',
+        'country' => 'required|alpha_dash|min:3|max:100',
+        'city' => 'required|alpha_dash|min:3|max:100',
     ]);
     
     $publicUser = UserPublic::getFromRequestAndPersist($request, $id);
