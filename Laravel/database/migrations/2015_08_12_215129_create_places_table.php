@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAuthorsTable extends Migration
+class CreatePlacesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,13 @@ class CreateAuthorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('authors', function (Blueprint $table) {
+        Schema::create('places', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->bigInteger('authorId');
-            $table->bigInteger('userId');
-            $table->string('name', 100);
+            $table->float('latitude');
+            $table->float('longitude');
+            $table->float('altitude');
+            $table->string('localisation', 200);
         });
     }
 
@@ -28,6 +29,6 @@ class CreateAuthorsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('authors');
+        Schema::drop('places');
     }
 }

@@ -25,4 +25,11 @@ class Author extends Model
 	 * @var array
 	 */
 	protected $fillable = ['authorId', 'userId', 'name'];
+  
+  /**
+   * The rules for validating input
+   */
+  const rules = [
+        'name' => 'min:3|max:100',
+    ];
 }
