@@ -60,7 +60,7 @@ class TravellerController extends Controller {
    */
   public function getDisplay($id)
   {
-    $publicUser = UserPublic::where('userId', $id)->first();
+    $publicUser = UserPublic::where('id', $id)->firstOrFail();
     return view('web.user.display', UserPublic::getForDisplay($publicUser, $id, 'This user prefers to keep some mystery about that ...'));
   }
   
