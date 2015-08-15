@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetlag;
+namespace Jetlag\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 

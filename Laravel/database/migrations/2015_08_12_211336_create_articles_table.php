@@ -19,6 +19,7 @@ class CreateArticlesTable extends Migration
             $table->string('descriptionText', 500);
             $table->bigInteger('descriptionMediaId');
             $table->boolean('isDraft');
+            $table->bigInteger('authorId');
        });
     }
 

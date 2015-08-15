@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetlag;
+namespace Jetlag\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +22,7 @@ class Article extends Model
    * 
 	 * @var array
 	 */
-	protected $fillable = ['title', 'descriptionText', 'descriptionMediaId', 'isDraft'];
+	protected $fillable = ['title', 'descriptionText', 'descriptionMediaId', 'isDraft', 'authorId'];
   
   /**
    * The rules for validating input
