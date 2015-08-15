@@ -36,8 +36,11 @@ Route::get('me', 'Web\TravellerController@getMe');
 Route::get('me/display', 'Web\TravellerController@getMyDisplay');
 Route::get('me/edit', 'Web\TravellerController@getMyEdit');
 
+Route::get('article/{id}', 'Web\ArticleController@getDisplay');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
   'traveller/{id}' => 'Web\TravellerController',
+  'article/{id}' => 'Web\ArticleController',
 ]);
