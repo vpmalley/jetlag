@@ -80,9 +80,14 @@ class Article
    */
   public function getForDisplay()
   {
+    $descriptionMediaUrl = NULL;
+    if ($this->descriptionPicture) {
+      $descriptionMediaUrl = $this->descriptionPicture->getSmallDisplayUrl();
+    }
     return [
       'title' => $this->title,
       'descriptionText' => $this->descriptionText,
+      'descriptionMediaUrl' => $descriptionMediaUrl,
       'isDraft' => $this->isDraft,
     ];
   }

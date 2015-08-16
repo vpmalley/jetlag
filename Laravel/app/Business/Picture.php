@@ -81,6 +81,36 @@ class Picture
     // throw notfoundexception
   }
   
+  public function getSmallDisplayUrl()
+  {
+    $url = NULL;
+    if ($this->smallPictureLink)
+    {
+      $url = $this->smallPictureLink->getDisplayUrl();
+    }
+    return $url; 
+  }
+  
+  public function getMediumDisplayUrl()
+  {
+    $url = NULL;
+    if ($this->mediumPictureLink)
+    {
+      $url = $this->mediumPictureLink->getDisplayUrl();
+    }
+    return $url; 
+  }
+  
+  public function getBigDisplayUrl()
+  {
+    $url = NULL;
+    if ($this->bigPictureLink)
+    {
+      $url = $this->bigPictureLink->getDisplayUrl();
+    }
+    return $url; 
+  }
+  
   /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
    * 

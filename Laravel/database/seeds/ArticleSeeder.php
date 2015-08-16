@@ -16,6 +16,7 @@ class ArticleSeeder extends Seeder
         DB::table('articles')->insert([
             'title' => 'id ' . $id . str_random(30),
             'descriptionText' => 'id ' . $id . str_random(10) . ' ' . str_random(20),
+            'descriptionMediaId' => 2,
             'isDraft' => true,
             'authorId' => 1,
         ]);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetlag;
+namespace Jetlag\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -31,4 +31,12 @@ class Link extends Model
         'caption' => 'min:3|max:200',
         'url' => 'min:3|max:200',
     ];
+    
+  public function getDisplayUrl()
+  {
+    if ('web' == $this->storage)
+    {
+      return $this->url;
+    }
+  }
 }

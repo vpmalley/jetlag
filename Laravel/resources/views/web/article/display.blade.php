@@ -4,8 +4,19 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
+
+      @if ($descriptionMediaUrl)
 			<div class="panel panel-default">
 				<div class="panel-heading">{{$title}}</div>
+        <div class="panel-body media">
+          <img src={{$descriptionMediaUrl}} width="200px" />
+        </div>
+      </div>
+      @endif
+          
+			<div class="panel panel-default">
+				<div class="panel-heading">{{$title}}</div>
+
 				<div class="panel-body">
 
 					@if (count($errors) > 0)
@@ -18,7 +29,6 @@
 							</ul>
 						</div>
 					@endif
-
 
           <div class="print">
               <label class="col-md-4 control-label">Description</label>
