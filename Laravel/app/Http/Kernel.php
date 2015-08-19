@@ -27,6 +27,7 @@ class Kernel extends HttpKernel {
 		'auth' => 'Jetlag\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
 		'guest' => 'Jetlag\Http\Middleware\RedirectIfAuthenticated',
+		'author' => 'Jetlag\Http\Middleware\AuthorOf',
 	];
 
 }
