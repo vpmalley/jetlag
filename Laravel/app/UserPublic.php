@@ -29,7 +29,7 @@ class UserPublic extends Model
   /**
    * The rules for validating input
    */
-  const rules = [
+  static $rules = [
         'name' => 'required|min:3|max:200',
         'country' => 'required|min:3|max:100',
         'city' => 'required|min:3|max:100',

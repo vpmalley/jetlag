@@ -112,7 +112,7 @@ class TravellerController extends Controller {
       return Response::make('You are trying to modify the wrong traveller', 403);
     }
     
-    $this->validate($request, UserPublic::rules);
+    $this->validate($request, UserPublic::$rules);
     
     $publicUser = UserPublic::getFromRequestAndPersist($request, $id);
     $display = UserPublic::getForDisplay($publicUser, $publicUser->userId);

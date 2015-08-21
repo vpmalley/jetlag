@@ -46,7 +46,7 @@ class AuthController extends Controller {
   {
     $validator = Validator::make($user, [
         'name' => 'required|alpha_dash|min:3|max:200',
-        'email' => 'required|email|unique:users,email|max:200',
+        'email' => 'required|email|unique:users,email',
         'password' => 'required|confirmed|min:5|max:100',
     ]);
     return $validator;
@@ -60,7 +60,12 @@ class AuthController extends Controller {
   {
     $newUser = new User;
     $newUser->name = $user['name'];
-    $newUser->email = $user['email'];
+	/* The RFC standard says it is possible for the local part of the mail address
+	* to be case sensitive but it is strongly discouraged.
+	* Setting the address to lowercase avoids the silly error of users who put the
+	* first letter in capital letter and can't log after that...
+	*/
+    $newUser->email = strtolower($user['email']);
     $newUser->password = Hash::make($user['password']);
     $newUser->save();
     return $newUser;

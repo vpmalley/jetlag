@@ -35,13 +35,13 @@ class RedirectIfAuthenticated {
 	{
 		if ($this->auth->check())
 		{
-      if ($this->auth->user()) 
-      {
-        $url = '/traveller/' . $this->auth->user()->id . '/edit';
-        return new RedirectResponse(url($url));
-      }
-			return new RedirectResponse(url('/home'));
-		}
+			if ($this->auth->user()) 
+			{
+				$url = '/traveller/' . $this->auth->user()->id . '/edit';
+				return new RedirectResponse(url($url));
+			}
+				return new RedirectResponse(url('/home'));
+			}
 
 		return $next($request);
 	}
