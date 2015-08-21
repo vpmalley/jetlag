@@ -2,11 +2,9 @@
 
 use Closure;
 use Response;
-use DB;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
 use Jetlag\Eloquent\Author;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * Using this middleware in a controller is done as follows:
@@ -50,25 +48,15 @@ class AuthorOf {
       
       // the element that is queried
       $elementId = $request->segment($segmentIndex);
-      $elements = DB::table($table)->where('id', $elementId)->get();
       
-      // if the element does not exist, show it is not found
-      if (0 == count($elements))
-      {
-        throw new ModelNotFoundException;
-      }
+      // determine whether the user is author of the element
+      $isAuthorOf = Author::isAuthorOf($userId, $table, $elementId);
       
-      // the author id for this element
-      $authorId = $elements[0]->authorId;
-      
-      // the row matching the authenticated user and element's author : either 0 or 1
-      $count = Author::where('userId', $userId)->where('authorId', $authorId)->count();
-      
-			if (1 == $count)
+			if ($isAuthorOf)
 			{
 				return $next($request);
 			}
-			else // 0
+			else
 			{
         return Response::make('You are not allowed to modify this element', 403); 
 			}

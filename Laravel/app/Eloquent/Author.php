@@ -2,7 +2,9 @@
 
 namespace Jetlag\Eloquent;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * An author is one or multiple users creating or managing elements
@@ -32,4 +34,35 @@ class Author extends Model
   const rules = [
         'name' => 'min:3|max:100',
     ];
+
+  /**
+   * @param  int  $userId the user we want to check is an author (usually the logged in user)
+   * @param  string  $elementTable the table for the element we want to check the author of
+   * @param  int  $elementId the id of the element in that table
+   * @return boolean whether the user is an author of the element
+   */
+  public static function isAuthorOf($userId, $elementTable, $elementId)
+  {
+    $elements = DB::table($elementTable)->where('id', $elementId)->get();
+    
+    // if the element does not exist, show it is not found
+    if (0 == count($elements))
+    {
+      throw new ModelNotFoundException;
+    }
+    
+    // the author id for this element
+    $authorId = $elements[0]->authorId;
+    
+    // the number of rows matching the authenticated user and element's author : either 0 or 1
+    $count = Author::where('userId', $userId)->where('authorId', $authorId)->count();
+    
+    $isAuthorOf = false;
+    if (1 == $count)
+    {
+      $isAuthorOf = true;
+    }
+    return $isAuthorOf;
+  }
+  
 }
