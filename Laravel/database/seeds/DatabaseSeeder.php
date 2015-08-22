@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
 		Model::unguard();
 
 		$this->call('ArticleSeeder');
+		$this->call('ParagraphSeeder');
 		$this->call('LinkSeeder');
 		$this->call('PictureSeeder');
 		$this->call('AuthorSeeder');

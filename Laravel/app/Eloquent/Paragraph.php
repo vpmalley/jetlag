@@ -11,7 +11,7 @@ class Paragraph extends Model
 	 *
 	 * @var string
 	 */
-	protected $table = 'articles';
+	protected $table = 'paragraphs';
 
 	/**
 	 * The attributes that are mass assignable.

@@ -16,7 +16,7 @@ class CreateParagraphsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('title', 200); // to replace with an id to a question
-            $table->bigInteger('articleId');
+            $table->bigInteger('articleId'); // do we allow a paragraph to appear in multiple articles?
             $table->bigInteger('blockContentId');
             $table->string('blockContentType', 15);
             $table->bigInteger('hublotContentId');
