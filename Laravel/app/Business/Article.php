@@ -3,7 +3,9 @@
 namespace Jetlag\Business;
 
 use Jetlag\Eloquent\Article as StoredArticle;
+use Jetlag\Eloquent\Author;
 use Jetlag\Business\Picture;
+use Jetlag\UserPublic;
 
 /**
  * 
@@ -44,17 +46,25 @@ class Article
    * @var array
    */
   protected $paragraphs;
+  
+  /**
+   * The array of user ids who are authors of this article
+   *
+   * @var array
+   */
+  protected $authorUsers;
 
   /**
    * 
    */
-  public function __construct($storedArticle, $picture, $paragraphs)
+  public function __construct($storedArticle, $picture, $paragraphs, $authorUsers)
   {
     $this->title = $storedArticle->title;
     $this->descriptionText = $storedArticle->descriptionText;
     $this->isDraft = $storedArticle->isDraft;
     $this->descriptionPicture = $picture;
     $this->paragraphs = $paragraphs;
+    $this->authorUsers = $authorUsers;
   }
   
   /** 
@@ -69,7 +79,8 @@ class Article
     if ($storedArticle)
     {
       $picture = Picture::getById($storedArticle->descriptionMediaId);
-      return new Article($storedArticle, $picture, []);
+      $authorUsers = Author::getUsers($storedArticle->authorId);
+      return new Article($storedArticle, $picture, [], $authorUsers);
     }
   }
   
@@ -84,11 +95,20 @@ class Article
     if ($this->descriptionPicture) {
       $descriptionMediaUrl = $this->descriptionPicture->getSmallDisplayUrl();
     }
+    
+    $authorNameLabel = '';
+    $authorNames = UserPublic::select('name')->whereIn('id', $this->authorUsers)->get();
+    foreach($authorNames as $authorName)
+    {
+      $authorNameLabel .= $authorName['name'];
+    }
+    
     return [
       'title' => $this->title,
       'descriptionText' => $this->descriptionText,
       'descriptionMediaUrl' => $descriptionMediaUrl,
       'isDraft' => $this->isDraft,
+      'authorName' => $authorNameLabel,
     ];
   }
   

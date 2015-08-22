@@ -35,6 +35,11 @@
               <div class="col-md-6">
                 <label class="col-md-4 control-label">{{$descriptionText}}</label>
               </div>
+              
+              <label class="col-md-4 control-label">Author(s)</label>
+              <div class="col-md-6">
+                <label class="col-md-4 control-label">{{$authorName}}</label>
+              </div>
 
           </div>
 				</div>
