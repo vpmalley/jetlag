@@ -25,7 +25,7 @@ class Paragraph extends Model
   /**
    * The rules for validating input
    */
-  const rules = [
+  static $rules = [
         'title' => 'required|min:3|max:200',
         'weather' => 'min:3|max:20',
         'city' => 'boolean',

@@ -23,5 +23,5 @@ class Place extends Model
   /**
    * The rules for validating input
    */
-  const rules = ['localisation' => 'min:3|max:200'];
+  static $rules = ['localisation' => 'min:3|max:200'];
 }

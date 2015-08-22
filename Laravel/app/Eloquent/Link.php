@@ -27,7 +27,7 @@ class Link extends Model
   /**
    * The rules for validating input
    */
-  const rules = [
+  static $rules = [
         'caption' => 'min:3|max:200',
         'url' => 'min:3|max:200',
     ];

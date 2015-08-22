@@ -27,7 +27,7 @@ class Article extends Model
   /**
    * The rules for validating input
    */
-  const rules = [
+  static $rules = [
     'title' => 'min:3|max:200',
     'descriptionText' => 'min:3|max:500'
     ];

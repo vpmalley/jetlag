@@ -31,7 +31,7 @@ class Author extends Model
   /**
    * The rules for validating input
    */
-  const rules = [
+  static $rules = [
         'name' => 'min:3|max:100',
     ];
 

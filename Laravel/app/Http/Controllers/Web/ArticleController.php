@@ -2,6 +2,7 @@
 
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
+use Jetlag\Eloquent\Link;
 
 class ArticleController extends Controller {
 

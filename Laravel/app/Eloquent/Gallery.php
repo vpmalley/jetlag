@@ -23,7 +23,7 @@ class Gallery extends Model
   /**
    * The rules for validating input
    */
-  const rules = [
+  static $rules = [
         'description' => 'max:500'
     ];
 }
