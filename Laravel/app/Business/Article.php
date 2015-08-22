@@ -5,6 +5,7 @@ namespace Jetlag\Business;
 use Jetlag\Eloquent\Article as StoredArticle;
 use Jetlag\Eloquent\Author;
 use Jetlag\Business\Picture;
+use Jetlag\Business\Paragraph;
 use Jetlag\UserPublic;
 
 /**
@@ -79,8 +80,10 @@ class Article
     if ($storedArticle)
     {
       $picture = Picture::getById($storedArticle->descriptionMediaId);
+      $paragraphs = Paragraph::getAllForArticle($articleId);
       $authorUsers = Author::getUsers($storedArticle->authorId);
-      return new Article($storedArticle, $picture, [], $authorUsers);
+      $article = new Article($storedArticle, $picture, $paragraphs, $authorUsers);
+      return $article;
     }
   }
   
