@@ -65,4 +65,17 @@ class Author extends Model
     return $isAuthorOf;
   }
   
+  /**
+   * Returns the array of user ids matching that author id
+   */
+  public static function getUsers($authorId)
+  {
+    $userIds = [];
+    $authors = Author::where('authorId', $authorId)->get();
+    foreach ($authors as $author)
+    {
+      $userIds[] = $author->userId;
+    }
+    return $userIds;
+  }  
 }
