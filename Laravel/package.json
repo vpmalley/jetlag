@@ -2,6 +2,12 @@
   "private": true,
   "devDependencies": {
     "gulp": "^3.8.8",
-    "laravel-elixir": "^1.0.0"
+    "laravel-elixir": "^1.0.0",
+	"angular": "^1.4.5",
+	"bootstrap": "^3.3.5",
+	"font-awesome": "^4.4.0",
+	"moment": "^2.10.6",
+	"backbone": "^1.2.2",
+	"underscore": "^1.8.3"
   }
 }
