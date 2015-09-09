@@ -4,7 +4,7 @@
   "homepage": "https://github.com/vpmalley/jetlag",
   "authors": [
     "Valentin Coudert <valentin.coudert@free.fr>",
-	"Vincent Malley <vpmalley@gmail.com>"
+    "Vincent Malley <vpmalley@gmail.com>"
   ],
   "description": "Jetlag's webapp",
   "moduleType": [
@@ -23,6 +23,7 @@
     "backbone": "~1.2.2",
     "bootstrap": "~3.3.5",
     "font-awesome": "fontawesome#~4.4.0",
+    "jquery": "~2.1.4",
     "moment": "~2.10.6"
   },
   "repository": {

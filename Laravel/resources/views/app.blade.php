@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="jetlag">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 </head>
-<body>
+<body ng-controller="AppController as appCtrl">
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -52,12 +52,13 @@
 			</div>
 		</div>
 	</nav>
+	
+	<div>@{{'This div means nothing but that Angular works ! : "'+appCtrl.crazyMessage+'"'}}</div>
 
 	@yield('content')
 
 	<!-- Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.1/js/bootstrap.min.js"></script>
-	<script src="{{ 'http://localhost/jetlag/Laravel/public'.elixir('js/all.js') }}"></script>
+	<script src="{{ 'http://localhost/jetlag/Laravel/public'.elixir('js/thirds.js') }}"></script>
+	<script src="//localhost/jetlag/Laravel/public/js/jetlag.js"></script>
 </body>
 </html>

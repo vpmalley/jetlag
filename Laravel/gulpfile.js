@@ -14,12 +14,13 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
 	var bower_components = '../../../bower_components/';
     mix.less('app.less')
-		.scripts([
-			bower_components+'angular/angular.js',
-			bower_components+'backbone/backbone.js',
+		.scripts([ //XXX: order matters for now, we should find a way to get rid of it
 			bower_components+'jquery/dist/jquery.js',
-			bower_components+'moment/moment.js',
-			bower_components+'underscore/underscore.js'
-		])
-		.version('js/all.js');
+			bower_components+'angular/angular.js',
+			bower_components+'underscore/underscore.js',
+			bower_components+'backbone/backbone.js',
+			bower_components+'moment/moment.js'
+		], 'public/js/thirds.js')
+		.copy('resources/assets/js/jetlag.js', 'public/js/jetlag.js')
+		.version('js/thirds.js');
 });

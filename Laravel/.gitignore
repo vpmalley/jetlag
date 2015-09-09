@@ -3,4 +3,6 @@
 .env
 /bootstrap/cache/
 /public/build
+/public/js
+/public/css
 /bower_components
