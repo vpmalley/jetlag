@@ -38,6 +38,8 @@ Route::get('me/edit', 'Web\TravellerController@getMyEdit');
 
 Route::get('article/{id}', 'Web\ArticleController@getDisplay');
 
+Route::resource('api/article', 'Rest\RestArticleController');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',

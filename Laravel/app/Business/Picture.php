@@ -48,12 +48,27 @@ class Picture
 
   // probably whether the photo is public, its license, ...
   
+  public function __construct()
+  {
+  }
+  
   /**
    * 
    */
-  public function __construct($storedPicture)
+  public function fromDb($storedPicture)
   {
     $this->authorId = $storedPicture->authorId;
+  }
+  
+  /**
+   * 
+   */
+  public function fromUrl($authorId, $mediaUrl)
+  {
+    $this->authorId = $authorId;
+    $this->mediumPictureLink = new Link;
+    $this->mediumPictureLink->storage = 'web';
+    $this->mediumPictureLink->url = $mediaUrl;
   }
   
   /**
