@@ -19,8 +19,10 @@ elixir(function(mix) {
 			bower_components+'angular/angular.js',
 			bower_components+'underscore/underscore.js',
 			bower_components+'backbone/backbone.js',
-			bower_components+'moment/moment.js'
+			bower_components+'moment/moment.js',
+			bower_components+'ng-backbone/ng-backbone.js'
 		], 'public/js/thirds.js')
 		.copy('resources/assets/js/jetlag.js', 'public/js/jetlag.js')
+		.copy('resources/assets/js/home.js', 'public/js/home.js')
 		.version('js/thirds.js');
 });

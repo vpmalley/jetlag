@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="jetlag">
+<html lang="en" ng-app="jetlag.webapp.home">
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,11 +54,14 @@
 	</nav>
 	
 	<div>@{{'This div means nothing but that Angular works ! : "'+appCtrl.crazyMessage+'"'}}</div>
+	<div>@{{appCtrl.pluto.$attributes.name}}</div>
+	<input type="text" name="name" ng-model="appCtrl.pluto.$attributes.name">
 
 	@yield('content')
 
 	<!-- Scripts -->
 	<script src="{{ 'http://localhost/jetlag/Laravel/public'.elixir('js/thirds.js') }}"></script>
 	<script src="//localhost/jetlag/Laravel/public/js/jetlag.js"></script>
+	<script src="//localhost/jetlag/Laravel/public/js/home.js"></script>
 </body>
 </html>
