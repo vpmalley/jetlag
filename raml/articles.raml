@@ -1,0 +1,27 @@
+#%RAML 1.0 
+title: Jetlag Articles API
+version: v0.1
+baseUri: /api/0.1/
+mediaType:  application/json
+types:
+    Gist:  !include types/gist.raml
+    Gists: !include types/gists.raml
+    collection: !include typed/collection.raml
+resourceTypes:
+traits:
+/articles:
+  get:
+  post:
+    body:
+      application/json
+        title: string
+        descriptionText: string
+        authorId: number
+        descriptionPicture:
+          url: string
+
+  /{articleId}:
+    get:
+    put:
+    delete:
+
