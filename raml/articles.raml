@@ -16,10 +16,12 @@ traits:
       application/json
         title: string
         descriptionText: string
-        authorId: number
-        descriptionPicture:
+        authorUserIds: array of numbers
+        isDraft: boolean
+        descriptionMedia:
           url: string
-
+          title: string
+          id: number
   /{articleId}:
     get:
     put:
