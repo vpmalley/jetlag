@@ -18,7 +18,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 </head>
-<body ng-controller="AppController as appCtrl">
+<body ng-controller="AppController as appCtrl" class="jetlag-app">
 	<nav class="navbar navbar-default">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -52,10 +52,6 @@
 			</div>
 		</div>
 	</nav>
-	
-	<div>@{{'This div means nothing but that Angular works ! : "'+appCtrl.crazyMessage+'"'}}</div>
-	<div>@{{appCtrl.pluto.$attributes.name}}</div>
-	<input type="text" name="name" ng-model="appCtrl.pluto.$attributes.name">
 
 	@yield('content')
 

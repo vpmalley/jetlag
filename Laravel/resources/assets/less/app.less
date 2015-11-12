@@ -3,6 +3,34 @@
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 
-body, label, .checkbox label {
-	font-weight: 300;
+.jetlag-app {
+	.navbar {
+		margin-bottom: 0px;
+	}	
+
+	body, label, .checkbox label {
+		font-weight: 300;
+	}
+
+	.homepage {
+		div {
+			min-height: 100px;
+		}
+	
+		.searchbar_banner {
+			background-image: url('//localhost/jetlag/Laravel/public/images/dublin_docks.jpg');
+			background-size: cover;
+			background-position: 35%;
+			height: 350px;
+			
+			.searchbar {
+				width: 100%;
+				background: rgba(0,0,0,0.71);
+				padding: 10px;
+				position: absolute;
+				height: 50px;
+				top: 150px;
+			}
+		}
+	}
 }

@@ -26,8 +26,18 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
   };
   
   /* Define model */
-  define('Article', {});
+  define('Article', {
+  id: null,
+  title: null,
+  descriptionText: null,
+  descriptionPicture: null,
+  isDraft: null,
+  paragraphs: null,
+  authorUsers: null
+  });
+  
   define('User', {});
+  
   define('TravelBook', {});
   
   return returned;

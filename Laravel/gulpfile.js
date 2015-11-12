@@ -24,5 +24,6 @@ elixir(function(mix) {
 		], 'public/js/thirds.js')
 		.copy('resources/assets/js/jetlag.js', 'public/js/jetlag.js')
 		.copy('resources/assets/js/home.js', 'public/js/home.js')
+		.copy('resources/assets/images', 'public/images')
 		.version('js/thirds.js');
 });
