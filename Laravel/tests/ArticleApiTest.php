@@ -77,4 +77,63 @@ class ArticleApiTest extends TestCase {
       'authorUserIds' => [1, 2],
       ]);
   }
+  
+  public function testApiUpdateFirstArticle()
+  {
+    $this->baseUrl = "http://homestead.app";
+    $this->put('/api/article/1', [
+      'title' => 'article1 updated',
+      'descriptionText' => 'some updated description',
+      'isDraft' => 0,
+      'authorUserIds' => [1, 2],
+      ],
+      ['ContentType' => 'application/json'])
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => 1 
+      ]);
+    $this->get('/api/article/1')
+      ->assertResponseOk();
+    $this->seeJson([
+      'id' => 1,
+      'title' => 'article1 updated',
+      'descriptionText' => 'some updated description',
+      'isDraft' => 0,
+      'authorUserIds' => [1, 2],
+    ]);
+  }
+  
+  public function testApiPartUpdateFirstArticle()
+  {
+    $this->baseUrl = "http://homestead.app";
+    $this->put('/api/article/1', [
+      'title' => 'article1 is again updated',
+      ],
+      ['ContentType' => 'application/json'])
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => 1 
+      ]);
+    $this->get('/api/article/1')
+      ->assertResponseOk();
+    $this->seeJson([
+      'id' => 1,
+      'title' => 'article1 updated',
+      'descriptionText' => 'some updated description',
+      'isDraft' => 0,
+      'authorUserIds' => [1, 2],
+    ]);
+  }
+  
+  public function testApiDeleteArticle2()
+  {
+    $this->baseUrl = "http://homestead.app";
+    $this->delete('/api/article/2')
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => 2
+      ]);
+    $this->get('/api/article/2')
+      ->assertResponsestatus(404);
+  }
 }
