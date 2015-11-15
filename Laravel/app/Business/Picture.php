@@ -83,7 +83,7 @@ class Picture
     if ($storedPicture)
     {
       $picture = new Picture($storedPicture);
-      
+      $picture->id = $picId;
       // links
       $picture->smallPictureLink = Link::where('id', $storedPicture->smallPictureLinkId)->first();
       $picture->mediumPictureLink = Link::where('id', $storedPicture->mediumPictureLinkId)->first();
@@ -94,6 +94,11 @@ class Picture
       return $picture;
     }
     // throw notfoundexception
+  }
+
+  public function getId()
+  {
+    return $this->id;
   }
   
   public function getSmallDisplayUrl()
@@ -125,6 +130,15 @@ class Picture
     }
     return $url; 
   }
+
+  public function getForRest()
+  {
+    $content = [];
+    $content['id'] = $this->getId();
+    $content['smallUrl'] = $this->getSmallDisplayUrl();
+    $content['mediumUrl'] = $this->getMediumDisplayUrl();
+    $content['bigUrl'] = $this->getBigDisplayUrl();
+  }
   
   /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
@@ -136,4 +150,9 @@ class Picture
   {
   }
 
+  public function persist()
+  {
+    // persist links
+    // persist the rest
+  }
 }

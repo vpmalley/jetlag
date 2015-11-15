@@ -5,6 +5,7 @@ namespace Jetlag\Eloquent;
 use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Jetlag\UserPublic;
 
 /**
  * An author is one or multiple users creating or managing elements
@@ -76,6 +77,71 @@ class Author extends Model
     {
       $userIds[] = $author->userId;
     }
-    return $userIds;
-  }  
+    $users = UserPublic::whereIn('id', $userIds)->get();
+    return $users;
+    
+  }
+
+  /**
+   *
+   * @return var array an array of author ids
+   */
+  public static function getAuthorsForUser($userId)
+  {
+    $authorIds = [];
+    $authors = Author::where('userId', $userId)->get();
+    foreach ($authors as $author)
+    {
+      $authorIds[] = $author->authorId;
+    }
+    return $authorIds;
+  }
+
+  /**
+   * @param array array of user ids of this article
+   * @param array array of user ids to make them as the new authors of this article
+   * @return array the new array of this article's user ids
+   */
+  public static function updateAuthorUsers($currentAUthorUserIds, $authorUserIds)
+  {
+    // if update, update it
+    // if new, fill it
+    if (empty($authorUserIds))
+    {
+      $toBeUpdated = false;
+    } else if (empty($currentAUthorUserIds))
+    {
+      $toBeUpdated = true;
+    } else
+    {
+      // update $this->authorUsers : change it only if any id is different
+      sort($authorUserIds);
+      if (len($authorUserIds) != len($currentAUthorUserIds))
+      {
+        $currentAUthorUserIds = [];
+        $toBeUpdated = true;
+      }
+      
+      for ($i = 0; $i <= len($authorUserIds); $i++)
+      {
+        if ($currentAUthorUserIds[$i] != $authorUserIds[$i])
+        {
+          $currentAUthorUserIds = [];
+          $toBeUpdated = true;          
+        }
+      }
+    }
+
+    if ($toBeUpdated)
+    {
+      $currentAUthorUserIds = [];
+      foreach ($authorUserIds as $authorUserId)
+      {
+        $user = UserPublic::where('id', $authorUserId)->first();
+        $currentAUthorUserIds[] = $user;
+      }
+    }
+    return $currentAUthorUserIds;
+  }
+
 }

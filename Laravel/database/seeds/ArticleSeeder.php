@@ -14,8 +14,8 @@ class ArticleSeeder extends Seeder
     {
         $id = 2;
         DB::table('articles')->insert([
-            'title' => 'id ' . $id . str_random(30),
-            'descriptionText' => 'id ' . $id . str_random(10) . ' ' . str_random(20),
+            'title' => 'article with id ' . $id,
+            'descriptionText' => 'this is a cool article isnt it? id ' . $id,
             'descriptionMediaId' => 2,
             'isDraft' => true,
             'authorId' => 1,

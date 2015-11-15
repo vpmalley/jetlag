@@ -15,9 +15,9 @@ class Article extends Model
 	 */
 	protected $table = 'articles';
 
-	/**
-	 * The attributes that are mass assignable.
-	 * title is the title of the article
+  /**
+   * The attributes that are mass assignable.
+   * title is the title of the article
    * descriptionText is a text description of the article
    * descriptionMediaId is the id of the Link to a picture to illustrate the article
    * isDraft is a boolean, to indicate whether the article is a draft
@@ -38,31 +38,4 @@ class Article extends Model
   {
     return Article::where('id', $id)->firstOrFail();
   }
-  
-  /*
-  public static function getFromRequestBodyAndPersist(Request $request, $id)
-  {
-    $article = Article::firstOrNew(['id' => $id]);
-
-    foreach ($article->fillable as $property)
-    {
-      Log::debug($request->json($property));
-      if ($request->json($property))
-      {
-        $article[$property] = $request->json($property);
-        Log::debug($property);
-      }
-    }
-    
-    if ($article->id)
-    {
-      $article->update();
-    } else
-    {
-      $article->save();
-    }
-    
-    return $article;
-  }
-  */
 }
