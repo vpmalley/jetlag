@@ -11,6 +11,14 @@ use Jetlag\Eloquent\Place;
  */
 class Picture
 {
+
+  /**
+   * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
+   * 
+	 * @var int
+   */
+  protected $id;
+  
   /**
    * The link to the small picture
    * 
@@ -57,6 +65,7 @@ class Picture
    */
   public function fromDb($storedPicture)
   {
+    $this->id = $storedPicture->id;
     $this->authorId = $storedPicture->authorId;
   }
   
@@ -138,6 +147,7 @@ class Picture
     $content['smallUrl'] = $this->getSmallDisplayUrl();
     $content['mediumUrl'] = $this->getMediumDisplayUrl();
     $content['bigUrl'] = $this->getBigDisplayUrl();
+    return $content;
   }
   
   /**
@@ -152,7 +162,37 @@ class Picture
 
   public function persist()
   {
-    // persist links
-    // persist the rest
+    if (($this->id) && ($this->id > -1))
+    {
+      $picture = StoredPicture::getById($this->id);
+    } else
+    {
+      $picture = new StoredPicture;
+    }
+    
+    if ($this->smallPictureLink)
+    {
+      $this->smallPictureLink->save();
+      $picture->smallPictureLink = $this->smallPictureLink->id;
+    }
+    if ($this->mediumPictureLink)
+    {
+      $this->mediumPictureLink->save();
+      $picture->mediumPictureLink = $this->mediiumPictureLink->id;
+    }
+    if ($this->bigPictureLink)
+    {
+      $this->bigPictureLink->save();
+      $picture->bigPictureLink = $this->bigPictureLink->id;
+    }
+
+    $picture->authorId = $this->authorId;
+    $picture->save();
+    $this->id = $picture->id;
+  }
+  
+  public function delete()
+  {
+    StoredPicture::getById($this->id)->delete();
   }
 }

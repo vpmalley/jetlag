@@ -4,7 +4,7 @@ namespace Jetlag\Business;
 
 use Jetlag\Eloquent\Article as StoredArticle;
 use Jetlag\Eloquent\Author;
-//use Jetlag\Business\Picture;
+use Jetlag\Business\Picture;
 use Jetlag\Business\Paragraph;
 use Jetlag\UserPublic;
 use Illuminate\Http\Request;
@@ -43,7 +43,7 @@ class Article
    * 
 	 * @var Jetlag\Business\Picture
    */
-  //protected $descriptionPicture;
+  protected $descriptionPicture;
   
   /**
    * Whether the article is a draft
@@ -101,7 +101,7 @@ class Article
     $this->title = $storedArticle->title;
     $this->descriptionText = $storedArticle->descriptionText;
     $this->isDraft = $storedArticle->isDraft;
-    //$this->descriptionPicture = $picture;
+    $this->descriptionPicture = $picture;
     $this->paragraphs = $paragraphs;
     $this->authorUsers = $authorUsers;
   }
@@ -167,25 +167,21 @@ class Article
   public function getDescriptionMediaUrl()
   {
     $descriptionMediaUrl = '';
-    /*
     if ($this->descriptionPicture)
     {
-      $descriptionMediaUrl = $this->descriptionPicture->mediumPictureLink->url;
+      $descriptionMediaUrl = $this->descriptionPicture->getMediumDisplayUrl();
     }
-    */
     return $descriptionMediaUrl;
   }
 
   public function setDescriptionMediaUrl($descriptionMediaUrl)
   {
-    /*
     if ($this->descriptionPicture)
     {
       $this->descriptionPicture->delete();
     }
     $this->descriptionPicture = new Picture;
     $this->descriptionPicture->fromUrl(-1, $descriptionMediaUrl);
-    */
   }
 
   public function isDraft()
@@ -230,11 +226,9 @@ class Article
   public function getForDisplay()
   {
     $descriptionMediaUrl = NULL;
-    /*
     if ($this->descriptionPicture) {
       $descriptionMediaUrl = $this->descriptionPicture->getSmallDisplayUrl();
     }
-    */
     
     $authorNameLabel = '';
     $authorNames = UserPublic::select('name')->whereIn('id', $this->authorUsers)->get();
@@ -268,12 +262,10 @@ class Article
       $authorUserIds[] = $authorUser->id;
     }
     $content['authorUserIds'] = $authorUserIds;
-    /*
     if ($this->descriptionPicture)
     {
       $content['descriptionMedia'] = $this->descriptionPicture->getForRest();
     }
-    */
     // list of paragraph ids and content
     return $content;
   }
@@ -324,11 +316,16 @@ class Article
     $article->title = $this->title;
     $article->descriptionText = $this->descriptionText;
     $article->isDraft = $this->isDraft;
+    if ($this->descriptionPicture)
+    {
+      $article->descriptionMediaId = $this->descriptionPicture->getId();
+    }
     //$article->authorId = $this->authorId;
 
     $article->save();
 
     $this->id = $article->id;
+    return $this->id;
   }
 
   public function delete()

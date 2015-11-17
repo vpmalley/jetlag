@@ -47,11 +47,6 @@ class RestArticleController extends Controller
    */
   public function store(Request $request)
   {
-    if ($request->ajax()) {
-    Log::debug('ajax: yes');
-    }
-    Log::debug('title: ' . $request->json('title'));
-    Log::debug('title: ' . $request->title);
     $this->validate($request, Article::$rules); // TODO: own validator actually returning a 400 if the format is wrong
     $article = new Article;
     $article->fromRequest($request->input('title'), $request->input('descriptionText', ''), $request->input('isDraft', TRUE));
@@ -94,19 +89,19 @@ class RestArticleController extends Controller
   {
     $this->validate($request, Article::$rules);
     $article = Article::getById($id);
-    $article->setTitle($request->json('title', $article->getTitle()));
-    $article->setDescriptionText($request->json('descriptionText', $article->getDescriptionText()));
-    if ($request->json('descriptionMediaId'))
+    $article->setTitle($request->input('title', $article->getTitle()));
+    $article->setDescriptionText($request->input('descriptionText', $article->getDescriptionText()));
+    if ($request->input('descriptionMediaId'))
     {
       // TODO set descriptionPicture based on the id, and update its url
     } else
     {
-      $article->setDescriptionMediaUrl($request->json('descriptionMediaUrl', $article->getDescriptionMediaUrl()));
+      $article->setDescriptionMediaUrl($request->input('descriptionMediaUrl', $article->getDescriptionMediaUrl()));
     }
-    $article->setIsDraft($request->json('isDraft', $article->isDraft()));
-    if ($request->json('authorUserIds'))
+    $article->setIsDraft($request->input('isDraft', $article->isDraft()));
+    if ($request->input('authorUserIds'))
     {
-      $article->updateAuthorUsers($request->json('authorUserIds'));
+      $article->updateAuthorUsers($request->input('authorUserIds'));
     }
     $article->persist();
     return ['id' => $article->getId()];

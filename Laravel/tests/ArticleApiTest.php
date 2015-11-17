@@ -67,7 +67,7 @@ class ArticleApiTest extends TestCase {
         'id' => 3,
       ]);
       
-    $this->get('/api/article/2')
+    $this->get('/api/article/3')
       ->assertResponseOk();
     $this->seeJson([
       'id' => 3,
@@ -77,7 +77,66 @@ class ArticleApiTest extends TestCase {
       'authorUserIds' => [1, 2],
       ]);
   }
-  
+
+  public function testApiStoreArticleWithPictureWithoutTitle()
+  {
+    $this->baseUrl = "http://homestead.app";
+    $this->post('/api/article', [
+      'title' => 'article1',
+      'descriptionMedia' => [
+        'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+        ],
+      ], ['ContentType' => 'application/json'])
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => 4,
+      ]);
+      
+    $this->get('/api/article/4')
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => 4,
+        'title' => "article1",
+        'descriptionText' => '',
+        'isDraft' => 1,
+        'authorUserIds' => [],
+        'descriptionMedia' => [
+          'title' => '',
+          'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+          ],
+      ]);
+  }
+
+  public function testApiStoreArticleWithPicture()
+  {
+    $this->baseUrl = "http://homestead.app";
+    $this->post('/api/article', [
+      'title' => 'article1',
+      'descriptionMedia' => [
+        'title' => 'mypic',
+        'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+        ],
+      ], ['ContentType' => 'application/json'])
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => 5,
+      ]);
+      
+    $this->get('/api/article/5')
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => 5,
+        'title' => "article1",
+        'descriptionText' => '',
+        'isDraft' => 1,
+        'authorUserIds' => [],
+        'descriptionMedia' => [
+          'title' => 'mypic',
+          'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+          ],
+      ]);
+  }
+
   public function testApiUpdateFirstArticle()
   {
     $this->baseUrl = "http://homestead.app";

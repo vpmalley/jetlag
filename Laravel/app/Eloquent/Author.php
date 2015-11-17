@@ -116,13 +116,13 @@ class Author extends Model
     {
       // update $this->authorUsers : change it only if any id is different
       sort($authorUserIds);
-      if (len($authorUserIds) != len($currentAUthorUserIds))
+      if (count($authorUserIds) != count($currentAUthorUserIds))
       {
         $currentAUthorUserIds = [];
         $toBeUpdated = true;
       }
       
-      for ($i = 0; $i <= len($authorUserIds); $i++)
+      for ($i = 0; $i <= count($authorUserIds); $i++)
       {
         if ($currentAUthorUserIds[$i] != $authorUserIds[$i])
         {
