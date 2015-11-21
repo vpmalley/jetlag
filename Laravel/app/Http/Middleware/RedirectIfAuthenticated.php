@@ -40,8 +40,8 @@ class RedirectIfAuthenticated {
 				$url = '/traveller/' . $this->auth->user()->id . '/edit';
 				return new RedirectResponse(url($url));
 			}
-				return new RedirectResponse(url('/home'));
-			}
+			return new RedirectResponse(url('/home'));
+		}
 
 		return $next($request);
 	}
