@@ -12,72 +12,72 @@ use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * 
+ *
  */
 class Article
 {
 
   /**
    * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
-   * 
-	 * @var int
+   *
+   * @var int
    */
   protected $id;
-  
+
   /**
    * The title for the article
-   * 
-	 * @var string
+   *
+   * @var string
    */
   protected $title;
-  
+
   /**
    * The description for the article
-   * 
-	 * @var string
+   *
+   * @var string
    */
   protected $descriptionText;
-  
+
   /**
    * The description for the article
-   * 
-	 * @var Jetlag\Business\Picture
+   *
+   * @var Jetlag\Business\Picture
    */
   protected $descriptionPicture;
-  
+
   /**
    * Whether the article is a draft
-   * 
-	 * @var boolean
+   *
+   * @var boolean
    */
   protected $isDraft;
-  
+
   /**
    * The paragraphs of this article
-   * 
+   *
    * @var array
    */
   protected $paragraphs;
-  
+
   /**
    * The id for the author link to users who are authors of this article
    *
    * @var array
    */
   protected $authorId;
-  
+
   /**
    * The array of user ids who are authors of this article
    *
    * @var array
    */
   protected $authorUsers = [];
-  
+
   /**
    * The fillable properties
    */
   protected $fillable = ['title', 'descriptionText', 'descriptionMediaUrl', 'isDraft'];
-  
+
   /**
    * The rules for validating input
    */
@@ -91,9 +91,9 @@ class Article
   public function __construct()
   {
   }
-  
+
   /**
-   * 
+   *
    */
   public function fromDb($storedArticle, $picture, $paragraphs, $authorId, $authorUsers)
   {
@@ -105,13 +105,13 @@ class Article
     $this->paragraphs = $paragraphs;
     $this->authorUsers = $authorUsers;
   }
-  
+
   /**
-   * 
+   *
    */
   public function fromRequest($title, $descriptionText, $isDraft)
   {
-    
+
     $this->title = $title;
     $this->descriptionText = $descriptionText;
     $this->isDraft = $isDraft;
@@ -120,7 +120,7 @@ class Article
 
   /**
    * Constructs an Article from an App\Eloquent\Article.
-   * 
+   *
    * @param  StoredArticle  $storedArticle the stored article
    * @return  Jetlag\Business\Article
    */
@@ -204,7 +204,7 @@ class Article
 
   /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   * 
+   *
    * @param  int  $articleId the id for the requested article
    * @return  Jetlag\Business\Article
    */
@@ -217,10 +217,10 @@ class Article
     }
     throw new ModelNotFoundException;
   }
-  
+
   /**
    * extracts the data for display
-   * 
+   *
    * @return  array
    */
   public function getForDisplay()
@@ -229,7 +229,7 @@ class Article
     if ($this->descriptionPicture) {
       $descriptionMediaUrl = $this->descriptionPicture->getSmallDisplayUrl();
     }
-    
+
     $authorNameLabel = '';
     $authorNames = UserPublic::select('name')->whereIn('id', $this->authorUsers)->get();
     foreach($authorNames as $authorName)
@@ -245,10 +245,10 @@ class Article
       'authorName' => $authorNameLabel,
     ];
   }
-  
+
   /**
    * extracts the data for showing as REST
-   * 
+   *
    * @return  array
    */
   public function getForRest()
@@ -269,10 +269,10 @@ class Article
     // list of paragraph ids and content
     return $content;
   }
-  
+
   /**
    * extracts id and url
-   * 
+   *
    * @return  array
    */
   public function getForRestIndex()
@@ -282,10 +282,10 @@ class Article
       'url' => url('/article/' . $this->id),
     ];
   }
-  
+
   /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   * 
+   *
    * @param  int  $userId the id for the requested user
    * @return  array
    */
@@ -304,7 +304,7 @@ class Article
   public function persist()
   {
     //$this->descriptionPicture->persist();
-    
+
     if (($this->id) && ($this->id > -1))
     {
       $article = StoredArticle::getById($this->id);

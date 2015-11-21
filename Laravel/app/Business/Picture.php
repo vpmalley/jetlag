@@ -7,70 +7,70 @@ use Jetlag\Eloquent\Link;
 use Jetlag\Eloquent\Place;
 
 /**
- * 
+ *
  */
 class Picture
 {
 
   /**
    * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
-   * 
-	 * @var int
+   *
+   * @var int
    */
   protected $id;
-  
+
   /**
    * The link to the small picture
-   * 
-	 * @var Jetlag\Eloquent\Link
+   *
+   * @var Jetlag\Eloquent\Link
    */
   protected $smallPictureLink;
-  
+
   /**
    * The link to the medium picture
-   * 
-	 * @var Jetlag\Eloquent\Link
+   *
+   * @var Jetlag\Eloquent\Link
    */
   protected $mediumPictureLink;
-  
+
   /**
    * The link to the big picture
-   * 
-	 * @var Jetlag\Eloquent\Link
+   *
+   * @var Jetlag\Eloquent\Link
    */
   protected $bigPictureLink;
-  
+
   /**
    * The id for the author
-   * 
-	 * @var int
+   *
+   * @var int
    */
   protected $authorId;
-  
+
   /**
    * The place where the picture was taken
-   * 
-	 * @var Jetlag\Eloquent\Place
+   *
+   * @var Jetlag\Eloquent\Place
    */
   protected $location;
 
   // probably whether the photo is public, its license, ...
-  
+
   public function __construct()
   {
   }
-  
+
   /**
-   * 
+   *
    */
   public function fromDb($storedPicture)
   {
     $this->id = $storedPicture->id;
     $this->authorId = $storedPicture->authorId;
   }
-  
+
   /**
-   * 
+   *
    */
   public function fromUrl($authorId, $mediaUrl)
   {
@@ -79,10 +79,10 @@ class Picture
     $this->mediumPictureLink->storage = 'web';
     $this->mediumPictureLink->url = $mediaUrl;
   }
-  
+
   /**
-   * 
-   * 
+   *
+   *
    * @param  int  $picId the id for the requested picture
    * @return  Jetlag\Business\Picture
    */
@@ -99,7 +99,7 @@ class Picture
       $picture->bigPictureLink = Link::where('id', $storedPicture->bigPictureLinkId)->first();
       // location
       $picture->location = Place::where('id', $storedPicture->locationId)->first();
-      
+
       return $picture;
     }
     // throw notfoundexception
@@ -109,7 +109,7 @@ class Picture
   {
     return $this->id;
   }
-  
+
   public function getSmallDisplayUrl()
   {
     $url = NULL;
@@ -117,9 +117,9 @@ class Picture
     {
       $url = $this->smallPictureLink->getDisplayUrl();
     }
-    return $url; 
+    return $url;
   }
-  
+
   public function getMediumDisplayUrl()
   {
     $url = NULL;
@@ -127,9 +127,9 @@ class Picture
     {
       $url = $this->mediumPictureLink->getDisplayUrl();
     }
-    return $url; 
+    return $url;
   }
-  
+
   public function getBigDisplayUrl()
   {
     $url = NULL;
@@ -137,7 +137,7 @@ class Picture
     {
       $url = $this->bigPictureLink->getDisplayUrl();
     }
-    return $url; 
+    return $url;
   }
 
   public function getForRest()
@@ -149,10 +149,10 @@ class Picture
     $content['bigUrl'] = $this->getBigDisplayUrl();
     return $content;
   }
-  
+
   /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   * 
+   *
    * @param  int  $userId the id for the requested user
    * @return  array
    */
@@ -169,7 +169,7 @@ class Picture
     {
       $picture = new StoredPicture;
     }
-    
+
     if ($this->smallPictureLink)
     {
       $this->smallPictureLink->save();
@@ -190,7 +190,7 @@ class Picture
     $picture->save();
     $this->id = $picture->id;
   }
-  
+
   public function delete()
   {
     StoredPicture::getById($this->id)->delete();

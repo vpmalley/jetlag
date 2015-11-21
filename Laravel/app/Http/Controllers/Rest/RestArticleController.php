@@ -13,7 +13,7 @@ use Log;
 
 class RestArticleController extends Controller
 {
-  
+
   /**
    * Display a listing of the resource for the logged in user.
    *

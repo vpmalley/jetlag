@@ -23,7 +23,7 @@ class Link extends Model
 	 * @var array
 	 */
 	protected $fillable = ['caption', 'storage', 'url', 'authorId'];
-  
+
   /**
    * The rules for validating input
    */
@@ -31,7 +31,7 @@ class Link extends Model
         'caption' => 'min:3|max:200',
         'url' => 'min:3|max:200',
     ];
-    
+
   public function getDisplayUrl()
   {
     if ('web' == $this->storage)

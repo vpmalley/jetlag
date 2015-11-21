@@ -12,23 +12,23 @@ use Jetlag\UserPublic;
  */
 class Author extends Model
 {
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'authors';
+  /**
+   * The database table used by the model.
+   *
+   * @var string
+   */
+  protected $table = 'authors';
 
-	/**
-	 * The attributes that are mass assignable.
+  /**
+   * The attributes that are mass assignable.
    * authorId is the id for author(s)
    * userId is the id for a user being one of the author(s)
    * name is the optional name of the user in this author group
-	 *
-	 * @var array
-	 */
-	protected $fillable = ['authorId', 'userId', 'name'];
-  
+   *
+   * @var array
+   */
+  protected $fillable = ['authorId', 'userId', 'name'];
+
   /**
    * The rules for validating input
    */
@@ -45,19 +45,19 @@ class Author extends Model
   public static function isAuthorOf($userId, $elementTable, $elementId)
   {
     $elements = DB::table($elementTable)->where('id', $elementId)->get();
-    
+
     // if the element does not exist, show it is not found
     if (0 == count($elements))
     {
       throw new ModelNotFoundException;
     }
-    
+
     // the author id for this element
     $authorId = $elements[0]->authorId;
-    
+
     // the number of rows matching the authenticated user and element's author : either 0 or 1
     $count = Author::where('userId', $userId)->where('authorId', $authorId)->count();
-    
+
     $isAuthorOf = false;
     if (1 == $count)
     {
@@ -65,7 +65,7 @@ class Author extends Model
     }
     return $isAuthorOf;
   }
-  
+
   /**
    * Returns the array of user ids matching that author id
    */
@@ -79,7 +79,7 @@ class Author extends Model
     }
     $users = UserPublic::whereIn('id', $userIds)->get();
     return $users;
-    
+
   }
 
   /**
@@ -121,13 +121,13 @@ class Author extends Model
         $currentAUthorUserIds = [];
         $toBeUpdated = true;
       }
-      
+
       for ($i = 0; $i <= count($authorUserIds); $i++)
       {
         if ($currentAUthorUserIds[$i] != $authorUserIds[$i])
         {
           $currentAUthorUserIds = [];
-          $toBeUpdated = true;          
+          $toBeUpdated = true;
         }
       }
     }
