@@ -5,6 +5,7 @@ namespace Jetlag\Business;
 use Jetlag\Eloquent\Picture as StoredPicture;
 use Jetlag\Eloquent\Link;
 use Jetlag\Eloquent\Place;
+use Log;
 
 /**
  *
@@ -110,6 +111,11 @@ class Picture
     return $this->id;
   }
 
+  public function setId($id)
+  {
+    $this->id = $id;
+  }
+
   public function getSmallDisplayUrl()
   {
     $url = NULL;
@@ -164,6 +170,7 @@ class Picture
   {
     if (($this->id) && ($this->id > -1))
     {
+      Log::debug("lala " . $this->id);
       $picture = StoredPicture::getById($this->id);
     } else
     {
@@ -173,17 +180,17 @@ class Picture
     if ($this->smallPictureLink)
     {
       $this->smallPictureLink->save();
-      $picture->smallPictureLink = $this->smallPictureLink->id;
+      $picture->smallPictureLinkId = $this->smallPictureLink->id;
     }
     if ($this->mediumPictureLink)
     {
       $this->mediumPictureLink->save();
-      $picture->mediumPictureLink = $this->mediiumPictureLink->id;
+      $picture->mediumPictureLinkId = $this->mediumPictureLink->id;
     }
     if ($this->bigPictureLink)
     {
       $this->bigPictureLink->save();
-      $picture->bigPictureLink = $this->bigPictureLink->id;
+      $picture->bigPictureLinkId = $this->bigPictureLink->id;
     }
 
     $picture->authorId = $this->authorId;

@@ -17,7 +17,7 @@ class ArticleApiTest extends TestCase {
       ]]);
     //$this->dump();
   }
-  
+
   public function testApiGetFirstArticle()
   {
     $this->baseUrl = "http://homestead.app";
@@ -40,7 +40,7 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
         'id' => 2,
       ]);
-      
+
     $this->get('/api/article/2')
       ->assertResponseOk();
     $this->seeJson([
@@ -66,7 +66,7 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
         'id' => 3,
       ]);
-      
+
     $this->get('/api/article/3')
       ->assertResponseOk();
     $this->seeJson([
@@ -78,7 +78,7 @@ class ArticleApiTest extends TestCase {
       ]);
   }
 
-  public function testApiStoreArticleWithPictureWithoutTitle()
+  public function testApiStoreArticleWithPicture()
   {
     $this->baseUrl = "http://homestead.app";
     $this->post('/api/article', [
@@ -91,7 +91,7 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
         'id' => 4,
       ]);
-      
+
     $this->get('/api/article/4')
       ->assertResponseOk();
     $this->seeJson([
@@ -101,38 +101,10 @@ class ArticleApiTest extends TestCase {
         'isDraft' => 1,
         'authorUserIds' => [],
         'descriptionMedia' => [
-          'title' => '',
-          'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-          ],
-      ]);
-  }
-
-  public function testApiStoreArticleWithPicture()
-  {
-    $this->baseUrl = "http://homestead.app";
-    $this->post('/api/article', [
-      'title' => 'article1',
-      'descriptionMedia' => [
-        'title' => 'mypic',
-        'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-        ],
-      ], ['ContentType' => 'application/json'])
-      ->assertResponseOk();
-    $this->seeJson([
-        'id' => 5,
-      ]);
-      
-    $this->get('/api/article/5')
-      ->assertResponseOk();
-    $this->seeJson([
-        'id' => 5,
-        'title' => "article1",
-        'descriptionText' => '',
-        'isDraft' => 1,
-        'authorUserIds' => [],
-        'descriptionMedia' => [
-          'title' => 'mypic',
-          'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+          'id' => 3,
+          'smallUrl' => null,
+          'bigUrl' => null,
+          'mediumUrl' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
           ],
       ]);
   }
@@ -149,7 +121,7 @@ class ArticleApiTest extends TestCase {
       ['ContentType' => 'application/json'])
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 1 
+        'id' => 1
       ]);
     $this->get('/api/article/1')
       ->assertResponseOk();
@@ -161,7 +133,7 @@ class ArticleApiTest extends TestCase {
       'authorUserIds' => [1, 2],
     ]);
   }
-  
+
   public function testApiPartUpdateFirstArticle()
   {
     $this->baseUrl = "http://homestead.app";
@@ -171,7 +143,7 @@ class ArticleApiTest extends TestCase {
       ['ContentType' => 'application/json'])
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 1 
+        'id' => 1
       ]);
     $this->get('/api/article/1')
       ->assertResponseOk();
@@ -183,7 +155,7 @@ class ArticleApiTest extends TestCase {
       'authorUserIds' => [1, 2],
     ]);
   }
-  
+
   public function testApiDeleteArticle2()
   {
     $this->baseUrl = "http://homestead.app";

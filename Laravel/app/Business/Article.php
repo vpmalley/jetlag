@@ -8,7 +8,6 @@ use Jetlag\Business\Picture;
 use Jetlag\Business\Paragraph;
 use Jetlag\UserPublic;
 use Illuminate\Http\Request;
-use Log;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -111,7 +110,6 @@ class Article
    */
   public function fromRequest($title, $descriptionText, $isDraft)
   {
-
     $this->title = $title;
     $this->descriptionText = $descriptionText;
     $this->isDraft = $isDraft;
@@ -176,12 +174,13 @@ class Article
 
   public function setDescriptionMediaUrl($descriptionMediaUrl)
   {
-    if ($this->descriptionPicture)
-    {
-      $this->descriptionPicture->delete();
-    }
     $this->descriptionPicture = new Picture;
     $this->descriptionPicture->fromUrl(-1, $descriptionMediaUrl);
+  }
+
+  public function setDescriptionPicture($picture)
+  {
+    $this->descriptionPicture = $picture;
   }
 
   public function isDraft()
@@ -303,8 +302,6 @@ class Article
 
   public function persist()
   {
-    //$this->descriptionPicture->persist();
-
     if (($this->id) && ($this->id > -1))
     {
       $article = StoredArticle::getById($this->id);
@@ -318,6 +315,7 @@ class Article
     $article->isDraft = $this->isDraft;
     if ($this->descriptionPicture)
     {
+      $this->descriptionPicture->persist();
       $article->descriptionMediaId = $this->descriptionPicture->getId();
     }
     //$article->authorId = $this->authorId;
