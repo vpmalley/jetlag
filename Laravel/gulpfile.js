@@ -20,10 +20,14 @@ elixir(function(mix) {
 			bower_components+'underscore/underscore.js',
 			bower_components+'backbone/backbone.js',
 			bower_components+'moment/moment.js',
-			bower_components+'ng-backbone/ng-backbone.js'
+			bower_components+'ng-backbone/ng-backbone.js',
+			bower_components+'bootstrap/dist/js/bootstrap.js'
 		], 'public/js/thirds.js')
 		.copy('resources/assets/js/jetlag.js', 'public/js/jetlag.js')
 		.copy('resources/assets/js/home.js', 'public/js/home.js')
 		.copy('resources/assets/images', 'public/images')
+		.copy('bower_components/font-awesome/css/font-awesome.css', 'public/css/font-awesome.css')
+		.copy('bower_components/font-awesome/fonts', 'public/fonts')
+		.copy('bower_components/bootstrap/fonts', 'public/fonts')
 		.version('js/thirds.js');
 });
