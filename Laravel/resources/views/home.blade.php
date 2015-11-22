@@ -1,7 +1,8 @@
 @extends('app')
 
 @section('content')
-<div class="container-fluid homepage">
+<div class="container-fluid homepage"
+	ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}">
 	<div class="row visible-xs">
 		<div class="col-xs-12 searchbar">
 			<div class="input-group input-group-lg">
@@ -37,7 +38,6 @@
 	</div>
 	<div class="row hidden-xs">
 		<div class="col-sm-3 home-thumbnail small">
-		3 millions d'utilisateurs !
 		</div>
 		<div class="col-sm-6 searchbar">
 			<div class="input-group input-group-lg">
@@ -46,7 +46,6 @@
 			</div>
 		</div>
 		<div class="col-sm-3 home-thumbnail small">
-		Rejoins-nous !
 		</div>
 	</div>
 	<div class="row">

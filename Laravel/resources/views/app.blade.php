@@ -20,7 +20,22 @@
 	<![endif]-->
 </head>
 <body ng-controller="AppController as appCtrl" class="jetlag-app">
-	<nav class="navbar navbar-default">
+	<nav class="jl-navbar">
+		<div class="jl-icon jl-icon-left" ng-show="!appCtrl.isLeftSideBarOpen()">
+			<i class="fa fa-fw fa-bars"
+			ng-click="appCtrl.openLeftSideBar()"></i>
+		</div>
+		
+		<div class="jl-icon jl-icon-middle"
+			ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}">
+			<i class="fa fa-fw fa-plane"></i>
+		</div>
+		
+		<div class="jl-icon jl-icon-right" ng-show="!appCtrl.isRightSideBarOpen()">
+			<i class="fa fa-fw fa-user"
+			ng-click="appCtrl.openRightSideBar()"></i>
+		</div>
+	<!--
 		<div class="container-fluid">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -51,9 +66,34 @@
 					@endif
 				</ul>
 			</div>
-		</div>
+		</div> -->
 	</nav>
 
+	<div class="side-bar-wrapper">
+		<div class="side-bar side-bar-left">
+			<div class="pull-right">
+				<i class="fa fa-fw fa-times"
+				ng-click="appCtrl.closeLeftSideBar()"></i>
+			</div>
+			<h2>Menu</h2>
+			<div class="side-bar-content clearfix">
+			Something
+			</div>
+		</div>
+	</div>
+	<div class="side-bar-wrapper">
+		<div class="side-bar side-bar-right">
+			<div class="pull-right">
+				<i class="fa fa-fw fa-times"
+				ng-click="appCtrl.closeRightSideBar()"></i>
+			</div>
+			<h2>User</h2>
+			<div class="side-bar-content clearfix">
+			Something
+			</div>
+		</div>
+	</div>
+	
 	@yield('content')
 
 	<!-- Scripts -->

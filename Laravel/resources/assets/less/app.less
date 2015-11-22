@@ -3,21 +3,91 @@
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 
-@nice-blue: #0c4564;
+@jl-blue: #0c4564;
+@jl-orange: orange;
 
 .jetlag-app {
-	.navbar {
+
+	.jl-navbar {
 		position: fixed;
-		z-index: 1000;
+		z-index: 2;
 		width: 100%;
-		background-color: rgba(12, 69, 100, 0.41);
+		height: 55px;
+		
+		.jl-icon {
+			height: 45px;
+			width: 45px;
+			position: absolute;
+			background-color: @jl-blue;
+			color: @jl-orange;
+			line-height: 35px;
+			font-size: 25px;
+			padding: 5px;
+			top: 5px;
+			text-align: center;
+	
+			&.jl-icon-right {
+				right: 10px;
+			}
+			
+			&.jl-icon-middle {
+				left: 50%;
+				margin-left: -23px;
+				
+				&.pushed-right {
+					margin-left: 122px;
+				}
+				
+				&.pushed-left {
+					margin-left: -168px;
+				}
+			}
+			
+			&.jl-icon-left {
+				left: 10px;
+			}
+		}
 	}	
 
+	.side-bar-wrapper {
+		.side-bar {
+			position: fixed;
+			top: 0;
+			z-index: 3;
+			background-color: @jl-blue;
+			height: 100%;
+			width: 290px;
+			display: none;
+			color: @jl-orange;
+			font-size: 25px;
+			padding : 10px;
+			
+			&.side-bar-left {
+				left: 0;
+			}
+			
+			&.side-bar-right {
+				right: 0;
+			}
+			
+			& > h2 {
+				margin-top: 0;
+			}
+		}
+	}
+	
 	body, label, .checkbox label {
 		font-weight: 300;
 	}
 
 	.homepage {
+	
+		&.pushed-right {
+			margin-left: 290px;
+		}
+		&.pushed-left {
+			margin-right: 290px;
+		}
 	
 		.home-thumbnail {
 			
@@ -60,7 +130,7 @@
 				background-color: #fff;
 				height: 80px;
 				border-radius: 0;
-				color: @nice-blue;
+				color: @jl-blue;
 			}
 			
 			input[type="text"].form-control {
