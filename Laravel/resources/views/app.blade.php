@@ -21,7 +21,7 @@
 </head>
 <body ng-controller="AppController as appCtrl" class="jetlag-app">
 	<nav class="jl-navbar">
-		<div class="jl-icon jl-icon-left" ng-show="!appCtrl.isLeftSideBarOpen()">
+		<div class="jl-icon jl-icon-left clickable" ng-show="!appCtrl.isLeftSideBarOpen()">
 			<i class="fa fa-fw fa-bars"
 			ng-click="appCtrl.openLeftSideBar()"></i>
 		</div>
@@ -31,9 +31,12 @@
 			<i class="fa fa-fw fa-plane"></i>
 		</div>
 		
-		<div class="jl-icon jl-icon-right" ng-show="!appCtrl.isRightSideBarOpen()">
+		<div class="jl-icon jl-icon-right clickable" ng-show="!appCtrl.isRightSideBarOpen()">
 			<i class="fa fa-fw fa-user"
 			ng-click="appCtrl.openRightSideBar()"></i>
+			@if (Auth::guest())
+			<span><a href="{{ url('/auth/login') }}">Login</a> / <a href="{{ url('/auth/register') }}">Register</a></span>
+			@endif
 		</div>
 	<!--
 		<div class="container-fluid">
@@ -72,7 +75,7 @@
 	<div class="side-bar-wrapper">
 		<div class="side-bar side-bar-left">
 			<div class="pull-right">
-				<i class="fa fa-fw fa-times"
+				<i class="fa fa-fw fa-times clickable"
 				ng-click="appCtrl.closeLeftSideBar()"></i>
 			</div>
 			<h2>Menu</h2>
@@ -84,12 +87,20 @@
 	<div class="side-bar-wrapper">
 		<div class="side-bar side-bar-right">
 			<div class="pull-right">
-				<i class="fa fa-fw fa-times"
+				<i class="fa fa-fw fa-times clickable"
 				ng-click="appCtrl.closeRightSideBar()"></i>
 			</div>
+			@if(Auth::guest())
 			<h2>User</h2>
+			@else
+			<h2>{{ Auth::user()->name }}</h2>
+			@endif
 			<div class="side-bar-content clearfix">
-			Something
+			<ul>
+			@if(!Auth::guest())
+			<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
+			@endif
+			</ul>
 			</div>
 		</div>
 	</div>

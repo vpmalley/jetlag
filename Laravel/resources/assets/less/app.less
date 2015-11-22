@@ -6,6 +6,16 @@
 @jl-blue: #0c4564;
 @jl-orange: orange;
 
+.strut {
+	height: 100%;
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.clickable {
+	cursor: pointer;
+}
+
 .jetlag-app {
 
 	.jl-navbar {
@@ -16,7 +26,6 @@
 		
 		.jl-icon {
 			height: 45px;
-			width: 45px;
 			position: absolute;
 			background-color: @jl-blue;
 			color: @jl-orange;
@@ -28,6 +37,17 @@
 	
 			&.jl-icon-right {
 				right: 10px;
+				
+				& > span {
+					font-size: 16px;
+					a {
+						color: @jl-orange;
+						
+						&:hover {
+							text-decoration: underline;
+						}
+					}
+				}
 			}
 			
 			&.jl-icon-middle {
@@ -94,17 +114,26 @@
 			&.big {
 				height: 260px;
 				background-size: cover;
+				padding: 0;
 				
 				.book-overview {
-					width: 70%;
-					height: 70%;
-					background-color: rgba(0,0,0,0.5);
+					width: 100%;
+					height: 100%;
+					background-color: fade(@jl-blue, 60);
 					color: white;
-					min-width: 270px;
-					min-height: 180px;
-					margin: auto;
-					border-radius: 5px;
 					display: none;
+					padding: 10px;
+					
+					.book-overview-content {
+						vertical-align: middle;
+						font-size: 2.5vw;
+						font-size: 30px;
+						display: inline-block;
+						padding-left: 30px;
+						.fa {
+							margin-right: 15px;
+						}
+					}
 				}
 				
 				&:hover .book-overview {
