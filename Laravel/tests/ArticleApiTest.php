@@ -26,9 +26,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
         'id' => 1,
         'title' => "article with id 2",
-        'descriptionText' => '',
+        'descriptionText' => 'this is a cool article isnt it? id 2',
         'isDraft' => 1, // why not true?
-        'authorUserIds' => [1],
+        //'authorUserIds' => [1],
       ]);
   }
 
@@ -74,7 +74,7 @@ class ArticleApiTest extends TestCase {
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
       'isDraft' => 0,
-      'authorUserIds' => [1, 2],
+      //'authorUserIds' => [1, 2],
       ]);
   }
 
@@ -99,7 +99,7 @@ class ArticleApiTest extends TestCase {
         'title' => "article1",
         'descriptionText' => '',
         'isDraft' => 1,
-        'authorUserIds' => [],
+        //'authorUserIds' => [],
         'descriptionMedia' => [
           'id' => 3,
           'smallUrl' => null,
@@ -130,7 +130,13 @@ class ArticleApiTest extends TestCase {
       'title' => 'article1 updated',
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
-      'authorUserIds' => [1, 2],
+      'descriptionMedia' => [
+        'id' => 1,
+        'smallUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+        'bigUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+        'mediumUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+      ],
+      //'authorUserIds' => [1, 2],
     ]);
   }
 
@@ -149,10 +155,16 @@ class ArticleApiTest extends TestCase {
       ->assertResponseOk();
     $this->seeJson([
       'id' => 1,
-      'title' => 'article1 updated',
+      'title' => 'article1 is again updated',
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
-      'authorUserIds' => [1, 2],
+      'descriptionMedia' => [
+        'id' => 1,
+        'smallUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+        'bigUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+        'mediumUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+      ],
+      //'authorUserIds' => [1, 2],
     ]);
   }
 
@@ -161,10 +173,7 @@ class ArticleApiTest extends TestCase {
     $this->baseUrl = "http://homestead.app";
     $this->delete('/api/article/2')
       ->assertResponseOk();
-    $this->seeJson([
-        'id' => 2
-      ]);
     $this->get('/api/article/2')
-      ->assertResponsestatus(404);
+      ->assertResponseseStatus(404);
   }
 }

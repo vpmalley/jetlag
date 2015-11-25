@@ -32,6 +32,12 @@ class Link extends Model
         'url' => 'min:3|max:200',
     ];
 
+  public function fromUrl($url)
+  {
+    $this->storage = 'web';
+    $this->url = $url;
+  }
+
   public function getDisplayUrl()
   {
     if ('web' == $this->storage)

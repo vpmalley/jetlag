@@ -99,12 +99,29 @@ class RestArticleController extends Controller
     $article = Article::getById($id);
     $article->setTitle($request->input('title', $article->getTitle()));
     $article->setDescriptionText($request->input('descriptionText', $article->getDescriptionText()));
-    if ($request->input('descriptionMediaId'))
+    if ($request->has('descriptionMedia'))
     {
-      // TODO set descriptionPicture based on the id, and update its url
-    } else
-    {
-      $article->setDescriptionMediaUrl($request->input('descriptionMediaUrl', $article->getDescriptionMediaUrl()));
+      if (!$article->hasDescriptionPicture())
+      {
+        $picture = $article->getDescriptionPicture();
+      } else
+      {
+        $picture = new Picture;
+      }
+
+      if ($request->has('descriptionMedia.smallUrl'))
+      {
+        $picture->setSmallDisplayUrl($request->input('descriptionMedia.smallUrl'));
+      }
+      if ($request->has('descriptionMedia.mediumUrl'))
+      {
+        $picture->setMediumDisplayUrl($request->input('descriptionMedia.mediumUrl'));
+      }
+      if ($request->has('descriptionMedia.bigUrl'))
+      {
+        $picture->setBigDisplayUrl($request->input('descriptionMedia.bigUrl'));
+      }
+      $article->setDescriptionPicture($picture);
     }
     $article->setIsDraft($request->input('isDraft', $article->isDraft()));
     if ($request->input('authorUserIds'))

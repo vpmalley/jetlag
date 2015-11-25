@@ -172,10 +172,14 @@ class Article
     return $descriptionMediaUrl;
   }
 
-  public function setDescriptionMediaUrl($descriptionMediaUrl)
+  public function hasDescriptionPicture()
   {
-    $this->descriptionPicture = new Picture;
-    $this->descriptionPicture->fromUrl(-1, $descriptionMediaUrl);
+    return isset($this->descriptionPicture);
+  }
+
+  public function getDescriptionPicture()
+  {
+    return $this->descriptionPicture;
   }
 
   public function setDescriptionPicture($picture)

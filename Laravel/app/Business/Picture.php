@@ -76,9 +76,7 @@ class Picture
   public function fromUrl($authorId, $mediaUrl)
   {
     $this->authorId = $authorId;
-    $this->mediumPictureLink = new Link;
-    $this->mediumPictureLink->storage = 'web';
-    $this->mediumPictureLink->url = $mediaUrl;
+    $this->setMediumDisplayUrl($mediaUrl);
   }
 
   /**
@@ -126,6 +124,15 @@ class Picture
     return $url;
   }
 
+  public function setSmallDisplayUrl($url)
+  {
+    if ($url != $this->getSmallDisplayUrl())
+    {
+      $this->smallPictureLink = new Link;
+      $this->smallPictureLink->fromUrl($url);
+    }
+  }
+
   public function getMediumDisplayUrl()
   {
     $url = NULL;
@@ -136,6 +143,15 @@ class Picture
     return $url;
   }
 
+  public function setMediumDisplayUrl($url)
+  {
+    if ($url != $this->getMediumDisplayUrl())
+    {
+      $this->mediumPictureLink = new Link;
+      $this->mediumPictureLink->fromUrl($url);
+    }
+  }
+
   public function getBigDisplayUrl()
   {
     $url = NULL;
@@ -144,6 +160,15 @@ class Picture
       $url = $this->bigPictureLink->getDisplayUrl();
     }
     return $url;
+  }
+
+  public function setBigDisplayUrl($url)
+  {
+    if ($url != $this->getBigDisplayUrl())
+    {
+      $this->bigPictureLink = new Link;
+      $this->bigPictureLink->fromUrl($url);
+    }
   }
 
   public function getForRest()
