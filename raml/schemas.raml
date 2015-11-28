@@ -1,0 +1,54 @@
+schemas:
+ - article: |
+    {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "descriptionText": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 500
+        },
+        "descriptionMedia": {
+          "type": "object",
+          "required": false,
+          "schema" : picture
+        },
+        "isDraft": {
+          "type": "boolean",
+          "required": false
+        },
+        "authorUserIds": {
+          "type": "array",
+          "required": false
+        }
+      }
+    }
+ - picture: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "title": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "url": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 100
+        }
+      }
+    }

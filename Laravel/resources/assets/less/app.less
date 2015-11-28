@@ -3,9 +3,14 @@
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 
+@nice-blue: #0c4564;
+
 .jetlag-app {
 	.navbar {
-		margin-bottom: 0px;
+		position: fixed;
+		z-index: 1000;
+		width: 100%;
+		background-color: rgba(12, 69, 100, 0.41);
 	}	
 
 	body, label, .checkbox label {
@@ -13,23 +18,69 @@
 	}
 
 	.homepage {
-		div {
-			min-height: 100px;
-		}
 	
-		.searchbar_banner {
-			background-image: url('//localhost/jetlag/Laravel/public/images/dublin_docks.jpg');
-			background-size: cover;
-			background-position: 35%;
-			height: 350px;
+		.home-thumbnail {
 			
-			.searchbar {
-				width: 100%;
-				background: rgba(0,0,0,0.71);
-				padding: 10px;
-				position: absolute;
-				height: 50px;
-				top: 150px;
+			&.big {
+				height: 260px;
+				background-size: cover;
+				
+				.book-overview {
+					width: 70%;
+					height: 70%;
+					background-color: rgba(0,0,0,0.5);
+					color: white;
+					min-width: 270px;
+					min-height: 180px;
+					margin: auto;
+					border-radius: 5px;
+					display: none;
+				}
+				
+				&:hover .book-overview {
+					display: block;
+				}
+			}
+			&.small {
+				height: 130px;
+				background-size: cover;
+			}
+		}
+		
+		.searchbar {
+			height: 130px;
+			
+			.input-group-lg {
+				margin-top: 25px;
+			}
+			
+			.input-group-lg > input[type="text"], .input-group-lg > span.input-group-addon{
+				font-size: 36px;
+				border: none;
+				background-color: #fff;
+				height: 80px;
+				border-radius: 0;
+				color: @nice-blue;
+			}
+			
+			input[type="text"].form-control {
+				transition: none;
+				box-shadow: none;
+				
+				&::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+					color:    rgba(12, 69, 100, 0.59);
+				}
+				&:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+					color:    rgba(12, 69, 100, 0.59);
+					opacity:  1;
+				}
+				&::-moz-placeholder { /* Mozilla Firefox 19+ */
+					color:    rgba(12, 69, 100, 0.59);
+					opacity:  1;
+				}
+				&:-ms-input-placeholder { /* Internet Explorer 10-11 */
+					color:    rgba(12, 69, 100, 0.59);
+				}
 			}
 		}
 	}

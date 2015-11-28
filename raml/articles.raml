@@ -4,26 +4,45 @@ version: v0.1
 baseUri: /api/0.1/
 mediaType:  application/json
 types:
-    Gist:  !include types/gist.raml
-    Gists: !include types/gists.raml
-    collection: !include typed/collection.raml
 resourceTypes:
 traits:
 /articles:
   get:
+    responses:
+      200:
+        body:
+          application/json:
+            id: number
+            url: string
   post:
     body:
       application/json
-        title: string
-        descriptionText: string
-        authorUserIds: array of numbers
-        isDraft: boolean
-        descriptionMedia:
-          url: string
-          title: string
-          id: number
+        schema: article
+    responses:
+      200:
+        body:
+          application/json:
+            id: number
   /{articleId}:
     get:
+    responses:
+      200:
+        body:
+          application/json:
+            schema: article
     put:
+      body:
+        application/json
+          schema: article
+      responses:
+        200:
+          body:
+            application/json:
+              id: number
     delete:
+      responses:
+        200:
+          body:
+            application/json:
+              id: number
 
