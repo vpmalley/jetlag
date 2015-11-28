@@ -8,74 +8,81 @@ use Jetlag\Business\Picture;
 use Jetlag\Business\Paragraph;
 use Jetlag\UserPublic;
 use Illuminate\Http\Request;
-use Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- * 
+ *
  */
 class Article
 {
 
   /**
    * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
-   * 
-	 * @var int
+   *
+   * @var int
    */
   protected $id;
-  
+
   /**
    * The title for the article
-   * 
-	 * @var string
+   *
+   * @var string
    */
   protected $title;
-  
+
   /**
    * The description for the article
-   * 
-	 * @var string
+   *
+   * @var string
    */
   protected $descriptionText;
-  
+
   /**
    * The description for the article
-   * 
-	 * @var Jetlag\Business\Picture
+   *
+   * @var Jetlag\Business\Picture
    */
   protected $descriptionPicture;
-  
+
   /**
    * Whether the article is a draft
-   * 
-	 * @var boolean
+   *
+   * @var boolean
    */
   protected $isDraft;
-  
+
   /**
    * The paragraphs of this article
-   * 
+   *
    * @var array
    */
   protected $paragraphs;
-  
+
+  /**
+   * The id for the author link to users who are authors of this article
+   *
+   * @var array
+   */
+  protected $authorId;
+
   /**
    * The array of user ids who are authors of this article
    *
    * @var array
    */
-  protected $authorUsers;
-  
+  protected $authorUsers = [];
+
   /**
    * The fillable properties
    */
   protected $fillable = ['title', 'descriptionText', 'descriptionMediaUrl', 'isDraft'];
-  
+
   /**
    * The rules for validating input
    */
   static $rules = [
-    'title' => 'min:3|max:200',
-    'descriptionText' => 'min:3|max:500',
+    'title' => 'required|min:3|max:200',
+    'descriptionText' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'isDraft' => 'boolean',
     ];
@@ -83,11 +90,11 @@ class Article
   public function __construct()
   {
   }
-  
+
   /**
-   * 
+   *
    */
-  public function fromDb($storedArticle, $picture, $paragraphs, $authorUsers)
+  public function fromDb($storedArticle, $picture, $paragraphs, $authorId, $authorUsers)
   {
     $this->id = $storedArticle->id;
     $this->title = $storedArticle->title;
@@ -97,18 +104,32 @@ class Article
     $this->paragraphs = $paragraphs;
     $this->authorUsers = $authorUsers;
   }
-  
+
   /**
-   * 
+   *
    */
-  public function fromRequest($title, $descriptionText, $descriptionMediaUrl, $isDraft, $authorId)
+  public function fromRequest($title, $descriptionText, $isDraft)
   {
     $this->title = $title;
     $this->descriptionText = $descriptionText;
     $this->isDraft = $isDraft;
-    $this->descriptionPicture = new Picture;
-    $this->descriptionPicture->fromUrl($authorId, $descriptionMediaUrl);
-    $this->authorId = $authorId;
+    $this->authorUsers = [];
+  }
+
+  /**
+   * Constructs an Article from an App\Eloquent\Article.
+   *
+   * @param  StoredArticle  $storedArticle the stored article
+   * @return  Jetlag\Business\Article
+   */
+  public static function fromStoredArticle($storedArticle)
+  {
+    $picture = Picture::getById($storedArticle->descriptionMediaId);
+    $paragraphs = Paragraph::getAllForArticle($storedArticle->id);
+    $authorUsers = Author::getUsers($storedArticle->authorId);
+    $article = new Article;
+    $article->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
+    return $article;
   }
 
   public function getId()
@@ -146,19 +167,24 @@ class Article
     $descriptionMediaUrl = '';
     if ($this->descriptionPicture)
     {
-      $descriptionMediaUrl = $this->descriptionPicture->mediumPictureLink->url;
+      $descriptionMediaUrl = $this->descriptionPicture->getMediumDisplayUrl();
     }
     return $descriptionMediaUrl;
   }
 
-  public function setDescriptionMediaUrl($descriptionMediaUrl)
+  public function hasDescriptionPicture()
   {
-    if ($this->descriptionPicture)
-    {
-      $this->descriptionPicture->delete();
-    }
-    $this->descriptionPicture = new Picture;
-    $this->descriptionPicture->fromUrl(-1, $descriptionMediaUrl);
+    return isset($this->descriptionPicture);
+  }
+
+  public function getDescriptionPicture()
+  {
+    return $this->descriptionPicture;
+  }
+
+  public function setDescriptionPicture($picture)
+  {
+    $this->descriptionPicture = $picture;
   }
 
   public function isDraft()
@@ -172,8 +198,16 @@ class Article
   }
 
   /**
+   * @param array array of user ids to make them as the new authors of this article
+   */
+  public function updateAuthorUsers($authorUserIds)
+  {
+    $this->authorUsers = Author::updateAuthorUsers($this->authorUsers, $authorUserIds);
+  }
+
+  /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   * 
+   *
    * @param  int  $articleId the id for the requested article
    * @return  Jetlag\Business\Article
    */
@@ -182,18 +216,14 @@ class Article
     $storedArticle = StoredArticle::getById($articleId);
     if ($storedArticle)
     {
-      $picture = Picture::getById($storedArticle->descriptionMediaId);
-      $paragraphs = Paragraph::getAllForArticle($articleId);
-      $authorUsers = Author::getUsers($storedArticle->authorId);
-      $article = new Article;
-      $article->fromDb($storedArticle, $picture, $paragraphs, $authorUsers);
-      return $article;
+      return Article::fromStoredArticle($storedArticle);
     }
+    throw new ModelNotFoundException;
   }
-  
+
   /**
    * extracts the data for display
-   * 
+   *
    * @return  array
    */
   public function getForDisplay()
@@ -202,7 +232,7 @@ class Article
     if ($this->descriptionPicture) {
       $descriptionMediaUrl = $this->descriptionPicture->getSmallDisplayUrl();
     }
-    
+
     $authorNameLabel = '';
     $authorNames = UserPublic::select('name')->whereIn('id', $this->authorUsers)->get();
     foreach($authorNames as $authorName)
@@ -213,27 +243,39 @@ class Article
     return [
       'title' => $this->title,
       'descriptionText' => $this->descriptionText,
-      'descriptionMediaUrl' => $descriptionMediaUrl,
+    //  'descriptionMediaUrl' => $descriptionMediaUrl,
       'isDraft' => $this->isDraft,
       'authorName' => $authorNameLabel,
     ];
   }
-  
+
   /**
    * extracts the data for showing as REST
-   * 
+   *
    * @return  array
    */
   public function getForRest()
   {
     $content = $this->getForDisplay();
+    $content['id'] = $this->id;
     $content['url'] = url('/article/' . $this->id);
+    $authorUserIds = [];
+    foreach($this->authorUsers as $authorUser)
+    {
+      $authorUserIds[] = $authorUser->id;
+    }
+    $content['authorUserIds'] = $authorUserIds;
+    if ($this->descriptionPicture)
+    {
+      $content['descriptionMedia'] = $this->descriptionPicture->getForRest();
+    }
+    // list of paragraph ids and content
     return $content;
   }
-  
+
   /**
    * extracts id and url
-   * 
+   *
    * @return  array
    */
   public function getForRestIndex()
@@ -243,23 +285,27 @@ class Article
       'url' => url('/article/' . $this->id),
     ];
   }
-  
+
   /**
    * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   * 
+   *
    * @param  int  $userId the id for the requested user
    * @return  array
    */
   public static function getAllForUser($userId)
   {
-    // TODO get all articles whose author has id $userId
-    return [Article::getById(1)];
+    $articles = [];
+    $authorIds = Author::getAuthorsForUser($userId);
+    $storedArticles = StoredArticle::whereIn('authorId', $authorIds)->get();
+    foreach ($storedArticles as $article)
+    {
+      $articles[] = Article::fromStoredArticle($article);
+    }
+    return $articles;
   }
 
   public function persist()
   {
-    $this->descriptionPicture->persist();
-    
     if (($this->id) && ($this->id > -1))
     {
       $article = StoredArticle::getById($this->id);
@@ -271,11 +317,17 @@ class Article
     $article->title = $this->title;
     $article->descriptionText = $this->descriptionText;
     $article->isDraft = $this->isDraft;
+    if ($this->descriptionPicture)
+    {
+      $this->descriptionPicture->persist();
+      $article->descriptionMediaId = $this->descriptionPicture->getId();
+    }
     //$article->authorId = $this->authorId;
 
     $article->save();
 
     $this->id = $article->id;
+    return $this->id;
   }
 
   public function delete()
