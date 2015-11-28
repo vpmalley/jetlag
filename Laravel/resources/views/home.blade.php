@@ -2,7 +2,8 @@
 
 @section('content')
 <div class="container-fluid homepage"
-	ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}">
+	ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}"
+	ng-controller="HomepageController as homepageCtrl">
 	<div class="row visible-xs">
 		<div class="col-xs-12 searchbar">
 			<div class="input-group input-group-lg">

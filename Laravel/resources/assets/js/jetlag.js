@@ -7,9 +7,9 @@ angular
   
   
 function ModelsManager(NgBackboneModel, NgBackboneCollection) {
-  
+ 
   function define(name, model) {
-    var url = '/api/'+name.toLowerCase();
+    var url = '/jetlag/Laravel/public/api/'+name.toLowerCase();
     model.urlRoot = url;	
     var Model = NgBackboneModel.extend(model);
     var ModelCollection = NgBackboneCollection.extend({
@@ -27,13 +27,13 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
   
   /* Define model */
   define('Article', {
-  id: null,
-  title: null,
-  descriptionText: null,
-  descriptionPicture: null,
-  isDraft: null,
-  paragraphs: null,
-  authorUsers: null
+	id: null,
+	title: null,
+	descriptionText: null,
+	descriptionPicture: null,
+	isDraft: null,
+	paragraphs: null,
+	authorUsers: null
   });
   
   define('User', {});

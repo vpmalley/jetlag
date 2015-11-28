@@ -1,15 +1,11 @@
 angular
   .module('jetlag.webapp.home', ['jetlag.webapp.base'])
-  .controller('AppController', AppController);
+  .controller('AppController', AppController)
+  .controller('HomepageController', HomepageController);
 
-AppController.$inject = ['$scope', 'ModelsManager'];
-
-function AppController($scope, ModelsManager) {
+function AppController() {
 
   var ctrl = this;
-  ctrl.firstArticle = new ModelsManager.Article();
-  ctrl.firstUSer = new ModelsManager.User();
-  ctrl.firstTravelBook = new ModelsManager.TravelBook();
   
   ctrl.openLeftSideBar = function() {
 	ctrl.closeRightSideBar();
@@ -37,3 +33,13 @@ function AppController($scope, ModelsManager) {
 	return $('.side-bar-right:first').is(':visible');
   }
 }
+
+HomepageController.$inject = ['$scope', 'ModelsManager'];
+
+function HomepageController($scope, ModelsManager) {
+	var ctrl = this;
+	
+	ctrl.articles = new ModelsManager.ArticleCollection();
+	ctrl.articles.fetch();
+};
+
