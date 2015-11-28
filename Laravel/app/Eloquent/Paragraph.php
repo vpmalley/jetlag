@@ -6,22 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paragraph extends Model
 {
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'paragraphs';
+  /**
+   * The database table used by the model.
+   *
+   * @var string
+   */
+  protected $table = 'paragraphs';
 
-	/**
-	 * The attributes that are mass assignable.
-	 *
+  /**
+   * The attributes that are mass assignable.
+   *
    * *contentType can be 'textcontent' or 'gallery' so far
-   * 
-	 * @var array
-	 */
-	protected $fillable = ['title', 'articleId', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType', 'locationId', 'date', 'weather', 'authorId', 'isDraft'];
-  
+   *
+   * @var array
+   */
+  protected $fillable = ['title', 'articleId', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType', 'locationId', 'date', 'weather', 'authorId', 'isDraft'];
+
   /**
    * The rules for validating input
    */
@@ -32,5 +32,5 @@ class Paragraph extends Model
         'blockContentType' => 'required|min:3|max:15',
         'hublotContentType' => 'min:3|max:15',
     ];
-  
+
 }
