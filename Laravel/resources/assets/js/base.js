@@ -1,10 +1,8 @@
 angular
   .module('jetlag.webapp.base', ['ngBackbone'])
-  .factory('ModelsManager', ModelsManager)
-  
+  .factory('ModelsManager', ModelsManager);
    
-  ModelsManager.$inject = ['NgBackboneModel', 'NgBackboneCollection'];
-  
+ModelsManager.$inject = ['NgBackboneModel', 'NgBackboneCollection'];
   
 function ModelsManager(NgBackboneModel, NgBackboneCollection) {
  

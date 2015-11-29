@@ -14,6 +14,7 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
 	var bower_components = '../../../bower_components/';
     mix.less('app.less')
+		.less('home.less')
 		.scripts([ //XXX: order matters for now, we should find a way to get rid of it
 			bower_components+'jquery/dist/jquery.js',
 			bower_components+'angular/angular.js',
@@ -23,7 +24,10 @@ elixir(function(mix) {
 			bower_components+'ng-backbone/ng-backbone.js',
 			bower_components+'bootstrap/dist/js/bootstrap.js'
 		], 'public/js/thirds.js')
-		.copy('resources/assets/js/jetlag.js', 'public/js/jetlag.js')
+		.scripts([
+			'base.js',
+			'app.js',
+		], 'public/js/jetlag.js')
 		.copy('resources/assets/js/home.js', 'public/js/home.js')
 		.copy('resources/assets/images', 'public/images')
 		.copy('bower_components/font-awesome/css/font-awesome.css', 'public/css/font-awesome.css')

@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="jetlag.webapp.home">
+@yield('ngApp')
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Home page - Jetlag</title>
 
+	<!--- Global files --->
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet" type='text/css'>
 
 	<!-- Fonts -->
 	<link href="{{ asset('/css/font-awesome.css') }}" rel='stylesheet' type='text/css'>
 	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	
+	<!--- Page specific files --->
+	@yield('head')
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -38,38 +42,7 @@
 			<span><a href="{{ url('/auth/login') }}">Login</a> / <a href="{{ url('/auth/register') }}">Register</a></span>
 			@endif
 		</div>
-	<!--
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle Navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="#">Laravel</a>
-			</div>
 
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav">
-					<li><a href="{{ url('/') }}">Home</a></li>
-				</ul>
-
-				<ul class="nav navbar-nav navbar-right">
-					@if (Auth::guest())
-						<li><a href="{{ url('/auth/login') }}">Login</a></li>
-						<li><a href="{{ url('/auth/register') }}">Register</a></li>
-					@else
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" id="LogoutDropdown" role="button" aria-expanded="false">{{ Auth::user()->name }} <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="LogoutDropdown">
-								<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
-							</ul>
-						</li>
-					@endif
-				</ul>
-			</div>
-		</div> -->
 	</nav>
 
 	<div class="side-bar-wrapper">
@@ -104,8 +77,10 @@
 			</div>
 		</div>
 	</div>
-	
+	<div id="main" class="container-fluid"
+	ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}">
 	@yield('content')
+	</div>
 
 	<!-- Scripts -->
 	<script src="{{ 'http://localhost/jetlag/Laravel/public'.elixir('js/thirds.js') }}"></script>

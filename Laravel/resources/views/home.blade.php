@@ -1,9 +1,15 @@
 @extends('app')
 
+@section('ngApp')
+<html lang="en" ng-app="jetlag.webapp.home">
+@endsection
+
+@section('head')
+<link href="{{ asset('/css/home.css') }}" rel="stylesheet" type='text/css'>
+@endsection
+
 @section('content')
-<div class="container-fluid homepage"
-	ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}"
-	ng-controller="HomepageController as homepageCtrl">
+<div class="homepage" ng-controller="HomepageController as homepageCtrl">
 	<div class="row visible-xs">
 		<div class="col-xs-12 searchbar">
 			<div class="input-group input-group-lg">
@@ -114,25 +120,5 @@
 			</div>
 		</div>
 	</div>
-</div>
-	
-	<!--
-	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
-			<div class="panel panel-default">
-				<div class="panel-heading">Home</div>
-				@if (Auth::guest())
-				<div class="panel-body">
-					Why not <a href="{{ url('/auth/login') }}">loggin' in</a> or <a href="{{ url('/auth/register') }}">registering</a> ?
-				</div>
-				@else
-				<div class="panel-body">
-					You are logged in!
-				</div>
-				@endif
-			</div>
-		</div>
-	</div>
-	-->
 </div>
 @endsection
