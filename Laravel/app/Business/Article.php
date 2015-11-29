@@ -282,7 +282,12 @@ class Article
   {
     return [
       'id' => $this->id,
+	  'title' => $this->title,
       'url' => url('/article/' . $this->id),
+	  'descriptionText' => $this->descriptionText,
+	  'descriptionPicture' => $this->descriptionPicture,
+	  'paragraphs' => $this->paragraphs,
+	  'authorUsers' => $this->authorUsers
     ];
   }
 

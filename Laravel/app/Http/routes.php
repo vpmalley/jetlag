@@ -36,6 +36,13 @@ Route::get('me', 'Web\TravellerController@getMe');
 Route::get('me/display', 'Web\TravellerController@getMyDisplay');
 Route::get('me/edit', 'Web\TravellerController@getMyEdit');
 
+  // Travelbook routes
+Route::get('travelbook/{id}', 'Web\TravelbookController@getIndex');
+Route::get('travelbook/{id}/display', 'Web\TravelbookController@getDisplay');
+Route::get('travelbook/{id}/edit', 'Web\TravelbookController@getEdit');
+Route::post('travelbook/{id}/edit', 'Web\TravelbookController@postEdit');
+
+  // Article routes
 Route::get('article/{id}', 'Web\ArticleController@getDisplay');
 
 Route::resource('api/article', 'Rest\RestArticleController');
