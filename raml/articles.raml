@@ -8,29 +8,33 @@ resourceTypes:
 traits:
 /articles:
   get:
-    responses:
-      200:
-        body:
-          application/json:
-            id: number
-            url: string
-  post:
-    body:
-      application/json
-        schema: article
-    responses:
-      200:
-        body:
-          application/json:
-            id: number
-  /{articleId}:
-    get:
+    description: Get all articles authored (owned or writable) by the logged in user. Limited to 20 results (to be configurable). The content should be enough to display a list of articles (not their full content).
     responses:
       200:
         body:
           application/json:
             schema: article
+  post:
+    description: Creates a new article as logged in user
+    body:
+      application/json
+        schema: article
+    responses:
+      201:
+        body:
+          application/json:
+            id: number
+            url: string
+  /{articleId}:
+    get:
+      description: Return JSON description of the article
+      responses:
+        200:
+          body:
+            application/json:
+              schema: article
     put:
+      description: Update the article and its components
       body:
         application/json
           schema: article
@@ -40,6 +44,7 @@ traits:
             application/json:
               id: number
     delete:
+      description: Delete (soft) article. The logged in user must be the article's owner.
       responses:
         200:
           body:
