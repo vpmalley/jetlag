@@ -24,9 +24,10 @@ schemas:
           "type": "boolean",
           "required": false
         },
-        "authorUserIds": {
+        "authorUsers": {
           "type": "array",
-          "required": false
+          "required": false,
+          "schema" : authorUser
         }
       }
     }
@@ -49,6 +50,28 @@ schemas:
           "required": false,
           "minLength": 3,
           "maxLength": 100
+        }
+      }
+    }
+ - authorUser: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "name": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "role": {
+          "type": "string",
+          "required": false,
+          "minLength": 5,
+          "maxLength": 10
         }
       }
     }
