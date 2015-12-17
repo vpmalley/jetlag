@@ -1,5 +1,7 @@
+#%RAML 1.0
+title: schemas for article and its children
 schemas:
- - article: |
+ - Article: |
     {
       "type": "object",
       "properties": {
@@ -25,7 +27,7 @@ schemas:
           "required": false
         },
         "authorUsers": {
-          "type": "array",
+          "type": "authorUser[]",
           "required": false,
           "schema" : authorUser
         }
