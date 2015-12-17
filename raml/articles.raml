@@ -34,7 +34,17 @@ traits:
             application/json:
               schema: article
     put:
-      description: Update the article and its components
+      description: Update the entire article and its components
+      body:
+        application/json
+          schema: article
+      responses:
+        200:
+          body:
+            application/json:
+              id: number
+    patch:
+      description: Update partially the article and its components
       body:
         application/json
           schema: article
