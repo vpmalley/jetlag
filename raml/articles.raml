@@ -1,11 +1,11 @@
-#%RAML 1.0 
+#%RAML 1.0
 title: Jetlag Articles API
 version: v0.1
 baseUri: /api/0.1/
 mediaType:  application/json
+
 types:
-resourceTypes:
-traits:
+  Article : !include articles.raml
 /articles:
   get:
     description: Get all articles authored (owned or writable) by the logged in user. Limited to 20 results (to be configurable). The content should be enough to display a list of articles (not their full content).
@@ -13,18 +13,19 @@ traits:
       200:
         body:
           application/json:
-            schema: article
+            type: Article
   post:
     description: Creates a new article as logged in user
     body:
-      application/json
-        schema: article
+      application/json:
+        type: Article
     responses:
       201:
         body:
           application/json:
-            id: number
-            url: string
+            properties:
+              id: number
+              url: string
   /{articleId}:
     get:
       description: Return JSON description of the article
@@ -32,32 +33,34 @@ traits:
         200:
           body:
             application/json:
-              schema: article
+              type: Article
     put:
       description: Update the entire article and its components
       body:
-        application/json
-          schema: article
+        application/json:
+          type: Article
       responses:
         200:
           body:
             application/json:
-              id: number
+              properties:
+                id: number
     patch:
       description: Update partially the article and its components
       body:
-        application/json
-          schema: article
+        application/json:
+          type: Article
       responses:
         200:
           body:
             application/json:
-              id: number
+              properties:
+                id: number
     delete:
       description: Delete (soft) article. The logged in user must be the article's owner.
       responses:
         200:
           body:
             application/json:
-              id: number
-
+              properties:
+                id: number
