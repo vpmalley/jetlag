@@ -5,7 +5,6 @@ namespace Jetlag\Business;
 use Jetlag\Eloquent\Picture as StoredPicture;
 use Jetlag\Eloquent\Link;
 use Jetlag\Eloquent\Place;
-use Log;
 
 /**
  *
@@ -195,7 +194,6 @@ class Picture
   {
     if (($this->id) && ($this->id > -1))
     {
-      Log::debug("lala " . $this->id);
       $picture = StoredPicture::getById($this->id);
     } else
     {

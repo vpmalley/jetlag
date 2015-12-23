@@ -28,43 +28,57 @@ class Author extends Model
   *
   * @var array
   */
-  protected $fillable = ['authorId', 'userId', 'name'];
+  protected $fillable = ['authorId', 'userId', 'role'];
 
   /**
   * The rules for validating input
   */
   static $rules = [
-    'name' => 'min:3|max:100',
+    'role' => 'min:5|max:6',
   ];
 
+  const K_OWNER = 'owner';
+  const K_WRITER = 'writer';
+  const K_READER = 'reader';
+
   /**
-  * @param  int  $userId the user we want to check is an author (usually the logged in user)
-  * @param  string  $elementTable the table for the element we want to check the author of
-  * @param  int  $elementId the id of the element in that table
-  * @return boolean whether the user is an author of the element
+  * @param  int  $userId the user we want to check is an owner (usually the logged in user)
+  * @param  int  $authorId the authorId of the element
+  * @return boolean whether the user is an owner of the element
   */
-  public static function isAuthorOf($userId, $elementTable, $elementId)
+  public static function isOwner($userId, $authorId)
   {
-    $elements = DB::table($elementTable)->where('id', $elementId)->get();
+    // the number of rows matching the authenticated user and element's author : either 0 or 1
+    $count = Author::where('userId', $userId)->where('authorId', $authorId)->where('role', self::K_OWNER)->count();
+    return (1 == $count);
+  }
 
-    // if the element does not exist, show it is not found
-    if (0 == count($elements))
-    {
-      throw new ModelNotFoundException;
-    }
+  /**
+  * @param  int  $userId the user we want to check is a writer (usually the logged in user)
+  * @param  int  $authorId the authorId of the element
+  * @return boolean whether the user is a writer of the element
+  */
+  public static function isWriter($userId, $authorId)
+  {
+    // the number of rows matching the authenticated user and element's author : either 0 or 1
+    $count = Author::where('userId', $userId)->where('authorId', $authorId)->where(function ($query) {
+                $query->where('role', self::K_OWNER)
+                      ->orWhere('role', self::K_WRITER);
+            })->count();
+    return (1 == $count);
+  }
 
-    // the author id for this element
-    $authorId = $elements[0]->authorId;
-
+  /**
+  * Warning, this does not check whether the element is public. A user may not be a reader but the element may be publicly visible
+  * @param  int  $userId the user we want to check is a reader (usually the logged in user)
+  * @param  int  $authorId the authorId of the element
+  * @return boolean whether the user is a reader of the element
+  */
+  public static function isReader($userId, $authorId)
+  {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
     $count = Author::where('userId', $userId)->where('authorId', $authorId)->count();
-
-    $isAuthorOf = false;
-    if (1 == $count)
-    {
-      $isAuthorOf = true;
-    }
-    return $isAuthorOf;
+    return (1 == $count);
   }
 
   /**
@@ -84,6 +98,21 @@ class Author extends Model
   }
 
   /**
+  * Returns the hash of user ids and their role
+  */
+  public static function getUserRoles($authorId)
+  {
+    $userRoles = [];
+    $authors = Author::where('authorId', $authorId)->get();
+    foreach ($authors as $author)
+    {
+      $userRoles[$author->userId] = $author->role;
+    }
+    return $userRoles;
+
+  }
+
+  /**
   *
   * @return var array an array of author ids
   */
@@ -99,53 +128,40 @@ class Author extends Model
   }
 
   /**
-  * @param array array of user ids of this article
-  * @param array array of user ids to make them as the new authors of this article
-  * @return array the new array of this article's user ids
+  *
+  * @return an author id that has never been given
   */
-  public static function updateAuthorUsers($currentAUthorUserIds, $authorUserIds)
+  public static function getNewAuthorId()
   {
-    // if update, update it
-    // if new, fill it
-    if (empty($authorUserIds))
-    {
-      $toBeUpdated = false;
-    } else if (empty($currentAUthorUserIds))
-    {
-      $toBeUpdated = true;
-    } else
-    {
-      // update $this->authorUsers : change it only if any id is different
-      sort($authorUserIds);
-      if (count($authorUserIds) != count($currentAUthorUserIds))
-      {
-        $currentAUthorUserIds = [];
-        $toBeUpdated = true;
-      } else
-      {
+    return DB::table('authors')->max('authorId') + 1;
+  }
 
-        for ($i = 0; $i <= count($authorUserIds); $i++)
-        {
-          Log::debug("authorUsers " . $i . count($authorUserIds) . count($currentAUthorUserIds));
-          if ($currentAUthorUserIds[$i] != $authorUserIds[$i])
-          {
-            $currentAUthorUserIds = [];
-            $toBeUpdated = true;
-          }
-        }
+  /**
+  * Compares the current authors and the new ones, and persists a new Author object if different
+  * @param authorId the id for the current author
+  * @param newAuthorUsers hash of authors containing a userId and the user's role
+  * @return int the authorId for this author
+  */
+  public static function updateAuthorUsers($authorId, $newAuthorUsers)
+  {
+    if ($newAuthorUsers != self::getUserRoles($authorId))
+    {
+      $authors = Author::where('authorId', $authorId)->get();
+      foreach ($authors as $author) // deleting existing pairs authorId/userId
+      {
+        $author->delete();
+      }
+      foreach ($newAuthorUsers as $newUserId => $newRole) // inserting new pairs authorId/userId
+      {
+        Log::debug("author " . $authorId . " with user " . $newUserId . " is " . $newRole);
+        $newAuthor = new Author();
+        $newAuthor->authorId = $authorId;
+        $newAuthor->userId = $newUserId;
+        $newAuthor->role = $newRole;
+        $newAuthor->save();
       }
     }
-
-    if ($toBeUpdated)
-    {
-      $currentAUthorUserIds = [];
-      foreach ($authorUserIds as $authorUserId)
-      {
-        $user = UserPublic::where('id', $authorUserId)->first();
-        $currentAUthorUserIds[] = $user;
-      }
-    }
-    return $currentAUthorUserIds;
+    return $authorId;
   }
 
 }

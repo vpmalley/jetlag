@@ -11,10 +11,13 @@ class ArticleApiTest extends TestCase {
     $this->baseUrl = "http://homestead.app";
     $this->get('/api/article')
       ->assertResponseOk();
-    $this->seeJson([[
+    $this->seeJson([
         'id' => 1,
         'url' => $this->baseUrl . "/article/1",
-      ]]);
+        'title' => "article with id 2",
+        'descriptionText' => 'this is a cool article isnt it? id 2',
+        'authorUsers' => [1 => 'owner', 2 => 'writer'],
+      ]);
     //$this->dump();
   }
 
@@ -28,7 +31,7 @@ class ArticleApiTest extends TestCase {
         'title' => "article with id 2",
         'descriptionText' => 'this is a cool article isnt it? id 2',
         'isDraft' => 1, // why not true?
-        //'authorUserIds' => [1],
+        'authorUsers' => [1 => 'owner', 2 => 'writer'],
       ]);
   }
 
@@ -44,11 +47,11 @@ class ArticleApiTest extends TestCase {
     $this->get('/api/article/2')
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 2,
         'title' => "article1",
+        'id' => 2,
         'descriptionText' => '',
         'isDraft' => 1,
-        'authorUserIds' => [],
+        'authorUsers' => [], // TODO try to test with logged in user and test that it is set as owner
       ]);
   }
 
@@ -59,7 +62,7 @@ class ArticleApiTest extends TestCase {
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
       'isDraft' => 0,
-      'authorUserIds' => [1, 2],
+      'authorUsers' => [1 => 'owner'],
       ],
       ['ContentType' => 'application/json'])
       ->assertResponseOk();
@@ -74,7 +77,7 @@ class ArticleApiTest extends TestCase {
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
       'isDraft' => 0,
-      //'authorUserIds' => [1, 2],
+      'authorUsers' => [1 => 'owner'],
       ]);
   }
 
@@ -116,7 +119,7 @@ class ArticleApiTest extends TestCase {
       'title' => 'article1 updated',
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
-      'authorUserIds' => [1, 2],
+      'authorUsers' => [1 => 'writer', 2 => 'owner'],
       ],
       ['ContentType' => 'application/json'])
       ->assertResponseOk();
@@ -136,7 +139,7 @@ class ArticleApiTest extends TestCase {
         'bigUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
         'mediumUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
       ],
-      //'authorUserIds' => [1, 2],
+      'authorUsers' => [1 => 'writer', 2 => 'owner'],
     ]);
   }
 
@@ -164,7 +167,7 @@ class ArticleApiTest extends TestCase {
         'bigUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
         'mediumUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
       ],
-      //'authorUserIds' => [1, 2],
+      'authorUsers' => [1 => 'writer', 2 => 'owner'],
     ]);
   }
 

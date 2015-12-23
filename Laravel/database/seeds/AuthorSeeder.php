@@ -15,7 +15,12 @@ class AuthorSeeder extends Seeder
         DB::table('authors')->insert([
             'authorId' => 1,
             'userId' => 1,
-            'name' => 'jo',
+            'role' => 'owner',
+        ]);
+        DB::table('authors')->insert([
+            'authorId' => 1,
+            'userId' => 2,
+            'role' => 'writer',
         ]);
     }
 }

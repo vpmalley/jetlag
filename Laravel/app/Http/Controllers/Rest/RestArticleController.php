@@ -10,7 +10,6 @@ use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
 use Jetlag\Business\Picture;
-use Log;
 
 class RestArticleController extends Controller
 {
@@ -51,7 +50,7 @@ class RestArticleController extends Controller
     $this->validate($request, Article::$rules); // TODO: own validator actually returning a 400 if the format is wrong
     $article = new Article;
     $article->fromRequest($request->input('title'), $request->input('descriptionText', ''), $request->input('isDraft', TRUE));
-    $article->updateAuthorUsers($request->input('authorUserIds'));
+    $article->updateAuthorUsers($request->input('authorUsers'), []); // TODO default with logged user as owner
 
     if ($request->has('descriptionMedia'))
     {
@@ -124,9 +123,9 @@ class RestArticleController extends Controller
       $article->setDescriptionPicture($picture);
     }
     $article->setIsDraft($request->input('isDraft', $article->isDraft()));
-    if ($request->input('authorUserIds'))
+    if ($request->has('authorUsers'))
     {
-      $article->updateAuthorUsers($request->input('authorUserIds'));
+      $article->updateAuthorUsers($request->input('authorUsers'));
     }
     $article->persist();
     return ['id' => $article->getId()];

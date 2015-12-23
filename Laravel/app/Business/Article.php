@@ -61,12 +61,12 @@ class Article
   /**
    * The id for the author link to users who are authors of this article
    *
-   * @var array
+   * @var int
    */
-  protected $authorId;
+  protected $authorId = -1;
 
   /**
-   * The array of user ids who are authors of this article
+   * The hash of user ids and their roles in authoring of this article
    *
    * @var array
    */
@@ -103,6 +103,7 @@ class Article
     $this->descriptionPicture = $picture;
     $this->paragraphs = $paragraphs;
     $this->authorUsers = $authorUsers;
+    $this->authorId = $storedArticle->authorId;
   }
 
   /**
@@ -114,6 +115,7 @@ class Article
     $this->descriptionText = $descriptionText;
     $this->isDraft = $isDraft;
     $this->authorUsers = [];
+    $this->authorId = -1;
   }
 
   /**
@@ -126,7 +128,7 @@ class Article
   {
     $picture = Picture::getById($storedArticle->descriptionMediaId);
     $paragraphs = Paragraph::getAllForArticle($storedArticle->id);
-    $authorUsers = Author::getUsers($storedArticle->authorId);
+    $authorUsers = Author::getUserRoles($storedArticle->authorId);
     $article = new Article;
     $article->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
     return $article;
@@ -198,11 +200,19 @@ class Article
   }
 
   /**
-   * @param array array of user ids to make them as the new authors of this article
+   * @param array hash of user ids and roles to make them as the new authors of this article
    */
-  public function updateAuthorUsers($authorUserIds)
+  public function updateAuthorUsers($authorUsers)
   {
-    $this->authorUsers = Author::updateAuthorUsers($this->authorUsers, $authorUserIds);
+    if (!empty($authorUsers))
+    {
+      if ($this->authorId < 0)
+      {
+        $this->authorId = Author::getNewAuthorId();
+      }
+      $this->authorId = Author::updateAuthorUsers($this->authorId, $authorUsers);
+      $this->authorUsers = $authorUsers;
+    }
   }
 
   /**
@@ -259,12 +269,7 @@ class Article
     $content = $this->getForDisplay();
     $content['id'] = $this->id;
     $content['url'] = url('/article/' . $this->id);
-    $authorUserIds = [];
-    foreach($this->authorUsers as $authorUser)
-    {
-      $authorUserIds[] = $authorUser->id;
-    }
-    $content['authorUserIds'] = $authorUserIds;
+    $content['authorUsers'] = $this->authorUsers;
     if ($this->descriptionPicture)
     {
       $content['descriptionMedia'] = $this->descriptionPicture->getForRest();
@@ -282,12 +287,12 @@ class Article
   {
     return [
       'id' => $this->id,
-	  'title' => $this->title,
+  	  'title' => $this->title,
       'url' => url('/article/' . $this->id),
-	  'descriptionText' => $this->descriptionText,
-	  'descriptionPicture' => $this->descriptionPicture,
-	  'paragraphs' => $this->paragraphs,
-	  'authorUsers' => $this->authorUsers
+  	  'descriptionText' => $this->descriptionText,
+  	  'descriptionPicture' => $this->descriptionPicture,
+  	  'paragraphs' => $this->paragraphs,
+  	  'authorUsers' => $this->authorUsers
     ];
   }
 
@@ -327,7 +332,7 @@ class Article
       $this->descriptionPicture->persist();
       $article->descriptionMediaId = $this->descriptionPicture->getId();
     }
-    //$article->authorId = $this->authorId;
+    $article->authorId = $this->authorId;
 
     $article->save();
 
