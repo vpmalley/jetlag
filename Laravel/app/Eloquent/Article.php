@@ -34,8 +34,8 @@ class Article extends Model
     'descriptionText' => 'min:3|max:500'
     ];
 
-  public static function getById($id)
+  public function descriptionPicture()
   {
-    return Article::where('id', $id)->firstOrFail();
+    return $this->hasOne('Jetlag\Eloquent\Picture');
   }
 }

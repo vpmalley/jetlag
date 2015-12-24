@@ -22,9 +22,4 @@ class Picture extends Model
    * @var array
    */
   protected $fillable = ['smallPictureLinkId', 'mediumPictureLinkId', 'bigPictureLinkId', 'authorId', 'locationId'];
-
-  public static function getById($id)
-  {
-    return Picture::where('id', $id)->firstOrFail();
-  }
 }

@@ -86,21 +86,24 @@ class Picture
    */
   public static function getById($picId)
   {
-    $storedPicture = StoredPicture::where('id', $picId)->first();
+    $storedPicture = StoredPicture::findOrFail($picId);
     if ($storedPicture)
     {
-      $picture = new Picture($storedPicture);
-      $picture->id = $picId;
-      // links
-      $picture->smallPictureLink = Link::where('id', $storedPicture->smallPictureLinkId)->first();
-      $picture->mediumPictureLink = Link::where('id', $storedPicture->mediumPictureLinkId)->first();
-      $picture->bigPictureLink = Link::where('id', $storedPicture->bigPictureLinkId)->first();
-      // location
-      $picture->location = Place::where('id', $storedPicture->locationId)->first();
-
+      $picture = new Picture;
+      $picture->fromStoredPicture($storedPicture);
       return $picture;
     }
-    // throw notfoundexception
+  }
+
+  public function fromStoredPicture($storedPicture)
+  {
+    $this->id = $storedPicture->id;
+    // links
+    $this->smallPictureLink = Link::find($storedPicture->smallPictureLinkId);
+    $this->mediumPictureLink = Link::find($storedPicture->mediumPictureLinkId);
+    $this->bigPictureLink = Link::find($storedPicture->bigPictureLinkId);
+    // location
+    $this->location = Place::find($storedPicture->locationId);
   }
 
   public function getId()
@@ -190,15 +193,9 @@ class Picture
   {
   }
 
-  public function persist()
+  public function getStoredPicture()
   {
-    if (($this->id) && ($this->id > -1))
-    {
-      $picture = StoredPicture::getById($this->id);
-    } else
-    {
-      $picture = new StoredPicture;
-    }
+    $picture = StoredPicture::findOrNew($this->id);
 
     if ($this->smallPictureLink)
     {
@@ -217,12 +214,18 @@ class Picture
     }
 
     $picture->authorId = $this->authorId;
+    return $picture;
+  }
+
+  public function persist()
+  {
+    $picture = $this->getStoredPicture();
     $picture->save();
     $this->id = $picture->id;
   }
 
   public function delete()
   {
-    StoredPicture::getById($this->id)->delete();
+    StoredPicture::findOrFail($this->id)->delete();
   }
 }

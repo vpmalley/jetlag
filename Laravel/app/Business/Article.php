@@ -126,7 +126,12 @@ class Article
    */
   public static function fromStoredArticle($storedArticle)
   {
-    $picture = Picture::getById($storedArticle->descriptionMediaId);
+    $picture = NULL;
+    if ($storedArticle->descriptionPicture)
+    {
+      $picture = new Picture;
+      $picture->fromStoredPicture($storedArticle->descriptionPicture);
+    }
     $paragraphs = Paragraph::getAllForArticle($storedArticle->id);
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
     $article = new Article;
@@ -223,7 +228,7 @@ class Article
    */
   public static function getById($articleId)
   {
-    $storedArticle = StoredArticle::getById($articleId);
+    $storedArticle = StoredArticle::findOrFail($articleId);
     if ($storedArticle)
     {
       return Article::fromStoredArticle($storedArticle);
@@ -290,7 +295,7 @@ class Article
   	  'title' => $this->title,
       'url' => url('/article/' . $this->id),
   	  'descriptionText' => $this->descriptionText,
-  	  'descriptionPicture' => $this->descriptionPicture,
+  	  'descriptionMedia' => $this->descriptionPicture,
   	  'paragraphs' => $this->paragraphs,
   	  'authorUsers' => $this->authorUsers
     ];
@@ -318,7 +323,7 @@ class Article
   {
     if (($this->id) && ($this->id > -1))
     {
-      $article = StoredArticle::getById($this->id);
+      $article = StoredArticle::findOrFail($this->id);
     } else
     {
       $article = new StoredArticle;
@@ -327,14 +332,13 @@ class Article
     $article->title = $this->title;
     $article->descriptionText = $this->descriptionText;
     $article->isDraft = $this->isDraft;
+    $article->authorId = $this->authorId;
+    $article->save();
+
     if ($this->descriptionPicture)
     {
-      $this->descriptionPicture->persist();
-      $article->descriptionMediaId = $this->descriptionPicture->getId();
+      $article->descriptionPicture()->save($this->descriptionPicture->getStoredPicture());
     }
-    $article->authorId = $this->authorId;
-
-    $article->save();
 
     $this->id = $article->id;
     return $this->id;
@@ -342,6 +346,6 @@ class Article
 
   public function delete()
   {
-    StoredArticle::getById($this->id)->delete();
+    StoredArticle::findOrFail($this->id)->delete();
   }
 }
