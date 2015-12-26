@@ -19,12 +19,11 @@ class Article extends Model
    * The attributes that are mass assignable.
    * title is the title of the article
    * descriptionText is a text description of the article
-   * descriptionMediaId is the id of the Link to a picture to illustrate the article
    * isDraft is a boolean, to indicate whether the article is a draft
    *
    * @var array
    */
-  public $fillable = ['title', 'descriptionText', 'descriptionMediaId', 'isDraft', 'authorId'];
+  public $fillable = ['title', 'descriptionText', 'isDraft', 'authorId'];
 
   /**
    * The rules for validating input
