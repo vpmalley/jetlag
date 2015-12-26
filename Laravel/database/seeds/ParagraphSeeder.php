@@ -15,7 +15,7 @@ class ParagraphSeeder extends Seeder
         $id = 2;
         DB::table('paragraphs')->insert([
             'title' => 'un beau paragraphe ' . str_random(10),
-            'articleId' => rand(1,10),
+            'article_id' => rand(1,10),
             'locationId' => 1,
             'weather' => 'sunny',
             'isDraft' => true,

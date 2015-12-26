@@ -20,7 +20,7 @@ class Paragraph extends Model
    *
    * @var array
    */
-  protected $fillable = ['title', 'articleId', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType', 'locationId', 'date', 'weather', 'authorId', 'isDraft'];
+  protected $fillable = ['title', 'article_id', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType', 'locationId', 'date', 'weather', 'authorId', 'isDraft'];
 
   /**
    * The rules for validating input

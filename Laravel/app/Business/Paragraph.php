@@ -111,7 +111,7 @@ class Paragraph
   public static function getAllForArticle($articleId)
   {
     $paragraphs = [];
-    $storedParagraphs = StoredParagraph::where('articleId', $articleId)->get();
+    $storedParagraphs = StoredParagraph::where('article_id', $articleId)->get();
     foreach($storedParagraphs as $storedParagraph)
     {
       $paragraphs[] = Paragraph::getFromStoredParagraph($storedParagraph);
