@@ -249,7 +249,7 @@ class Article
     }
 
     $authorNameLabel = '';
-    $authorNames = UserPublic::select('name')->whereIn('id', $this->authorUsers)->get();
+    $authorNames = UserPublic::select('name')->whereIn('id', array_keys($this->authorUsers))->get();
     foreach($authorNames as $authorName)
     {
       $authorNameLabel .= $authorName['name'];

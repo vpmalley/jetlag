@@ -71,15 +71,6 @@ class Picture
 
   /**
    *
-   */
-  public function fromUrl($authorId, $mediaUrl)
-  {
-    $this->authorId = $authorId;
-    $this->setMediumDisplayUrl($mediaUrl);
-  }
-
-  /**
-   *
    *
    * @param  int  $picId the id for the requested picture
    * @return  Jetlag\Business\Picture
@@ -171,6 +162,16 @@ class Picture
       $this->bigPictureLink = new Link;
       $this->bigPictureLink->fromUrl($url);
     }
+  }
+
+  public function getAuthorId()
+  {
+    return $this->$authorId;
+  }
+
+  public function setAuthorId($authorId)
+  {
+    $this->authorId = $authorId;
   }
 
   public function getForRest()

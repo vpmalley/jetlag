@@ -54,10 +54,7 @@ class RestArticleController extends Controller
 
     if ($request->has('descriptionMedia'))
     {
-      $picture = new Picture;
-      $picture->setId($request->input('descriptionMedia.id', -1));
-      $picture->fromUrl(1, $request->input('descriptionMedia.url')); // TODO use logged user
-      $article->setDescriptionPicture($picture);
+      $article->setDescriptionPicture($this->extractPicture(new Picture, $request));
     }
     $article->persist();
     return ['id' => $article->getId()];
@@ -100,27 +97,14 @@ class RestArticleController extends Controller
     $article->setDescriptionText($request->input('descriptionText', $article->getDescriptionText()));
     if ($request->has('descriptionMedia'))
     {
-      if (!$article->hasDescriptionPicture())
+      if ($article->hasDescriptionPicture())
       {
         $picture = $article->getDescriptionPicture();
       } else
       {
         $picture = new Picture;
       }
-
-      if ($request->has('descriptionMedia.smallUrl'))
-      {
-        $picture->setSmallDisplayUrl($request->input('descriptionMedia.smallUrl'));
-      }
-      if ($request->has('descriptionMedia.mediumUrl'))
-      {
-        $picture->setMediumDisplayUrl($request->input('descriptionMedia.mediumUrl'));
-      }
-      if ($request->has('descriptionMedia.bigUrl'))
-      {
-        $picture->setBigDisplayUrl($request->input('descriptionMedia.bigUrl'));
-      }
-      $article->setDescriptionPicture($picture);
+      $article->setDescriptionPicture($this->extractPicture($picture, $request));
     }
     $article->setIsDraft($request->input('isDraft', $article->isDraft()));
     if ($request->has('authorUsers'))
@@ -129,6 +113,36 @@ class RestArticleController extends Controller
     }
     $article->persist();
     return ['id' => $article->getId()];
+  }
+
+  /**
+   * Extracts the picture from the request
+   *
+   * @param  Jetlag\Business\Picture  $picture
+   * @param  Request  $request
+   * @return  Jetlag\Business\Picture the extracted picture
+   */
+  public function extractPicture(Picture $picture, Request $request)
+  {
+    $picture->setId($request->input('descriptionMedia.id', -1));
+    if ($request->has('descriptionMedia.smallUrl'))
+    {
+      $picture->setSmallDisplayUrl($request->input('descriptionMedia.smallUrl'));
+    }
+    if ($request->has('descriptionMedia.url'))
+    {
+      $picture->setMediumDisplayUrl($request->input('descriptionMedia.url'));
+    }
+    if ($request->has('descriptionMedia.mediumUrl'))
+    {
+      $picture->setMediumDisplayUrl($request->input('descriptionMedia.mediumUrl'));
+    }
+    if ($request->has('descriptionMedia.bigUrl'))
+    {
+      $picture->setBigDisplayUrl($request->input('descriptionMedia.bigUrl'));
+    }
+    $picture->setAuthorId(-1); // TODO use logged in user
+    return $picture;
   }
 
   /**
