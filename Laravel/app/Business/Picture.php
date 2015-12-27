@@ -178,12 +178,12 @@ class Picture
 
   public function getForRest()
   {
-    $content = [];
-    $content['id'] = $this->getId();
-    $content['smallUrl'] = $this->getSmallDisplayUrl();
-    $content['mediumUrl'] = $this->getMediumDisplayUrl();
-    $content['bigUrl'] = $this->getBigDisplayUrl();
-    return $content;
+    return [
+      'id' => $this->getId(),
+      'smallUrl' => $this->getSmallDisplayUrl(),
+      'mediumUrl' => $this->getMediumDisplayUrl(),
+      'bigUrl' => $this->getBigDisplayUrl(),
+    ];
   }
 
   /**

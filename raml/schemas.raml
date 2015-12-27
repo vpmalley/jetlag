@@ -5,9 +5,20 @@ schemas:
     {
       "type": "object",
       "properties": {
+        "id": {
+          "type": "number",
+          "required": false,
+        },
         "title": {
           "type": "string",
           "required": true,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "url": {
+          "description" : "the url to access the article's web page. Only used when reading from the server.",
+          "type": "string",
+          "required": false,
           "minLength": 3,
           "maxLength": 200
         },
@@ -20,7 +31,7 @@ schemas:
         "descriptionMedia": {
           "type": "object",
           "required": false,
-          "schema" : picture
+          "schema" : Picture
         },
         "isDraft": {
           "type": "boolean",
@@ -29,11 +40,11 @@ schemas:
         "authorUsers": {
           "type": "authorUser[]",
           "required": false,
-          "schema" : authorUser
+          "schema" : AuthorUser
         }
       }
     }
- - picture: |
+ - Picture: |
     {
       "type": "object",
       "properties": {
@@ -52,22 +63,34 @@ schemas:
           "required": false,
           "minLength": 3,
           "maxLength": 100
+        },
+        "smallUrl": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "mediumUrl": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "bigUrl": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 100
         }
       }
     }
- - authorUser: |
+ - AuthorUser: |
     {
       "type": "object",
       "properties": {
         "id": {
           "type": "number",
           "required": false
-        },
-        "name": {
-          "type": "string",
-          "required": false,
-          "minLength": 3,
-          "maxLength": 200
         },
         "role": {
           "type": "string",

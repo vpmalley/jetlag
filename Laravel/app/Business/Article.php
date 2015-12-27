@@ -283,7 +283,7 @@ class Article
   }
 
   /**
-   * extracts id and url
+   * extracts the data for showing as REST index (i.e. to display as a list)
    *
    * @return  array
    */
@@ -295,7 +295,6 @@ class Article
       'url' => url('/article/' . $this->id),
   	  'descriptionText' => $this->descriptionText,
   	  'descriptionMedia' => $this->descriptionPicture->getForRest(),
-  	  'paragraphs' => $this->paragraphs,
   	  'authorUsers' => $this->authorUsers,
     ];
   }
