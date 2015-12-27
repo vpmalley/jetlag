@@ -92,9 +92,9 @@ class Picture
   {
     $this->id = $storedPicture->id;
     // links
-    $this->smallPictureLink = Link::find($storedPicture->smallPictureLinkId);
-    $this->mediumPictureLink = Link::find($storedPicture->mediumPictureLinkId);
-    $this->bigPictureLink = Link::find($storedPicture->bigPictureLinkId);
+    $this->smallPictureLink = $storedPicture->smallPictureLink;
+    $this->mediumPictureLink = $storedPicture->mediumPictureLink;
+    $this->bigPictureLink = $storedPicture->bigPictureLink;
     // location
     $this->location = Place::find($storedPicture->locationId);
   }
@@ -199,23 +199,6 @@ class Picture
   public function getStoredPicture()
   {
     $picture = StoredPicture::findOrNew($this->id);
-
-    if ($this->smallPictureLink)
-    {
-      $this->smallPictureLink->save();
-      $picture->smallPictureLinkId = $this->smallPictureLink->id;
-    }
-    if ($this->mediumPictureLink)
-    {
-      $this->mediumPictureLink->save();
-      $picture->mediumPictureLinkId = $this->mediumPictureLink->id;
-    }
-    if ($this->bigPictureLink)
-    {
-      $this->bigPictureLink->save();
-      $picture->bigPictureLinkId = $this->bigPictureLink->id;
-    }
-
     $picture->authorId = $this->authorId;
     return $picture;
   }
@@ -224,6 +207,18 @@ class Picture
   {
     $picture = $this->getStoredPicture();
     $picture->save();
+    if ($this->smallPictureLink)
+    {
+      $picture->smallPictureLink()->save($this->smallPictureLink);
+    }
+    if ($this->mediumPictureLink)
+    {
+      $picture->mediumPictureLink()->save($this->mediumPictureLink);
+    }
+    if ($this->bigPictureLink)
+    {
+      $picture->bigPictureLink()->save($this->bigPictureLink);
+    }
     $this->id = $picture->id;
   }
 

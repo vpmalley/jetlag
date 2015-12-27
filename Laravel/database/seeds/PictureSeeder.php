@@ -13,17 +13,17 @@ class PictureSeeder extends Seeder
     public function run()
     {
         DB::table('pictures')->insert([
-            'smallPictureLinkId' => 1,
-            'mediumPictureLinkId' => 1,
-            'bigPictureLinkId' => 1,
+            'smallPictureLink_id' => 1,
+            'mediumPictureLink_id' => 1,
+            'bigPictureLink_id' => 1,
             'authorId' => 1,
             'locationId' => 1,
             'article_id' => 1,
         ]);
         DB::table('pictures')->insert([
-            'smallPictureLinkId' => 1,
-            'mediumPictureLinkId' => 1,
-            'bigPictureLinkId' => 1,
+            'smallPictureLink_id' => 1,
+            'mediumPictureLink_id' => 1,
+            'bigPictureLink_id' => 1,
             'authorId' => 1,
             'locationId' => 1,
         ]);

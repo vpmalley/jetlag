@@ -336,6 +336,7 @@ class Article
 
     if ($this->descriptionPicture)
     {
+      $this->descriptionPicture->persist();
       $article->descriptionPicture()->save($this->descriptionPicture->getStoredPicture());
     }
 
