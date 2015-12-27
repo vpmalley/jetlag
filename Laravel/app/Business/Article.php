@@ -290,12 +290,17 @@ class Article
    */
   public function getForRest()
   {
+    $descriptionMedia = [];
+    if ($this->descriptionPicture)
+    {
+      $descriptionMedia = $this->descriptionPicture->getForRest();
+    }
     return [
       'id' => $this->id,
   	  'title' => $this->title,
       'url' => url('/article/' . $this->id),
   	  'descriptionText' => $this->descriptionText,
-  	  'descriptionMedia' => $this->descriptionPicture->getForRest(),
+  	  'descriptionMedia' => $descriptionMedia,
       'isDraft' => $this->isDraft,
   	  'paragraphs' => $this->paragraphs,
   	  'authorUsers' => $this->authorUsers,
@@ -309,12 +314,17 @@ class Article
    */
   public function getForRestIndex()
   {
+    $descriptionMedia = [];
+    if ($this->descriptionPicture)
+    {
+      $descriptionMedia = $this->descriptionPicture->getForRest();
+    }
     return [
       'id' => $this->id,
   	  'title' => $this->title,
       'url' => url('/article/' . $this->id),
   	  'descriptionText' => $this->descriptionText,
-  	  'descriptionMedia' => $this->descriptionPicture->getForRest(),
+  	  'descriptionMedia' => $descriptionMedia,
   	  'authorUsers' => $this->authorUsers,
     ];
   }
