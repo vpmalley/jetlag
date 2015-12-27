@@ -133,7 +133,7 @@ class Article
     }
     $paragraphs = Paragraph::getAllForArticle($storedArticle->id);
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
-    $this->fromDb($storedArticle, $picture, $paragraphs, $storeArticle->authorId, $authorUsers);
+    $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
   }
 
   public function getId()
@@ -236,6 +236,26 @@ class Article
   }
 
   /**
+   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
+   *
+   * @param  int  $userId the id for the requested user
+   * @return  array
+   */
+  public static function getAllForUser($userId)
+  {
+    $articles = [];
+    $authorIds = Author::getAuthorsForUser($userId);
+    $storedArticles = StoredArticle::whereIn('authorId', $authorIds)->get();
+    foreach ($storedArticles as $storedArticle)
+    {
+      $article = new Article;
+      $article->fromStoredArticle($storedArticle);
+      $articles[] = $article;
+    }
+    return $articles;
+  }
+
+  /**
    * extracts the data for display
    *
    * @return  array
@@ -297,24 +317,6 @@ class Article
   	  'descriptionMedia' => $this->descriptionPicture->getForRest(),
   	  'authorUsers' => $this->authorUsers,
     ];
-  }
-
-  /**
-   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   *
-   * @param  int  $userId the id for the requested user
-   * @return  array
-   */
-  public static function getAllForUser($userId)
-  {
-    $articles = [];
-    $authorIds = Author::getAuthorsForUser($userId);
-    $storedArticles = StoredArticle::whereIn('authorId', $authorIds)->get();
-    foreach ($storedArticles as $article)
-    {
-      $articles[] = Article::fromStoredArticle($article);
-    }
-    return $articles;
   }
 
   public function persist()
