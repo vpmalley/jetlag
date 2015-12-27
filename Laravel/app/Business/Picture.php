@@ -5,6 +5,7 @@ namespace Jetlag\Business;
 use Jetlag\Eloquent\Picture as StoredPicture;
 use Jetlag\Eloquent\Link;
 use Jetlag\Eloquent\Place;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  *
@@ -84,6 +85,7 @@ class Picture
       $picture->fromStoredPicture($storedPicture);
       return $picture;
     }
+    throw new ModelNotFoundException;
   }
 
   public function fromStoredPicture($storedPicture)

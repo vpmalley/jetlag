@@ -122,9 +122,8 @@ class Article
    * Constructs an Article from an App\Eloquent\Article.
    *
    * @param  StoredArticle  $storedArticle the stored article
-   * @return  Jetlag\Business\Article
    */
-  public static function fromStoredArticle($storedArticle)
+  public function fromStoredArticle($storedArticle)
   {
     $picture = NULL;
     if ($storedArticle->descriptionPicture)
@@ -134,9 +133,7 @@ class Article
     }
     $paragraphs = Paragraph::getAllForArticle($storedArticle->id);
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
-    $article = new Article;
-    $article->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
-    return $article;
+    $this->fromDb($storedArticle, $picture, $paragraphs, $storeArticle->authorId, $authorUsers);
   }
 
   public function getId()
@@ -231,7 +228,9 @@ class Article
     $storedArticle = StoredArticle::findOrFail($articleId);
     if ($storedArticle)
     {
-      return Article::fromStoredArticle($storedArticle);
+      $article = new Article;
+      $article->fromStoredArticle($storedArticle);
+      return $article;
     }
     throw new ModelNotFoundException;
   }
@@ -271,16 +270,16 @@ class Article
    */
   public function getForRest()
   {
-    $content = $this->getForDisplay();
-    $content['id'] = $this->id;
-    $content['url'] = url('/article/' . $this->id);
-    $content['authorUsers'] = $this->authorUsers;
-    if ($this->descriptionPicture)
-    {
-      $content['descriptionMedia'] = $this->descriptionPicture->getForRest();
-    }
-    // list of paragraph ids and content
-    return $content;
+    return [
+      'id' => $this->id,
+  	  'title' => $this->title,
+      'url' => url('/article/' . $this->id),
+  	  'descriptionText' => $this->descriptionText,
+  	  'descriptionMedia' => $this->descriptionPicture->getForRest(),
+      'isDraft' => $this->isDraft,
+  	  'paragraphs' => $this->paragraphs,
+  	  'authorUsers' => $this->authorUsers,
+    ];
   }
 
   /**
@@ -295,9 +294,9 @@ class Article
   	  'title' => $this->title,
       'url' => url('/article/' . $this->id),
   	  'descriptionText' => $this->descriptionText,
-  	  'descriptionMedia' => $this->descriptionPicture,
+  	  'descriptionMedia' => $this->descriptionPicture->getForRest(),
   	  'paragraphs' => $this->paragraphs,
-  	  'authorUsers' => $this->authorUsers
+  	  'authorUsers' => $this->authorUsers,
     ];
   }
 
