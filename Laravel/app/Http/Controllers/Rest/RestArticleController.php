@@ -13,6 +13,7 @@ use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
 use Jetlag\Business\Picture;
 use Jetlag\Eloquent\Author;
+use Jetlag\Eloquent\Article as StoredArticle;
 use Log;
 
 class RestArticleController extends Controller
@@ -84,12 +85,13 @@ class RestArticleController extends Controller
   /**
   * Display the specified resource.
   *
-  * @param  int  $id
+  * @param  Jetlag\Eloquent\Article $storedArticle
   * @return Response
   */
-  public function show($id)
+  public function show($storedArticle)
   {
-    $article = Article::getById($id);
+    $article = new Article;
+    $article->fromStoredArticle($storedArticle);
     $this->wantsToReadArticle($article);
     return $article->getForRest();
   }
@@ -97,12 +99,13 @@ class RestArticleController extends Controller
   /**
   * Show the form for editing the specified resource.
   *
-  * @param  int  $id
+  * @param  Jetlag\Eloquent\Article $storedArticle
   * @return Response
   */
-  public function edit($id)
+  public function edit($storedArticle)
   {
-    $article = Article::getById($id);
+    $article = new Article;
+    $article->fromStoredArticle($storedArticle);
     $this->wantsToReadArticle($article);
     return $article->getForRest();
   }
@@ -111,12 +114,13 @@ class RestArticleController extends Controller
   * Update the specified resource in storage.
   *
   * @param  Request  $request
-  * @param  int  $id
+  * @param  Jetlag\Eloquent\Article $storedArticle
   * @return Response
   */
-  public function update(Request $request, $id)
+  public function update(Request $request, $storedArticle)
   {
-    $article = Article::getById($id);
+    $article = new Article;
+    $article->fromStoredArticle($storedArticle);
     $this->wantsToWriteArticle($article);
     $this->validate($request, Article::$rules);
     $article->setTitle($request->input('title', $article->getTitle()));
@@ -176,15 +180,16 @@ class RestArticleController extends Controller
   /**
   * Remove the specified resource from storage.
   *
-  * @param  int  $id
+  * @param  Jetlag\Eloquent\Article $storedArticle
   * @return Response
   */
-  public function destroy($id)
+  public function destroy($storedArticle)
   {
-    $article = Article::getById($id);
+    $article = new Article;
+    $article->fromStoredArticle($storedArticle);
     $this->wantsToOwnArticle($article);
     $article->delete();
-    return 'deleted ' . $id;
+    return 'deleted ' . $article->getId();
   }
 
   /**

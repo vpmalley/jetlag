@@ -276,9 +276,9 @@ class ArticleApiTest extends TestCase {
       ->delete('/api/article/' . $article->id)
       ->assertResponseOk();
       // TODO test missing article
-    // $this->actingAs($owner)
-    //   ->get('/api/article/' . $article->id)
-    //   ->assertResponseseStatus(404);
+     $this->actingAs($owner)
+       ->get('/api/article/' . $article->id)
+       ->assertResponseStatus(404);
   }
 
   public function testApiCannotDeleteArticleAsWriter()

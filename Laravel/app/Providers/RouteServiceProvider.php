@@ -23,8 +23,10 @@ class RouteServiceProvider extends ServiceProvider {
 	public function boot(Router $router)
 	{
 		//
-		
+
 		parent::boot($router);
+
+    $router->model('article', 'Jetlag\Eloquent\Article');
 	}
 
 	/**
