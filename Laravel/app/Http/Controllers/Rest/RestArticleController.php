@@ -6,13 +6,27 @@ use Validator;
 
 use Illuminate\Http\Request;
 
+use Auth;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
 use Jetlag\Business\Picture;
+use Jetlag\Eloquent\Author;
+use Log;
 
 class RestArticleController extends Controller
 {
+
+  /**
+   * Create a new Rest article controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
 
   /**
   * Display a listing of the resource for the logged in user.
@@ -21,7 +35,7 @@ class RestArticleController extends Controller
   */
   public function index()
   {
-    $articles = Article::getAllForUser(1); // TODO use logged in user
+    $articles = Article::getAllForUser(Auth::user()->id);
     foreach ($articles as &$article)
     {
       $article = $article->getForRestIndex();
@@ -50,7 +64,14 @@ class RestArticleController extends Controller
     $this->validate($request, Article::$rules); // TODO: own validator actually returning a 400 if the format is wrong
     $article = new Article;
     $article->fromRequest($request->input('title'), $request->input('descriptionText', ''), $request->input('isDraft', TRUE));
-    $article->updateAuthorUsers($request->input('authorUsers'), []); // TODO default with logged user as owner
+
+    $newAuthorUsers = [];
+    if ($request->has('authorUsers'))
+    {
+      $newAuthorUsers = $request->input('authorUsers');
+    }
+    $newAuthorUsers[Auth::user()->id] = 'owner';
+    $article->updateAuthorUsers($newAuthorUsers);
 
     if ($request->has('descriptionMedia'))
     {
@@ -68,7 +89,9 @@ class RestArticleController extends Controller
   */
   public function show($id)
   {
-    return Article::getById($id)->getForRest();
+    $article = Article::getById($id);
+    $this->wantsToReadArticle($article);
+    return $article->getForRest();
   }
 
   /**
@@ -79,7 +102,9 @@ class RestArticleController extends Controller
   */
   public function edit($id)
   {
-    return Article::getById($id)->getForRest();
+    $article = Article::getById($id);
+    $this->wantsToReadArticle($article);
+    return $article->getForRest();
   }
 
   /**
@@ -91,8 +116,9 @@ class RestArticleController extends Controller
   */
   public function update(Request $request, $id)
   {
-    $this->validate($request, Article::$rules);
     $article = Article::getById($id);
+    $this->wantsToWriteArticle($article);
+    $this->validate($request, Article::$rules);
     $article->setTitle($request->input('title', $article->getTitle()));
     $article->setDescriptionText($request->input('descriptionText', $article->getDescriptionText()));
     if ($request->has('descriptionMedia'))
@@ -109,7 +135,9 @@ class RestArticleController extends Controller
     $article->setIsDraft($request->input('isDraft', $article->isDraft()));
     if ($request->has('authorUsers'))
     {
-      $article->updateAuthorUsers($request->input('authorUsers'));
+      $newAuthorUsers = $request->input('authorUsers');
+      $newAuthorUsers[Auth::user()->id] = Author::getRole($article->getAuthorId(), Auth::user()->id);
+      $article->updateAuthorUsers($newAuthorUsers);
     }
     $article->persist();
     return ['id' => $article->getId()];
@@ -153,7 +181,48 @@ class RestArticleController extends Controller
   */
   public function destroy($id)
   {
-    Article::getById($id)->delete();
+    $article = Article::getById($id);
+    $this->wantsToOwnArticle($article);
+    $article->delete();
     return 'deleted ' . $id;
+  }
+
+  /**
+   * Checks whether the logged in user can modify the article as an owner. Rejects with error 403 otherwise.
+   *
+   * @param Article article the article to be owned
+   */
+  public function wantsToOwnArticle($article)
+  {
+    if (!Author::isOwner(Auth::user()->id, $article->getAuthorId()))
+    {
+      abort(403);
+    }
+  }
+
+  /**
+   * Checks whether the logged in user can write the article. Rejects with error 403 otherwise.
+   *
+   * @param Article article the article to be written
+   */
+  public function wantsToWriteArticle($article)
+  {
+    if (!Author::isWriter(Auth::user()->id, $article->getAuthorId()))
+    {
+      abort(403);
+    }
+  }
+
+  /**
+   * Checks whether the logged in user can read the article. Rejects with error 403 otherwise.
+   *
+   * @param Article article the article to be read
+   */
+  public function wantsToReadArticle($article)
+  {
+    if (!Author::isReader(Auth::user()->id, $article->getAuthorId()))
+    {
+      abort(403);
+    }
   }
 }

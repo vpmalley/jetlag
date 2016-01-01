@@ -201,6 +201,11 @@ class Article
     $this->isDraft = $isDraft;
   }
 
+  public function getAuthorId()
+  {
+    return $this->authorId;
+  }
+
   /**
    * @param array hash of user ids and roles to make them as the new authors of this article
    */

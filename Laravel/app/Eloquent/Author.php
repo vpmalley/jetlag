@@ -78,6 +78,7 @@ class Author extends Model
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
     $count = Author::where('userId', $userId)->where('authorId', $authorId)->count();
+    Log::debug("user with id " . $userId . " appears with authorId=" . $authorId . " " . $count . " times.");
     return (1 == $count);
   }
 
@@ -128,6 +129,23 @@ class Author extends Model
   }
 
   /**
+   * Determines the role of a user as an author
+   *
+   * @param authorId the id of the author
+   * @param userId the id of the user
+   * @return var string a role, or NULL
+   */
+  public static function getRole($authorId, $userId)
+  {
+    $author = Author::where('userId', $userId)->where('authorId', $authorId)->first();
+    if ($author)
+    {
+      return $author->role;
+    }
+    return NULL;
+  }
+
+  /**
   *
   * @return an author id that has never been given
   */
@@ -153,7 +171,7 @@ class Author extends Model
       }
       foreach ($newAuthorUsers as $newUserId => $newRole) // inserting new pairs authorId/userId
       {
-        Log::debug("author " . $authorId . " with user " . $newUserId . " is " . $newRole);
+        Log::debug("author " . $authorId . " with user " . $newUserId . " is now " . $newRole);
         $newAuthor = new Author();
         $newAuthor->authorId = $authorId;
         $newAuthor->userId = $newUserId;
