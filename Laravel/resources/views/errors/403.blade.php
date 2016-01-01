@@ -34,7 +34,7 @@
 	<body>
 		<div class="container">
 			<div class="content">
-				<div class="title">Whoops! There is nothing here.</div>
+				<div class="title">Whoops! You are not allowed here.</div>
 			</div>
       <br>
       <a href="/">Go back home</a>
