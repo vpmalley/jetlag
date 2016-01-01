@@ -209,15 +209,18 @@ class Picture
     $picture->save();
     if ($this->smallPictureLink)
     {
-      $picture->smallPictureLink()->save($this->smallPictureLink);
+      $this->smallPictureLink->save();
+      $this->smallPictureLink->pictureAsSmallLink()->save($picture);
     }
     if ($this->mediumPictureLink)
     {
-      $picture->mediumPictureLink()->save($this->mediumPictureLink);
+      $this->mediumPictureLink->save();
+      $this->mediumPictureLink->pictureAsMediumLink()->save($picture);
     }
     if ($this->bigPictureLink)
     {
-      $picture->bigPictureLink()->save($this->bigPictureLink);
+      $this->bigPictureLink->save();
+      $this->bigPictureLink->pictureAsBigLink()->save($picture);
     }
     $this->id = $picture->id;
   }

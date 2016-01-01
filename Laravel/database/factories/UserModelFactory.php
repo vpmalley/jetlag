@@ -19,12 +19,3 @@ $factory->define(Jetlag\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
-
-$factory->define(Jetlag\Eloquent\Article::class, function (Faker\Generator $faker) {
-    return [
-      'title' => $faker->realText(50),
-      'descriptionText' => $faker->realText(240),
-      'isDraft' => 1,
-      'authorId' => $faker->randomDigit,
-    ];
-});

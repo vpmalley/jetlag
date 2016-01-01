@@ -25,16 +25,16 @@ class Picture extends Model
 
   public function smallPictureLink()
   {
-    return $this->belongsTo('Jetlag\Eloquent\Link');
+    return $this->belongsTo('Jetlag\Eloquent\Link', 'smallPictureLink_id');
   }
 
   public function mediumPictureLink()
   {
-    return $this->belongsTo('Jetlag\Eloquent\Link');
+    return $this->belongsTo('Jetlag\Eloquent\Link', 'mediumPictureLink_id');
   }
 
   public function bigPictureLink()
   {
-    return $this->belongsTo('Jetlag\Eloquent\Link');
+    return $this->belongsTo('Jetlag\Eloquent\Link', 'bigPictureLink_id');
   }
 }

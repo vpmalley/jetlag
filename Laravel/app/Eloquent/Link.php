@@ -45,4 +45,19 @@ class Link extends Model
       return $this->url;
     }
   }
+
+  public function pictureAsSmallLink()
+  {
+    return $this->hasOne('Jetlag\Eloquent\Picture', 'smallPictureLink_id');
+  }
+
+  public function pictureAsMediumLink()
+  {
+    return $this->hasOne('Jetlag\Eloquent\Picture', 'mediumPictureLink_id');
+  }
+
+  public function pictureAsBigLink()
+  {
+    return $this->hasOne('Jetlag\Eloquent\Picture', 'bigPictureLink_id');
+  }
 }

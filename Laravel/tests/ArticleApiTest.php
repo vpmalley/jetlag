@@ -137,19 +137,19 @@ class ArticleApiTest extends TestCase {
       ], ['ContentType' => 'application/json'])
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 4,
+        'id' => 5,
       ]);
 
-    $this->get('/api/article/4')
+    $this->actingAs($user)
+      ->get('/api/article/5')
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 4,
+        'id' => 5,
         'title' => "article1",
         'descriptionText' => '',
         'isDraft' => 1,
-        //'authorUserIds' => [],
         'descriptionMedia' => [
-          'id' => 3,
+          'id' => 1,
           'smallUrl' => null,
           'bigUrl' => null,
           'mediumUrl' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
@@ -168,6 +168,16 @@ class ArticleApiTest extends TestCase {
       'authorId' => 13,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+    $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
+      'authorId' => 13,
+    ]);
+    $picture = factory(Jetlag\Eloquent\Picture::class)->create([
+      'authorId' => 13,
+      'smallPictureLink_id' => $links[0]->id,
+      'mediumPictureLink_id' => $links[1]->id,
+      'bigPictureLink_id' => $links[2]->id,
+      'article_id' => $article->id,
     ]);
     $this->baseUrl = "http://homestead.app";
 
@@ -192,16 +202,16 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
       'descriptionMedia' => [
-        'id' => 1,
-        'smallUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
-        'bigUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
-        'mediumUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+        'id' => $picture->id,
+        'smallUrl' => $links[0]->url,
+        'mediumUrl' => $links[1]->url,
+        'bigUrl' => $links[2]->url,
       ],
       'authorUsers' => [1 => 'writer', 2 => 'owner', $writer->id => 'writer'],
     ]);
   }
 
-  public function testApiPartUpdateFirstArticle()
+  public function testApiUpdatePartialArticle()
   {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
@@ -211,12 +221,21 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'authorId' => 14,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'descriptionText' => 'this is some article',
+    ]);
+    $links = factory(Jetlag\Eloquent\Link::class, 'web', 2)->create([
+      'authorId' => 14,
+    ]);
+    $picture = factory(Jetlag\Eloquent\Picture::class)->create([
+      'authorId' => 14,
+      'smallPictureLink_id' => $links[0]->id,
+      'mediumPictureLink_id' => $links[1]->id,
+      'article_id' => $article->id,
     ]);
     $this->baseUrl = "http://homestead.app";
     $this->actingAs($writer)
       ->put('/api/article/' . $article->id, [
-      'title' => 'article1 is again updated',
+      'title' => 'article is partially updated',
       ],
       ['ContentType' => 'application/json'])
       ->assertResponseOk();
@@ -227,14 +246,14 @@ class ArticleApiTest extends TestCase {
       ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
-      'title' => 'article1 is again updated',
-      'descriptionText' => 'some updated description',
-      'isDraft' => 0,
+      'title' => 'article is partially updated',
+      'descriptionText' => 'this is some article',
+      'isDraft' => 1,
       'descriptionMedia' => [
-        'id' => 1,
-        'smallUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
-        'bigUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
-        'mediumUrl' => 'https://images.duckduckgo.com/iu/?u=http%3A%2F%2Fimages.smh.com.au%2F2011%2F07%2F15%2F2494516%2Fth-coffee-420x0.jpg&f=1',
+        'id' => $picture->id,
+        'smallUrl' => $links[0]->url,
+        'mediumUrl' => $links[1]->url,
+        'bigUrl' => null,
       ],
       'authorUsers' => [ $writer->id => 'writer'],
     ]);
@@ -257,8 +276,9 @@ class ArticleApiTest extends TestCase {
       ->delete('/api/article/' . $article->id)
       ->assertResponseOk();
       // TODO test missing article
-    //$this->get('/api/article/2')
-      //->assertResponseseStatus(404);
+    // $this->actingAs($owner)
+    //   ->get('/api/article/' . $article->id)
+    //   ->assertResponseseStatus(404);
   }
 
   public function testApiCannotDeleteArticleAsWriter()

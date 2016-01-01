@@ -352,8 +352,10 @@ class Article
 
     if ($this->descriptionPicture)
     {
+      $storedPicture = $this->descriptionPicture->getStoredPicture();
+      $article->descriptionPicture()->save($storedPicture);
+      $this->descriptionPicture->setId($storedPicture->id);
       $this->descriptionPicture->persist();
-      $article->descriptionPicture()->save($this->descriptionPicture->getStoredPicture());
     }
 
     $this->id = $article->id;
