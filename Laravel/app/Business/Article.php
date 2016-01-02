@@ -52,6 +52,13 @@ class Article
   protected $isDraft;
 
   /**
+   * Whether the article can be viewed by anyone
+   *
+   * @var boolean
+   */
+  protected $isPublic;
+
+  /**
    * The paragraphs of this article
    *
    * @var array
@@ -100,6 +107,7 @@ class Article
     $this->title = $storedArticle->title;
     $this->descriptionText = $storedArticle->descriptionText;
     $this->isDraft = $storedArticle->isDraft;
+    $this->isPublic = $storedArticle->isPublic;
     $this->descriptionPicture = $picture;
     $this->paragraphs = $paragraphs;
     $this->authorUsers = $authorUsers;
@@ -109,11 +117,12 @@ class Article
   /**
    *
    */
-  public function fromRequest($title, $descriptionText, $isDraft)
+  public function fromRequest($title)
   {
     $this->title = $title;
-    $this->descriptionText = $descriptionText;
-    $this->isDraft = $isDraft;
+    $this->descriptionText = '';
+    $this->isDraft = TRUE;
+    $this->isPublic = FALSE;
     $this->authorUsers = [];
     $this->authorId = -1;
   }
@@ -199,6 +208,16 @@ class Article
   public function setIsDraft($isDraft)
   {
     $this->isDraft = $isDraft;
+  }
+
+  public function isPublic()
+  {
+    return $this->isPublic;
+  }
+
+  public function setIsPublic($isPublic)
+  {
+    $this->isPublic = $isPublic;
   }
 
   public function getAuthorId()
@@ -307,6 +326,7 @@ class Article
   	  'descriptionText' => $this->descriptionText,
   	  'descriptionMedia' => $descriptionMedia,
       'isDraft' => $this->isDraft,
+  	  'isPublic' => $this->isPublic,
   	  'paragraphs' => $this->paragraphs,
   	  'authorUsers' => $this->authorUsers,
     ];
@@ -331,6 +351,8 @@ class Article
   	  'descriptionText' => $this->descriptionText,
   	  'descriptionMedia' => $descriptionMedia,
   	  'authorUsers' => $this->authorUsers,
+  	  'isDraft' => $this->isDraft,
+  	  'isPublic' => $this->isPublic,
     ];
   }
 
@@ -347,6 +369,7 @@ class Article
     $article->title = $this->title;
     $article->descriptionText = $this->descriptionText;
     $article->isDraft = $this->isDraft;
+    $article->isPublic = $this->isPublic;
     $article->authorId = $this->authorId;
     $article->save();
 

@@ -23,7 +23,7 @@ class Article extends Model
    *
    * @var array
    */
-  public $fillable = ['title', 'descriptionText', 'isDraft', 'authorId'];
+  public $fillable = ['title', 'descriptionText', 'isDraft', 'isPublic', 'authorId'];
 
   /**
    * The rules for validating input

@@ -18,6 +18,7 @@ class CreateArticlesTable extends Migration
             $table->string('title', 200);
             $table->string('descriptionText', 500);
             $table->boolean('isDraft');
+            $table->boolean('isPublic');
             $table->bigInteger('authorId');
        });
     }

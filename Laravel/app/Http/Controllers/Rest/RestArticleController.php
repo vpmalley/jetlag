@@ -64,7 +64,11 @@ class RestArticleController extends Controller
   {
     $this->validate($request, Article::$rules); // TODO: own validator actually returning a 400 if the format is wrong
     $article = new Article;
-    $article->fromRequest($request->input('title'), $request->input('descriptionText', ''), $request->input('isDraft', TRUE));
+    $article->fromRequest($request->input('title'));
+
+    $article->setDescriptionText($request->input('descriptionText', ''));
+    $article->setIsDraft($request->input('isDraft', TRUE));
+    $article->setIsPublic($request->input('isPublic', FALSE));
 
     $newAuthorUsers = [];
     if ($request->has('authorUsers'))
@@ -225,7 +229,7 @@ class RestArticleController extends Controller
    */
   public function wantsToReadArticle($article)
   {
-    if (!Author::isReader(Auth::user()->id, $article->getAuthorId()))
+    if (!$article->isPublic() && !Author::isReader(Auth::user()->id, $article->getAuthorId()))
     {
       abort(403);
     }

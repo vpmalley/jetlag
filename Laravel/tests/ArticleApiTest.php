@@ -7,6 +7,9 @@ use Jetlag\User;
 
 class ArticleApiTest extends TestCase {
 
+  use WithoutMiddleware;
+  use DatabaseMigrations;
+
   public function testApiGetArticles()
   {
     $writer = factory(Jetlag\User::class)->create();
@@ -23,7 +26,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'authorId' => 3,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
     $this->baseUrl = "http://homestead.app";
 
@@ -41,7 +44,7 @@ class ArticleApiTest extends TestCase {
     //$this->dump();
   }
 
-  public function testApiGetArticle()
+  public function testApiGetArticleAsWriter()
   {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
@@ -68,6 +71,28 @@ class ArticleApiTest extends TestCase {
       ]);
   }
 
+  public function testApiGetPublicArticle()
+  {
+    $user = factory(Jetlag\User::class)->create();
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isPublic' => true,
+    ]);
+    $this->baseUrl = "http://homestead.app";
+
+    $this->actingAs($user)
+      ->get("/api/article/" . $article->id)
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => $article->id,
+        'title' => "article with id 2",
+        'descriptionText' => 'this is a cool article isnt it? id 2',
+        'isDraft' => 1, // why not true?
+        'isPublic' => 1,
+      ]);
+  }
+
   public function testApiStoreArticleWithTitle()
   {
     $user = factory(Jetlag\User::class)->create();
@@ -77,16 +102,16 @@ class ArticleApiTest extends TestCase {
       ->post('/api/article', [ 'title' => 'article1'], ['ContentType' => 'application/json'])
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 3,
-      ]);
+      'id' => 1,
+    ]);
 
-    Log::debug("expecting user " . $user->id . " to be owner of article 3");
+    Log::debug("expecting user " . $user->id . " to be owner of article 1");
     $this->actingAs($user)
-      ->get('/api/article/3')
+      ->get('/api/article/1')
       ->assertResponseOk();
     $this->seeJson([
         'title' => "article1",
-        'id' => 3,
+        'id' => 1,
         'descriptionText' => '',
         'isDraft' => 1,
         'authorUsers' => [ $user->id => 'owner'],
@@ -108,15 +133,15 @@ class ArticleApiTest extends TestCase {
       ['ContentType' => 'application/json'])
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 4,
+        'id' => 1,
       ]);
 
-    Log::debug("expecting users 1 and " . $user->id . " to be owner of article 4");
+    Log::debug("expecting users 1 and " . $user->id . " to be owner of article 1");
     $this->actingAs($user)
-      ->get('/api/article/4')
+      ->get('/api/article/1')
       ->assertResponseOk();
     $this->seeJson([
-      'id' => 4,
+      'id' => 1,
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
       'isDraft' => 0,
@@ -137,14 +162,14 @@ class ArticleApiTest extends TestCase {
       ], ['ContentType' => 'application/json'])
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 5,
+        'id' => 1,
       ]);
 
     $this->actingAs($user)
-      ->get('/api/article/5')
+      ->get('/api/article/1')
       ->assertResponseOk();
     $this->seeJson([
-        'id' => 5,
+        'id' => 1,
         'title' => "article1",
         'descriptionText' => '',
         'isDraft' => 1,
