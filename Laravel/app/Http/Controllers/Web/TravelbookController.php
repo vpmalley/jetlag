@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 
-class Travelbook extends Controller
+class TravelbookController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -94,4 +94,9 @@ class Travelbook extends Controller
     {
         //
     }
+	
+	public function getCreate()
+	{
+	 return view('travelbookCreator');
+	}
 }
