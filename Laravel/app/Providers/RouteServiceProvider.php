@@ -26,7 +26,7 @@ class RouteServiceProvider extends ServiceProvider {
 
 		parent::boot($router);
 
-    $router->model('article', 'Jetlag\Eloquent\Article');
+    $router->model('articles', 'Jetlag\Eloquent\Article');
 	}
 
 	/**

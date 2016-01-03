@@ -45,7 +45,7 @@ Route::post('travelbook/{id}/edit', 'Web\TravelbookController@postEdit');
   // Article routes
 Route::get('article/{id}', 'Web\ArticleController@getDisplay');
 
-Route::resource('api/0.1/article', 'Rest\RestArticleController', ['except' => ['create']]);
+Route::resource('api/0.1/articles', 'Rest\RestArticleController', ['except' => ['create']]);
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

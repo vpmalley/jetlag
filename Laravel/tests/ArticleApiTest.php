@@ -11,7 +11,7 @@ class ArticleApiTest extends TestCase {
   use DatabaseMigrations;
 
   protected $baseUrl = "http://homestead.app";
-  protected $articleApiUrl = "/api/0.1/article/";
+  protected $articleApiUrl = "/api/0.1/articles/";
 
   public function testApiGetArticles()
   {
@@ -300,9 +300,12 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($owner)
       ->delete($this->articleApiUrl . $article->id)
       ->assertResponseOk();
-     $this->actingAs($owner)
-       ->get($this->articleApiUrl . $article->id)
-       ->assertResponseStatus(404);
+    $this->seeJson([
+      'id' => $article->id
+    ]);
+    $this->actingAs($owner)
+      ->get($this->articleApiUrl . $article->id)
+      ->assertResponseStatus(404);
   }
 
   public function testApiCannotDeleteArticleAsWriter()

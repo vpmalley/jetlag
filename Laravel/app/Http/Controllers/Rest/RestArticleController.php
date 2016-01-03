@@ -193,7 +193,7 @@ class RestArticleController extends Controller
     $article->fromStoredArticle($storedArticle);
     $this->wantsToOwnArticle($article);
     $article->delete();
-    return 'deleted ' . $article->getId();
+    return ['id' => $article->getId()];
   }
 
   /**
