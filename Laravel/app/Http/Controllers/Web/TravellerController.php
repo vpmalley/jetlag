@@ -4,6 +4,7 @@ use Auth;
 use Input;
 use Response;
 use Validator;
+use Log;
 use Illuminate\Http\Request;
 
 use Jetlag\Http\Controllers\Controller;
@@ -60,7 +61,7 @@ class TravellerController extends Controller {
    */
   public function getDisplay($id)
   {
-    $publicUser = UserPublic::where('id', $id)->firstOrFail();
+    $publicUser = UserPublic::where('id', $id)->first();
     return view('web.user.display', UserPublic::getForDisplay($publicUser, $id, 'This user prefers to keep some mystery about that ...'));
   }
 
@@ -80,14 +81,17 @@ class TravellerController extends Controller {
    */
   public function getEdit($id)
   {
-    if (Auth::user()->id != $id)
+	/* XXX: for now, the authenticated User can only edit his profile
+	* and so the $id passed to the function is only to check it's the right route
+	*/
+	$authentUserID = Auth::user()->id;
+    if ($authentUserID != $id)
     {
       return Response::make('You are trying to modify the wrong traveller', 403);
     }
 
-    $user = Auth::user();
-    $publicUser = UserPublic::where('id', $user->id)->first();
-    return view('web.user.edit', UserPublic::getForDisplay($publicUser, $user->id));
+    $publicUser = UserPublic::where('id', $authentUserID)->first();
+    return view('web.user.edit', UserPublic::getForDisplay($publicUser, $authentUserID));
   }
 
   /**

@@ -85,6 +85,6 @@
 	<!-- Scripts -->
 	<script src="{{ 'http://localhost/jetlag/Laravel/public'.elixir('js/thirds.js') }}"></script>
 	<script src="//localhost/jetlag/Laravel/public/js/jetlag.js"></script>
-	<script src="//localhost/jetlag/Laravel/public/js/home.js"></script>
+	@yield('scripts')
 </body>
 </html>

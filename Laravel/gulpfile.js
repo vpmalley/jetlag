@@ -28,7 +28,7 @@ elixir(function(mix) {
 			'base.js',
 			'app.js',
 		], 'public/js/jetlag.js')
-		.copy('resources/assets/js/home.js', 'public/js/home.js')
+		.copy('resources/assets/js', 'public/js')
 		.copy('resources/assets/images', 'public/images')
 		.copy('bower_components/font-awesome/css/font-awesome.css', 'public/css/font-awesome.css')
 		.copy('bower_components/font-awesome/fonts', 'public/fonts')

@@ -1,6 +1,23 @@
 @extends('app')
 
+@section('ngApp')
+<html lang="en" ng-app="jetlag.webapp.user">
+@endsection
+
+@section('head')
+@endsection
+
 @section('content')
+<div id="jl_user" class="container">
+	<div class="user_header row">
+		<div class="user_profile col-sm-3">
+		lol
+		</div>
+		<div class="user_ban col-sm-9">
+		lol
+		</div>
+	</div>
+</div>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
@@ -35,4 +52,8 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="//localhost/jetlag/Laravel/public/js/user.js"></script>
 @endsection
