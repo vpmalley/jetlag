@@ -103,6 +103,7 @@ class ArticleApiTest extends TestCase {
       ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
     ]);
 
     Log::debug("expecting user " . $user->id . " to be owner of article 1");
@@ -134,6 +135,7 @@ class ArticleApiTest extends TestCase {
       ->assertResponseStatus(201);
     $this->seeJson([
         'id' => 1,
+        'url' => $this->baseUrl . "/article/1",
       ]);
 
     Log::debug("expecting users 1 and " . $user->id . " to be owner of article 1");
@@ -163,6 +165,7 @@ class ArticleApiTest extends TestCase {
       ->assertResponseStatus(201);
     $this->seeJson([
         'id' => 1,
+        'url' => $this->baseUrl . "/article/1",
       ]);
 
     $this->actingAs($user)

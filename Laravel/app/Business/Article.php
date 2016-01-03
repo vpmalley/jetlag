@@ -225,6 +225,11 @@ class Article
     return $this->authorId;
   }
 
+  public function getWebUrl()
+  {
+    return url('/article/' . $this->id);
+  }
+
   /**
    * @param array hash of user ids and roles to make them as the new authors of this article
    */
@@ -322,7 +327,7 @@ class Article
     return [
       'id' => $this->id,
   	  'title' => $this->title,
-      'url' => url('/article/' . $this->id),
+      'url' => $this->getWebUrl(),
   	  'descriptionText' => $this->descriptionText,
   	  'descriptionMedia' => $descriptionMedia,
       'isDraft' => $this->isDraft,
@@ -347,7 +352,7 @@ class Article
     return [
       'id' => $this->id,
   	  'title' => $this->title,
-      'url' => url('/article/' . $this->id),
+      'url' => $this->getWebUrl(),
   	  'descriptionText' => $this->descriptionText,
   	  'descriptionMedia' => $descriptionMedia,
   	  'authorUsers' => $this->authorUsers,
