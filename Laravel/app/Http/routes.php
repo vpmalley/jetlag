@@ -8,7 +8,7 @@
 | Here is where you can register all of the routes for an application.
 | It's a breeze. Simply tell Laravel the URIs it should respond to
 | and give it the controller to call when that URI is requested.
-| 
+|
 | We should register each route explicitly to list here all endpoints we offer.
 |
 */
@@ -45,7 +45,7 @@ Route::post('travelbook/{id}/edit', 'Web\TravelbookController@postEdit');
   // Article routes
 Route::get('article/{id}', 'Web\ArticleController@getDisplay');
 
-Route::resource('api/article', 'Rest\RestArticleController');
+Route::resource('api/article', 'Rest\RestArticleController', ['except' => ['create']]);
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

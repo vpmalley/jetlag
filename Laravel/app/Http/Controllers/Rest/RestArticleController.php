@@ -83,7 +83,7 @@ class RestArticleController extends Controller
       $article->setDescriptionPicture($this->extractPicture(new Picture, $request));
     }
     $article->persist();
-    return ['id' => $article->getId()];
+    return response()->json(['id' => $article->getId()], 201);
   }
 
   /**

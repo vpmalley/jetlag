@@ -100,7 +100,7 @@ class ArticleApiTest extends TestCase {
 
     $this->actingAs($user)
       ->post('/api/article', [ 'title' => 'article1'], ['ContentType' => 'application/json'])
-      ->assertResponseOk();
+      ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
     ]);
@@ -131,7 +131,7 @@ class ArticleApiTest extends TestCase {
       'authorUsers' => [1 => 'owner'],
       ],
       ['ContentType' => 'application/json'])
-      ->assertResponseOk();
+      ->assertResponseStatus(201);
     $this->seeJson([
         'id' => 1,
       ]);
@@ -160,7 +160,7 @@ class ArticleApiTest extends TestCase {
         'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
         ],
       ], ['ContentType' => 'application/json'])
-      ->assertResponseOk();
+      ->assertResponseStatus(201);
     $this->seeJson([
         'id' => 1,
       ]);
