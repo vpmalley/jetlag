@@ -10,6 +10,9 @@ class ArticleApiTest extends TestCase {
   use WithoutMiddleware;
   use DatabaseMigrations;
 
+  protected $baseUrl = "http://homestead.app";
+  protected $articleApiUrl = "/api/0.1/article/";
+
   public function testApiGetArticles()
   {
     $writer = factory(Jetlag\User::class)->create();
@@ -28,11 +31,10 @@ class ArticleApiTest extends TestCase {
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
-    $this->baseUrl = "http://homestead.app";
 
     Log::debug(" expecting authorId=3 and userId=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->get('/api/article')
+      ->get($this->articleApiUrl)
       ->assertResponseOk();
     $this->seeJson([
         'id' => $article->id,
@@ -56,11 +58,10 @@ class ArticleApiTest extends TestCase {
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
-    $this->baseUrl = "http://homestead.app";
 
     Log::debug(" expecting authorId=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->get("/api/article/" . $article->id)
+      ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
     $this->seeJson([
         'id' => $article->id,
@@ -79,10 +80,9 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'this is a cool article isnt it? id 2',
       'isPublic' => true,
     ]);
-    $this->baseUrl = "http://homestead.app";
 
     $this->actingAs($user)
-      ->get("/api/article/" . $article->id)
+      ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
     $this->seeJson([
         'id' => $article->id,
@@ -96,10 +96,9 @@ class ArticleApiTest extends TestCase {
   public function testApiStoreArticleWithTitle()
   {
     $user = factory(Jetlag\User::class)->create();
-    $this->baseUrl = "http://homestead.app";
 
     $this->actingAs($user)
-      ->post('/api/article', [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+      ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
       ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
@@ -108,7 +107,7 @@ class ArticleApiTest extends TestCase {
 
     Log::debug("expecting user " . $user->id . " to be owner of article 1");
     $this->actingAs($user)
-      ->get('/api/article/1')
+      ->get($this->articleApiUrl . 1)
       ->assertResponseOk();
     $this->seeJson([
         'title' => "article1",
@@ -122,10 +121,9 @@ class ArticleApiTest extends TestCase {
   public function testApiStoreArticleWithMoreData()
   {
     $user = factory(Jetlag\User::class)->create();
-    $this->baseUrl = "http://homestead.app";
 
     $this->actingAs($user)
-      ->post('/api/article', [
+      ->post($this->articleApiUrl, [
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
       'isDraft' => 0,
@@ -140,7 +138,7 @@ class ArticleApiTest extends TestCase {
 
     Log::debug("expecting users 1 and " . $user->id . " to be owner of article 1");
     $this->actingAs($user)
-      ->get('/api/article/1')
+      ->get($this->articleApiUrl . 1)
       ->assertResponseOk();
     $this->seeJson([
       'id' => 1,
@@ -154,9 +152,9 @@ class ArticleApiTest extends TestCase {
   public function testApiStoreArticleWithPicture()
   {
     $user = factory(Jetlag\User::class)->create();
-    $this->baseUrl = "http://homestead.app";
+
     $this->actingAs($user)
-      ->post('/api/article', [
+      ->post($this->articleApiUrl, [
       'title' => 'article1',
       'descriptionMedia' => [
         'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
@@ -169,7 +167,7 @@ class ArticleApiTest extends TestCase {
       ]);
 
     $this->actingAs($user)
-      ->get('/api/article/1')
+      ->get($this->articleApiUrl . 1)
       ->assertResponseOk();
     $this->seeJson([
         'id' => 1,
@@ -207,10 +205,9 @@ class ArticleApiTest extends TestCase {
       'bigPictureLink_id' => $links[2]->id,
       'article_id' => $article->id,
     ]);
-    $this->baseUrl = "http://homestead.app";
 
     $this->actingAs($writer)
-      ->put('/api/article/' . $article->id, [
+      ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
@@ -222,7 +219,7 @@ class ArticleApiTest extends TestCase {
         'id' => $article->id
       ]);
     $this->actingAs($writer)
-      ->get('/api/article/' . $article->id)
+      ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
@@ -260,9 +257,9 @@ class ArticleApiTest extends TestCase {
       'mediumPictureLink_id' => $links[1]->id,
       'article_id' => $article->id,
     ]);
-    $this->baseUrl = "http://homestead.app";
+
     $this->actingAs($writer)
-      ->put('/api/article/' . $article->id, [
+      ->patch($this->articleApiUrl . $article->id, [
       'title' => 'article is partially updated',
       ],
       ['ContentType' => 'application/json'])
@@ -270,7 +267,7 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
         'id' => $article->id
       ]);
-    $this->get('/api/article/'. $article->id)
+    $this->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
@@ -299,13 +296,12 @@ class ArticleApiTest extends TestCase {
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
-    $this->baseUrl = "http://homestead.app";
+
     $this->actingAs($owner)
-      ->delete('/api/article/' . $article->id)
+      ->delete($this->articleApiUrl . $article->id)
       ->assertResponseOk();
-      // TODO test missing article
      $this->actingAs($owner)
-       ->get('/api/article/' . $article->id)
+       ->get($this->articleApiUrl . $article->id)
        ->assertResponseStatus(404);
   }
 
@@ -321,9 +317,9 @@ class ArticleApiTest extends TestCase {
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
-    $this->baseUrl = "http://homestead.app";
+
     $this->actingAs($writer)
-      ->delete('/api/article/' . $article->id)
+      ->delete($this->articleApiUrl . $article->id)
       ->assertResponseStatus(403);
   }
 }
