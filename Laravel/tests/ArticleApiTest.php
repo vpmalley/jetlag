@@ -74,15 +74,13 @@ class ArticleApiTest extends TestCase {
 
   public function testApiGetPublicArticle()
   {
-    $user = factory(Jetlag\User::class)->create();
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
       'isPublic' => true,
     ]);
 
-    $this->actingAs($user)
-      ->get($this->articleApiUrl . $article->id)
+    $this->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
     $this->seeJson([
         'id' => $article->id,
