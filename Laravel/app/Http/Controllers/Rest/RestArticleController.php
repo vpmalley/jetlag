@@ -26,7 +26,7 @@ class RestArticleController extends Controller
    */
   public function __construct()
   {
-    $this->middleware('auth.rest', ['except' => 'show');
+    $this->middleware('auth.rest', ['except' => 'show']);
   }
 
   /**
