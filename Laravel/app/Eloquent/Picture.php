@@ -21,7 +21,7 @@ class Picture extends Model
    *
    * @var array
    */
-  protected $fillable = ['smallPictureLink_id', 'mediumPictureLink_id', 'bigPictureLink_id', 'authorId', 'locationId'];
+  protected $fillable = ['smallPictureLink_id', 'mediumPictureLink_id', 'bigPictureLink_id', 'authorId', 'place_id'];
 
   public function smallPictureLink()
   {
@@ -36,5 +36,9 @@ class Picture extends Model
   public function bigPictureLink()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'bigPictureLink_id');
+  }  
+
+  public function place() {
+    return $this->belongTo('Jetlag\Eloquent\Place');
   }
 }

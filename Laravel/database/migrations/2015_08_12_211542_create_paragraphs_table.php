@@ -21,7 +21,7 @@ class CreateParagraphsTable extends Migration
             $table->string('blockContentType', 15);
             $table->bigInteger('hublotContentId');
             $table->string('hublotContentType', 15);
-            $table->bigInteger('locationId');
+            $table->bigInteger('place_id');
             $table->date('date');
             $table->string('weather', 20);
             $table->bigInteger('authorId');
