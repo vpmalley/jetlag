@@ -116,6 +116,19 @@ class ArticleApiTest extends TestCase {
       ]);
   }
 
+  public function testApiCannotStoreArticleWithoutTitle()
+  {
+    $user = factory(Jetlag\User::class)->create();
+
+    $this->actingAs($user)
+      ->post($this->articleApiUrl, [ 'descriptionText' => 'an article without a title'], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(400);
+
+    $this->actingAs($user)
+      ->get($this->articleApiUrl . 1)
+      ->assertResponseStatus(404);
+  }
+
   public function testApiStoreArticleWithMoreData()
   {
     $user = factory(Jetlag\User::class)->create();
