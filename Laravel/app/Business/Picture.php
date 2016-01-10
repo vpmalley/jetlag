@@ -96,7 +96,7 @@ class Picture
     $this->mediumPictureLink = $storedPicture->mediumPictureLink;
     $this->bigPictureLink = $storedPicture->bigPictureLink;
     // location
-    $this->location = Place::find($storedPicture->locationId);
+    $this->location = $storedPicture->place;
   }
 
   public function getId()

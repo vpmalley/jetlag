@@ -17,7 +17,7 @@ class PictureSeeder extends Seeder
             'mediumPictureLink_id' => 1,
             'bigPictureLink_id' => 1,
             'authorId' => 1,
-            'locationId' => 1,
+            'place_id' => 1,
             'article_id' => 1,
         ]);
         DB::table('pictures')->insert([
@@ -25,7 +25,7 @@ class PictureSeeder extends Seeder
             'mediumPictureLink_id' => 1,
             'bigPictureLink_id' => 1,
             'authorId' => 1,
-            'locationId' => 1,
+            'place_id' => 1,
         ]);
     }
 }

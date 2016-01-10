@@ -17,7 +17,7 @@ class Picture extends Model
    * The attributes that are mass assignable.
    * A picture has so far 3 representations of different sizes (we can add more)
    * authorId refers (in authors table) to who created/can manage the picture
-   * locationId refers to the place the picture was taken
+   * place_id refers to the place the picture was taken
    *
    * @var array
    */
@@ -36,9 +36,9 @@ class Picture extends Model
   public function bigPictureLink()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'bigPictureLink_id');
-  }  
+  }
 
   public function place() {
-    return $this->belongTo('Jetlag\Eloquent\Place');
+    return $this->belongsTo('Jetlag\Eloquent\Place');
   }
 }

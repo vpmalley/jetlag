@@ -85,7 +85,7 @@ class Paragraph
     // contents
     // TODO
     // location
-    $paragraph->location = Place::where('id', $storedParagraph->locationId)->first();
+    $paragraph->location = $this->place;
     // authors
     $paragraph->authorUsers = Author::getUsers($storedParagraph->authorId);
 

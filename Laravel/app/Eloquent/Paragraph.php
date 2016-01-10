@@ -34,7 +34,7 @@ class Paragraph extends Model
   ];
 
   public function place() {
-    return $this->belongTo('Jetlag\Eloquent\Place');
+    return $this->belongsTo('Jetlag\Eloquent\Place');
   }
 
 

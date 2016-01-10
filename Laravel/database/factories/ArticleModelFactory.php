@@ -27,7 +27,7 @@ $factory->define(Jetlag\Eloquent\Picture::class, function (Faker\Generator $fake
       'mediumPictureLink_id' => 0,
       'bigPictureLink_id' => 0,
       'authorId' => $faker->randomDigit,
-      'locationId' => $faker->randomDigit,
+      'place_id' => $faker->randomDigit,
     ];
 });
 
