@@ -7,7 +7,8 @@ use Jetlag\User;
 
 class ArticleApiTest extends TestCase {
 
-  use WithoutMiddleware;
+  use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
+    //(i.e. non-logged user is forbidden to access resources requiring login)
   use DatabaseMigrations;
 
   protected $baseUrl = "http://homestead.app";
@@ -243,7 +244,7 @@ class ArticleApiTest extends TestCase {
   {
     $authorId = 7;
     $owner = factory(Jetlag\User::class)->create();
-    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
+    factory(Jetlag\Eloquent\Author::class, 'owner')->create([
       'authorId' => $authorId,
       'userId' => $owner->id
     ]);
@@ -352,7 +353,7 @@ class ArticleApiTest extends TestCase {
   public function testApiCannotStoreArticleWithoutLogin()
   {
     $this->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(401);
+      ->assertResponseStatus(403);
   }
 
   public function testApiCannotStoreArticleWithoutTitle()
@@ -444,7 +445,7 @@ class ArticleApiTest extends TestCase {
         [
           'title' => 'A first paragraph',
           'blockContent' => [
-            bigUrl => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+            'bigUrl' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
@@ -478,7 +479,8 @@ class ArticleApiTest extends TestCase {
             'date' => '2016-01-03',
           ]
         ],
-      ]);
+      ]
+    ]);
   }
 
   public function testApiGetStoredArticleAsReader()
@@ -487,12 +489,14 @@ class ArticleApiTest extends TestCase {
     $reader = factory(Jetlag\User::class)->create();
 
     $this->actingAs($owner)
-      ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+      ->post($this->articleApiUrl, [
+        'title' => 'article1',
+        'authorUsers' => [$reader->id => 'reader'],
+      ], ['ContentType' => 'application/json'])
       ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
       'url' => $this->baseUrl . "/article/1",
-      'authorUsers' => [ $reader->id => 'reader']
     ]);
 
     Log::debug("expecting user " . $reader->id . " to be reader of article 1");
@@ -689,7 +693,7 @@ class ArticleApiTest extends TestCase {
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
       ],
       ['ContentType' => 'application/json'])
-      ->assertResponseStatus(401);
+      ->assertResponseStatus(403);
   }
 
   public function testApiDeleteArticleAsOwner()
@@ -767,6 +771,6 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create();
 
     $this->delete($this->articleApiUrl . $article->id)
-      ->assertResponseStatus(401);
+      ->assertResponseStatus(403);
   }
 }

@@ -12,6 +12,7 @@ use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
 use Jetlag\Business\Picture;
+use Jetlag\Eloquent\Paragraph;
 use Jetlag\Eloquent\Author;
 use Jetlag\Eloquent\Article as StoredArticle;
 use Log;
@@ -66,6 +67,10 @@ class RestArticleController extends Controller
     if ($validator->fails()) {
       abort(400);
     }
+    if (null == Auth::user())
+    {
+      abort(403);
+    }
 
     $article = new Article;
     $article->fromRequest($request->input('title'));
@@ -90,7 +95,7 @@ class RestArticleController extends Controller
     if ($request->has('paragraphs'))
     {
       foreach ($request->input('paragraphs') as $paragraph) {
-        $article->addParagraph(extractParagraph(new Paragraph, $paragraph));
+        $article->addParagraph($this->extractParagraph(new Paragraph, $paragraph));
       }
     }
     $article->persist();

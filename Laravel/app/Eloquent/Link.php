@@ -24,7 +24,7 @@ class Link extends Model
 	 */
 	protected $fillable = ['caption', 'storage', 'url', 'authorId'];
 
-	protected $fillable = ['storage', 'authorId'];
+	protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'storage', 'authorId'];
 
   /**
    * The rules for validating input
