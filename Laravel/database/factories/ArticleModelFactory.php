@@ -23,11 +23,12 @@ $factory->define(Jetlag\Eloquent\Article::class, function (Faker\Generator $fake
 
 $factory->define(Jetlag\Eloquent\Picture::class, function (Faker\Generator $faker) {
     return [
-      'smallPictureLink_id' => 0,
-      'mediumPictureLink_id' => 0,
-      'bigPictureLink_id' => 0,
+      'smallPictureLink_id' => $faker->randomDigit,
+      'mediumPictureLink_id' => $faker->randomDigit,
+      'bigPictureLink_id' => $faker->randomDigit,
       'authorId' => $faker->randomDigit,
       'place_id' => $faker->randomDigit,
+      'article_id' => $faker->randomDigit,
     ];
 });
 
@@ -37,5 +38,16 @@ $factory->defineAs(Jetlag\Eloquent\Link::class, 'web', function (Faker\Generator
       'storage' => 'web',
       'url' => $faker->url,
       'authorId' => $faker->randomDigit,
+    ];
+});
+
+$factory->define(Jetlag\Eloquent\Paragraph::class, function (Faker\Generator $faker) {
+    return [
+      'title' => $faker->realText(40),
+      'place_id' => $faker->randomDigit,
+      'weather' => 'sunny',
+      'isDraft' => true,
+      'authorId' => $faker->randomDigit,
+      'article_id' => $faker->randomDigit,
     ];
 });

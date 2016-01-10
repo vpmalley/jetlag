@@ -12,20 +12,6 @@ class PictureSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('pictures')->insert([
-            'smallPictureLink_id' => 1,
-            'mediumPictureLink_id' => 1,
-            'bigPictureLink_id' => 1,
-            'authorId' => 1,
-            'place_id' => 1,
-            'article_id' => 1,
-        ]);
-        DB::table('pictures')->insert([
-            'smallPictureLink_id' => 1,
-            'mediumPictureLink_id' => 1,
-            'bigPictureLink_id' => 1,
-            'authorId' => 1,
-            'place_id' => 1,
-        ]);
+      factory(Jetlag\Eloquent\Picture::class, 9)->create();
     }
 }

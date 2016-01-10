@@ -2,9 +2,8 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
-use Jetlag\Eloquent\Paragraph;
 
-class ParagraphSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +12,6 @@ class ParagraphSeeder extends Seeder
      */
     public function run()
     {
-      factory(Jetlag\Eloquent\Paragraph::class, 20)->create();
+      factory(Jetlag\User::class, 10)->create();
     }
 }

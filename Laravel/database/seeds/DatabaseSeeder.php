@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('LinkSeeder');
 		$this->call('PictureSeeder');
 		$this->call('AuthorSeeder');
+		$this->call('UserSeeder');
 	}
 
 }
