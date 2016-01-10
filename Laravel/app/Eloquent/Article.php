@@ -37,4 +37,9 @@ class Article extends Model
   {
     return $this->hasOne('Jetlag\Eloquent\Picture');
   }
+
+  public function paragraphs()
+  {
+    return $this->hasMany('Jetlag\Eloquent\Paragraph');
+  }
 }

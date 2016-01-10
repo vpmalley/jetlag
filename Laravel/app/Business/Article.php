@@ -5,7 +5,7 @@ namespace Jetlag\Business;
 use Jetlag\Eloquent\Article as StoredArticle;
 use Jetlag\Eloquent\Author;
 use Jetlag\Business\Picture;
-use Jetlag\Business\Paragraph;
+use Jetlag\Eloquent\Paragraph;
 use Jetlag\UserPublic;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -140,7 +140,7 @@ class Article
       $picture = new Picture;
       $picture->fromStoredPicture($storedArticle->descriptionPicture);
     }
-    $paragraphs = Paragraph::getAllForArticle($storedArticle->id);
+    $paragraphs = $storedArticle->paragraphs;
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
     $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
   }
