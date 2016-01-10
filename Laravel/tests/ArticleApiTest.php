@@ -13,21 +13,22 @@ class ArticleApiTest extends TestCase {
   protected $baseUrl = "http://homestead.app";
   protected $articleApiUrl = "/api/0.1/articles/";
 
-  public function testApiGetArticles()
+  public function testApiGetArticlesAsWriter()
   {
+    $authorId = 3;
     $writer = factory(Jetlag\User::class)->create();
     $owner = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => 3,
+      'authorId' => $authorId,
       'userId' => $writer->id
     ]);
     factory(Jetlag\Eloquent\Author::class, 'owner')->create([
-      'authorId' => 3,
+      'authorId' => $authorId,
       'userId' => $owner->id
     ]);
 
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => 3,
+      'authorId' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
@@ -43,18 +44,84 @@ class ArticleApiTest extends TestCase {
         'descriptionText' => 'this is a cool article isnt it? id 2',
         'authorUsers' => [$owner->id => 'owner', $writer->id => 'writer'],
       ]);
-    //$this->dump();
+  }
+
+  public function testApiGetArticlesAsOwner()
+  {
+    $authorId = 4;
+    $writer = factory(Jetlag\User::class)->create();
+    $owner = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
+      'authorId' => $authorId,
+      'userId' => $writer->id
+    ]);
+    factory(Jetlag\Eloquent\Author::class, 'owner')->create([
+      'authorId' => $authorId,
+      'userId' => $owner->id
+    ]);
+
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => $authorId,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+    ]);
+
+    Log::debug(" expecting authorId=3 and userId=" . $owner->id . " and role=owner for article " . $article->id);
+    $this->actingAs($owner)
+      ->get($this->articleApiUrl)
+      ->assertResponseOk();
+    $this->seeJson([
+      'id' => $article->id,
+      'url' => $this->baseUrl . "/article/" . $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'authorUsers' => [$owner->id => 'owner', $writer->id => 'writer'],
+    ]);
+  }
+
+  public function testApiGetArticlesAsReader()
+  {
+    $authorId = 5;
+    $reader = factory(Jetlag\User::class)->create();
+    $owner = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'reader')->create([
+      'authorId' => $authorId,
+      'userId' => $reader->id
+    ]);
+    factory(Jetlag\Eloquent\Author::class, 'owner')->create([
+      'authorId' => $authorId,
+      'userId' => $owner->id
+    ]);
+
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => $authorId,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+    ]);
+
+    Log::debug(" expecting authorId=3 and userId=" . $reader->id . " and role=reader for article " . $article->id);
+    $this->actingAs($reader)
+      ->get($this->articleApiUrl)
+      ->assertResponseOk();
+    $this->seeJson([
+      'id' => $article->id,
+      'url' => $this->baseUrl . "/article/" . $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'authorUsers' => [$owner->id => 'owner', $reader->id => 'reader'],
+    ]);
   }
 
   public function testApiGetArticleAsWriter()
   {
+    $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => 4,
+      'authorId' => $authorId,
       'userId' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => 4,
+      'authorId' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
@@ -69,6 +136,60 @@ class ArticleApiTest extends TestCase {
         'descriptionText' => 'this is a cool article isnt it? id 2',
         'isDraft' => 1, // why not true?
         'authorUsers' => [$writer->id => 'writer'],
+      ]);
+  }
+
+  public function testApiGetArticleAsOwner()
+  {
+    $authorId = 7;
+    $owner = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
+      'authorId' => $authorId,
+      'userId' => $owner->id
+    ]);
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => $authorId,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+
+    Log::debug(" expecting authorId=4 and userId=" . $owner->id . " and role=owner for article " . $article->id);
+    $this->actingAs($owner)
+      ->get($this->articleApiUrl . $article->id)
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => $article->id,
+        'title' => "article with id 2",
+        'descriptionText' => 'this is a cool article isnt it? id 2',
+        'isDraft' => 1, // why not true?
+        'authorUsers' => [$owner->id => 'owner'],
+      ]);
+  }
+
+  public function testApiGetArticleAsReader()
+  {
+    $authorId = 6;
+    $reader = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'reader')->create([
+      'authorId' => $authorId,
+      'userId' => $reader->id
+    ]);
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => $authorId,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+
+    Log::debug(" expecting authorId=4 and userId=" . $reader->id . " and role=reader for article " . $article->id);
+    $this->actingAs($reader)
+      ->get($this->articleApiUrl . $article->id)
+      ->assertResponseOk();
+    $this->seeJson([
+        'id' => $article->id,
+        'title' => "article with id 2",
+        'descriptionText' => 'this is a cool article isnt it? id 2',
+        'isDraft' => 1, // why not true?
+        'authorUsers' => [$reader->id => 'reader'],
       ]);
   }
 
@@ -89,6 +210,18 @@ class ArticleApiTest extends TestCase {
         'isDraft' => 1, // why not true?
         'isPublic' => 1,
       ]);
+  }
+
+  public function testApiCannotGetPrivateArticleWithoutLogin()
+  {
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isPublic' => false,
+    ]);
+
+    $this->get($this->articleApiUrl . $article->id)
+      ->assertResponseStatus(403);
   }
 
   public function testApiStoreArticleWithTitle()
@@ -114,6 +247,12 @@ class ArticleApiTest extends TestCase {
         'isDraft' => 1,
         'authorUsers' => [ $user->id => 'owner'],
       ]);
+  }
+
+  public function testApiCannotStoreArticleWithoutLogin()
+  {
+    $this->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(401);
   }
 
   public function testApiCannotStoreArticleWithoutTitle()
@@ -194,7 +333,59 @@ class ArticleApiTest extends TestCase {
       ]);
   }
 
-  public function testApiUpdateFullArticle()
+  public function testApiGetStoredArticleAsReader()
+  {
+    $owner = factory(Jetlag\User::class)->create();
+    $reader = factory(Jetlag\User::class)->create();
+
+    $this->actingAs($owner)
+      ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(201);
+    $this->seeJson([
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+      'authorUsers' => [ $reader->id => 'reader']
+    ]);
+
+    Log::debug("expecting user " . $reader->id . " to be reader of article 1");
+    $this->actingAs($reader)
+      ->get($this->articleApiUrl . 1)
+      ->assertResponseOk();
+    $this->seeJson([
+        'title' => "article1",
+        'id' => 1,
+        'descriptionText' => '',
+        'isDraft' => 1,
+        'authorUsers' => [ $owner->id => 'owner', $reader->id => 'reader'],
+      ]);
+  }
+
+  public function testApiCannotGetStoredPrivateArticle()
+  {
+    $user = factory(Jetlag\User::class)->create();
+
+    $this->actingAs($user)
+      ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(201);
+    $this->seeJson([
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
+
+    Log::debug("expecting user " . $user->id . " to be owner of article 1");
+    $this->actingAs($user)
+      ->get($this->articleApiUrl . 1)
+      ->assertResponseOk();
+    $this->seeJson([
+        'title' => "article1",
+        'id' => 1,
+        'descriptionText' => '',
+        'isDraft' => 1,
+        'authorUsers' => [ $user->id => 'owner'],
+      ]);
+  }
+
+  public function testApiUpdateFullArticleAsWriter()
   {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
@@ -247,7 +438,7 @@ class ArticleApiTest extends TestCase {
     ]);
   }
 
-  public function testApiUpdatePartialArticle()
+  public function testApiUpdatePartialArticleAsWriter()
   {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
@@ -295,6 +486,64 @@ class ArticleApiTest extends TestCase {
     ]);
   }
 
+  public function testApiCannotUpdateArticleAsReader()
+  {
+    $reader = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'reader')->create([
+      'authorId' => 13,
+      'userId' => $reader->id
+    ]);
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => 13,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+
+    $this->actingAs($reader)
+      ->put($this->articleApiUrl . $article->id, [
+      'title' => 'article ' . $article->id . ' updated',
+      'descriptionText' => 'some updated description',
+      'isDraft' => 0,
+      'authorUsers' => [1 => 'writer', 2 => 'owner'],
+      ],
+      ['ContentType' => 'application/json'])
+      ->assertResponseStatus(403);
+  }
+
+  public function testApiCannotUpdateArticleAsLoggedIn()
+  {
+    $user = factory(Jetlag\User::class)->create();
+    $article = factory(Jetlag\Eloquent\Article::class)->create();
+
+    $this->actingAs($user)
+      ->put($this->articleApiUrl . $article->id, [
+      'title' => 'article ' . $article->id . ' updated',
+      'descriptionText' => 'some updated description',
+      'isDraft' => 0,
+      'authorUsers' => [1 => 'writer', 2 => 'owner'],
+      ],
+      ['ContentType' => 'application/json'])
+      ->assertResponseStatus(403);
+  }
+
+  public function testApiCannotUpdateArticleWithoutLogin()
+  {
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'isPublic' => true,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+
+    $this->put($this->articleApiUrl . $article->id, [
+      'title' => 'article ' . $article->id . ' updated',
+      'descriptionText' => 'some updated description',
+      'isDraft' => 0,
+      'authorUsers' => [1 => 'writer', 2 => 'owner'],
+      ],
+      ['ContentType' => 'application/json'])
+      ->assertResponseStatus(401);
+  }
+
   public function testApiDeleteArticleAsOwner()
   {
     $owner = factory(Jetlag\User::class)->create();
@@ -335,5 +584,41 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($writer)
       ->delete($this->articleApiUrl . $article->id)
       ->assertResponseStatus(403);
+  }
+
+  public function testApiCannotDeleteArticleAsReader()
+  {
+    $reader = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'reader')->create([
+      'authorId' => 18,
+      'userId' => $reader->id
+    ]);
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => 18,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+
+    $this->actingAs($reader)
+      ->delete($this->articleApiUrl . $article->id)
+      ->assertResponseStatus(403);
+  }
+
+  public function testApiCannotDeleteArticleAsLoggedIn()
+  {
+    $user = factory(Jetlag\User::class)->create();
+    $article = factory(Jetlag\Eloquent\Article::class)->create();
+
+    $this->actingAs($user)
+      ->delete($this->articleApiUrl . $article->id)
+      ->assertResponseStatus(403);
+  }
+
+  public function testApiCannotDeleteArticleWithoutLogin()
+  {
+    $article = factory(Jetlag\Eloquent\Article::class)->create();
+
+    $this->delete($this->articleApiUrl . $article->id)
+      ->assertResponseStatus(401);
   }
 }
