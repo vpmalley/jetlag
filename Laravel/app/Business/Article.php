@@ -141,6 +141,10 @@ class Article
       $picture->fromStoredPicture($storedArticle->descriptionPicture);
     }
     $paragraphs = $storedArticle->paragraphs;
+    foreach ($paragraphs as $paragraph) {
+      $paragraph->load(['blockContent', 'blockContent.smallPictureLink',
+        'blockContent.mediumPictureLink', 'blockContent.bigPictureLink']);
+    }
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
     $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
   }

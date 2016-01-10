@@ -199,25 +199,26 @@ class RestArticleController extends Controller
    * Extracts the paragraph from the request
    *
    * @param  Jetlag\Eloquent\Paragraph  $paragraph
-   * @param  Request  $request
+   * @param  array  $request
    * @return  Jetlag\Eloquent\Paragraph the extracted paragraph
    */
-  public function extractParagraph(Paragraph $paragraph, Request $request)
+  public function extractParagraph(Paragraph $paragraph, $request)
   {
-    $paragraph->setId($request->input('id', -1));
-    if ($request->has('weather'))
+    $paragraph->id = $request['id'] ? $request['id'] : -1;
+    if (isset($request['weather']))
     {
-      $paragraph->weather = $request->input('weather');
+      $paragraph->weather = $request['weather'];
     }
-    if ($request->has('date'))
+    if (isset($request['date']))
     {
-      $paragraph->date = $request->input('date');
+      $paragraph->date = $request['date'];
     }
-    if ($request->has('isDraft'))
+    if (isset($request['isDraft']))
     {
-      $paragraph->isDraft = $request->input('isDraft');
+      $paragraph->isDraft = $request['isDraft'];
     }
     $paragraph->authorId = -1; // TODO authoring refacto
+    // TODO extract blockContent
     return $picture;
   }
 

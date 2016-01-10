@@ -24,6 +24,8 @@ class Link extends Model
 	 */
 	protected $fillable = ['caption', 'storage', 'url', 'authorId'];
 
+	protected $fillable = ['storage', 'authorId'];
+
   /**
    * The rules for validating input
    */
