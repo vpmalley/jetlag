@@ -86,6 +86,13 @@ class RestArticleController extends Controller
     {
       $article->setDescriptionPicture($this->extractPicture(new Picture, $request));
     }
+
+    if ($request->has('paragraphs'))
+    {
+      foreach ($request->input('paragraphs') as $paragraph) {
+        $article->addParagraph(extractParagraph(new Paragraph, $paragraph));
+      }
+    }
     $article->persist();
     return response()->json(['id' => $article->getId(), 'url' => $article->getWebUrl()], 201);
   }
@@ -184,9 +191,36 @@ class RestArticleController extends Controller
     {
       $picture->setBigDisplayUrl($request->input('descriptionMedia.bigUrl'));
     }
-    $picture->setAuthorId(-1); // TODO use logged in user
+    $picture->setAuthorId(-1); // TODO authoring refacto
     return $picture;
   }
+
+  /**
+   * Extracts the paragraph from the request
+   *
+   * @param  Jetlag\Eloquent\Paragraph  $paragraph
+   * @param  Request  $request
+   * @return  Jetlag\Eloquent\Paragraph the extracted paragraph
+   */
+  public function extractParagraph(Paragraph $paragraph, Request $request)
+  {
+    $paragraph->setId($request->input('id', -1));
+    if ($request->has('weather'))
+    {
+      $paragraph->weather = $request->input('weather');
+    }
+    if ($request->has('date'))
+    {
+      $paragraph->date = $request->input('date');
+    }
+    if ($request->has('isDraft'))
+    {
+      $paragraph->isDraft = $request->input('isDraft');
+    }
+    $paragraph->authorId = -1; // TODO authoring refacto
+    return $picture;
+  }
+
 
   /**
   * Remove the specified resource from storage.

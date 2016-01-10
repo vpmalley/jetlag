@@ -22,6 +22,8 @@ class Paragraph extends Model
    */
   protected $fillable = ['title', 'article_id', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType', 'place_id', 'date', 'weather', 'authorId', 'isDraft'];
 
+  protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType']
+  
   /**
    * The rules for validating input
    */

@@ -63,7 +63,7 @@ class Article
    *
    * @var array
    */
-  protected $paragraphs;
+  protected $paragraphs = [];
 
   /**
    * The id for the author link to users who are authors of this article
@@ -230,6 +230,11 @@ class Article
     return url('/article/' . $this->id);
   }
 
+  public function addParagraph($paragraph)
+  {
+    $paragraphs[] = $paragraph;
+  }
+
   /**
    * @param array hash of user ids and roles to make them as the new authors of this article
    */
@@ -384,6 +389,9 @@ class Article
       $article->descriptionPicture()->save($storedPicture);
       $this->descriptionPicture->setId($storedPicture->id);
       $this->descriptionPicture->persist();
+    }
+    foreach ($this->paragraphs as $paragraph) {
+      $article->paragraphs()->save($paragraph);
     }
 
     $this->id = $article->id;
