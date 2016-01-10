@@ -19,5 +19,13 @@ function TravelbookCreatorController($scope, ModelsManager) {
 			}
 		}
 	}
+	
+	ctrl.toggleStep = function(stepNumber) {
+		if(ctrl.step != stepNumber) {
+			ctrl.changeStep(stepNumber);
+		} else {
+			ctrl.changeStep();
+		}
+	}
 };
 
