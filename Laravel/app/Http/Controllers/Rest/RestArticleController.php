@@ -210,7 +210,8 @@ class RestArticleController extends Controller
    */
   public function wantsToOwnArticle($article)
   {
-    if (!Author::isOwner(Auth::user()->id, $article->getAuthorId()))
+    $id = Auth::user() ? Auth::user()->id : -1;
+    if (!Author::isOwner($id, $article->getAuthorId()))
     {
       abort(403);
     }
@@ -223,7 +224,8 @@ class RestArticleController extends Controller
    */
   public function wantsToWriteArticle($article)
   {
-    if (!Author::isWriter(Auth::user()->id, $article->getAuthorId()))
+    $id = Auth::user() ? Auth::user()->id : -1;
+    if (!Author::isWriter($id, $article->getAuthorId()))
     {
       abort(403);
     }
@@ -236,7 +238,8 @@ class RestArticleController extends Controller
    */
   public function wantsToReadArticle($article)
   {
-    if (!$article->isPublic() && !Author::isReader(Auth::user()->id, $article->getAuthorId()))
+    $id = Auth::user() ? Auth::user()->id : -1;
+    if (!$article->isPublic() && !Author::isReader($id, $article->getAuthorId()))
     {
       abort(403);
     }
