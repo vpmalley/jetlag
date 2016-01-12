@@ -209,6 +209,7 @@ class RestArticleController extends Controller
    */
   public function extractParagraph(Paragraph $paragraph, $request)
   {
+    Log:debug('request is ' . $request);
     $paragraph->id = $request['id'] ? $request['id'] : -1;
     if (isset($request['weather']))
     {
