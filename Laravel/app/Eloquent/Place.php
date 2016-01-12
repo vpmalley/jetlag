@@ -20,6 +20,8 @@ class Place extends Model
    */
   protected $fillable = ['latitude', 'longitude', 'altitude', 'localisation'];
 
+  protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id'];
+
   /**
    * The rules for validating input
    */
