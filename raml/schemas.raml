@@ -45,6 +45,11 @@ schemas:
           "type": "AuthorUser[]",
           "required": false,
           "schema" : AuthorUser
+        },
+        "authorUsers": {
+          "type": "Paragraph[]",
+          "required": false,
+          "schema" : Paragraph
         }
       }
     }
@@ -101,6 +106,70 @@ schemas:
           "required": false,
           "minLength": 5,
           "maxLength": 10
+        }
+      }
+    }
+ - Paragraph: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "blockContent": {
+          "type": "Picture",
+          "required": false,
+          "schema" : Picture
+        },
+        "place": {
+          "type": "Place",
+          "required": false,
+          "schema" : Place
+        },
+        "date": {
+          "type": "string",
+          "required": false
+        },
+        "weather": {
+          "type": "string",
+          "required": false
+        },
+        "isDraft": {
+          "type": "boolean",
+          "required": false
+        }
+      }
+    }
+ - Place: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "latitude": {
+          "type": "double",
+          "required": true
+        },
+        "longitude": {
+          "type": "double",
+          "required": true
+        },
+        "altitude": {
+          "type": "double",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false
         }
       }
     }
