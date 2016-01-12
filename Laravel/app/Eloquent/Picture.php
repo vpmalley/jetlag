@@ -25,17 +25,17 @@ class Picture extends Model
 
   protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'smallPictureLink_id', 'mediumPictureLink_id', 'bigPictureLink_id', 'authorId', 'place_id'];
 
-  public function smallPictureLink()
+  public function smallUrl()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'smallPictureLink_id');
   }
 
-  public function mediumPictureLink()
+  public function mediumUrl()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'mediumPictureLink_id');
   }
 
-  public function bigPictureLink()
+  public function bigUrl()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'bigPictureLink_id');
   }

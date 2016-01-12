@@ -92,9 +92,9 @@ class Picture
   {
     $this->id = $storedPicture->id;
     // links
-    $this->smallPictureLink = $storedPicture->smallPictureLink;
-    $this->mediumPictureLink = $storedPicture->mediumPictureLink;
-    $this->bigPictureLink = $storedPicture->bigPictureLink;
+    $this->smallPictureLink = $storedPicture->smallUrl;
+    $this->mediumPictureLink = $storedPicture->mediumUrl;
+    $this->bigPictureLink = $storedPicture->bigUrl;
     // location
     $this->location = $storedPicture->place;
   }
