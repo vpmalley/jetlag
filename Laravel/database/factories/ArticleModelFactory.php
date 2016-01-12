@@ -51,3 +51,12 @@ $factory->define(Jetlag\Eloquent\Paragraph::class, function (Faker\Generator $fa
       'article_id' => $faker->randomDigit,
     ];
 });
+
+$factory->defineAs(Jetlag\Eloquent\Place::class, function (Faker\Generator $faker) {
+    return [
+      'localisation' => $faker->realText(70),
+      'latitude' => $faker->randomFloat(),
+      'longitude' => $faker->randomFloat(),
+      'altitude' => $faker->randomFloat(),
+    ];
+});

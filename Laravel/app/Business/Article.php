@@ -143,7 +143,7 @@ class Article
     $paragraphs = $storedArticle->paragraphs;
     foreach ($paragraphs as $paragraph) {
       $paragraph->load(['blockContent', 'blockContent.smallUrl',
-        'blockContent.mediumUrl', 'blockContent.bigUrl']);
+        'blockContent.mediumUrl', 'blockContent.bigUrl', 'blockContent.place']);
     }
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
     $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
