@@ -229,9 +229,9 @@ class ArticleApiTest extends TestCase {
             'title' => 'A first paragraph',
             'block_content' => [
               'id' => $picture->id,
-              'small_url' => { 'caption' => $links[0]->caption, 'url' => $links[0]->url },
-              'medium_url' => { 'caption' => $links[1]->caption, 'url' => $links[1]->url },,
-              'big_url' => { 'caption' => $links[2]->caption, 'url' => $links[2]->url },,
+              'small_url' => [ 'caption' => $links[0]->caption, 'url' => $links[0]->url ],
+              'medium_url' => [ 'caption' => $links[1]->caption, 'url' => $links[1]->url ],
+              'big_url' => [ 'caption' => $links[2]->caption, 'url' => $links[2]->url ],
             ],
             'weather' => 'cloudy',
             'date' => '2016-01-03',
