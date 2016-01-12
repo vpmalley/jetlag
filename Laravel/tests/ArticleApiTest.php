@@ -227,14 +227,15 @@ class ArticleApiTest extends TestCase {
           [
             'id' => 1,
             'title' => 'A first paragraph',
-            'blockContent' => [
+            'block_content' => [
               'id' => $picture->id,
-              'smallUrl' => $links[0]->url,
-              'mediumUrl' => $links[1]->url,
-              'bigUrl' => $links[2]->url,
+              'small_url' => { 'caption' => $links[0]->caption, 'url' => $links[0]->url },
+              'medium_url' => { 'caption' => $links[1]->caption, 'url' => $links[1]->url },,
+              'big_url' => { 'caption' => $links[2]->caption, 'url' => $links[2]->url },,
             ],
             'weather' => 'cloudy',
             'date' => '2016-01-03',
+            'isDraft' => 1,
           ]
         ],
       ]);
@@ -444,8 +445,8 @@ class ArticleApiTest extends TestCase {
       'paragraphs' => [
         [
           'title' => 'A first paragraph',
-          'blockContent' => [
-            'bigUrl' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+          'block_content' => [
+            'big_url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
