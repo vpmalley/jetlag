@@ -199,13 +199,13 @@ class ArticleApiTest extends TestCase {
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
       'authorId' => $authorId,
     ]);
-    $place = factory(Jetlag\Eloquent\Place::class)->create();
+    $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
       'authorId' => $authorId,
       'smallPictureLink_id' => $links[0]->id,
       'mediumPictureLink_id' => $links[1]->id,
       'bigPictureLink_id' => $links[2]->id,
-      'place_id' => $place->id,
+      'place_id' => $places[0]->id,
     ]);
     $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
       'title' => 'A first paragraph',
@@ -213,6 +213,7 @@ class ArticleApiTest extends TestCase {
       'date' => '2016-01-03',
       'article_id' => $article->id,
       'blockContentId' => $picture->id,
+      'place_id' => $places[1]->id,
     ]);
 
     Log::debug(" expecting authorId=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
@@ -234,15 +235,21 @@ class ArticleApiTest extends TestCase {
               'small_url' => [ 'caption' => $links[0]->caption, 'url' => $links[0]->url ],
               'medium_url' => [ 'caption' => $links[1]->caption, 'url' => $links[1]->url ],
               'big_url' => [ 'caption' => $links[2]->caption, 'url' => $links[2]->url ],
+              'place' => [
+                'localisation' => $places[0]->localisation,
+                'latitude' => $places[0]->latitude,
+                'longitude' => $places[0]->longitude,
+                'altitude' => $places[0]->altitude,
+              ]
             ],
             'weather' => 'cloudy',
             'date' => '2016-01-03',
             'isDraft' => 1,
             'place' => [
-              'localisation' => $place->localisation,
-              'latitude' => $place->latitude,
-              'longitude' => $place->longitude,
-              'altitude' => $place->altitude,
+              'localisation' => $places[1]->localisation,
+              'latitude' => $places[1]->latitude,
+              'longitude' => $places[1]->longitude,
+              'altitude' => $places[1]->altitude,
             ]
           ]
         ],
