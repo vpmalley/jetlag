@@ -23,7 +23,8 @@ elixir(function(mix) {
 			bower_components+'backbone/backbone.js',
 			bower_components+'moment/moment.js',
 			bower_components+'ng-backbone/ng-backbone.js',
-			bower_components+'bootstrap/dist/js/bootstrap.js'
+			bower_components+'bootstrap/dist/js/bootstrap.js',
+			bower_components+'ng-file-upload/ng-file-upload.js'
 		], 'public/js/thirds.js')
 		.scripts([
 			'base.js',
