@@ -11,9 +11,11 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
-use Jetlag\Business\Picture;
+use Jetlag\Eloquent\Picture;
+use Jetlag\Business\Picture as BPicture;
 use Jetlag\Eloquent\Paragraph;
 use Jetlag\Eloquent\Author;
+use Jetlag\Eloquent\Link;
 use Jetlag\Eloquent\Article as StoredArticle;
 use Log;
 
@@ -89,13 +91,17 @@ class RestArticleController extends Controller
 
     if ($request->has('descriptionMedia'))
     {
-      $article->setDescriptionPicture($this->extractPicture(new Picture, $request));
+      $storedPicture = $this->extractPicture(new Picture, $request->input('descriptionMedia'));
+      $picture = new BPicture;
+      $picture->fromStoredPicture($storedPicture);
+      $article->setDescriptionPicture($picture);
     }
 
     if ($request->has('paragraphs'))
     {
       foreach ($request->input('paragraphs') as $paragraph) {
-        $article->addParagraph($this->extractParagraph(new Paragraph, $paragraph));
+        $paragraph = $this->extractParagraph(new Paragraph, $paragraph);
+        $article->addParagraph($paragraph);
       }
     }
     $article->persist();
@@ -156,8 +162,11 @@ class RestArticleController extends Controller
       } else
       {
         $picture = new Picture;
+        $storedPicture = $this->extractPicture(new Picture, $request->input('descriptionMedia'));
+        $picture = new BPicture;
+        $picture->fromStoredPicture($storedPicture);
+        $article->setDescriptionPicture($picture);
       }
-      $article->setDescriptionPicture($this->extractPicture($picture, $request));
     }
     $article->setIsDraft($request->input('isDraft', $article->isDraft()));
     if ($request->has('authorUsers'))
@@ -169,63 +178,93 @@ class RestArticleController extends Controller
     $article->persist();
     return ['id' => $article->getId()];
   }
-
+  
   /**
-   * Extracts the picture from the request
+   * Extracts the picture from the subrequest
    *
-   * @param  Jetlag\Business\Picture  $picture
-   * @param  Request  $request
-   * @return  Jetlag\Business\Picture the extracted picture
+   * @param  Jetlag\Eloquent\Picture  $picture
+   * @param  array  $subRequest
+   * @return  Jetlag\Eloquent\Picture the extracted picture
    */
-  public function extractPicture(Picture $picture, Request $request)
+  public function extractPicture(Picture $picture, $subRequest)
   {
-    $picture->setId($request->input('descriptionMedia.id', -1));
-    if ($request->has('descriptionMedia.smallUrl'))
+    $picture->id = $this->get($subRequest, 'id', -1);
+    $picture->authorId = -1; // TODO authoring refacto
+    $picture->save();
+
+    if (array_key_exists('small_url', $subRequest))
     {
-      $picture->setSmallDisplayUrl($request->input('descriptionMedia.smallUrl'));
+      $smallUrlLink = new Link;
+      $smallUrlLink->fromUrl($this->get($subRequest, 'small_url'));
+      $picture->smallUrl()->associate($smallUrlLink);
     }
-    if ($request->has('descriptionMedia.url'))
+
+    if (array_key_exists('url', $subRequest))
     {
-      $picture->setMediumDisplayUrl($request->input('descriptionMedia.url'));
+      $mediumUrlLink = new Link;
+      $mediumUrlLink->fromUrl($this->get($subRequest, 'url'));
+      $picture->mediumUrl()->associate($mediumUrlLink);
     }
-    if ($request->has('descriptionMedia.mediumUrl'))
+
+    if (array_key_exists('medium_url', $subRequest))
     {
-      $picture->setMediumDisplayUrl($request->input('descriptionMedia.mediumUrl'));
+      $mediumUrlLink = new Link;
+      $mediumUrlLink->fromUrl($this->get($subRequest, 'medium_url'));
+      $picture->mediumUrl()->associate($mediumUrlLink);
     }
-    if ($request->has('descriptionMedia.bigUrl'))
+
+    if (array_key_exists('big_url', $subRequest))
     {
-      $picture->setBigDisplayUrl($request->input('descriptionMedia.bigUrl'));
+      $bigUrlLink = new Link;
+      $bigUrlLink->fromUrl($this->get($subRequest, 'big_url'));
+      $picture->bigUrl()->associate($bigUrlLink);
     }
-    $picture->setAuthorId(-1); // TODO authoring refacto
+    // TODO extract place
     return $picture;
   }
 
   /**
-   * Extracts the paragraph from the request
+   * Extracts the paragraph from the subrequest
    *
    * @param  Jetlag\Eloquent\Paragraph  $paragraph
-   * @param  array  $request
+   * @param  array  $subRequest
    * @return  Jetlag\Eloquent\Paragraph the extracted paragraph
    */
-  public function extractParagraph(Paragraph $paragraph, $request)
+  public function extractParagraph(Paragraph $paragraph, $subRequest)
   {
-    Log::debug('request is ' . $request);
-    $paragraph->id = $request['id'] ? $request['id'] : -1;
-    if (isset($request['weather']))
-    {
-      $paragraph->weather = $request['weather'];
-    }
-    if (isset($request['date']))
-    {
-      $paragraph->date = $request['date'];
-    }
-    if (isset($request['isDraft']))
-    {
-      $paragraph->isDraft = $request['isDraft'];
-    }
+    $paragraph->id = $this->get($subRequest, 'id', -1);
+    $paragraph->title = $this->get($subRequest, 'title', '');
+    $paragraph->weather = $this->get($subRequest, 'weather');
+    $paragraph->date = $this->get($subRequest, 'date', '');
+    $paragraph->isDraft = $this->get($subRequest, 'isDraft', true);
     $paragraph->authorId = -1; // TODO authoring refacto
-    // TODO extract blockContent
-    return $picture;
+    $paragraph->save();
+
+    if (array_key_exists('block_content', $subRequest))
+    {
+      $picture = $this->extractPicture(new Picture, $subRequest['block_content']);
+      $paragraph->blockContent()->associate($picture);
+    }
+    // TODO extract blockContent, place
+    return $paragraph;
+  }
+
+  /**
+   * Gets the subrequest value matching the key
+   * @param array subRequest a part of the request
+   * @param string key the key matching the expected value
+   * @param default the default value when no value matches the key
+   *
+   */
+  private function get($subRequest, $key, $default = null)
+  {
+    if (array_key_exists($key, $subRequest))
+    {
+      return $subRequest[$key];
+    } else
+    {
+      return $default;
+    }
   }
 
 

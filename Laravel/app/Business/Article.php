@@ -143,7 +143,7 @@ class Article
     $paragraphs = $storedArticle->paragraphs;
     foreach ($paragraphs as $paragraph) {
       $paragraph->load(['blockContent', 'blockContent.smallUrl',
-        'blockContent.mediumUrl', 'blockContent.bigUrl', 'blockContent.place']);
+        'blockContent.mediumUrl', 'blockContent.bigUrl', 'blockContent.place', 'place']);
     }
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
     $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
@@ -236,7 +236,7 @@ class Article
 
   public function addParagraph($paragraph)
   {
-    $paragraphs[] = $paragraph;
+    $this->paragraphs[] = $paragraph;
   }
 
   /**
