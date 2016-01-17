@@ -178,7 +178,7 @@ class RestArticleController extends Controller
     $article->persist();
     return ['id' => $article->getId()];
   }
-  
+
   /**
    * Extracts the picture from the subrequest
    *
@@ -190,37 +190,48 @@ class RestArticleController extends Controller
   {
     $picture->id = $this->get($subRequest, 'id', -1);
     $picture->authorId = -1; // TODO authoring refacto
-    $picture->save();
 
     if (array_key_exists('small_url', $subRequest))
     {
-      $smallUrlLink = new Link;
-      $smallUrlLink->fromUrl($this->get($subRequest, 'small_url'));
+      $smallUrlLink = $this->extractLink(new Link, $subRequest['small_url']);
       $picture->smallUrl()->associate($smallUrlLink);
     }
 
     if (array_key_exists('url', $subRequest))
     {
-      $mediumUrlLink = new Link;
-      $mediumUrlLink->fromUrl($this->get($subRequest, 'url'));
+      $mediumUrlLink = $this->extractLink(new Link, $subRequest['url']);
       $picture->mediumUrl()->associate($mediumUrlLink);
     }
 
     if (array_key_exists('medium_url', $subRequest))
     {
-      $mediumUrlLink = new Link;
-      $mediumUrlLink->fromUrl($this->get($subRequest, 'medium_url'));
+      $mediumUrlLink = $this->extractLink(new Link, $subRequest['medium_url']);
       $picture->mediumUrl()->associate($mediumUrlLink);
     }
 
     if (array_key_exists('big_url', $subRequest))
     {
-      $bigUrlLink = new Link;
-      $bigUrlLink->fromUrl($this->get($subRequest, 'big_url'));
+      $bigUrlLink = $this->extractLink(new Link, $subRequest['big_url']);
       $picture->bigUrl()->associate($bigUrlLink);
     }
+    $picture->save();
     // TODO extract place
     return $picture;
+  }
+
+  /**
+   * Extracts the link from the subrequest
+   *
+   * @param  Jetlag\Eloquent\Link  $link
+   * @param  array  $subRequest
+   * @return  Jetlag\Eloquent\Link the extracted link
+   */
+  public function extractLink(Link $link, $subRequest)
+  {
+    $link->fromUrl($this->get($subRequest, 'url'));
+    $link->caption = $this->get($subRequest, 'caption', '');
+    $link->save();
+    return $link;
   }
 
   /**

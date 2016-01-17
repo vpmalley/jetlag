@@ -461,7 +461,9 @@ class ArticleApiTest extends TestCase {
         [
           'title' => 'A first paragraph',
           'block_content' => [
-            'big_url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+            'big_url' => [
+                'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+              ]
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
@@ -487,7 +489,10 @@ class ArticleApiTest extends TestCase {
         'id' => 1,
         'title' => 'A first paragraph',
         'block_content' => [
-          'big_url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+          'big_url' => [
+            'caption' => '',
+            'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+          ]
         ],
         'weather' => 'cloudy',
         'date' => '2016-01-03',
