@@ -6,8 +6,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Home page - Jetlag</title>
 
-	<!--- Global files --->
+	<!-- Internal CSS files -->
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet" type='text/css'>
+	
+	<!-- External CSS files -->
+	<link href="{{ asset('/css/leaflet.css') }}" rel="stylesheet" type='text/css'>
 
 	<!-- Fonts -->
 	<link href="{{ asset('/css/font-awesome.css') }}" rel='stylesheet' type='text/css'>

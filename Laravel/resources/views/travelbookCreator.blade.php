@@ -223,16 +223,30 @@
 			<div class="btn btn-default"><i class="fa fa-times"></i> Supprimer</div>
 		</div>
 		<div class="btn-group btn-group-justified">
-			<div class="btn btn-default"><i class="fa fa-pencil"></i></div>
-			<div class="btn btn-default"><i class="fa fa-picture-o"></i></div>
-			<div class="btn btn-default"><i class="fa fa-map-marker"></i></div>
-			<div class="btn btn-default"><i class="fa fa-link"></i></div>
+			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
+			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-picture-o"></i></div>
+			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map-marker"></i></div>
+			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
 		</div>
 		<div class="article-input">
-			<textarea 	ng-if="articleCreatorCtrl.paragraphEditor.contentType === 'text'"
+			<textarea 	ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'text'"
 						placeholder="Lisez nos conseils juste au dessus si vous êtes bloqués"
-						ng-model="articleCreatorCtrl.paragraphEditor.content">
+						ng-model="articleCreatorCtrl.paragraphEditor.input.text">
 			</textarea>
+			<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'picture'">
+				<div class="button" ngf-select="articleCreatorCtrl.uploadFiles($files)" multiple="multiple">Upload on file select</div>
+				Drop File:
+					<div 	ngf-drop="articleCreatorCtrl.uploadFiles($files)" class="drop-box"
+							ngf-drag-over-class="'dragover'" ngf-multiple="true" 
+							ngf-pattern="'image/*'">Drop Images here</div>
+					<div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+			</div>
+			<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
+				<input type="text" ng-model="articleCreatorCtrl.paragraphEditor.input.location.name"></input>
+				<button class="jl-btn jl-btn-large" ng-click="articleCreatorCtrl.changeLocation()">Search</button>
+				<leaflet lf-center="articleCreatorCtrl.leafletMap.center" height="480px" width="640px" 
+				markers="articleCreatorCtrl.leafletMap.markers" events="articleCreatorCtrl.leafletMap.events"></leaflet>
+			</div>
 		</div>
 	</div>
 	<div class="article-publisher">

@@ -24,7 +24,9 @@ elixir(function(mix) {
 			bower_components+'moment/moment.js',
 			bower_components+'ng-backbone/ng-backbone.js',
 			bower_components+'bootstrap/dist/js/bootstrap.js',
-			bower_components+'ng-file-upload/ng-file-upload.js'
+			bower_components+'ng-file-upload/ng-file-upload.js',
+			bower_components+'leaflet/dist/leaflet.js',
+			bower_components+'angular-leaflet-directive/dist/angular-leaflet-directive.js'
 		], 'public/js/thirds.js')
 		.scripts([
 			'base.js',
@@ -35,5 +37,7 @@ elixir(function(mix) {
 		.copy('bower_components/font-awesome/css/font-awesome.css', 'public/css/font-awesome.css')
 		.copy('bower_components/font-awesome/fonts', 'public/fonts')
 		.copy('bower_components/bootstrap/fonts', 'public/fonts')
+		.copy('bower_components/leaflet/dist/images', 'public/images')
+		.copy('bower_components/leaflet/dist/leaflet.css', 'public/css')
 		.version('js/thirds.js');
 });
