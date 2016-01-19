@@ -91,7 +91,8 @@ class RestArticleController extends Controller
 
     if ($request->has('descriptionMedia'))
     {
-      $storedPicture = $this->extractPicture(new Picture, $request->input('descriptionMedia'));
+      $storedPicture = new Picture;
+      $storedPicture->extract($request->input('descriptionMedia'));
       $picture = new BPicture;
       $picture->fromStoredPicture($storedPicture);
       $article->setDescriptionPicture($picture);
@@ -162,7 +163,8 @@ class RestArticleController extends Controller
       } else
       {
         $picture = new Picture;
-        $storedPicture = $this->extractPicture(new Picture, $request->input('descriptionMedia'));
+        $storedPicture = new Picture;
+        $storedPicture->extract($request->input('descriptionMedia'));
         $picture = new BPicture;
         $picture->fromStoredPicture($storedPicture);
         $article->setDescriptionPicture($picture);
@@ -178,62 +180,7 @@ class RestArticleController extends Controller
     $article->persist();
     return ['id' => $article->getId()];
   }
-
-  /**
-   * Extracts the picture from the subrequest
-   *
-   * @param  Jetlag\Eloquent\Picture  $picture
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Picture the extracted picture
-   */
-  public function extractPicture(Picture $picture, $subRequest)
-  {
-    $picture->id = $this->get($subRequest, 'id', -1);
-    $picture->authorId = -1; // TODO authoring refacto
-
-    if (array_key_exists('small_url', $subRequest))
-    {
-      $smallUrlLink = $this->extractLink(new Link, $subRequest['small_url']);
-      $picture->smallUrl()->associate($smallUrlLink);
-    }
-
-    if (array_key_exists('url', $subRequest))
-    {
-      $mediumUrlLink = $this->extractLink(new Link, $subRequest['url']);
-      $picture->mediumUrl()->associate($mediumUrlLink);
-    }
-
-    if (array_key_exists('medium_url', $subRequest))
-    {
-      $mediumUrlLink = $this->extractLink(new Link, $subRequest['medium_url']);
-      $picture->mediumUrl()->associate($mediumUrlLink);
-    }
-
-    if (array_key_exists('big_url', $subRequest))
-    {
-      $bigUrlLink = $this->extractLink(new Link, $subRequest['big_url']);
-      $picture->bigUrl()->associate($bigUrlLink);
-    }
-    $picture->save();
-    // TODO extract place
-    return $picture;
-  }
-
-  /**
-   * Extracts the link from the subrequest
-   *
-   * @param  Jetlag\Eloquent\Link  $link
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Link the extracted link
-   */
-  public function extractLink(Link $link, $subRequest)
-  {
-    $link->fromUrl($this->get($subRequest, 'url'));
-    $link->caption = $this->get($subRequest, 'caption', '');
-    $link->save();
-    return $link;
-  }
-
+  
   /**
    * Extracts the paragraph from the subrequest
    *
@@ -253,7 +200,8 @@ class RestArticleController extends Controller
 
     if (array_key_exists('block_content', $subRequest))
     {
-      $picture = $this->extractPicture(new Picture, $subRequest['block_content']);
+      $picture = new Picture;
+      $picture->extract($subRequest['block_content']);
       $paragraph->blockContent()->associate($picture);
     }
     // TODO extract blockContent, place
@@ -267,7 +215,7 @@ class RestArticleController extends Controller
    * @param default the default value when no value matches the key
    *
    */
-  private function get($subRequest, $key, $default = null)
+  public static function get($subRequest, $key, $default = null)
   {
     if (array_key_exists($key, $subRequest))
     {

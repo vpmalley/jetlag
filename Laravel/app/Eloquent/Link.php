@@ -62,4 +62,22 @@ class Link extends Model
   {
     return $this->hasOne('Jetlag\Eloquent\Picture', 'bigPictureLink_id');
   }
+
+  /**
+   * Extracts the link from the subrequest
+   *
+   * @param  array  $subRequest
+   * @return  Jetlag\Eloquent\Link the extracted link
+   */
+  public function extract($subRequest)
+  {
+    if (!array_key_exists('url', $subRequest))
+    {
+      abort(400);
+    }
+    $this->fromUrl($subRequest['url']);
+    $this->caption = array_key_exists('caption', $subRequest) ? $subRequest['caption'] : '';
+    $this->save();
+    return $this;
+  }
 }

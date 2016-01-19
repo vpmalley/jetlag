@@ -43,4 +43,34 @@ class Picture extends Model
   public function place() {
     return $this->belongsTo('Jetlag\Eloquent\Place');
   }
+
+  /**
+   * Extracts the picture from the subrequest
+   *
+   * @param  array  $subRequest
+   * @return  Jetlag\Eloquent\Picture the extracted picture
+   */
+  public function extract($subRequest)
+  {
+    $this->id = array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;
+    $this->authorId = -1; // TODO authoring refacto
+
+    $this->extractAndBindLink($subRequest, 'small_url', $this->smallUrl());
+    $this->extractAndBindLink($subRequest, 'url', $this->mediumUrl());
+    $this->extractAndBindLink($subRequest, 'medium_url', $this->mediumUrl());
+    $this->extractAndBindLink($subRequest, 'big_url', $this->bigUrl());
+    $this->save();
+    // TODO extract place
+    return $this;
+  }
+
+  private function extractAndBindLink($subRequest, $key, $relation)
+  {
+    if (array_key_exists($key, $subRequest))
+    {
+      $link = new Link;
+      $link->extract($subRequest[$key]);
+      $relation->associate($link);
+    }
+  }
 }
