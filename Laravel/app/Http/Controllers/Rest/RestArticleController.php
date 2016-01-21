@@ -11,12 +11,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
-use Jetlag\Eloquent\Picture;
 use Jetlag\Business\Picture as BPicture;
-use Jetlag\Eloquent\Paragraph;
+use Jetlag\Eloquent\Article as StoredArticle;
 use Jetlag\Eloquent\Author;
 use Jetlag\Eloquent\Link;
-use Jetlag\Eloquent\Article as StoredArticle;
+use Jetlag\Eloquent\Paragraph;
+use Jetlag\Eloquent\Picture;
+use Jetlag\Eloquent\Place;
 use Log;
 
 class RestArticleController extends Controller
@@ -180,7 +181,7 @@ class RestArticleController extends Controller
     $article->persist();
     return ['id' => $article->getId()];
   }
-  
+
   /**
    * Extracts the paragraph from the subrequest
    *
@@ -204,7 +205,12 @@ class RestArticleController extends Controller
       $picture->extract($subRequest['block_content']);
       $paragraph->blockContent()->associate($picture);
     }
-    // TODO extract blockContent, place
+
+    if (array_key_exists('place', $subRequest))
+    {
+      $place = Place::create(array_merge(Place::$default_fillable_values, $subRequest['place']));
+      $paragraph->place()->associate($place);
+    }
     return $paragraph;
   }
 

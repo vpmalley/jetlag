@@ -60,7 +60,11 @@ class Picture extends Model
     $this->extractAndBindLink($subRequest, 'medium_url', $this->mediumUrl());
     $this->extractAndBindLink($subRequest, 'big_url', $this->bigUrl());
     $this->save();
-    // TODO extract place
+    if (array_key_exists('place', $subRequest))
+    {
+      $place = Place::create(array_merge(Place::$default_fillable_values, $subRequest['place']));
+      $this->place()->associate($place);
+    }
     return $this;
   }
 

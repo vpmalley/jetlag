@@ -22,8 +22,15 @@ class Place extends Model
 
   protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id'];
 
+  static $default_fillable_values = [
+    'latitude' => -200,
+    'longitude' => -200,
+    'altitude' => 0,
+    'localisation' => '',
+  ];
+
   /**
    * The rules for validating input
    */
-  static $rules = ['localisation' => 'min:3|max:200'];
+  static $rules = ['localisation' => 'max:200'];
 }

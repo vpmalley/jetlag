@@ -446,7 +446,7 @@ class ArticleApiTest extends TestCase {
           'smallUrl' => null,
           'bigUrl' => null,
           'mediumUrl' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-          ],
+        ],
       ]);
   }
 
@@ -463,10 +463,20 @@ class ArticleApiTest extends TestCase {
           'block_content' => [
             'big_url' => [
                 'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-              ]
+              ],
+            'place' => [
+              'latitude' => 63.7852,
+              'longitude' => 94.3302,
+            ],
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
+          'place' => [
+            'latitude' => 123.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'localisation' => 'lala sous mer',
+          ],
         ]
       ],
     ], ['ContentType' => 'application/json'])
@@ -496,12 +506,22 @@ class ArticleApiTest extends TestCase {
             'caption' => '',
             'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
           ],
-          'place' => null,
+          'place' => [
+            'latitude' => 63.7852,
+            'longitude' => 94.3302,
+            'altitude' => 0,
+            'localisation' => '',
+          ],
         ],
         'weather' => 'cloudy',
         'date' => '2016-01-03',
         'isDraft' => 1,
-        'place' => null,
+        'place' => [
+          'latitude' => 123.43,
+          'longitude' => -43.57,
+          'altitude' => -156.9,
+          'localisation' => 'lala sous mer',
+        ],
       ]
     ],
     ]);
