@@ -40,7 +40,7 @@ function TravelbookCreatorController($scope, ModelsManager) {
 function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 	var ctrl = this;
 	ctrl.articleStep = 0;
-	ctrl.paragraphEditor = { input: {} };
+	ctrl.paragraphEditor = { input: {text: "", picture: {}, location: {}, external: {}}};
 	ctrl.leafletMap = { markers: {} };
 
 	ctrl.changeArticleStep = function(stepNumber) {
@@ -149,5 +149,30 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
         lng: -0.09,
         zoom: 8
     }
+	
+	/* XXX: should go in a ogp parser service */
+	function parseOgpTagsFromPage(pageContent) {
+	  return {};
+	}
+	
+	ctrl.getExternalPage = function() {
+		var link = ctrl.paragraphEditor.input.external.link;
+		if(!link) {
+		  console.error('missing URL');
+		  return;
+		}
+		var urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
+		if(!urlRegex.test(link)) {
+		  console.error('URL is not valid');
+		  return;
+		}
+		$http.get(link).success(function(pageContent) {
+		  console.log(pageContent);
+		  var ogpObject = parseOgpTagsFromPage(pageContent);
+		  console.log(ogpObject);
+		}).error(function(error) {
+		  console.error(error);
+		});
+	}
 };
 
