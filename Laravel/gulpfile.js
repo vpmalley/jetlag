@@ -26,7 +26,8 @@ elixir(function(mix) {
 			bower_components+'bootstrap/dist/js/bootstrap.js',
 			bower_components+'ng-file-upload/ng-file-upload.js',
 			bower_components+'leaflet/dist/leaflet.js',
-			bower_components+'angular-leaflet-directive/dist/angular-leaflet-directive.js'
+			bower_components+'angular-leaflet-directive/dist/angular-leaflet-directive.js',
+			bower_components+'angular-elastic/elastic.js'
 		], 'public/js/thirds.js')
 		.scripts([
 			'base.js',

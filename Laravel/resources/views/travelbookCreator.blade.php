@@ -211,6 +211,20 @@
 	
 	<div class="article">
 		<div class="paragraph" ng-repeat="paragraph in articleCreatorCtrl.paragraphs">
+			<div class="paragraph-type-text" ng-if="paragraph.type === 'text'">
+				@{{paragraph.text}}
+			</div>
+			<div class="paragraph-type-pictures" ng-if="paragraph.type === 'picture'">
+				<div class="paragraph-type-picture" ng-repeat="picture in paragraph.pictures">
+				</div>
+			</div>
+			<div class="paragraph-type-location" ng-if="paragraph.type === 'location'">
+				<leaflet lf-center="paragraph.location.center" height="480px" width="640px" 
+						 markers="paragraph.location.marker"></leaflet>
+			</div>
+			<div class="paragraph-type-external" ng-if="paragraph.type === 'external'">
+				<a ng-href="@{{paragraph.external.url}}">External content here</a>
+			</div>
 		</div>
 	</div>
 	<form class="paragraph-editor" name="paragraphEditor" novalidate>
@@ -219,20 +233,27 @@
 		Vous êtes allé au restaurant ? Chaque culture a sa manière de présenter les plats et de dresser la table.
 		</p>
 		<div class="btn-group btn-group-justified">
-			<div class="btn btn-default" ng-disabled="paragraphEditor.$invalid"><i class="fa fa-plus"></i> Ajouter</div>
+			<div class="btn btn-default" ng-disabled="paragraphEditor.$invalid" ng-click="articleCreatorCtrl.addParagraph()">
+				<i class="fa fa-plus"></i> Ajouter
+			</div>
 			<div class="btn btn-default"><i class="fa fa-times"></i> Supprimer</div>
 		</div>
 		<div class="btn-group btn-group-justified">
-			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
-			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-picture-o"></i></div>
-			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map-marker"></i></div>
-			<div class="btn btn-default" ng-click="articleCreatorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
+			<div class="btn btn-default" ng-class="{'btn-reverse':articleCreatorCtrl.paragraphEditor.input.type === 'text'}"
+			ng-click="articleCreatorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
+			<div class="btn btn-default" ng-class="{'btn-reverse':articleCreatorCtrl.paragraphEditor.input.type === 'picture'}"
+			ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-picture-o"></i></div>
+			<div class="btn btn-default" ng-class="{'btn-reverse':articleCreatorCtrl.paragraphEditor.input.type === 'location'}"
+			ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map-marker"></i></div>
+			<div class="btn btn-default" ng-class="{'btn-reverse':articleCreatorCtrl.paragraphEditor.input.type === 'external'}"
+			ng-click="articleCreatorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
 		</div>
 		<div class="paragraph-input">
 			<textarea 	ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'text'"
 						placeholder="Lisez nos conseils juste au dessus si vous êtes bloqués"
 						ng-model="articleCreatorCtrl.paragraphEditor.input.text"
-						name="text">
+						name="text"
+						msd-elastic="\n">
 			</textarea>
 			<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'picture'">
 				<div class="button" ngf-select="articleCreatorCtrl.uploadFiles($files)" multiple="multiple">Upload on file select</div>

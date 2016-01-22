@@ -1,7 +1,8 @@
 var dependencies = [
   'jetlag.webapp.app', 
   'ngFileUpload',
-  'leaflet-directive'
+  'leaflet-directive',
+  'monospaced.elastic'
 ];
 
 angular
@@ -173,6 +174,21 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 		}).error(function(error) {
 		  console.error(error);
 		});
+	}
+	
+	/* Transform what's in the paragraphEditor.input into a proper paragraph ready to be displayed */
+	ctrl.addParagraph = function() {
+	  switch(ctrl.paragraphEditor.input.type) {
+	  case 'text': 
+	    break;
+	  case 'picture':
+	    break;
+	  case 'location':
+	    break;
+	  case 'external':
+	    break;
+	  default:break;
+	  }
 	}
 };
 
