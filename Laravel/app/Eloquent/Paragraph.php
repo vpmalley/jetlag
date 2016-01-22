@@ -54,7 +54,13 @@ class Paragraph extends Model
   {
     if (array_key_exists('block_content', $subRequest))
     {
-      $picture = new Picture;
+      if (array_key_exists('id', $subRequest))
+      {
+        $picture = Picture::find($subRequest['id']);
+      } else
+      {
+        $picture = new Picture;
+      }
       $picture->extract($subRequest['block_content']);
       $this->blockContent()->associate($picture);
     }

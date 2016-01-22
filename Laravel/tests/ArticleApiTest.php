@@ -174,85 +174,12 @@ class ArticleApiTest extends TestCase {
         'descriptionText' => 'this is a cool article isnt it? id 2',
         'descriptionMedia' => [
           'id' => $picture->id,
-          'smallUrl' => $links[0]->url,
-          'mediumUrl' => $links[1]->url,
-          'bigUrl' => $links[2]->url,
+          'small_url' => $links[0]->url,
+          'medium_url' => $links[1]->url,
+          'big_url' => $links[2]->url,
         ],
         'isDraft' => 1, // why not true?
         'authorUsers' => [$writer->id => 'writer'],
-      ]);
-  }
-
-  public function testApiGetArticleWithParagraph()
-  {
-    $authorId = 6;
-    $writer = factory(Jetlag\User::class)->create();
-    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => $authorId,
-      'userId' => $writer->id
-    ]);
-    $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => $authorId,
-      'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
-    ]);
-    $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
-      'authorId' => $authorId,
-    ]);
-    $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
-    $picture = factory(Jetlag\Eloquent\Picture::class)->create([
-      'authorId' => $authorId,
-      'smallPictureLink_id' => $links[0]->id,
-      'mediumPictureLink_id' => $links[1]->id,
-      'bigPictureLink_id' => $links[2]->id,
-      'place_id' => $places[0]->id,
-    ]);
-    $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
-      'title' => 'A first paragraph',
-      'weather' => 'cloudy',
-      'date' => '2016-01-03',
-      'article_id' => $article->id,
-      'blockContentId' => $picture->id,
-      'place_id' => $places[1]->id,
-    ]);
-
-    Log::debug(" expecting authorId=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
-    $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
-    $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'isDraft' => 1, // why not true?
-        'authorUsers' => [$writer->id => 'writer'],
-        'paragraphs' => [
-          [
-            'id' => 1,
-            'title' => 'A first paragraph',
-            'block_content' => [
-              'id' => $picture->id,
-              'small_url' => [ 'caption' => $links[0]->caption, 'url' => $links[0]->url ],
-              'medium_url' => [ 'caption' => $links[1]->caption, 'url' => $links[1]->url ],
-              'big_url' => [ 'caption' => $links[2]->caption, 'url' => $links[2]->url ],
-              'place' => [
-                'localisation' => $places[0]->localisation,
-                'latitude' => $places[0]->latitude,
-                'longitude' => $places[0]->longitude,
-                'altitude' => $places[0]->altitude,
-              ]
-            ],
-            'weather' => 'cloudy',
-            'date' => '2016-01-03',
-            'isDraft' => 1,
-            'place' => [
-              'localisation' => $places[1]->localisation,
-              'latitude' => $places[1]->latitude,
-              'longitude' => $places[1]->longitude,
-              'altitude' => $places[1]->altitude,
-            ]
-          ]
-        ],
       ]);
   }
 
@@ -437,93 +364,16 @@ class ArticleApiTest extends TestCase {
       ->get($this->articleApiUrl . 1)
       ->assertResponseOk();
     $this->seeJson([
+      'id' => 1,
+      'title' => "article1",
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'descriptionMedia' => [
         'id' => 1,
-        'title' => "article1",
-        'descriptionText' => '',
-        'isDraft' => 1,
-        'descriptionMedia' => [
-          'id' => 1,
-          'smallUrl' => null,
-          'bigUrl' => null,
-          'mediumUrl' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-        ],
-      ]);
-  }
-
-  public function testApiStoreArticleWithParagraph()
-  {
-    $user = factory(Jetlag\User::class)->create();
-
-    $this->actingAs($user)
-      ->post($this->articleApiUrl, [
-      'title' => 'article1',
-      'paragraphs' => [
-        [
-          'title' => 'A first paragraph',
-          'block_content' => [
-            'big_url' => [
-                'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-              ],
-            'place' => [
-              'latitude' => 63.7852,
-              'longitude' => 94.3302,
-            ],
-          ],
-          'weather' => 'cloudy',
-          'date' => '2016-01-03',
-          'place' => [
-            'latitude' => 123.43,
-            'longitude' => -43.57,
-            'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
-          ],
-        ]
+        'small_url' => null,
+        'big_url' => null,
+        'medium_url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
       ],
-    ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
-    $this->seeJson([
-        'id' => 1,
-        'url' => $this->baseUrl . "/article/1",
-      ]);
-
-    $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
-    $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => '',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => 1,
-        'title' => 'A first paragraph',
-        'block_content' => [
-          'id' => 1,
-          'small_url' => null,
-          'medium_url' => null,
-          'big_url' => [
-            'caption' => '',
-            'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-          ],
-          'place' => [
-            'latitude' => 63.7852,
-            'longitude' => 94.3302,
-            'altitude' => 0,
-            'localisation' => '',
-          ],
-        ],
-        'weather' => 'cloudy',
-        'date' => '2016-01-03',
-        'isDraft' => 1,
-        'place' => [
-          'latitude' => 123.43,
-          'longitude' => -43.57,
-          'altitude' => -156.9,
-          'localisation' => 'lala sous mer',
-        ],
-      ]
-    ],
     ]);
   }
 
@@ -626,9 +476,9 @@ class ArticleApiTest extends TestCase {
       'isDraft' => 0,
       'descriptionMedia' => [
         'id' => $picture->id,
-        'smallUrl' => $links[0]->url,
-        'mediumUrl' => $links[1]->url,
-        'bigUrl' => $links[2]->url,
+        'small_url' => $links[0]->url,
+        'medium_url' => $links[1]->url,
+        'big_url' => $links[2]->url,
       ],
       'authorUsers' => [1 => 'writer', 2 => 'owner', $writer->id => 'writer'],
     ]);
@@ -675,9 +525,9 @@ class ArticleApiTest extends TestCase {
       'isDraft' => 1,
       'descriptionMedia' => [
         'id' => $picture->id,
-        'smallUrl' => $links[0]->url,
-        'mediumUrl' => $links[1]->url,
-        'bigUrl' => $links[1]->url,
+        'small_url' => $links[0]->url,
+        'medium_url' => $links[1]->url,
+        'big_url' => $links[1]->url,
       ],
       'authorUsers' => [ $writer->id => 'writer'],
     ]);

@@ -92,9 +92,9 @@ class Picture
   {
     $this->id = $storedPicture->id;
     // links
-    $this->smallPictureLink = $storedPicture->smallUrl;
-    $this->mediumPictureLink = $storedPicture->mediumUrl;
-    $this->bigPictureLink = $storedPicture->bigUrl;
+    $this->smallPictureLink = $storedPicture->small_url;
+    $this->mediumPictureLink = $storedPicture->medium_url;
+    $this->bigPictureLink = $storedPicture->big_url;
     // location
     $this->location = $storedPicture->place;
   }
@@ -180,9 +180,9 @@ class Picture
   {
     return [
       'id' => $this->getId(),
-      'smallUrl' => $this->getSmallDisplayUrl(),
-      'mediumUrl' => $this->getMediumDisplayUrl(),
-      'bigUrl' => $this->getBigDisplayUrl(),
+      'small_url' => $this->getSmallDisplayUrl(),
+      'medium_url' => $this->getMediumDisplayUrl(),
+      'big_url' => $this->getBigDisplayUrl(),
     ];
   }
 

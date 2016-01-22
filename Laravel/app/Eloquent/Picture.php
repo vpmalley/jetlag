@@ -25,17 +25,17 @@ class Picture extends Model
 
   protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'smallPictureLink_id', 'mediumPictureLink_id', 'bigPictureLink_id', 'authorId', 'place_id', 'article_id'];
 
-  public function smallUrl()
+  public function small_url()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'smallPictureLink_id');
   }
 
-  public function mediumUrl()
+  public function medium_url()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'mediumPictureLink_id');
   }
 
-  public function bigUrl()
+  public function big_url()
   {
     return $this->belongsTo('Jetlag\Eloquent\Link', 'bigPictureLink_id');
   }
@@ -55,15 +55,23 @@ class Picture extends Model
     $this->id = array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;
     $this->authorId = -1; // TODO authoring refacto
 
-    $this->extractAndBindLink($subRequest, 'small_url', $this->smallUrl());
-    $this->extractAndBindLink($subRequest, 'url', $this->mediumUrl());
-    $this->extractAndBindLink($subRequest, 'medium_url', $this->mediumUrl());
-    $this->extractAndBindLink($subRequest, 'big_url', $this->bigUrl());
+    $this->extractAndBindLink($subRequest, 'small_url', $this->small_url());
+    $this->extractAndBindLink($subRequest, 'url', $this->medium_url());
+    $this->extractAndBindLink($subRequest, 'medium_url', $this->medium_url());
+    $this->extractAndBindLink($subRequest, 'big_url', $this->big_url());
+
     if (array_key_exists('place', $subRequest))
     {
-      $placeSubRequest = array_merge(Place::$default_fillable_values, $subRequest['place']);
-      $place = Place::create($placeSubRequest);
-      $this->place()->associate($place);
+      if ($this->place)
+      {
+        $this->place->fill($subRequest['place']);
+        $this->place->save();
+      } else
+      {
+        $placeSubRequest = array_merge(Place::$default_fillable_values, $subRequest['place']);
+        $place = Place::create($placeSubRequest);
+        $this->place()->associate($place);
+      }
     }
     $this->save();
     return $this;
@@ -73,7 +81,13 @@ class Picture extends Model
   {
     if (array_key_exists($key, $subRequest))
     {
-      $link = new Link;
+      if ($this[$key])
+      {
+        $link = $this[$key];
+      } else
+      {
+        $link = new Link;
+      }
       $link->extract($subRequest[$key]);
       $relation->associate($link);
     }

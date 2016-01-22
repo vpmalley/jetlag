@@ -180,6 +180,23 @@ class RestArticleController extends Controller
       $newAuthorUsers[Auth::user()->id] = Author::getRole($article->getAuthorId(), Auth::user()->id);
       $article->updateAuthorUsers($newAuthorUsers);
     }
+
+    if ($request->has('paragraphs'))
+    {
+      foreach ($request->input('paragraphs') as $paragraphSubRequest) {
+        if (array_key_exists('id', $paragraphSubRequest))
+        {
+          $paragraph = Paragraph::find($paragraphSubRequest['id']);
+          $paragraph->fill($paragraphSubRequest);
+        } else
+        {
+          $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
+          $paragraph = Paragraph::create($paragraphSubRequest);
+        }
+        $paragraph->extract($paragraphSubRequest);
+        $article->addParagraph($paragraph);
+      }
+    }
     $article->persist();
     return ['id' => $article->getId()];
   }

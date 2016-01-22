@@ -71,12 +71,20 @@ class Link extends Model
    */
   public function extract($subRequest)
   {
-    if (!array_key_exists('url', $subRequest))
+    if (!array_key_exists('url', $subRequest) && !isset($this->url))
     {
       abort(400);
     }
-    $this->fromUrl($subRequest['url']);
-    $this->caption = array_key_exists('caption', $subRequest) ? $subRequest['caption'] : '';
+    if (array_key_exists('url', $subRequest))
+    {
+      $this->fromUrl($subRequest['url']);
+    }
+    if (array_key_exists('caption', $subRequest))
+    {
+      $this->caption = $subRequest['caption'];
+    } else if (!isset($this->caption)) {
+      $this->caption = '';
+    }
     $this->save();
     return $this;
   }
