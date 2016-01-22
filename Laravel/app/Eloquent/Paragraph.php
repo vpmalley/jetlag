@@ -36,5 +36,52 @@ class Paragraph extends Model
     return $this->belongsTo('Jetlag\Eloquent\Picture', 'blockContentId', 'id');
   }
 
+  /**
+   * Extracts the paragraph from the subrequest
+   *
+   * @param  array  $subRequest
+   * @return  Jetlag\Eloquent\Paragraph the extracted paragraph
+   */
+  public function extract($subRequest)
+  {
+    $this->id = $this->get($subRequest, 'id', -1);
+    $this->title = $this->get($subRequest, 'title', '');
+    $this->weather = $this->get($subRequest, 'weather', '');
+    $this->date = $this->get($subRequest, 'date', '');
+    $this->isDraft = $this->get($subRequest, 'isDraft', true);
+    $this->authorId = -1; // TODO authoring refacto
 
+    if (array_key_exists('block_content', $subRequest))
+    {
+      $picture = new Picture;
+      $picture->extract($subRequest['block_content']);
+      $this->blockContent()->associate($picture);
+    }
+
+    if (array_key_exists('place', $subRequest))
+    {
+      $place = Place::create(array_merge(Place::$default_fillable_values, $subRequest['place']));
+      $this->place()->associate($place);
+    }
+    $this->save();
+    return $this;
+  }
+
+  /**
+   * Gets the subrequest value matching the key
+   * @param array subRequest a part of the request
+   * @param string key the key matching the expected value
+   * @param default the default value when no value matches the key
+   *
+   */
+  public static function get($subRequest, $key, $default = null)
+  {
+    if (array_key_exists($key, $subRequest))
+    {
+      return $subRequest[$key];
+    } else
+    {
+      return $default;
+    }
+  }
 }

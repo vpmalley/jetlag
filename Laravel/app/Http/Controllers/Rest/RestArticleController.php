@@ -101,8 +101,9 @@ class RestArticleController extends Controller
 
     if ($request->has('paragraphs'))
     {
-      foreach ($request->input('paragraphs') as $paragraph) {
-        $paragraph = $this->extractParagraph(new Paragraph, $paragraph);
+      foreach ($request->input('paragraphs') as $paragraphSubRequest) {
+        $paragraph = new Paragraph;
+        $paragraph->extract($paragraphSubRequest);
         $article->addParagraph($paragraph);
       }
     }
@@ -180,38 +181,6 @@ class RestArticleController extends Controller
     }
     $article->persist();
     return ['id' => $article->getId()];
-  }
-
-  /**
-   * Extracts the paragraph from the subrequest
-   *
-   * @param  Jetlag\Eloquent\Paragraph  $paragraph
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Paragraph the extracted paragraph
-   */
-  public function extractParagraph(Paragraph $paragraph, $subRequest)
-  {
-    $paragraph->id = $this->get($subRequest, 'id', -1);
-    $paragraph->title = $this->get($subRequest, 'title', '');
-    $paragraph->weather = $this->get($subRequest, 'weather');
-    $paragraph->date = $this->get($subRequest, 'date', '');
-    $paragraph->isDraft = $this->get($subRequest, 'isDraft', true);
-    $paragraph->authorId = -1; // TODO authoring refacto
-    $paragraph->save();
-
-    if (array_key_exists('block_content', $subRequest))
-    {
-      $picture = new Picture;
-      $picture->extract($subRequest['block_content']);
-      $paragraph->blockContent()->associate($picture);
-    }
-
-    if (array_key_exists('place', $subRequest))
-    {
-      $place = Place::create(array_merge(Place::$default_fillable_values, $subRequest['place']));
-      $paragraph->place()->associate($place);
-    }
-    return $paragraph;
   }
 
   /**
