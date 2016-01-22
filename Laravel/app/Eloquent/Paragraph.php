@@ -28,6 +28,14 @@ class Paragraph extends Model
     'hublotContentType' => 'min:3|max:15',
   ];
 
+  static $default_fillable_values = [
+    'title' => '',
+    'weather' => '',
+    'date' => '',
+    'isDraft' => true,
+    'authorId' => -1,
+  ];
+
   public function place() {
     return $this->belongsTo('Jetlag\Eloquent\Place');
   }
@@ -44,13 +52,6 @@ class Paragraph extends Model
    */
   public function extract($subRequest)
   {
-    $this->id = $this->get($subRequest, 'id', -1);
-    $this->title = $this->get($subRequest, 'title', '');
-    $this->weather = $this->get($subRequest, 'weather', '');
-    $this->date = $this->get($subRequest, 'date', '');
-    $this->isDraft = $this->get($subRequest, 'isDraft', true);
-    $this->authorId = -1; // TODO authoring refacto
-
     if (array_key_exists('block_content', $subRequest))
     {
       $picture = new Picture;

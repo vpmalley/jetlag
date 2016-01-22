@@ -102,7 +102,8 @@ class RestArticleController extends Controller
     if ($request->has('paragraphs'))
     {
       foreach ($request->input('paragraphs') as $paragraphSubRequest) {
-        $paragraph = new Paragraph;
+        $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
+        $paragraph = Paragraph::create($paragraphSubRequest);
         $paragraph->extract($paragraphSubRequest);
         $article->addParagraph($paragraph);
       }
