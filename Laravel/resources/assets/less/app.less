@@ -3,7 +3,7 @@
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 
-@jl-blue: #0c4564;
+@jl-blue: #0A6884;
 @jl-orange: orange;
 
 .strut {
@@ -14,6 +14,48 @@
 
 .clickable {
 	cursor: pointer;
+}
+
+.jl-card {
+  margin: 3rem auto;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+  font-size: 1.5rem;
+  padding: 2rem 2rem 0.8em;
+  h1 {
+    color: @jl-blue;
+    font-weight: 300;
+    font-size: 3rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+  p {
+    font-size: 1.5rem;
+    margin: 0 0 0.8rem 0;
+  }
+  div.card-action {
+    margin: 1.3rem 0 0 0;
+  }
+}
+
+.jl-btn {
+  padding: 0.5rem;
+  cursor: pointer;
+  border: solid 1px;
+  height: 100%;
+  display: inline-block;
+  title {
+    font-size: 1.2rem;
+	display: inline;
+  }
+}
+
+.jl-tab {
+  border-bottom: solid 2px #ccc;
+  border-radius: 0;
+  
+  &.selected {
+    border-bottom: solid 2px @jl-blue;
+  }
 }
 
 body.jetlag-app {
