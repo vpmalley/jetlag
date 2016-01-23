@@ -5,30 +5,24 @@ angular
 function AppController() {
 
   var ctrl = this;
+  ctrl.leftMenuOpen = false;
+  ctrl.rightMenuOpen = false;
   
-  ctrl.openLeftSideBar = function() {
-	ctrl.closeRightSideBar();
-	$('.side-bar-left:first').show();
+  ctrl.openLeftMenu = function() {
+	ctrl.rightMenuOpen = false;
+	ctrl.leftMenuOpen = true;
   }
   
-  ctrl.closeLeftSideBar = function() {
-	$('.side-bar-left:first').hide();
+  ctrl.closeLeftMenu = function() {
+	ctrl.leftMenuOpen = false;
   }
   
-  ctrl.openRightSideBar = function() {
-	ctrl.closeLeftSideBar();
-	$('.side-bar-right:first').show();
+  ctrl.openRightMenu = function() {
+	ctrl.leftMenuOpen = false;
+	ctrl.rightMenuOpen = true;
   }
   
-  ctrl.closeRightSideBar = function() {
-	$('.side-bar-right:first').hide();
-  }
-  
-  ctrl.isLeftSideBarOpen = function() {
-	return $('.side-bar-left:first').is(':visible');
-  }
-  
-  ctrl.isRightSideBarOpen = function() {
-	return $('.side-bar-right:first').is(':visible');
+  ctrl.closeRightMenu = function() {
+	ctrl.rightMenuOpen = false;
   }
 }

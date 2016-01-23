@@ -269,10 +269,8 @@
 							markers="articleCreatorCtrl.leafletMap.markers" events="articleCreatorCtrl.leafletMap.events"></leaflet>
 			</div>
 			<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'external'">
-				<input type="text" name="external" ng-model="articleCreatorCtrl.paragraphEditor.input.external.link"
-						ng-pattern="/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\.-]*)*\/?$/"></input>
+				<input type="text" name="external" ng-model="articleCreatorCtrl.paragraphEditor.input.external.link"></input>
 				<div class="external-preview">
-				@{{paragraphEditor.external.$error.pattern ? 'Not a valid URL' : 'Good URL !'}}
 				</div>
 			</div>
 		</div>

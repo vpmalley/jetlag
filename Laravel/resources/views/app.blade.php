@@ -28,19 +28,18 @@
 </head>
 <body ng-controller="AppController as appCtrl" class="jetlag-app">
 	<nav class="jl-navbar">
-		<div class="jl-icon jl-icon-left clickable" ng-show="!appCtrl.isLeftSideBarOpen()">
+		<div class="jl-icon jl-icon-left clickable" ng-show="!appCtrl.leftMenuOpen">
 			<i class="fa fa-fw fa-bars"
-			ng-click="appCtrl.openLeftSideBar()"></i>
+			ng-click="appCtrl.openLeftMenu()"></i>
 		</div>
 		
-		<div class="jl-icon jl-icon-middle"
-			ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}">
+		<div class="jl-icon jl-icon-middle">
 			<i class="fa fa-fw fa-plane"></i>
 		</div>
 		
-		<div class="jl-icon jl-icon-right clickable" ng-show="!appCtrl.isRightSideBarOpen()">
+		<div class="jl-icon jl-icon-right clickable" ng-show="!appCtrl.rightMenuOpen">
 			<i class="fa fa-fw fa-user"
-			ng-click="appCtrl.openRightSideBar()"></i>
+			ng-click="appCtrl.openRightMenu()"></i>
 			@if (Auth::guest())
 			<span><a href="{{ url('/auth/login') }}">Login</a> / <a href="{{ url('/auth/register') }}">Register</a></span>
 			@endif
@@ -48,11 +47,11 @@
 
 	</nav>
 
-	<div class="side-bar-wrapper">
+	<div class="side-bar-wrapper" ng-show="appCtrl.leftMenuOpen">
 		<div class="side-bar side-bar-left">
 			<div class="pull-right">
 				<i class="fa fa-fw fa-times clickable"
-				ng-click="appCtrl.closeLeftSideBar()"></i>
+				ng-click="appCtrl.closeLeftMenu()"></i>
 			</div>
 			<h2>Menu</h2>
 			<div class="side-bar-content clearfix">
@@ -60,11 +59,11 @@
 			</div>
 		</div>
 	</div>
-	<div class="side-bar-wrapper">
+	<div class="side-bar-wrapper" ng-show="appCtrl.rightMenuOpen">
 		<div class="side-bar side-bar-right">
 			<div class="pull-right">
 				<i class="fa fa-fw fa-times clickable"
-				ng-click="appCtrl.closeRightSideBar()"></i>
+				ng-click="appCtrl.closeRightMenu()"></i>
 			</div>
 			@if(Auth::guest())
 			<h2>User</h2>
@@ -81,7 +80,7 @@
 		</div>
 	</div>
 	<div id="main" class="container-fluid"
-	ng-class="{'pushed-right': appCtrl.isLeftSideBarOpen(), 'pushed-left': appCtrl.isRightSideBarOpen()}">
+	ng-class="{'pushed-right': appCtrl.leftMenuOpen, 'pushed-left': appCtrl.rightMenuOpen}">
 	@yield('content')
 	</div>
 
