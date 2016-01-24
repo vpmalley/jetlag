@@ -41,7 +41,7 @@ function TravelbookCreatorController($scope, ModelsManager) {
 function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 	var ctrl = this;
 	ctrl.articleStep = 0;
-	ctrl.paragraphEditor = { input: {text: "", picture: {}, location: {}, external: {}}};
+	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
 	ctrl.leafletMap = { markers: {} };
 
 	ctrl.changeArticleStep = function(stepNumber) {

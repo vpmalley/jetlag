@@ -233,66 +233,69 @@
 			</div>
 		</div>
 	
-		<form class="paragraph-editor" name="paragraphEditor" novalidate>
-			<div class="jl-card">
-				<h1>Ajoutez un paragraphe</h1>
-				<p class="paragraph-tips">
-					Vous êtes allé au restaurant ? Chaque culture a sa manière de présenter les plats et de dresser la table.
-				</p>
-				<p>Un même paysage pris à deux instants différents peut réserver de sacrées surprises! </p>
-			</div>
-			<div class="btn-group btn-group-justified">
-				<div class="btn btn-default" ng-disabled="paragraphEditor.$invalid" ng-click="articleCreatorCtrl.addParagraph()">
-					<i class="fa fa-plus"></i> Ajouter
-				</div>
-				<div class="btn btn-default">
-					<i class="fa fa-times"></i> Supprimer
-				</div>
-			</div>
-			<div class="btn-group btn-group-justified">
-				<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'text'}"
-				ng-click="articleCreatorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
-				<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'picture'}"
-				ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-picture-o"></i></div>
-				<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'location'}"
-				ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map-marker"></i></div>
-				<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'external'}"
-				ng-click="articleCreatorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
-			</div>
-			<div class="paragraph-input">
-				<textarea 	ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'text'"
-							placeholder="Lisez nos conseils juste au dessus si vous êtes bloqués"
-							ng-model="articleCreatorCtrl.paragraphEditor.input.text"
-							name="text"
-							msd-elastic="\n">
-				</textarea>
-				<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'picture'">
-					<div class="button" ngf-select="articleCreatorCtrl.uploadFiles($files)" multiple="multiple">
-						Upload on file select
+		<div class="jl-card">
+			<h1>Ajoutez un paragraphe</h1>
+			<p class="paragraph-tips">
+				Vous êtes allé au restaurant ? Chaque culture a sa manière de présenter les plats et de dresser la table.
+			</p>
+			<p>Un même paysage pris à deux instants différents peut réserver de sacrées surprises!</p>
+			<div class="card-action">
+				<form class="paragraph-editor" name="paragraphEditor" novalidate>
+					<div class="btn-group btn-group-justified">
+						<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'text'}"
+						ng-click="articleCreatorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
+						<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'picture'}"
+						ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-picture-o"></i></div>
+						<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'location'}"
+						ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map-marker"></i></div>
+						<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'external'}"
+						ng-click="articleCreatorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
 					</div>
-					<div 	ngf-drop="articleCreatorCtrl.uploadFiles($files)" class="drop-box"
-							ngf-drag-over-class="'dragover'" ngf-multiple="true" 
-							ngf-pattern="'image/*'">
-						Drop Images here
+					<div class="paragraph-input">
+						<textarea 	ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'text'"
+									placeholder="Lisez nos conseils juste au dessus si vous êtes bloqués"
+									ng-model="articleCreatorCtrl.paragraphEditor.input.text"
+									name="text"
+									msd-elastic="\n">
+						</textarea>
+						<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'picture'">
+							<div class="button" ngf-select="articleCreatorCtrl.uploadFiles($files)" multiple="multiple">
+								Upload on file select
+							</div>
+							<div 	ngf-drop="articleCreatorCtrl.uploadFiles($files)" class="drop-box"
+									ngf-drag-over-class="'dragover'" ngf-multiple="true" 
+									ngf-pattern="'image/*'">
+								Drop Images here
+							</div>
+							<div ngf-no-file-drop>
+								File Drag/Drop is not supported for this browser
+							</div>
+						</div>
+						<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
+							<input type="text" name="name" ng-model="articleCreatorCtrl.paragraphEditor.input.location.name"></input>
+							<button class="jl-btn jl-btn-large" ng-click="articleCreatorCtrl.changeLocation()">Search</button>
+							<leaflet 	lf-center="articleCreatorCtrl.leafletMap.center" height="480px" width="640px" 
+										markers="articleCreatorCtrl.leafletMap.markers" events="articleCreatorCtrl.leafletMap.events">
+							</leaflet>
+						</div>
+						<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'external'">
+							<input type="text" name="external" ng-model="articleCreatorCtrl.paragraphEditor.input.external.link"></input>
+							<div class="external-preview">
+							</div>
+						</div>
 					</div>
-					<div ngf-no-file-drop>
-						File Drag/Drop is not supported for this browser
+					<div>
+						<div class="btn btn-default" ng-disabled="paragraphEditor.$invalid" ng-click="articleCreatorCtrl.addParagraph()">
+							<i class="fa fa-plus"></i> Ajouter
+						</div>
+						<div class="btn btn-default">
+							<i class="fa fa-times"></i> Supprimer
+						</div>
 					</div>
-				</div>
-				<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
-					<input type="text" name="name" ng-model="articleCreatorCtrl.paragraphEditor.input.location.name"></input>
-					<button class="jl-btn jl-btn-large" ng-click="articleCreatorCtrl.changeLocation()">Search</button>
-					<leaflet 	lf-center="articleCreatorCtrl.leafletMap.center" height="480px" width="640px" 
-								markers="articleCreatorCtrl.leafletMap.markers" events="articleCreatorCtrl.leafletMap.events">
-					</leaflet>
-				</div>
-				<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'external'">
-					<input type="text" name="external" ng-model="articleCreatorCtrl.paragraphEditor.input.external.link"></input>
-					<div class="external-preview">
-					</div>
-				</div>
+				</form>
 			</div>
-		</form>
+		</div>
+		
 		<div class="article-publisher jl-card">
 			<h1>Votre article est terminé ?</h1>
 			<div class="card-action">

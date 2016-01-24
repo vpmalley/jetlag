@@ -5,6 +5,7 @@
 
 @jl-blue: #0A6884;
 @jl-orange: orange;
+@jl-grey: #ccc;
 
 .strut {
 	height: 100%;
@@ -50,8 +51,14 @@
 }
 
 .jl-tab {
-  border-bottom: solid 2px #ccc;
+  border-bottom: solid 2px @jl-grey;
   border-radius: 0;
+  font-size: 2rem;
+  
+  &:active {
+    outline: none;
+	box-shadow: none;
+  }
   
   &.selected {
     border-bottom: solid 2px @jl-blue;
