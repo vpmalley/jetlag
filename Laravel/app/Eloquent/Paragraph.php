@@ -13,9 +13,9 @@ class Paragraph extends Model
    */
   protected $table = 'paragraphs';
 
-  protected $fillable = ['title', 'article_id', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType', 'place_id', 'date', 'weather', 'authorId', 'isDraft'];
+  protected $fillable = ['title', 'article_id', 'block_content_id', 'block_content_type', 'hublotContentId', 'hublotContentType', 'place_id', 'date', 'weather', 'authorId', 'isDraft'];
 
-  protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'article_id', 'authorId', 'place_id', 'blockContentId', 'blockContentType', 'hublotContentId', 'hublotContentType'];
+  protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'article_id', 'authorId', 'place_id', 'block_content_id', 'hublotContentId', 'hublotContentType'];
 
   /**
    * The rules for validating input
@@ -24,7 +24,7 @@ class Paragraph extends Model
     'title' => 'required|min:3|max:200',
     'weather' => 'min:3|max:20',
     'city' => 'boolean',
-    'blockContentType' => 'min:3|max:15',
+    'block_content_type' => 'min:3|max:30',
     'hublotContentType' => 'min:3|max:15',
   ];
 
@@ -41,7 +41,7 @@ class Paragraph extends Model
   }
 
   public function blockContent() {
-    return $this->belongsTo('Jetlag\Eloquent\Picture', 'blockContentId', 'id');
+    return $this->morphTo();
   }
 
   /**
@@ -52,17 +52,20 @@ class Paragraph extends Model
    */
   public function extract($subRequest)
   {
-    if (array_key_exists('block_content', $subRequest))
+    if (array_key_exists('block_content', $subRequest) && array_key_exists('block_content_type', $subRequest))
     {
-      if (array_key_exists('id', $subRequest))
+      if ('Jetlag\Eloquent\Picture' == $subRequest['block_content_type'])
       {
-        $picture = Picture::find($subRequest['id']);
-      } else
-      {
-        $picture = new Picture;
+        if (array_key_exists('id', $subRequest))
+        {
+          $picture = Picture::find($subRequest['id']);
+        } else
+        {
+          $picture = new Picture;
+        }
+        $picture->extract($subRequest['block_content']);
+        $this->blockContent()->associate($picture);
       }
-      $picture->extract($subRequest['block_content']);
-      $this->blockContent()->associate($picture);
     }
 
     if (array_key_exists('place', $subRequest))
@@ -72,23 +75,5 @@ class Paragraph extends Model
     }
     $this->save();
     return $this;
-  }
-
-  /**
-   * Gets the subrequest value matching the key
-   * @param array subRequest a part of the request
-   * @param string key the key matching the expected value
-   * @param default the default value when no value matches the key
-   *
-   */
-  public static function get($subRequest, $key, $default = null)
-  {
-    if (array_key_exists($key, $subRequest))
-    {
-      return $subRequest[$key];
-    } else
-    {
-      return $default;
-    }
   }
 }

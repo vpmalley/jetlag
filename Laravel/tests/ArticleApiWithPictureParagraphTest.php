@@ -4,8 +4,9 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Jetlag\User;
+use Jetlag\Eloquent\TextContent;
 
-class ArticleApiWithParagraphTest extends TestCase {
+class ArticleApiWithPictureParagraphTest extends TestCase {
 
   use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
     //(i.e. non-logged user is forbidden to access resources requiring login)
@@ -14,7 +15,7 @@ class ArticleApiWithParagraphTest extends TestCase {
   protected $baseUrl = "http://homestead.app";
   protected $articleApiUrl = "/api/0.1/articles/";
 
-  public function testApiGetArticleWithParagraph()
+  public function testApiGetArticleWithPictureParagraph()
   {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
@@ -43,7 +44,8 @@ class ArticleApiWithParagraphTest extends TestCase {
       'weather' => 'cloudy',
       'date' => '2016-01-03',
       'article_id' => $article->id,
-      'blockContentId' => $picture->id,
+      'block_content_id' => $picture->id,
+      'block_content_type' => 'Jetlag\Eloquent\Picture',
       'place_id' => $places[1]->id,
     ]);
 
@@ -61,6 +63,7 @@ class ArticleApiWithParagraphTest extends TestCase {
           [
             'id' => 1,
             'title' => 'A first paragraph',
+            'block_content_type' => 'Jetlag\Eloquent\Picture',
             'block_content' => [
               'id' => $picture->id,
               'small_url' => [ 'caption' => $links[0]->caption, 'url' => $links[0]->url ],
@@ -87,7 +90,7 @@ class ArticleApiWithParagraphTest extends TestCase {
       ]);
   }
 
-  public function testApiStoreArticleWithParagraph()
+  public function testApiStoreArticleWithPictureParagraph()
   {
     $user = factory(Jetlag\User::class)->create();
 
@@ -97,6 +100,7 @@ class ArticleApiWithParagraphTest extends TestCase {
       'paragraphs' => [
         [
           'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Picture',
           'block_content' => [
             'big_url' => [
                 'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
@@ -135,6 +139,8 @@ class ArticleApiWithParagraphTest extends TestCase {
       [
         'id' => 1,
         'title' => 'A first paragraph',
+        'block_content_type' => 'Jetlag\Eloquent\Picture',
+        'block_content_type' => 'Jetlag\Eloquent\Picture',
         'block_content' => [
           'id' => 1,
           'small_url' => null,
@@ -164,7 +170,7 @@ class ArticleApiWithParagraphTest extends TestCase {
     ]);
   }
 
-  public function testApiUpdateArticleWithParagraph()
+  public function testApiUpdateArticleWithPictureParagraph()
   {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
@@ -194,7 +200,8 @@ class ArticleApiWithParagraphTest extends TestCase {
       'weather' => 'cloudy',
       'date' => '2016-01-03',
       'article_id' => $article->id,
-      'blockContentId' => $picture->id,
+      'block_content_id' => $picture->id,
+      'block_content_type' => 'Jetlag\Eloquent\Picture',
       'place_id' => $places[1]->id,
     ]);
 
@@ -205,6 +212,7 @@ class ArticleApiWithParagraphTest extends TestCase {
         [
           'id' => $paragraph->id,
           'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Picture',
           'block_content' => [
             'id' => $picture->id,
             'big_url' => [
@@ -228,11 +236,11 @@ class ArticleApiWithParagraphTest extends TestCase {
     ], ['ContentType' => 'application/json'])
       ->assertResponseStatus(200);
     $this->seeJson([
-        'id' => 1,
+        'id' => $article->id,
       ]);
 
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . 1)
+      ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
     $this->seeJson([
     'title' => 'article1',
@@ -243,6 +251,7 @@ class ArticleApiWithParagraphTest extends TestCase {
       [
         'id' => $paragraph->id,
         'title' => 'A first paragraph',
+        'block_content_type' => 'Jetlag\Eloquent\Picture',
         'block_content' => [
           'id' => $picture->id,
           'small_url' => [
@@ -278,7 +287,7 @@ class ArticleApiWithParagraphTest extends TestCase {
     ]);
   }
 
-  public function testApiPartialUpdateArticleWithParagraph()
+  public function testApiPartialUpdateArticleWithPictureParagraph()
   {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
@@ -306,7 +315,8 @@ class ArticleApiWithParagraphTest extends TestCase {
       'weather' => 'cloudy',
       'date' => '2016-01-03',
       'article_id' => $article->id,
-      'blockContentId' => $picture->id,
+      'block_content_id' => $picture->id,
+      'block_content_type' => 'Jetlag\Eloquent\Picture',
     ]);
 
     $this->actingAs($writer)
@@ -316,6 +326,7 @@ class ArticleApiWithParagraphTest extends TestCase {
         [
           'id' => $paragraph->id,
           'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Picture',
           'block_content' => [
             'id' => $picture->id,
             'medium_url' => [
@@ -331,50 +342,51 @@ class ArticleApiWithParagraphTest extends TestCase {
     ], ['ContentType' => 'application/json'])
       ->assertResponseStatus(200);
     $this->seeJson([
-        'id' => 1,
+        'id' => $article->id,
       ]);
 
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . 1)
+      ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
     $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => 'this is a cool article isnt it? id 2',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => $paragraph->id,
-        'title' => 'A first paragraph',
-        'block_content' => [
-          'id' => $picture->id,
-          'small_url' => [
-            'caption' => $link->caption,
-            'url' => $link->url,
+      'title' => 'article1',
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Picture',
+          'block_content' => [
+            'id' => $picture->id,
+            'small_url' => [
+              'caption' => $link->caption,
+              'url' => $link->url,
+            ],
+            'medium_url' => [
+              'caption' => '',
+              'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+            ],
+            'big_url' => null,
+            'place' => [
+              'latitude' => $place->latitude,
+              'longitude' => $place->longitude,
+              'altitude' => $place->altitude,
+              'localisation' => $place->localisation,
+            ],
           ],
-          'medium_url' => [
-            'caption' => '',
-            'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
-          ],
-          'big_url' => null,
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
           'place' => [
-            'latitude' => $place->latitude,
-            'longitude' => $place->longitude,
-            'altitude' => $place->altitude,
-            'localisation' => $place->localisation,
+            'latitude' => 63.7852,
+            'longitude' => 94.3302,
+            'altitude' => 0,
+            'localisation' => '',
           ],
-        ],
-        'weather' => 'cloudy',
-        'date' => '2016-01-03',
-        'isDraft' => 1,
-        'place' => [
-          'latitude' => 63.7852,
-          'longitude' => 94.3302,
-          'altitude' => 0,
-          'localisation' => '',
-        ],
-      ]
-    ],
+        ]
+      ],
     ]);
   }
 }

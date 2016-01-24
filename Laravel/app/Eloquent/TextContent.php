@@ -19,4 +19,11 @@ class TextContent extends Model
    * @var array
    */
   protected $fillable = ['content', 'authorId'];
+
+  protected $visible = ['content', 'id'];
+
+  public function paragraph()
+  {
+      return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
+  }
 }

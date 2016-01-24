@@ -3,6 +3,7 @@
 namespace Jetlag\Business;
 
 use Jetlag\Eloquent\Article as StoredArticle;
+use Jetlag\Eloquent\Picture as StoredPicture;
 use Jetlag\Eloquent\Author;
 use Jetlag\Business\Picture;
 use Jetlag\Eloquent\Paragraph;
@@ -142,8 +143,11 @@ class Article
     }
     $paragraphs = $storedArticle->paragraphs;
     foreach ($paragraphs as $paragraph) {
-      $paragraph->load(['blockContent', 'blockContent.small_url',
-        'blockContent.medium_url', 'blockContent.big_url', 'blockContent.place', 'place']);
+      $paragraph->load('place');
+      if ('Jetlag\Eloquent\Picture' == get_class($paragraph->blockContent))
+      {
+        $paragraph->blockContent->load(StoredPicture::$relationsToLoad);
+      }
     }
     $authorUsers = Author::getUserRoles($storedArticle->authorId);
     $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
