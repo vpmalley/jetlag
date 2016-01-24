@@ -41,6 +41,13 @@ $factory->defineAs(Jetlag\Eloquent\Link::class, 'web', function (Faker\Generator
     ];
 });
 
+$factory->define(Jetlag\Eloquent\TextContent::class, function (Faker\Generator $faker) {
+    return [
+      'authorId' => $faker->randomDigit,
+      'content' => $faker->realText(120),
+    ];
+});
+
 $factory->define(Jetlag\Eloquent\Paragraph::class, function (Faker\Generator $faker) {
     return [
       'title' => $faker->realText(40),
