@@ -5,6 +5,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Jetlag\User;
 use Jetlag\Eloquent\TextContent;
+use Log;
 
 class ArticleApiWithTextParagraphTest extends TestCase {
 
@@ -59,6 +60,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
           [
             'id' => 1,
             'title' => 'A first paragraph',
+            'block_content_type' => 'Jetlag\Eloquent\TextContent',
             'block_content' => [
               'id' => $text->id,
               'content' => $text->content,
@@ -87,6 +89,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
       'paragraphs' => [
         [
           'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\TextContent',
           'block_content' => [
             'content' => 'This is a long story, that is for sure',
           ],
@@ -119,7 +122,9 @@ class ArticleApiWithTextParagraphTest extends TestCase {
       [
         'id' => 1,
         'title' => 'A first paragraph',
+        'block_content_type' => 'Jetlag\Eloquent\TextContent',
         'block_content' => [
+          'id' => 1,
           'content' => 'This is a long story, that is for sure',
         ],
         'weather' => 'cloudy',
@@ -173,6 +178,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
         [
           'id' => $paragraph->id,
           'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\TextContent',
           'block_content' => [
             'id' => 1,
             'content' => 'This is a long story, that is for sure',
@@ -205,6 +211,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
       [
         'id' => $paragraph->id,
         'title' => 'A first paragraph',
+        'block_content_type' => 'Jetlag\Eloquent\TextContent',
         'block_content' => [
           'id' => 1,
           'content' => 'This is a long story, that is for sure',
@@ -259,6 +266,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
         [
           'id' => $paragraph->id,
           'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\TextContent',
           'block_content' => [
             'id' => 1,
             'content' => 'This is a long story, that is for sure',
@@ -286,6 +294,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
       [
         'id' => $paragraph->id,
         'title' => 'A first paragraph',
+        'block_content_type' => 'Jetlag\Eloquent\TextContent',
         'block_content' => [
           'id' => 1,
           'content' => 'This is a long story, that is for sure',

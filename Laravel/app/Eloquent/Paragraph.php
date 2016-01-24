@@ -56,15 +56,29 @@ class Paragraph extends Model
     {
       if ('Jetlag\Eloquent\Picture' == $subRequest['block_content_type'])
       {
-        if (array_key_exists('id', $subRequest))
+        if (array_key_exists('id', $subRequest['block_content']))
         {
-          $picture = Picture::find($subRequest['id']);
+          $picture = Picture::find($subRequest['block_content']['id']);
         } else
         {
           $picture = new Picture;
         }
         $picture->extract($subRequest['block_content']);
         $this->blockContent()->associate($picture);
+      } else if ('Jetlag\Eloquent\TextContent' == $subRequest['block_content_type'])
+      {
+        if (array_key_exists('id', $subRequest['block_content']))
+        {
+          $text = TextContent::find($subRequest['block_content']['id']);
+        } else
+        {
+          $text = new TextContent;
+          $text->content = '';
+        }
+        $text->content = array_key_exists('content', $subRequest['block_content']) ? $subRequest['block_content']['content'] : $text->content;
+        $text->authorId = -1;
+        $text->save();
+        $this->blockContent()->associate($text);
       }
     }
 
