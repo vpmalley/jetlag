@@ -13,7 +13,7 @@ class Marker extends Model
    */
   protected $table = 'markers';
 
-  protected $visible = ['description', 'place'];
+  protected $visible = ['id', 'description', 'place'];
 
   public function map()
   {
@@ -23,5 +23,46 @@ class Marker extends Model
   public function place()
   {
     return $this->belongsTo('Jetlag\Eloquent\Place');
+  }
+
+  /**
+   * Extracts the picture from the subrequest
+   *
+   * @param  array  $subRequest
+   * @return  Jetlag\Eloquent\Map the extracted map
+   */
+  public function extract($subRequest)
+  {
+    $this->id = array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;
+    $this->author_id = -1; // TODO authoring refacto
+
+    $this->setField($subRequest, 'description');
+    $this->extractAndBindPlace($subRequest);
+    $this->save();
+    return $this;
+  }
+
+  public function extractAndBindPlace($subRequest) {
+    if (array_key_exists('place', $subRequest))
+    {
+      if ($this->place)
+      {
+        $this->place->fill($subRequest['place']);
+        $this->place->save();
+      } else
+      {
+        $placeSubRequest = array_merge(Place::$default_fillable_values, $subRequest['place']);
+        $place = Place::create($placeSubRequest);
+        $this->place()->associate($place);
+      }
+    }
+  }
+
+  public function setField($subRequest, $key) {
+    if (array_key_exists($key, $subRequest)) {
+      $this[$key] = $subRequest[$key];
+    } else if (!isset($this[$key])) {
+      $this[$key] = '';
+    }
   }
 }

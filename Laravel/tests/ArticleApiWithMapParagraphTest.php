@@ -73,6 +73,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
               'caption' => $map->caption,
               'markers' => [
                 [
+                  'id' => $marker1->id,
                   'description' => $marker1->description,
                   'place' => [
                     'localisation' => $places[0]->localisation,
@@ -82,6 +83,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                   ],
                 ],
                 [
+                  'id' => $marker2->id,
                   'description' => $marker2->description,
                   'place' => [
                     'localisation' => $places[1]->localisation,
@@ -104,5 +106,109 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           ]
         ],
       ]);
+  }
+
+  public function testApiStoreArticleWithMapParagraph()
+  {
+    $user = factory(Jetlag\User::class)->create();
+
+    $this->actingAs($user)
+      ->post($this->articleApiUrl, [
+      'title' => 'article1',
+      'paragraphs' => [
+        [
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            'caption' => 'This is a pretty cool map, that is for sure',
+            "markers" => [
+              [
+                "description" => "La tour eiffel ici",
+                "place" => [
+                  "altitude" => 212,
+                  "latitude" => 45.76388,
+                  "localisation" => "La Tour",
+                  "longitude" => 4.82244,
+                ]
+              ],
+              [
+                "description" => "Le bout du monde, c cool",
+                "place" => [
+                  "altitude" => 14,
+                  "latitude" => 48.75107,
+                  "localisation" => "au bout du Cap, à Forillon",
+                  "longitude" => -64.16094,
+                ]
+              ]
+            ]
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'place' => [
+            'latitude' => 123.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'localisation' => 'lala sous mer',
+          ],
+        ]
+      ],
+    ], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(201);
+    $this->seeJson([
+        'id' => 1,
+        'url' => $this->baseUrl . "/article/1",
+      ]);
+
+    $this->actingAs($user)
+      ->get($this->articleApiUrl . 1)
+      ->assertResponseOk();
+    $this->seeJson([
+    'title' => 'article1',
+    'descriptionText' => '',
+    'isDraft' => 1,
+    'descriptionMedia' => [],
+    'paragraphs' => [
+      [
+        'id' => 1,
+        'title' => 'A first paragraph',
+        'block_content_type' => 'Jetlag\Eloquent\Map',
+        'block_content' => [
+          "id" => 1,
+          "caption" => "This is a pretty cool map, that is for sure",
+          "markers" => [
+            [
+              "id" => 1,
+              "description" => "La tour eiffel ici",
+              "place" => [
+                "altitude" => 212,
+                "latitude" => 45.76388,
+                "localisation" => "La Tour",
+                "longitude" => 4.82244,
+              ]
+            ],
+            [
+              "id" => 2,
+              "description" => "Le bout du monde, c cool",
+              "place" => [
+                "altitude" => 14,
+                "latitude" => 48.75107,
+                "localisation" => "au bout du Cap, à Forillon",
+                "longitude" => -64.16094,
+              ]
+            ]
+          ]
+        ],
+        'weather' => 'cloudy',
+        'date' => '2016-01-03',
+        'isDraft' => 1,
+        'place' => [
+          'latitude' => 123.43,
+          'longitude' => -43.57,
+          'altitude' => -156.9,
+          'localisation' => 'lala sous mer',
+        ],
+      ]
+    ],
+    ]);
   }
 }

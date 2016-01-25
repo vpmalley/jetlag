@@ -79,6 +79,17 @@ class Paragraph extends Model
         $text->authorId = -1;
         $text->save();
         $this->blockContent()->associate($text);
+      } else if ('Jetlag\Eloquent\Map' == $subRequest['block_content_type'])
+      {
+        if (array_key_exists('id', $subRequest['block_content']))
+        {
+          $map = Map::find($subRequest['block_content']['id']);
+        } else
+        {
+          $map = new Map;
+        }
+        $map->extract($subRequest['block_content']);
+        $this->blockContent()->associate($map);
       }
     }
 
