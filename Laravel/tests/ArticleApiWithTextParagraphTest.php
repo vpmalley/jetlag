@@ -5,7 +5,6 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Jetlag\User;
 use Jetlag\Eloquent\TextContent;
-use Log;
 
 class ArticleApiWithTextParagraphTest extends TestCase {
 

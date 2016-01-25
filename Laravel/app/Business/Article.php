@@ -7,6 +7,7 @@ use Jetlag\Eloquent\Picture as StoredPicture;
 use Jetlag\Eloquent\Author;
 use Jetlag\Business\Picture;
 use Jetlag\Eloquent\Paragraph;
+use Jetlag\Eloquent\Map;
 use Jetlag\UserPublic;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -147,6 +148,9 @@ class Article
       if ('Jetlag\Eloquent\Picture' == get_class($paragraph->blockContent))
       {
         $paragraph->blockContent->load(StoredPicture::$relationsToLoad);
+      } else if ('Jetlag\Eloquent\Map' == get_class($paragraph->blockContent))
+      {
+        $paragraph->blockContent->load(Map::$relationsToLoad);
       }
     }
     $authorUsers = Author::getUserRoles($storedArticle->authorId);

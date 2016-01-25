@@ -59,6 +59,22 @@ $factory->define(Jetlag\Eloquent\Paragraph::class, function (Faker\Generator $fa
     ];
 });
 
+$factory->define(Jetlag\Eloquent\Map::class, function (Faker\Generator $faker) {
+    return [
+      'caption' => $faker->realText(60),
+      'author_id' => $faker->randomDigit,
+    ];
+});
+
+$factory->define(Jetlag\Eloquent\Marker::class, function (Faker\Generator $faker) {
+    return [
+      'description' => $faker->realText(40),
+      'map_id' => $faker->randomDigit,
+      'place_id' => $faker->randomDigit,
+      'author_id' => $faker->randomDigit,
+    ];
+});
+
 $factory->define(Jetlag\Eloquent\Place::class, function (Faker\Generator $faker) {
     return [
       'localisation' => $faker->realText(70),
