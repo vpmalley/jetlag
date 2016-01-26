@@ -123,10 +123,17 @@ schemas:
           "minLength": 3,
           "maxLength": 200
         },
-        "blockContent": {
-          "type": "Picture",
-          "required": false,
-          "schema" : Picture
+        "block_content": {
+          "type": "Picture|Text|Map",
+          "required": true,
+          "schema" : Picture|Text|Map
+        },
+        "block_content_type": {
+          "type": "string",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 15,
+          "options": ["picture", "text", "map"]
         },
         "place": {
           "type": "Place",
@@ -145,6 +152,64 @@ schemas:
           "type": "boolean",
           "required": false
         }
+      }
+    }
+ - Text: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "content": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": *
+        },
+      }
+    }
+ - Map: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "caption": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "markers": {
+          "type": "Marker[]",
+          "required": false,
+          "schema" : Marker
+        },
+      }
+    }
+ - Marker: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "place": {
+          "type": "Place",
+          "required": true,
+          "schema" : Place
+        },
       }
     }
  - Place: |
