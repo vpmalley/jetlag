@@ -211,4 +211,297 @@ class ArticleApiWithMapParagraphTest extends TestCase {
     ],
     ]);
   }
+
+  public function testApiUpdateArticleWithMapParagraph()
+  {
+    $authorId = 6;
+    $writer = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
+      'authorId' => $authorId,
+      'userId' => $writer->id
+    ]);
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => $authorId,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+    $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
+      'authorId' => $authorId,
+    ]);
+    $map = factory(Jetlag\Eloquent\Map::class)->create();
+    $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
+    $marker1 = factory(Jetlag\Eloquent\Marker::class)->create([
+      'author_id' => $authorId,
+      'map_id' => $map->id,
+      'place_id' => $places[0]->id,
+    ]);
+    $marker2 = factory(Jetlag\Eloquent\Marker::class)->create([
+      'author_id' => $authorId,
+      'map_id' => $map->id,
+      'place_id' => $places[1]->id,
+    ]);
+    $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
+      'title' => 'A first paragraph',
+      'weather' => 'cloudy',
+      'date' => '2016-01-03',
+      'article_id' => $article->id,
+      'block_content_id' => $map->id,
+      'block_content_type' => 'Jetlag\Eloquent\Map',
+      'place_id' => $places[1]->id,
+    ]);
+
+    Log::debug(" expecting authorId=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    $this->actingAs($writer)
+      ->put($this->articleApiUrl . $article->id, [
+      'title' => 'article1',
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            'id' => $map->id,
+            'caption' => 'This is a pretty cool map, that is for sure',
+            "markers" => [
+              [
+                'id' => $marker1->id,
+                "description" => "La tour eiffel ici",
+                "place" => [
+                  "altitude" => 212,
+                  "latitude" => 45.76388,
+                  "localisation" => "La Tour",
+                  "longitude" => 4.82244,
+                ]
+              ],
+              [
+                'id' => $marker2->id,
+                "description" => "Le bout du monde, c cool",
+                "place" => [
+                  "altitude" => 14,
+                  "latitude" => 48.75107,
+                  "localisation" => "au bout du Cap, à Forillon",
+                  "longitude" => -64.16094,
+                ]
+              ]
+            ]
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'place' => [
+            'latitude' => 123.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'localisation' => 'lala sous mer',
+          ],
+        ]
+      ],
+    ], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(200);
+    $this->seeJson([
+        'id' => $article->id,
+      ]);
+
+    $this->actingAs($writer)
+      ->get($this->articleApiUrl . $article->id)
+      ->assertResponseOk();
+    $this->seeJson([
+      'id' => $article->id,
+      'title' => 'article1',
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            "id" => $map->id,
+            "caption" => "This is a pretty cool map, that is for sure",
+            "markers" => [
+              [
+                "id" => $marker1->id,
+                "description" => "La tour eiffel ici",
+                "place" => [
+                  "altitude" => 212,
+                  "latitude" => 45.76388,
+                  "localisation" => "La Tour",
+                  "longitude" => 4.82244,
+                ]
+              ],
+              [
+                "id" => $marker2->id,
+                "description" => "Le bout du monde, c cool",
+                "place" => [
+                  "altitude" => 14,
+                  "latitude" => 48.75107,
+                  "localisation" => "au bout du Cap, à Forillon",
+                  "longitude" => -64.16094,
+                ]
+              ]
+            ]
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'latitude' => 123.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'localisation' => 'lala sous mer',
+          ],
+        ]
+      ],
+    ]);
+  }
+
+  public function testApiPartialUpdateArticleWithMapParagraph()
+  {
+    $authorId = 6;
+    $writer = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
+      'authorId' => $authorId,
+      'userId' => $writer->id
+    ]);
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'authorId' => $authorId,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2'
+    ]);
+    $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
+      'authorId' => $authorId,
+    ]);
+    $map = factory(Jetlag\Eloquent\Map::class)->create();
+    $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
+    $marker1 = factory(Jetlag\Eloquent\Marker::class)->create([
+      'author_id' => $authorId,
+      'map_id' => $map->id,
+      'place_id' => $places[0]->id,
+    ]);
+    $marker2 = factory(Jetlag\Eloquent\Marker::class)->create([
+      'author_id' => $authorId,
+      'map_id' => $map->id,
+      'place_id' => $places[1]->id,
+    ]);
+    $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
+      'title' => 'A first paragraph',
+      'weather' => 'cloudy',
+      'date' => '2016-01-03',
+      'article_id' => $article->id,
+      'block_content_id' => $map->id,
+      'block_content_type' => 'Jetlag\Eloquent\Map',
+      'place_id' => $places[1]->id,
+    ]);
+
+    Log::debug(" expecting authorId=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    $this->actingAs($writer)
+      ->put($this->articleApiUrl . $article->id, [
+      'title' => 'article1',
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            'id' => $map->id,
+            "markers" => [
+              [
+                'id' => $marker1->id,
+                "description" => "La tour eiffel ici",
+                "place" => [
+                  "latitude" => 45.76388,
+                  "localisation" => "La Tour",
+                  "longitude" => 4.82244,
+                ]
+              ],
+              [
+                "description" => "Le bout du monde, c cool",
+                "place" => [
+                  "altitude" => 14,
+                  "latitude" => 48.75107,
+                  "localisation" => "au bout du Cap, à Forillon",
+                  "longitude" => -64.16094,
+                ]
+              ]
+            ]
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'place' => [
+            'latitude' => 123.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'localisation' => 'lala sous mer',
+          ],
+        ]
+      ],
+    ], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(200);
+    $this->seeJson([
+        'id' => $article->id,
+      ]);
+
+    $this->actingAs($writer)
+      ->get($this->articleApiUrl . $article->id)
+      ->assertResponseOk();
+    $this->seeJson([
+      'id' => $article->id,
+      'title' => 'article1',
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => $paragraph->title,
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            "id" => $map->id,
+            "caption" => $map->caption,
+            "markers" => [
+              [
+                "id" => $marker1->id,
+                "description" => "La tour eiffel ici",
+                "place" => [
+                  "altitude" => $places[0]->altitude,
+                  "latitude" => 45.76388,
+                  "localisation" => "La Tour",
+                  "longitude" => 4.82244,
+                ]
+              ],
+              [
+                'id' => $marker2->id,
+                'description' => $marker2->description,
+                'place' => [
+                  'localisation' => $places[1]->localisation,
+                  'latitude' => $places[1]->latitude,
+                  'longitude' => $places[1]->longitude,
+                  'altitude' => $places[1]->altitude,
+                ],
+              ],
+              [
+                "id" => 3,
+                "description" => "Le bout du monde, c cool",
+                "place" => [
+                  "altitude" => 14,
+                  "latitude" => 48.75107,
+                  "localisation" => "au bout du Cap, à Forillon",
+                  "longitude" => -64.16094,
+                ]
+              ]
+            ]
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'latitude' => 123.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'localisation' => 'lala sous mer',
+          ],
+        ]
+      ],
+    ]);
+  }
+
 }
