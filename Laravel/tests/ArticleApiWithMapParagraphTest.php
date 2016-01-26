@@ -307,7 +307,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article1',
-      'descriptionText' => '',
+      'descriptionText' => $article->descriptionText,
       'isDraft' => 1,
       'descriptionMedia' => [],
       'paragraphs' => [
@@ -446,7 +446,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article1',
-      'descriptionText' => '',
+      'descriptionText' => $article->descriptionText,
       'isDraft' => 1,
       'descriptionMedia' => [],
       'paragraphs' => [
