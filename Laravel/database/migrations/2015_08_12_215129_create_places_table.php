@@ -18,7 +18,7 @@ class CreatePlacesTable extends Migration
             $table->double('latitude', 10, 7);
             $table->double('longitude', 10, 7);
             $table->double('altitude', 8, 3);
-            $table->string('localisation', 200);
+            $table->string('description', 200);
         });
     }
 

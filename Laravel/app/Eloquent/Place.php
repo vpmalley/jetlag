@@ -18,7 +18,7 @@ class Place extends Model
    *
    * @var array
    */
-  protected $fillable = ['latitude', 'longitude', 'altitude', 'localisation'];
+  protected $fillable = ['latitude', 'longitude', 'altitude', 'description'];
 
   protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id'];
 
@@ -26,11 +26,11 @@ class Place extends Model
     'latitude' => -200,
     'longitude' => -200,
     'altitude' => 0,
-    'localisation' => '',
+    'description' => '',
   ];
 
   /**
    * The rules for validating input
    */
-  static $rules = ['localisation' => 'max:200'];
+  static $rules = ['description' => 'max:200'];
 }

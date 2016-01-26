@@ -76,7 +76,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                   'id' => $marker1->id,
                   'description' => $marker1->description,
                   'place' => [
-                    'localisation' => $places[0]->localisation,
+                    'description' => $places[0]->description,
                     'latitude' => $places[0]->latitude,
                     'longitude' => $places[0]->longitude,
                     'altitude' => $places[0]->altitude,
@@ -86,7 +86,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                   'id' => $marker2->id,
                   'description' => $marker2->description,
                   'place' => [
-                    'localisation' => $places[1]->localisation,
+                    'description' => $places[1]->description,
                     'latitude' => $places[1]->latitude,
                     'longitude' => $places[1]->longitude,
                     'altitude' => $places[1]->altitude,
@@ -98,7 +98,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
             'date' => '2016-01-03',
             'isDraft' => 1,
             'place' => [
-              'localisation' => $places[1]->localisation,
+              'description' => $places[1]->description,
               'latitude' => $places[1]->latitude,
               'longitude' => $places[1]->longitude,
               'altitude' => $places[1]->altitude,
@@ -127,7 +127,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 212,
                   "latitude" => 45.76388,
-                  "localisation" => "La Tour",
+                  "description" => "La Tour",
                   "longitude" => 4.82244,
                 ]
               ],
@@ -136,7 +136,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 14,
                   "latitude" => 48.75107,
-                  "localisation" => "au bout du Cap, à Forillon",
+                  "description" => "au bout du Cap, à Forillon",
                   "longitude" => -64.16094,
                 ]
               ]
@@ -148,7 +148,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
             'latitude' => 123.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
+            'description' => 'lala sous mer',
           ],
         ]
       ],
@@ -182,7 +182,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
               "place" => [
                 "altitude" => 212,
                 "latitude" => 45.76388,
-                "localisation" => "La Tour",
+                "description" => "La Tour",
                 "longitude" => 4.82244,
               ]
             ],
@@ -192,7 +192,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
               "place" => [
                 "altitude" => 14,
                 "latitude" => 48.75107,
-                "localisation" => "au bout du Cap, à Forillon",
+                "description" => "au bout du Cap, à Forillon",
                 "longitude" => -64.16094,
               ]
             ]
@@ -205,7 +205,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           'latitude' => 123.43,
           'longitude' => -43.57,
           'altitude' => -156.9,
-          'localisation' => 'lala sous mer',
+          'description' => 'lala sous mer',
         ],
       ]
     ],
@@ -269,7 +269,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 212,
                   "latitude" => 45.76388,
-                  "localisation" => "La Tour",
+                  "description" => "La Tour",
                   "longitude" => 4.82244,
                 ]
               ],
@@ -279,7 +279,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 14,
                   "latitude" => 48.75107,
-                  "localisation" => "au bout du Cap, à Forillon",
+                  "description" => "au bout du Cap, à Forillon",
                   "longitude" => -64.16094,
                 ]
               ]
@@ -291,7 +291,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
             'latitude' => 123.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
+            'description' => 'lala sous mer',
           ],
         ]
       ],
@@ -325,7 +325,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 212,
                   "latitude" => 45.76388,
-                  "localisation" => "La Tour",
+                  "description" => "La Tour",
                   "longitude" => 4.82244,
                 ]
               ],
@@ -335,7 +335,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 14,
                   "latitude" => 48.75107,
-                  "localisation" => "au bout du Cap, à Forillon",
+                  "description" => "au bout du Cap, à Forillon",
                   "longitude" => -64.16094,
                 ]
               ]
@@ -348,7 +348,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
             'latitude' => 123.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
+            'description' => 'lala sous mer',
           ],
         ]
       ],
@@ -409,7 +409,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "description" => "La tour eiffel ici",
                 "place" => [
                   "latitude" => 45.76388,
-                  "localisation" => "La Tour",
+                  "description" => "La Tour",
                   "longitude" => 4.82244,
                 ]
               ],
@@ -418,7 +418,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 14,
                   "latitude" => 48.75107,
-                  "localisation" => "au bout du Cap, à Forillon",
+                  "description" => "au bout du Cap, à Forillon",
                   "longitude" => -64.16094,
                 ]
               ]
@@ -430,7 +430,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
             'latitude' => 123.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
+            'description' => 'lala sous mer',
           ],
         ]
       ],
@@ -464,7 +464,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => $places[0]->altitude,
                   "latitude" => 45.76388,
-                  "localisation" => "La Tour",
+                  "description" => "La Tour",
                   "longitude" => 4.82244,
                 ]
               ],
@@ -472,7 +472,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 'id' => $marker2->id,
                 'description' => $marker2->description,
                 'place' => [
-                  'localisation' => $places[1]->localisation,
+                  'description' => $places[1]->description,
                   'latitude' => $places[1]->latitude,
                   'longitude' => $places[1]->longitude,
                   'altitude' => $places[1]->altitude,
@@ -484,7 +484,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
                 "place" => [
                   "altitude" => 14,
                   "latitude" => 48.75107,
-                  "localisation" => "au bout du Cap, à Forillon",
+                  "description" => "au bout du Cap, à Forillon",
                   "longitude" => -64.16094,
                 ]
               ]
@@ -497,7 +497,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
             'latitude' => 123.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
+            'description' => 'lala sous mer',
           ],
         ]
       ],

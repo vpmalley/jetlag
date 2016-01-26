@@ -77,7 +77,7 @@ $factory->define(Jetlag\Eloquent\Marker::class, function (Faker\Generator $faker
 
 $factory->define(Jetlag\Eloquent\Place::class, function (Faker\Generator $faker) {
     return [
-      'localisation' => $faker->realText(70),
+      'description' => $faker->realText(70),
       'latitude' => $faker->randomFloat(7, -180, 180),
       'longitude' => $faker->randomFloat(7, -180, 180),
       'altitude' => $faker->randomFloat(1, -1000, 10000),

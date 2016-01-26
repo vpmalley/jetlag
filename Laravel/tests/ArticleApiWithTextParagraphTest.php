@@ -68,7 +68,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
             'date' => '2016-01-03',
             'isDraft' => 1,
             'place' => [
-              'localisation' => $places[1]->localisation,
+              'description' => $places[1]->description,
               'latitude' => $places[1]->latitude,
               'longitude' => $places[1]->longitude,
               'altitude' => $places[1]->altitude,
@@ -98,7 +98,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
             'latitude' => 123.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
+            'description' => 'lala sous mer',
           ],
         ]
       ],
@@ -133,7 +133,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
           'latitude' => 123.43,
           'longitude' => -43.57,
           'altitude' => -156.9,
-          'localisation' => 'lala sous mer',
+          'description' => 'lala sous mer',
         ],
       ]
     ],
@@ -188,7 +188,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
             'latitude' => 123.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
-            'localisation' => 'lala sous mer',
+            'description' => 'lala sous mer',
           ],
         ]
       ],
@@ -222,7 +222,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
           'latitude' => 123.43,
           'longitude' => -43.57,
           'altitude' => -156.9,
-          'localisation' => 'lala sous mer',
+          'description' => 'lala sous mer',
         ],
       ]
     ],
@@ -305,7 +305,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
           'latitude' => 63.7852,
           'longitude' => -200,
           'altitude' => 0,
-          'localisation' => '',
+          'description' => '',
         ],
       ]
     ],
