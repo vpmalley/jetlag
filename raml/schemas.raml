@@ -74,25 +74,45 @@ schemas:
           "maxLength": 100
         },
         "small_url": {
-          "type": "string",
+          "type": "Link",
           "required": false,
-          "minLength": 3,
-          "maxLength": 100
+          "schema" : Link
         },
         "medium_url": {
-          "type": "string",
+          "type": "Link",
           "required": false,
-          "minLength": 3,
-          "maxLength": 100
+          "schema" : Link
         },
         "big_url": {
+          "type": "Link",
+          "required": false,
+          "schema" : Link
+        },
+        "place": {
+          "type": "Place",
+          "required": false,
+          "schema" : Place
+        }
+      }
+    },
+ - Link: |
+    {
+      "type": "object",
+      "properties": {
+        "url": {
           "type": "string",
           "required": false,
           "minLength": 3,
-          "maxLength": 100
+          "maxLength": 200
+        },
+        "caption": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+         "maxLength": 200
         }
       }
-    }
+    },
  - AuthorUser: |
     {
       "type": "object",
@@ -108,7 +128,7 @@ schemas:
           "maxLength": 10
         }
       }
-    }
+    },
  - Paragraph: |
     {
       "type": "object",
@@ -153,7 +173,7 @@ schemas:
           "required": false
         }
       }
-    }
+    },
  - Text: |
     {
       "type": "object",
@@ -169,7 +189,7 @@ schemas:
           "maxLength": *
         },
       }
-    }
+    },
  - Map: |
     {
       "type": "object",
@@ -190,7 +210,7 @@ schemas:
           "schema" : Marker
         },
       }
-    }
+    },
  - Marker: |
     {
       "type": "object",
@@ -211,15 +231,11 @@ schemas:
           "schema" : Place
         },
       }
-    }
+    },
  - Place: |
     {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "number",
-          "required": false
-        },
         "latitude": {
           "type": "double",
           "required": true

@@ -13,14 +13,9 @@ class Place extends Model
    */
   protected $table = 'places';
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
   protected $fillable = ['latitude', 'longitude', 'altitude', 'description'];
 
-  protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'id'];
+  protected $visible = ['latitude', 'longitude', 'altitude', 'description'];
 
   static $default_fillable_values = [
     'latitude' => -200,

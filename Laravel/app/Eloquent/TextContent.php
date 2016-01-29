@@ -13,11 +13,6 @@ class TextContent extends Model
    */
   protected $table = 'textcontents';
 
-  /**
-   * The attributes that are mass assignable.
-   *
-   * @var array
-   */
   protected $fillable = ['content', 'authorId'];
 
   protected $visible = ['content', 'id'];

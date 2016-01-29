@@ -259,4 +259,93 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     ]);
   }
 
+  public function testApiCannotStoreArticleWithMapParagraphWithId()
+  {
+    $user = factory(Jetlag\User::class)->create();
+    $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create();
+
+    $this->actingAs($user)
+      ->post($this->articleApiUrl, [
+      'title' => 'article1',
+      'paragraphs' => [
+        [
+          'id' => 1,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            "markers" => [
+              [
+                "place" => [
+                ]
+              ],
+              [
+                "place" => [
+                ]
+              ]
+            ]
+          ],
+          'place' => [
+          ],
+        ]
+      ],
+    ], ['ContentType' => 'application/json'])
+      ->assertResponseStatus(201);
+    $this->seeJson([
+        'id' => 1,
+        'url' => $this->baseUrl . "/article/1",
+      ]);
+
+    $this->actingAs($user)
+      ->get($this->articleApiUrl . 1)
+      ->assertResponseOk();
+    $this->seeJson([
+    'title' => 'article1',
+    'descriptionText' => '',
+    'isDraft' => 1,
+    'descriptionMedia' => [],
+    'paragraphs' => [
+      [
+        'id' => 1,
+        'title' => 'A first paragraph',
+        'block_content_type' => 'Jetlag\Eloquent\Map',
+        'block_content' => [
+          "id" => 1,
+          "caption" => "",
+          "markers" => [
+            [
+              "id" => 1,
+              "description" => "",
+              "place" => [
+                "altitude" => 0,
+                "latitude" => -200,
+                "description" => "",
+                "longitude" => -200,
+              ]
+            ],
+            [
+              "id" => 2,
+              "description" => "",
+              "place" => [
+                "altitude" => 0,
+                "latitude" => -200,
+                "description" => "",
+                "longitude" => -200,
+              ]
+            ]
+          ]
+        ],
+        'weather' => '',
+        'date' => '',
+        'isDraft' => 1,
+        'place' => [
+          "altitude" => 0,
+          "latitude" => -200,
+          "description" => "",
+          "longitude" => -200,
+        ],
+      ]
+    ],
+    ]);
+  }
+
 }

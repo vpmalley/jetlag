@@ -23,7 +23,7 @@ class Picture extends Model
    */
   protected $fillable = ['smallPictureLink_id', 'mediumPictureLink_id', 'bigPictureLink_id', 'authorId', 'place_id'];
 
-  protected $hidden = ['created_at', 'updated_at', 'deleted_at', 'smallPictureLink_id', 'mediumPictureLink_id', 'bigPictureLink_id', 'authorId', 'place_id', 'article_id'];
+  protected $visible = ['id', 'title', 'small_url', 'medium_url', 'big_url', 'place'];
 
   static $relationsToLoad = ['small_url', 'medium_url', 'big_url', 'place'];
 
