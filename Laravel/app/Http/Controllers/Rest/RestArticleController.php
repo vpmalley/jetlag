@@ -103,6 +103,10 @@ class RestArticleController extends Controller
     {
       foreach ($request->input('paragraphs') as $paragraphSubRequest) {
         $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
+        $validator = Validator::make($paragraphSubRequest, Paragraph::$rules);
+        if ($validator->fails()) {
+          abort(400);
+        }
         $paragraph = Paragraph::create($paragraphSubRequest);
         $paragraph->extract($paragraphSubRequest);
         $article->addParagraph($paragraph);

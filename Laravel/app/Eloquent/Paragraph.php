@@ -21,11 +21,12 @@ class Paragraph extends Model
    * The rules for validating input
    */
   static $rules = [
+    'id' => 'unique:paragraphs,id',
     'title' => 'required|min:3|max:200',
     'weather' => 'min:3|max:20',
-    'city' => 'boolean',
-    'block_content_type' => 'min:3|max:30',
-    'hublotContentType' => 'min:3|max:15',
+    'date' => 'min:3|max:10',
+    'block_content_type' => 'min:3|max:30|required_with:block_content',
+    'block_content' => 'required_with:block_content_type',
   ];
 
   static $default_fillable_values = [
