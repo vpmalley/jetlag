@@ -44,6 +44,8 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
 	ctrl.leafletMap = { markers: {} };
 
+	ctrl.http = $http;
+	
 	ctrl.changeArticleStep = function(stepNumber) {
 		if(_.isNumber(stepNumber)) {
 			ctrl.articleStep = stepNumber;

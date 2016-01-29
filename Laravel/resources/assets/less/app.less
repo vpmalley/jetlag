@@ -39,13 +39,29 @@
 }
 
 .jl-btn {
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  border: solid 1px;
+  border: solid 2px @jl-blue;
+  border-radius: 0;
+  background-color: @jl-blue;
+  color: @jl-orange;
   height: 100%;
   display: inline-block;
+  vertical-align: middle;
+  
+  &.jl-btn-lg {
+    font-size: 1.6rem;
+	padding: 0.8rem 1.6rem;
+  }
+  
+  &.jl-btn-empty {
+    background-color: inherit;
+	color: @jl-blue;
+	font-weight: lighter;
+  }
+
   title {
-    font-size: 1.2rem;
+    font-size: 120%;
 	display: inline;
   }
 }
@@ -54,6 +70,7 @@
   border-bottom: solid 2px @jl-grey;
   border-radius: 0;
   font-size: 2rem;
+  padding: 1rem 2rem;
   
   &:active {
     outline: none;
@@ -62,6 +79,7 @@
   
   &.selected {
     border-bottom: solid 2px @jl-blue;
+	color: @jl-orange;
   }
 }
 
