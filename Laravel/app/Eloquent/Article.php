@@ -23,14 +23,17 @@ class Article extends Model
    *
    * @var array
    */
-  public $fillable = ['title', 'descriptionText', 'isDraft', 'isPublic', 'authorId'];
+  public $fillable = ['id', 'title', 'descriptionText', 'isDraft', 'isPublic'];
 
   /**
    * The rules for validating input
    */
   static $rules = [
-    'title' => 'min:3|max:200',
-    'descriptionText' => 'min:3|max:500'
+    'id' => 'numeric',
+    'title' => 'string|required|min:3|max:200',
+    'descriptionText' => 'string|min:3|max:500',
+    'isDraft' => 'boolean',
+    'isPublic' => 'boolean',
     ];
 
   public function descriptionPicture()

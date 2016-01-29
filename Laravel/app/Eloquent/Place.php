@@ -27,5 +27,9 @@ class Place extends Model
   /**
    * The rules for validating input
    */
-  static $rules = ['description' => 'max:200'];
+  static $rules = [
+    'latitude' => 'numeric|min:-90|max:90',
+    'longitude' => 'numeric|min:-180|max:180',
+    'altitude' => 'numeric|min:-1000|max:100000',
+    'description' => 'string|max:200'];
 }

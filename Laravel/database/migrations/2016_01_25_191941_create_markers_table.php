@@ -15,7 +15,7 @@ class CreateMarkersTable extends Migration
         Schema::create('markers', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->mediumtext('description');
+            $table->string('description', 500);
             $table->bigInteger('author_id');
             $table->bigInteger('place_id');
             $table->bigInteger('map_id');

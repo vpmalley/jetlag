@@ -2,6 +2,7 @@
 
 namespace Jetlag\Eloquent;
 
+use Validator;
 use Illuminate\Database\Eloquent\Model;
 
 class Picture extends Model
@@ -13,19 +14,18 @@ class Picture extends Model
    */
   protected $table = 'pictures';
 
-  /**
-   * The attributes that are mass assignable.
-   * A picture has so far 3 representations of different sizes (we can add more)
-   * authorId refers (in authors table) to who created/can manage the picture
-   * place_id refers to the place the picture was taken
-   *
-   * @var array
-   */
-  protected $fillable = ['smallPictureLink_id', 'mediumPictureLink_id', 'bigPictureLink_id', 'authorId', 'place_id'];
+  protected $fillable = ['id'];
 
   protected $visible = ['id', 'title', 'small_url', 'medium_url', 'big_url', 'place'];
 
   static $relationsToLoad = ['small_url', 'medium_url', 'big_url', 'place'];
+
+  /**
+   * The rules for validating input
+   */
+  static $rules = [
+    'id' => 'numeric',
+  ];
 
   public function paragraph()
   {
@@ -88,6 +88,10 @@ class Picture extends Model
   {
     if (array_key_exists($key, $subRequest))
     {
+      $validator = Validator::make($subRequest[$key], Link::$rules);
+      if ($validator->fails()) {
+        abort(400, $validator->errors());
+      }
       if ($this[$key])
       {
         $link = $this[$key];

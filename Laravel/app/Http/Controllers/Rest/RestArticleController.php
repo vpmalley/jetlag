@@ -102,6 +102,10 @@ class RestArticleController extends Controller
     if ($request->has('paragraphs'))
     {
       foreach ($request->input('paragraphs') as $paragraphSubRequest) {
+        if (array_key_exists('id', $paragraphSubRequest))
+        {
+          abort(400);
+        }
         $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
         $validator = Validator::make($paragraphSubRequest, Paragraph::$rules);
         if ($validator->fails()) {

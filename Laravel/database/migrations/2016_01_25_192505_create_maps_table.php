@@ -16,7 +16,7 @@ class CreateMapsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->bigInteger('author_id');
-            $table->mediumtext('caption');
+            $table->string('caption', 500);
         });
     }
 

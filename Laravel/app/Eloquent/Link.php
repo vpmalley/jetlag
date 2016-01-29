@@ -22,7 +22,7 @@ class Link extends Model
 	 *
 	 * @var array
 	 */
-	protected $fillable = ['caption', 'storage', 'url', 'authorId'];
+	protected $fillable = ['caption', 'url'];
 
   protected $visible = ['url', 'caption'];
 
@@ -30,9 +30,9 @@ class Link extends Model
    * The rules for validating input
    */
   static $rules = [
-        'caption' => 'min:3|max:200',
-        'url' => 'min:3|max:200',
-    ];
+    'caption' => 'string|min:3|max:200',
+    'url' => 'string|required|min:3|max:200',
+  ];
 
   public function fromUrl($url)
   {

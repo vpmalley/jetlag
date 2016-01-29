@@ -2,6 +2,7 @@
 
 namespace Jetlag\Eloquent;
 
+use Validator;
 use Illuminate\Database\Eloquent\Model;
 
 class Marker extends Model
@@ -13,7 +14,17 @@ class Marker extends Model
    */
   protected $table = 'markers';
 
+  protected $fillable = ['id', 'description'];
+
   protected $visible = ['id', 'description', 'place'];
+
+  /**
+   * The rules for validating input
+   */
+  static $rules = [
+    'id' => 'numeric',
+    'description' => 'string|min:3|max:500',
+  ];
 
   public function map()
   {
@@ -45,6 +56,10 @@ class Marker extends Model
   public function extractAndBindPlace($subRequest) {
     if (array_key_exists('place', $subRequest))
     {
+      $validator = Validator::make($subRequest['place'], Place::$rules);
+      if ($validator->fails()) {
+        abort(400, $validator->errors());
+      }
       if ($this->place)
       {
         $this->place->fill($subRequest['place']);

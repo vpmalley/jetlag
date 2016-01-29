@@ -113,7 +113,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
           'weather' => 'cloudy',
           'date' => '2016-01-03',
           'place' => [
-            'latitude' => 123.43,
+            'latitude' => 83.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
             'description' => 'lala sous mer',
@@ -160,7 +160,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
         'date' => '2016-01-03',
         'isDraft' => 1,
         'place' => [
-          'latitude' => 123.43,
+          'latitude' => 83.43,
           'longitude' => -43.57,
           'altitude' => -156.9,
           'description' => 'lala sous mer',
@@ -226,7 +226,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
           'weather' => 'sunny',
           'date' => '2013-12-12',
           'place' => [
-            'latitude' => 123.43,
+            'latitude' => 83.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
             'description' => 'lala sous mer',
@@ -277,7 +277,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
         'date' => '2013-12-12',
         'isDraft' => 1,
         'place' => [
-          'latitude' => 123.43,
+          'latitude' => 83.43,
           'longitude' => -43.57,
           'altitude' => -156.9,
           'description' => 'lala sous mer',

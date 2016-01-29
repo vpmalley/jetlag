@@ -2,6 +2,7 @@
 
 namespace Jetlag\Eloquent;
 
+use Validator;
 use Illuminate\Database\Eloquent\Model;
 
 class Map extends Model
@@ -13,9 +14,19 @@ class Map extends Model
    */
   protected $table = 'maps';
 
+  protected $fillable = ['id', 'caption'];
+
   protected $visible = ['id', 'caption', 'markers'];
 
   static $relationsToLoad = ['markers', 'markers.place'];
+
+  /**
+   * The rules for validating input
+   */
+  static $rules = [
+    'id' => 'numeric',
+    'caption' => 'string|min:3|max:500',
+  ];
 
   public function paragraph()
   {
@@ -43,6 +54,10 @@ class Map extends Model
     if (array_key_exists('markers', $subRequest))
     {
       foreach ($subRequest['markers'] as $markerSubRequest) {
+        $validator = Validator::make($markerSubRequest, Marker::$rules);
+        if ($validator->fails()) {
+          abort(400, $validator->errors());
+        }
         if (array_key_exists('id', $markerSubRequest))
         {
           $marker = Marker::find($markerSubRequest['id']);

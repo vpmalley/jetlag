@@ -145,7 +145,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           'weather' => 'cloudy',
           'date' => '2016-01-03',
           'place' => [
-            'latitude' => 123.43,
+            'latitude' => 73.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
             'description' => 'lala sous mer',
@@ -202,7 +202,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
         'date' => '2016-01-03',
         'isDraft' => 1,
         'place' => [
-          'latitude' => 123.43,
+          'latitude' => 73.43,
           'longitude' => -43.57,
           'altitude' => -156.9,
           'description' => 'lala sous mer',
@@ -288,7 +288,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           'weather' => 'cloudy',
           'date' => '2016-01-03',
           'place' => [
-            'latitude' => 123.43,
+            'latitude' => 73.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
             'description' => 'lala sous mer',
@@ -345,7 +345,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           'date' => '2016-01-03',
           'isDraft' => 1,
           'place' => [
-            'latitude' => 123.43,
+            'latitude' => 73.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
             'description' => 'lala sous mer',
@@ -427,7 +427,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           'weather' => 'cloudy',
           'date' => '2016-01-03',
           'place' => [
-            'latitude' => 123.43,
+            'latitude' => 73.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
             'description' => 'lala sous mer',
@@ -494,7 +494,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           'date' => '2016-01-03',
           'isDraft' => 1,
           'place' => [
-            'latitude' => 123.43,
+            'latitude' => 73.43,
             'longitude' => -43.57,
             'altitude' => -156.9,
             'description' => 'lala sous mer',

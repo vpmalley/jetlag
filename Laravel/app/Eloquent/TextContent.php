@@ -13,9 +13,17 @@ class TextContent extends Model
    */
   protected $table = 'textcontents';
 
-  protected $fillable = ['content', 'authorId'];
+  protected $fillable = ['content', 'id'];
 
   protected $visible = ['content', 'id'];
+
+  /**
+   * The rules for validating input
+   */
+  static $rules = [
+    'id' => 'numeric',
+    'content' => 'string|required|min:3|max:10000',
+  ];
 
   public function paragraph()
   {

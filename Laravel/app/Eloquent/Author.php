@@ -28,13 +28,13 @@ class Author extends Model
   *
   * @var array
   */
-  protected $fillable = ['authorId', 'userId', 'role'];
+  protected $fillable = ['role'];
 
   /**
   * The rules for validating input
   */
   static $rules = [
-    'role' => 'min:5|max:6',
+    'role' => 'alpha|required|min:5|max:6',
   ];
 
   const K_OWNER = 'owner';
