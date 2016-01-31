@@ -12,6 +12,7 @@
 <div class="jl-tbCreator row" ng-controller="TravelbookCreatorController as tbCreatorCtrl"
 	style="margin-top: 150px">
 	<div class="col-xs-offset-2 col-xs-8">
+	<div class="jl-card">
 	<div class="step" ng-class="{'step-open': tbCreatorCtrl.tbStep === 1}">
 		<div class="step-header clickable" ng-click="tbCreatorCtrl.toggleTbStep(1)">
 			<div class="step-number pull-left">
@@ -180,6 +181,7 @@
 		</div>
 	</div> <!-- first article -->
 	</div>
+	</div>
 </div>
 
 <div class="jl-tbCreator row" ng-controller="ArticleCreatorController as articleCreatorCtrl"
@@ -273,14 +275,19 @@
 								</div>
 							</div>
 							<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
-								<input type="text" name="name" ng-model="articleCreatorCtrl.paragraphEditor.input.location.name"></input>
-								<button class="jl-btn jl-btn-large" ng-click="articleCreatorCtrl.changeLocation()">Search</button>
-								<leaflet 	lf-center="articleCreatorCtrl.leafletMap.center" height="480px" width="640px" 
+								<div class="jl-table location-searchbar">
+									<input class="jl-table-cell" type="text" name="name" placeholder="Pays, ville, adresse..."
+									ng-model="articleCreatorCtrl.paragraphEditor.input.location.name"></input>
+									<button  class="jl-table-cell jl-btn jl-btn-large" ng-click="articleCreatorCtrl.changeLocation()">Search</button>
+								</div>
+								<leaflet 	lf-center="articleCreatorCtrl.leafletMap.center"
 											markers="articleCreatorCtrl.leafletMap.markers" events="articleCreatorCtrl.leafletMap.events">
 								</leaflet>
 							</div>
 							<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'external'">
-								<input type="text" name="external" ng-model="articleCreatorCtrl.paragraphEditor.input.external.link"></input>
+								<input type="text" class="external-bar" name="external" placeholder="Entrez l'URL ici"
+								ng-model="articleCreatorCtrl.paragraphEditor.input.external.link"></input>
+								<p>Une vignette représentant le contenu de la page distante sera insérée dans votre article</p>
 								<div class="external-preview">
 								</div>
 							</div>
@@ -301,9 +308,11 @@
 		<div class="article-publisher jl-card">
 			<h1>Votre article est terminé ?</h1>
 			<div class="card-action">
-				<div class="jl-btn"><title>Abandonner</title><br><small>(et perdre les changements</small></div>
-				<div class="jl-btn"><title>Quitter</title><br><small>(en sauvegardant)</small></div>
-				<div class="jl-btn"><title>Publier</title></div>
+				<div class="jl-btn-group">
+					<div class="jl-btn jl-btn-empty"><title>Abandonner</title><br><small>(et perdre les changements</small></div>
+					<div class="jl-btn jl-btn-empty"><title>Quitter</title><br><small>(en sauvegardant)</small></div>
+					<div class="jl-btn"><title>Publier</title></div>
+				</div>
 			</div>
 		</div>
 	</div>

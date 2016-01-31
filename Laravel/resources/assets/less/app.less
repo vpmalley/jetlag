@@ -38,6 +38,27 @@
   }
 }
 
+.jl-table {
+  display: table;
+  .jl-table-cell {
+	display: table-cell;
+	height: 100%;
+	
+	&.jl-table-cell-big {
+	  width: 100%;
+	}
+  }
+}
+
+.jl-btn-group {
+  display: table;
+  border-spacing: 2px;
+  .jl-btn {
+    display: table-cell;
+	height: 100%;
+	width: .1%;
+  }
+}
 .jl-btn {
   padding: 0.5rem 1rem;
   cursor: pointer;
@@ -45,9 +66,9 @@
   border-radius: 0;
   background-color: @jl-blue;
   color: @jl-orange;
-  height: 100%;
   display: inline-block;
   vertical-align: middle;
+  text-align: center;
   
   &.jl-btn-lg {
     font-size: 1.6rem;
