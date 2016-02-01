@@ -43,8 +43,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 	ctrl.articleStep = 0;
 	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
 	ctrl.leafletMap = { markers: {} };
-
-	ctrl.http = $http;
+	ctrl.paragraphs = [];
 	
 	ctrl.changeArticleStep = function(stepNumber) {
 		if(_.isNumber(stepNumber)) {
@@ -180,17 +179,33 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 	
 	/* Transform what's in the paragraphEditor.input into a proper paragraph ready to be displayed */
 	ctrl.addParagraph = function() {
-	  switch(ctrl.paragraphEditor.input.type) {
-	  case 'text': 
+	  var input = ctrl.paragraphEditor.input;
+	  switch(input.type) {
+	  case 'text':
+	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'text', text: input.text};
 	    break;
 	  case 'picture':
 	    break;
 	  case 'location':
+	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'location', location: { name: input.location.name, markers: {marker: {
+	    message: input.location.name,
+		lat: input.location.coordinates[1],
+		lng: input.location.coordinates[0],
+		draggable: false,
+		focus: true
+	  }}, center: {
+	    lat: input.location.coordinates[1],
+        lng: input.location.coordinates[0],
+        zoom: 8
+	  }}};
 	    break;
 	  case 'external':
+	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'external', link: input.external.link}
 	    break;
 	  default:break;
 	  }
+	  /* reset the paragraphEditor input */
+	  ctrl.paragraphEditor.input= {type: 'text', text: '', picture: {}, location: {}, external: {}};
 	}
 };
 

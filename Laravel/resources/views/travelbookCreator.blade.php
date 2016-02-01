@@ -225,8 +225,8 @@
 					</div>
 				</div>
 				<div class="paragraph-type-location" ng-if="paragraph.type === 'location'">
-					<leaflet lf-center="paragraph.location.center" height="480px" width="640px" 
-							 markers="paragraph.location.marker">
+					<leaflet lf-center="paragraph.location.center" height="480px" style="width:100%" 
+							 markers="paragraph.location.markers">
 					</leaflet>
 				</div>
 				<div class="paragraph-type-external" ng-if="paragraph.type === 'external'">
@@ -262,16 +262,13 @@
 										msd-elastic="\n">
 							</textarea>
 							<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'picture'">
-								<div class="button" ngf-select="articleCreatorCtrl.uploadFiles($files)" multiple="multiple">
-									Upload on file select
-								</div>
 								<div 	ngf-drop="articleCreatorCtrl.uploadFiles($files)" class="drop-box"
-										ngf-drag-over-class="'dragover'" ngf-multiple="true" 
+										ngf-drag-over-class="'dragover'"
 										ngf-pattern="'image/*'">
-									Drop Images here
-								</div>
-								<div ngf-no-file-drop>
-									File Drag/Drop is not supported for this browser
+									<div class="jl-btn jl-btn-lg" ngf-select="articleCreatorCtrl.uploadFiles($files)">
+									Select a picture
+									</div>
+									<div class="strut"></div><div class="drop-text">Drop a picture here</div>
 								</div>
 							</div>
 							<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
@@ -296,8 +293,8 @@
 					<div style="text-align: right">
 						<div class="jl-btn jl-btn-lg jl-btn-empty">
 							<i class="fa fa-times"></i> Supprimer
-						</div>
-						<div class="jl-btn jl-btn-lg" ng-disabled="paragraphEditor.$invalid" ng-click="articleCreatorCtrl.addParagraph()">
+						</div><!--
+						--><div class="jl-btn jl-btn-lg" ng-disabled="paragraphEditor.$invalid" ng-click="articleCreatorCtrl.addParagraph()">
 							<i class="fa fa-plus"></i> Ajouter
 						</div>
 					</div>
