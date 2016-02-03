@@ -113,7 +113,7 @@ class Article
     $this->descriptionPicture = $picture;
     $this->paragraphs = $paragraphs;
     $this->authorUsers = $authorUsers;
-    $this->authorId = $storedArticle->authorId;
+    $this->authorId = $storedArticle->author_id;
   }
 
   /**
@@ -153,8 +153,8 @@ class Article
         $paragraph->blockContent->load(Map::$relationsToLoad);
       }
     }
-    $authorUsers = Author::getUserRoles($storedArticle->authorId);
-    $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
+    $authorUsers = Author::getUserRoles($storedArticle->author_id);
+    $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->author_id, $authorUsers);
   }
 
   public function getId()
@@ -291,7 +291,7 @@ class Article
   {
     $articles = [];
     $authorIds = Author::getAuthorsForUser($userId);
-    $storedArticles = StoredArticle::whereIn('authorId', $authorIds)->get();
+    $storedArticles = StoredArticle::whereIn('author_id', $authorIds)->get();
     foreach ($storedArticles as $storedArticle)
     {
       $article = new Article;
@@ -392,7 +392,7 @@ class Article
     $article->descriptionText = $this->descriptionText;
     $article->isDraft = $this->isDraft;
     $article->isPublic = $this->isPublic;
-    $article->authorId = $this->authorId;
+    $article->author_id = $this->authorId;
     $article->save();
 
     if ($this->descriptionPicture)

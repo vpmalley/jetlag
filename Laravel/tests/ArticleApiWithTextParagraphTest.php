@@ -20,20 +20,20 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'userId' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
     $text = factory(Jetlag\Eloquent\TextContent::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
       'title' => 'A first paragraph',
@@ -45,7 +45,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
       'place_id' => $places[1]->id,
     ]);
 
-    Log::debug(" expecting authorId=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    Log::debug(" expecting author_id=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
       ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
@@ -145,20 +145,20 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'userId' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
     $text = factory(Jetlag\Eloquent\TextContent::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
       'title' => 'A first paragraph',
@@ -234,20 +234,20 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'userId' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
     $link = factory(Jetlag\Eloquent\Link::class, 'web')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $place = factory(Jetlag\Eloquent\Place::class)->create();
     $text = factory(Jetlag\Eloquent\TextContent::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
       'title' => 'A first paragraph',

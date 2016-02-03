@@ -20,20 +20,20 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'userId' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'small_picture_link_id' => $links[0]->id,
       'medium_picture_link_id' => $links[1]->id,
       'big_picture_link_id' => $links[2]->id,
@@ -49,7 +49,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
       'place_id' => $places[1]->id,
     ]);
 
-    Log::debug(" expecting authorId=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    Log::debug(" expecting author_id=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
       ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
@@ -175,20 +175,20 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'userId' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'small_picture_link_id' => $links[0]->id,
       'medium_picture_link_id' => $links[1]->id,
       'big_picture_link_id' => $links[2]->id,
@@ -292,20 +292,20 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $authorId = 6;
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'userId' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
     $link = factory(Jetlag\Eloquent\Link::class, 'web')->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
     ]);
     $place = factory(Jetlag\Eloquent\Place::class)->create();
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
-      'authorId' => $authorId,
+      'author_id' => $authorId,
       'small_picture_link_id' => $link->id,
       'place_id' => $place->id,
       'article_id' => null,

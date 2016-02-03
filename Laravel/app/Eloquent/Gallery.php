@@ -18,7 +18,7 @@ class Gallery extends Model
    *
    * @var array
    */
-  protected $fillable = ['description', 'authorId'];
+  protected $fillable = ['description', 'author_id'];
 
   /**
    * The rules for validating input

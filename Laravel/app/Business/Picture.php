@@ -67,7 +67,7 @@ class Picture
   public function fromDb($storedPicture)
   {
     $this->id = $storedPicture->id;
-    $this->authorId = $storedPicture->authorId;
+    $this->authorId = $storedPicture->author_id;
   }
 
   /**
@@ -199,7 +199,7 @@ class Picture
   public function getStoredPicture()
   {
     $picture = StoredPicture::findOrNew($this->id);
-    $picture->authorId = $this->authorId;
+    $picture->author_id = $this->authorId;
     return $picture;
   }
 

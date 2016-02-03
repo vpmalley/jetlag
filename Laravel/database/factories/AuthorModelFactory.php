@@ -13,7 +13,7 @@
 
 $factory->defineAs(Jetlag\Eloquent\Author::class, 'owner', function (Faker\Generator $faker) {
     return [
-        'authorId' => $faker->randomDigit,
+        'author_id' => $faker->randomDigit,
         'userId' => $faker->randomDigit,
         'role' => 'owner'
     ];
@@ -21,7 +21,7 @@ $factory->defineAs(Jetlag\Eloquent\Author::class, 'owner', function (Faker\Gener
 
 $factory->defineAs(Jetlag\Eloquent\Author::class, 'writer', function (Faker\Generator $faker) {
     return [
-        'authorId' => $faker->randomDigit,
+        'author_id' => $faker->randomDigit,
         'userId' => $faker->randomDigit,
         'role' => 'writer'
     ];
@@ -29,7 +29,7 @@ $factory->defineAs(Jetlag\Eloquent\Author::class, 'writer', function (Faker\Gene
 
 $factory->defineAs(Jetlag\Eloquent\Author::class, 'reader', function (Faker\Generator $faker) {
     return [
-        'authorId' => $faker->randomDigit,
+        'author_id' => $faker->randomDigit,
         'userId' => $faker->randomDigit,
         'role' => 'reader'
     ];

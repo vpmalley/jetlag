@@ -18,7 +18,7 @@ class CreatePicturesTable extends Migration
             $table->bigInteger('small_picture_link_id');
             $table->bigInteger('medium_picture_link_id');
             $table->bigInteger('big_picture_link_id');
-            $table->bigInteger('authorId');
+            $table->bigInteger('author_id');
             $table->bigInteger('place_id');
             $table->bigInteger('article_id')->nullable();
         });

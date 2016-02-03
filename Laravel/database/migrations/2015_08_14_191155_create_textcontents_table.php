@@ -16,7 +16,7 @@ class CreateTextcontentsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->text('content');
-            $table->bigInteger('authorId');
+            $table->bigInteger('author_id');
         });
     }
 

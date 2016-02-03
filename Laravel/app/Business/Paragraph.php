@@ -87,7 +87,7 @@ class Paragraph
     // location
     $paragraph->location = $this->place;
     // authors
-    $paragraph->authorUsers = Author::getUsers($storedParagraph->authorId);
+    $paragraph->authorUsers = Author::getUsers($storedParagraph->author_id);
 
     return $paragraph;
   }

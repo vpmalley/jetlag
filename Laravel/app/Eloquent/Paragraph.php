@@ -35,7 +35,7 @@ class Paragraph extends Model
     'weather' => '',
     'date' => '',
     'isDraft' => true,
-    'authorId' => -1,
+    'author_id' => -1,
   ];
 
   public function place() {
@@ -114,7 +114,7 @@ class Paragraph extends Model
       $text->content = '';
     }
     $text->content = array_key_exists('content', $textSubRequest) ? $textSubRequest['content'] : $text->content;
-    $text->authorId = -1;
+    $text->author_id = -1;
     $text->save();
     $this->blockContent()->associate($text);
   }
