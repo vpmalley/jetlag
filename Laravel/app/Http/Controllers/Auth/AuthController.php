@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\Registrar;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Jetlag\User;
+use Jetlag\UserPublic;
+use DB;
 
 class AuthController extends Controller {
 
@@ -23,7 +25,7 @@ class AuthController extends Controller {
 	*/
 
 	use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-	
+
 	protected $redirectAfterLogout = '/home';
 
 	/**
@@ -40,7 +42,7 @@ class AuthController extends Controller {
 
 		$this->middleware('guest', ['except' => 'getLogout']);
 	}
-  
+
   /**
    * Contains the validation rules for new users of the application.
    */
@@ -54,7 +56,7 @@ class AuthController extends Controller {
     return $validator;
   }
 
-  
+
   /**
    * Responsible for creating new App\User records in your database using the Eloquent ORM
    */
@@ -69,7 +71,13 @@ class AuthController extends Controller {
 	*/
     $newUser->email = strtolower($user['email']);
     $newUser->password = Hash::make($user['password']);
-    $newUser->save();
+
+		DB::transaction(function ($newUser) use ($newUser) {
+    	$newUser->save();
+			$newPublicUser = new UserPublic;
+			$newPublicUser->id = $newUser->id;
+			$newPublicUser->save();
+		});
     return $newUser;
   }
 
