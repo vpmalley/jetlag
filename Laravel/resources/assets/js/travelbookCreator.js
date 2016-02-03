@@ -8,10 +8,12 @@ var dependencies = [
 angular
   .module('jetlag.webapp.travelbookCreator', dependencies)
   .controller('TravelbookCreatorController', TravelbookCreatorController)
-  .controller('ArticleCreatorController', ArticleCreatorController);
+  .controller('ArticleCreatorController', ArticleCreatorController)
+  .filter('paragraphText', ParagraphTextFilter);
 
 TravelbookCreatorController.$inject = ['$scope', 'ModelsManager'];
-ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'Upload'];
+ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'Upload', '$sce'];
+ParagraphTextFilter.$inject = ['$sce'];
 
 function TravelbookCreatorController($scope, ModelsManager) {
 	var ctrl = this;
@@ -38,7 +40,7 @@ function TravelbookCreatorController($scope, ModelsManager) {
 	}
 };
 
-function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
+function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	var ctrl = this;
 	ctrl.articleStep = 0;
 	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
@@ -125,24 +127,24 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 	}
 	
 	$scope.$on('leafletDirectiveMarker.dragend', function(e, m) {
-	ctrl.leafletMap.markers.marker = m.model;
-	var marker = ctrl.leafletMap.markers.marker;
-	  if(marker.lng !== ctrl.paragraphEditor.input.location.coordinates[0] ||
-	     marker.lat !== ctrl.paragraphEditor.input.location.coordinates[1]) {
-		  $http.get('https://search.mapzen.com/v1/reverse', { params: {
-			  'point.lat': marker.lat,
-			  'point.lon': marker.lng,
-			  api_key: 'search-KjBcCm0'
-			}}).success(function(results) {
-			  if(_.isObject(results) && results.features.length > 0) {
-			    var firstMatch = results.features[0];
-				ctrl.paragraphEditor.input.location.name = firstMatch.properties.label;
-				ctrl.leafletMap.markers.marker.message = firstMatch.properties.label;
-			  }
-			}).error(function(error) {
-			  console.log(error);
-			});
-		 }
+		ctrl.leafletMap.markers.marker = m.model;
+		var marker = ctrl.leafletMap.markers.marker;
+		  if(marker.lng !== ctrl.paragraphEditor.input.location.coordinates[0] ||
+			 marker.lat !== ctrl.paragraphEditor.input.location.coordinates[1]) {
+			  $http.get('https://search.mapzen.com/v1/reverse', { params: {
+				  'point.lat': marker.lat,
+				  'point.lon': marker.lng,
+				  api_key: 'search-KjBcCm0'
+				}}).success(function(results) {
+				  if(_.isObject(results) && results.features.length > 0) {
+					var firstMatch = results.features[0];
+					ctrl.paragraphEditor.input.location.name = firstMatch.properties.label;
+					ctrl.leafletMap.markers.marker.message = firstMatch.properties.label;
+				  }
+				}).error(function(error) {
+				  console.log(error);
+				});
+			 }
 	});
 	
 	/* XXX: Many functions and code relative to Leaflet should go to a Leaflet service */
@@ -151,31 +153,6 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
         lng: -0.09,
         zoom: 8
     }
-	
-	/* XXX: should go in a ogp parser service */
-	function parseOgpTagsFromPage(pageContent) {
-	  return {};
-	}
-	
-	ctrl.getExternalPage = function() {
-		var link = ctrl.paragraphEditor.input.external.link;
-		if(!link) {
-		  console.error('missing URL');
-		  return;
-		}
-		var urlRegex = /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
-		if(!urlRegex.test(link)) {
-		  console.error('URL is not valid');
-		  return;
-		}
-		$http.get(link).success(function(pageContent) {
-		  console.log(pageContent);
-		  var ogpObject = parseOgpTagsFromPage(pageContent);
-		  console.log(ogpObject);
-		}).error(function(error) {
-		  console.error(error);
-		});
-	}
 	
 	/* Transform what's in the paragraphEditor.input into a proper paragraph ready to be displayed */
 	ctrl.addParagraph = function() {
@@ -193,11 +170,8 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 		lng: input.location.coordinates[0],
 		draggable: false,
 		focus: true
-	  }}, center: {
-	    lat: input.location.coordinates[1],
-        lng: input.location.coordinates[0],
-        zoom: 8
-	  }}};
+	  }}, center: angular.copy(ctrl.leafletMap.center)
+	  }};
 	    break;
 	  case 'external':
 	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'external', link: input.external.link}
@@ -209,3 +183,9 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload) {
 	}
 };
 
+function ParagraphTextFilter($sce) { // My custom filter
+  return function (input) {
+    var formatedInput = input.replace(new RegExp('\n', 'g'), '<br>');
+    return $sce.trustAsHtml(formatedInput);
+  }
+};

@@ -218,14 +218,14 @@
 		<div class="article">
 			<div class="paragraph" ng-repeat="paragraph in articleCreatorCtrl.paragraphs">
 				<div class="paragraph-type-text" ng-if="paragraph.type === 'text'">
-					@{{paragraph.text}}
+					<div ng-bind-html="paragraph.text | paragraphText"></div>
 				</div>
 				<div class="paragraph-type-pictures" ng-if="paragraph.type === 'picture'">
 					<div class="paragraph-type-picture" ng-repeat="picture in paragraph.pictures">
 					</div>
 				</div>
 				<div class="paragraph-type-location" ng-if="paragraph.type === 'location'">
-					<leaflet lf-center="paragraph.location.center" height="480px" style="width:100%" 
+					<leaflet id="@{{paragraph.location.id}}" lf-center="paragraph.location.center" 
 							 markers="paragraph.location.markers">
 					</leaflet>
 				</div>
@@ -277,7 +277,7 @@
 									ng-model="articleCreatorCtrl.paragraphEditor.input.location.name"></input>
 									<button  class="jl-table-cell jl-btn jl-btn-large" ng-click="articleCreatorCtrl.changeLocation()">Search</button>
 								</div>
-								<leaflet 	lf-center="articleCreatorCtrl.leafletMap.center"
+								<leaflet 	id="paragraphEditorMap" lf-center="articleCreatorCtrl.leafletMap.center"
 											markers="articleCreatorCtrl.leafletMap.markers" events="articleCreatorCtrl.leafletMap.events">
 								</leaflet>
 							</div>
