@@ -34,17 +34,17 @@ class Picture extends Model
 
   public function small_url()
   {
-    return $this->belongsTo('Jetlag\Eloquent\Link', 'smallPictureLink_id');
+    return $this->belongsTo('Jetlag\Eloquent\Link', 'small_picture_link_id');
   }
 
   public function medium_url()
   {
-    return $this->belongsTo('Jetlag\Eloquent\Link', 'mediumPictureLink_id');
+    return $this->belongsTo('Jetlag\Eloquent\Link', 'medium_picture_link_id');
   }
 
   public function big_url()
   {
-    return $this->belongsTo('Jetlag\Eloquent\Link', 'bigPictureLink_id');
+    return $this->belongsTo('Jetlag\Eloquent\Link', 'big_picture_link_id');
   }
 
   public function place() {

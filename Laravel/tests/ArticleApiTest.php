@@ -158,9 +158,9 @@ class ArticleApiTest extends TestCase {
     ]);
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
       'authorId' => $authorId,
-      'smallPictureLink_id' => $links[0]->id,
-      'mediumPictureLink_id' => $links[1]->id,
-      'bigPictureLink_id' => $links[2]->id,
+      'small_picture_link_id' => $links[0]->id,
+      'medium_picture_link_id' => $links[1]->id,
+      'big_picture_link_id' => $links[2]->id,
       'article_id' => $article->id,
     ]);
 
@@ -448,9 +448,9 @@ class ArticleApiTest extends TestCase {
     ]);
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
       'authorId' => 13,
-      'smallPictureLink_id' => $links[0]->id,
-      'mediumPictureLink_id' => $links[1]->id,
-      'bigPictureLink_id' => $links[2]->id,
+      'small_picture_link_id' => $links[0]->id,
+      'medium_picture_link_id' => $links[1]->id,
+      'big_picture_link_id' => $links[2]->id,
       'article_id' => $article->id,
     ]);
 
@@ -501,9 +501,9 @@ class ArticleApiTest extends TestCase {
     ]);
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
       'authorId' => 14,
-      'smallPictureLink_id' => $links[0]->id,
-      'mediumPictureLink_id' => $links[1]->id,
-      'bigPictureLink_id' => $links[1]->id,
+      'small_picture_link_id' => $links[0]->id,
+      'medium_picture_link_id' => $links[1]->id,
+      'big_picture_link_id' => $links[1]->id,
       'article_id' => $article->id,
     ]);
 

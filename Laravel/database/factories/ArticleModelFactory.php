@@ -23,9 +23,9 @@ $factory->define(Jetlag\Eloquent\Article::class, function (Faker\Generator $fake
 
 $factory->define(Jetlag\Eloquent\Picture::class, function (Faker\Generator $faker) {
     return [
-      'smallPictureLink_id' => $faker->randomDigit,
-      'mediumPictureLink_id' => $faker->randomDigit,
-      'bigPictureLink_id' => $faker->randomDigit,
+      'small_picture_link_id' => $faker->randomDigit,
+      'medium_picture_link_id' => $faker->randomDigit,
+      'big_picture_link_id' => $faker->randomDigit,
       'authorId' => $faker->randomDigit,
       'place_id' => $faker->randomDigit,
       'article_id' => $faker->randomDigit,

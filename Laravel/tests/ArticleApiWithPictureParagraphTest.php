@@ -34,9 +34,9 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
       'authorId' => $authorId,
-      'smallPictureLink_id' => $links[0]->id,
-      'mediumPictureLink_id' => $links[1]->id,
-      'bigPictureLink_id' => $links[2]->id,
+      'small_picture_link_id' => $links[0]->id,
+      'medium_picture_link_id' => $links[1]->id,
+      'big_picture_link_id' => $links[2]->id,
       'place_id' => $places[0]->id,
     ]);
     $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
@@ -189,9 +189,9 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
       'authorId' => $authorId,
-      'smallPictureLink_id' => $links[0]->id,
-      'mediumPictureLink_id' => $links[1]->id,
-      'bigPictureLink_id' => $links[2]->id,
+      'small_picture_link_id' => $links[0]->id,
+      'medium_picture_link_id' => $links[1]->id,
+      'big_picture_link_id' => $links[2]->id,
       'place_id' => $places[0]->id,
       'article_id' => null,
     ]);
@@ -306,7 +306,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $place = factory(Jetlag\Eloquent\Place::class)->create();
     $picture = factory(Jetlag\Eloquent\Picture::class)->create([
       'authorId' => $authorId,
-      'smallPictureLink_id' => $link->id,
+      'small_picture_link_id' => $link->id,
       'place_id' => $place->id,
       'article_id' => null,
     ]);

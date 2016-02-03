@@ -18,7 +18,7 @@ class Link extends Model
    * caption is a description of the link
    * storage is either 'web' or a disk in terms of Laravel file system (typically 'local' or 's3')
    * url is either the url to the resource accessible online, or a path to a file if storage is local or s3
-   * authorId is the id for author(s) in the authors table
+   * author_id is the id for author(s) in the authors table
 	 *
 	 * @var array
 	 */
@@ -50,17 +50,17 @@ class Link extends Model
 
   public function pictureAsSmallLink()
   {
-    return $this->hasOne('Jetlag\Eloquent\Picture', 'smallPictureLink_id');
+    return $this->hasOne('Jetlag\Eloquent\Picture', 'small_picture_link_id');
   }
 
   public function pictureAsMediumLink()
   {
-    return $this->hasOne('Jetlag\Eloquent\Picture', 'mediumPictureLink_id');
+    return $this->hasOne('Jetlag\Eloquent\Picture', 'medium_picture_link_id');
   }
 
   public function pictureAsBigLink()
   {
-    return $this->hasOne('Jetlag\Eloquent\Picture', 'bigPictureLink_id');
+    return $this->hasOne('Jetlag\Eloquent\Picture', 'big_picture_link_id');
   }
 
   /**
