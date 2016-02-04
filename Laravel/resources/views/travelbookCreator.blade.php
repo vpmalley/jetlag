@@ -222,6 +222,7 @@
 				</div>
 				<div class="paragraph-type-pictures" ng-if="paragraph.type === 'picture'">
 					<div class="paragraph-type-picture" ng-repeat="picture in paragraph.pictures">
+						<img class="picture-preview" ngf-thumbnail="picture">
 					</div>
 				</div>
 				<div class="paragraph-type-location" ng-if="paragraph.type === 'location'">
@@ -230,7 +231,7 @@
 					</leaflet>
 				</div>
 				<div class="paragraph-type-external" ng-if="paragraph.type === 'external'">
-					<a ng-href="@{{paragraph.external.url}}">External content here</a>
+					<a ng-href="@{{paragraph.external.link}}" target="_blank">External content here</a>
 				</div>
 			</div>
 		</div>
@@ -264,12 +265,16 @@
 							<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'picture'">
 								<div 	ngf-drop="articleCreatorCtrl.uploadFiles($files)" class="drop-box"
 										ngf-drag-over-class="'dragover'"
-										ngf-pattern="'image/*'">
-									<div class="jl-btn jl-btn-lg" ngf-select="articleCreatorCtrl.uploadFiles($files)">
-									Select a picture
+										ngf-pattern="'image/*'"
+										ng-disabled="articleCreatorCtrl.pictureSelected()">
+									<div class="jl-btn jl-btn-lg" ng-class="{'jl-btn-disabled': articleCreatorCtrl.pictureSelected()}"
+									ngf-select="articleCreatorCtrl.uploadFiles($files)"
+									ngf-pattern="'image/*'" ng-disabled="articleCreatorCtrl.pictureSelected()">
+										Select a picture
 									</div>
 									<div class="strut"></div><div class="drop-text">Drop a picture here</div>
 								</div>
+								<img class="picture-preview" ngf-thumbnail="articleCreatorCtrl.paragraphEditor.input.picture">
 							</div>
 							<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
 								<div class="jl-table location-searchbar">

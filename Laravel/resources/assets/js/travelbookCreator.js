@@ -81,7 +81,13 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	}
 	
 	ctrl.uploadFiles = function(files) {
-		console.log(files);
+	  if(files && files.length == 1) {
+	    ctrl.paragraphEditor.input.picture = files[0];
+	  }
+	}
+	
+	ctrl.pictureSelected = function() {
+		return !_.isEmpty(ctrl.paragraphEditor.input.picture);
 	}
 	
 	ctrl.changeLocation = function() {
@@ -162,6 +168,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'text', text: input.text};
 	    break;
 	  case 'picture':
+	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'picture', pictures: [input.picture].concat([])}; //XXX: magical hack here to deeply copy
 	    break;
 	  case 'location':
 	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'location', location: { name: input.location.name, markers: {marker: {
@@ -174,7 +181,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	  }};
 	    break;
 	  case 'external':
-	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'external', link: input.external.link}
+	  ctrl.paragraphs[ctrl.paragraphs.length] = {type: 'external', external: {link: input.external.link} };
 	    break;
 	  default:break;
 	  }

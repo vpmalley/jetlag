@@ -6,6 +6,7 @@
 @jl-blue: #0A6884;
 @jl-orange: orange;
 @jl-grey: #ccc;
+@jl-dark-grey: #555;
 
 .strut {
 	height: 100%;
@@ -79,6 +80,13 @@
     background-color: inherit;
 	color: @jl-blue;
 	font-weight: lighter;
+  }
+  
+  &.jl-btn-disabled {
+    color: @jl-dark-grey !important;
+	background-color: @jl-grey !important;
+	cursor: default !important;
+	border-color: @jl-grey !important;
   }
 
   & ~ .jl-btn {
