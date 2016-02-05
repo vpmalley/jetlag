@@ -324,5 +324,5 @@
 @endsection
 
 @section('scripts')
-<script src="//localhost/jetlag/Laravel/public/js/travelbookCreator.js"></script>
+<script src="{{ asset('/js/travelbookCreator.js') }}"></script>
 @endsection
