@@ -1,7 +1,8 @@
 @import 'app.less';
 .jl-tbCreator, .jl-articleCreator {
 	.step {
-		width: 100%;
+		width: 90%;
+		max-width: 800px;
 		margin: auto;
 		border: solid 2px;
 		
@@ -183,11 +184,34 @@
 }
 
 .paragraph {
-  width: 100%;
+  width: 90%;
   margin: 20px auto;
+  
   .paragraph-type-text {
     font-size: 2.1rem;
     line-height: 3.5rem;
-    font-family: 'Publico Text Web'
+    font-family: 'Publico Text Web';
   }
+  
+  .paragraph-type-location, .paragraph-type-external, .paragraph-type-text {
+    width: 100%;
+	max-width: 800px;
+	margn: auto;
+  }
+
+  .paragraph-type-picture,  {
+    width: 100%;
+	max-width: 1000px;
+	margin: auto;
+  }
+}
+
+.article-controls {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.picture-preview {
+  width: 100%;
 }
