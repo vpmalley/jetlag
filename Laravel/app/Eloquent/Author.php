@@ -49,7 +49,7 @@ class Author extends Model
   public static function isOwner($userId, $authorId)
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
-    $count = Author::where('userId', $userId)->where('author_id', $authorId)->where('role', self::K_OWNER)->count();
+    $count = Author::where('user_id', $userId)->where('author_id', $authorId)->where('role', self::K_OWNER)->count();
     return (1 == $count);
   }
 
@@ -61,7 +61,7 @@ class Author extends Model
   public static function isWriter($userId, $authorId)
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
-    $count = Author::where('userId', $userId)->where('author_id', $authorId)->where(function ($query) {
+    $count = Author::where('user_id', $userId)->where('author_id', $authorId)->where(function ($query) {
                 $query->where('role', self::K_OWNER)
                       ->orWhere('role', self::K_WRITER);
             })->count();
@@ -77,7 +77,7 @@ class Author extends Model
   public static function isReader($userId, $authorId)
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
-    $count = Author::where('userId', $userId)->where('author_id', $authorId)->count();
+    $count = Author::where('user_id', $userId)->where('author_id', $authorId)->count();
     Log::debug("user with id " . $userId . " appears with author_id=" . $authorId . " " . $count . " times.");
     return (1 == $count);
   }
@@ -91,7 +91,7 @@ class Author extends Model
     $authors = Author::where('author_id', $authorId)->get();
     foreach ($authors as $author)
     {
-      $userIds[] = $author->userId;
+      $userIds[] = $author->user_id;
     }
     $users = UserPublic::whereIn('id', $userIds)->get();
     return $users;
@@ -107,7 +107,7 @@ class Author extends Model
     $authors = Author::where('author_id', $authorId)->get();
     foreach ($authors as $author)
     {
-      $userRoles[$author->userId] = $author->role;
+      $userRoles[$author->user_id] = $author->role;
     }
     return $userRoles;
 
@@ -120,7 +120,7 @@ class Author extends Model
   public static function getAuthorsForUser($userId)
   {
     $authorIds = [];
-    $authors = Author::where('userId', $userId)->get();
+    $authors = Author::where('user_id', $userId)->get();
     foreach ($authors as $author)
     {
       $authorIds[] = $author->author_id;
@@ -137,7 +137,7 @@ class Author extends Model
    */
   public static function getRole($authorId, $userId)
   {
-    $author = Author::where('userId', $userId)->where('author_id', $authorId)->first();
+    $author = Author::where('user_id', $userId)->where('author_id', $authorId)->first();
     if ($author)
     {
       return $author->role;
@@ -174,7 +174,7 @@ class Author extends Model
         Log::debug("author " . $authorId . " with user " . $newUserId . " is now " . $newRole);
         $newAuthor = new Author;
         $newAuthor->author_id = $authorId;
-        $newAuthor->userId = $newUserId;
+        $newAuthor->user_id = $newUserId;
         $newAuthor->role = $newRole;
         $newAuthor->save();
       }

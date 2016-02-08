@@ -21,11 +21,11 @@ class ArticleApiTest extends TestCase {
     $owner = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => $authorId,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     factory(Jetlag\Eloquent\Author::class, 'owner')->create([
       'author_id' => $authorId,
-      'userId' => $owner->id
+      'user_id' => $owner->id
     ]);
 
     $article = factory(Jetlag\Eloquent\Article::class)->create([
@@ -34,7 +34,7 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
 
-    Log::debug(" expecting author_id=3 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    Log::debug(" expecting author_id=3 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
       ->get($this->articleApiUrl)
       ->assertResponseOk();
@@ -54,11 +54,11 @@ class ArticleApiTest extends TestCase {
     $owner = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => $authorId,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     factory(Jetlag\Eloquent\Author::class, 'owner')->create([
       'author_id' => $authorId,
-      'userId' => $owner->id
+      'user_id' => $owner->id
     ]);
 
     $article = factory(Jetlag\Eloquent\Article::class)->create([
@@ -67,7 +67,7 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
 
-    Log::debug(" expecting author_id=3 and userId=" . $owner->id . " and role=owner for article " . $article->id);
+    Log::debug(" expecting author_id=3 and user_id=" . $owner->id . " and role=owner for article " . $article->id);
     $this->actingAs($owner)
       ->get($this->articleApiUrl)
       ->assertResponseOk();
@@ -87,11 +87,11 @@ class ArticleApiTest extends TestCase {
     $owner = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'reader')->create([
       'author_id' => $authorId,
-      'userId' => $reader->id
+      'user_id' => $reader->id
     ]);
     factory(Jetlag\Eloquent\Author::class, 'owner')->create([
       'author_id' => $authorId,
-      'userId' => $owner->id
+      'user_id' => $owner->id
     ]);
 
     $article = factory(Jetlag\Eloquent\Article::class)->create([
@@ -100,7 +100,7 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'this is a cool article isnt it? id 2',
     ]);
 
-    Log::debug(" expecting author_id=3 and userId=" . $reader->id . " and role=reader for article " . $article->id);
+    Log::debug(" expecting author_id=3 and user_id=" . $reader->id . " and role=reader for article " . $article->id);
     $this->actingAs($reader)
       ->get($this->articleApiUrl)
       ->assertResponseOk();
@@ -119,7 +119,7 @@ class ArticleApiTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => $authorId,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
@@ -127,7 +127,7 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
 
-    Log::debug(" expecting author_id=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
       ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
@@ -146,7 +146,7 @@ class ArticleApiTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => $authorId,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
@@ -164,7 +164,7 @@ class ArticleApiTest extends TestCase {
       'article_id' => $article->id,
     ]);
 
-    Log::debug(" expecting author_id=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
       ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
@@ -189,7 +189,7 @@ class ArticleApiTest extends TestCase {
     $owner = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'owner')->create([
       'author_id' => $authorId,
-      'userId' => $owner->id
+      'user_id' => $owner->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
@@ -197,7 +197,7 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
 
-    Log::debug(" expecting author_id=4 and userId=" . $owner->id . " and role=owner for article " . $article->id);
+    Log::debug(" expecting author_id=4 and user_id=" . $owner->id . " and role=owner for article " . $article->id);
     $this->actingAs($owner)
       ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
@@ -216,7 +216,7 @@ class ArticleApiTest extends TestCase {
     $reader = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'reader')->create([
       'author_id' => $authorId,
-      'userId' => $reader->id
+      'user_id' => $reader->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
@@ -224,7 +224,7 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
 
-    Log::debug(" expecting author_id=4 and userId=" . $reader->id . " and role=reader for article " . $article->id);
+    Log::debug(" expecting author_id=4 and user_id=" . $reader->id . " and role=reader for article " . $article->id);
     $this->actingAs($reader)
       ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
@@ -436,7 +436,7 @@ class ArticleApiTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => 13,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 13,
@@ -489,7 +489,7 @@ class ArticleApiTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => 14,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 14,
@@ -538,7 +538,7 @@ class ArticleApiTest extends TestCase {
     $reader = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'reader')->create([
       'author_id' => 13,
-      'userId' => $reader->id
+      'user_id' => $reader->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 13,
@@ -596,7 +596,7 @@ class ArticleApiTest extends TestCase {
     $owner = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'owner')->create([
       'author_id' => 16,
-      'userId' => $owner->id
+      'user_id' => $owner->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 16,
@@ -620,7 +620,7 @@ class ArticleApiTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => 18,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 18,
@@ -638,7 +638,7 @@ class ArticleApiTest extends TestCase {
     $reader = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'reader')->create([
       'author_id' => 18,
-      'userId' => $reader->id
+      'user_id' => $reader->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 18,

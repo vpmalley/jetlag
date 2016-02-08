@@ -16,7 +16,7 @@ class CreateAuthorsTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->bigInteger('author_id');
-            $table->bigInteger('userId');
+            $table->bigInteger('user_id');
             $table->string('role', 10);
         });
     }

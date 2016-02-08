@@ -21,7 +21,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => $authorId,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
@@ -45,7 +45,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
       'place_id' => $places[1]->id,
     ]);
 
-    Log::debug(" expecting author_id=4 and userId=" . $writer->id . " and role=writer for article " . $article->id);
+    Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
       ->get($this->articleApiUrl . $article->id)
       ->assertResponseOk();
@@ -146,7 +146,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => $authorId,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
@@ -235,7 +235,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     $writer = factory(Jetlag\User::class)->create();
     factory(Jetlag\Eloquent\Author::class, 'writer')->create([
       'author_id' => $authorId,
-      'userId' => $writer->id
+      'user_id' => $writer->id
     ]);
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,

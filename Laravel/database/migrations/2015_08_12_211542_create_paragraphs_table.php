@@ -19,8 +19,8 @@ class CreateParagraphsTable extends Migration
             $table->bigInteger('article_id'); // do we allow a paragraph to appear in multiple articles?
             $table->bigInteger('block_content_id');
             $table->string('block_content_type', 30);
-            $table->bigInteger('hublotContentId');
-            $table->string('hublotContentType', 15);
+            $table->bigInteger('hubot_content_id');
+            $table->string('hubot_content_type', 15);
             $table->bigInteger('place_id');
             $table->date('date');
             $table->string('weather', 20);
