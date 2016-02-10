@@ -9,7 +9,7 @@ use Jetlag\Eloquent\TextContent;
 class ArticleApiWithMistakenParagraphTest extends TestCase {
 
   use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
-    //(i.e. non-logged user is forbidden to access resources requiring login)
+  //(i.e. non-logged user is forbidden to access resources requiring login)
   use DatabaseMigrations;
 
   protected $baseUrl = "http://homestead.app";
@@ -20,7 +20,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article1',
       'extraArticleKey' => 'extraArticleValue',
       'paragraphs' => [
@@ -66,62 +66,62 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ->assertResponseStatus(201);
     $this->seeJson([
-        'id' => 1,
-        'url' => $this->baseUrl . "/article/1",
-      ]);
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
 
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => '',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => 1,
-        'title' => 'A first paragraph',
-        'block_content_type' => 'Jetlag\Eloquent\Map',
-        'block_content' => [
-          "id" => 1,
-          "caption" => "This is a pretty cool map, that is for sure",
-          "markers" => [
-            [
-              "id" => 1,
-              "description" => "La tour eiffel ici",
-              "place" => [
-                "altitude" => 212,
-                "latitude" => 45.76388,
-                "description" => "La Tour",
-                "longitude" => 4.82244,
-              ]
-            ],
-            [
-              "id" => 2,
-              "description" => "Le bout du monde, c cool",
-              "place" => [
-                "altitude" => 14,
-                "latitude" => 48.75107,
-                "description" => "au bout du Cap, à Forillon",
-                "longitude" => -64.16094,
+      'title' => 'article1',
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => 1,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            "id" => 1,
+            "caption" => "This is a pretty cool map, that is for sure",
+            "markers" => [
+              [
+                "id" => 1,
+                "description" => "La tour eiffel ici",
+                "place" => [
+                  "altitude" => 212,
+                  "latitude" => 45.76388,
+                  "description" => "La Tour",
+                  "longitude" => 4.82244,
+                ]
+              ],
+              [
+                "id" => 2,
+                "description" => "Le bout du monde, c cool",
+                "place" => [
+                  "altitude" => 14,
+                  "latitude" => 48.75107,
+                  "description" => "au bout du Cap, à Forillon",
+                  "longitude" => -64.16094,
+                ]
               ]
             ]
-          ]
-        ],
-        'weather' => 'cloudy',
-        'date' => '2016-01-03',
-        'isDraft' => 1,
-        'place' => [
-          'latitude' => 73.43,
-          'longitude' => -43.57,
-          'altitude' => -156.9,
-          'description' => 'lala sous mer',
-        ],
-      ]
-    ],
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'latitude' => 73.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'description' => 'lala sous mer',
+          ],
+        ]
+      ],
     ]);
   }
 
@@ -130,7 +130,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -169,7 +169,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(400);
+    ->assertResponseStatus(400);
   }
 
   public function testApiStoreArticleWithMapParagraphOnlyWithRequiredData()
@@ -177,7 +177,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -200,62 +200,62 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ->assertResponseStatus(201);
     $this->seeJson([
-        'id' => 1,
-        'url' => $this->baseUrl . "/article/1",
-      ]);
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
 
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => '',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => 1,
-        'title' => 'A first paragraph',
-        'block_content_type' => 'Jetlag\Eloquent\Map',
-        'block_content' => [
-          "id" => 1,
-          "caption" => "",
-          "markers" => [
-            [
-              "id" => 1,
-              "description" => "",
-              "place" => [
-                "altitude" => 0,
-                "latitude" => -200,
+      'title' => 'article1',
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => 1,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            "id" => 1,
+            "caption" => "",
+            "markers" => [
+              [
+                "id" => 1,
                 "description" => "",
-                "longitude" => -200,
-              ]
-            ],
-            [
-              "id" => 2,
-              "description" => "",
-              "place" => [
-                "altitude" => 0,
-                "latitude" => -200,
+                "place" => [
+                  "altitude" => 0,
+                  "latitude" => -200,
+                  "description" => "",
+                  "longitude" => -200,
+                ]
+              ],
+              [
+                "id" => 2,
                 "description" => "",
-                "longitude" => -200,
+                "place" => [
+                  "altitude" => 0,
+                  "latitude" => -200,
+                  "description" => "",
+                  "longitude" => -200,
+                ]
               ]
             ]
-          ]
-        ],
-        'weather' => '',
-        'date' => '0000-00-00',
-        'isDraft' => 1,
-        'place' => [
-          "altitude" => 0,
-          "latitude" => -200,
-          "description" => "",
-          "longitude" => -200,
-        ],
-      ]
-    ],
+          ],
+          'weather' => '',
+          'date' => '0000-00-00',
+          'isDraft' => 1,
+          'place' => [
+            "altitude" => 0,
+            "latitude" => -200,
+            "description" => "",
+            "longitude" => -200,
+          ],
+        ]
+      ],
     ]);
   }
 
@@ -265,7 +265,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -289,7 +289,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(400);
+    ->assertResponseStatus(400);
   }
 
 }

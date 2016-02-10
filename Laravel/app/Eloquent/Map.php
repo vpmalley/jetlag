@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Map extends Model
 {
   /**
-   * The database table used by the model.
-   *
-   * @var string
-   */
+  * The database table used by the model.
+  *
+  * @var string
+  */
   protected $table = 'maps';
 
   protected $fillable = ['id', 'caption'];
@@ -21,8 +21,8 @@ class Map extends Model
   static $relationsToLoad = ['markers', 'markers.place'];
 
   /**
-   * The rules for validating input
-   */
+  * The rules for validating input
+  */
   static $rules = [
     'id' => 'numeric',
     'caption' => 'string|min:3|max:500',
@@ -30,7 +30,7 @@ class Map extends Model
 
   public function paragraph()
   {
-      return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
+    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
   }
 
   public function markers()
@@ -39,11 +39,11 @@ class Map extends Model
   }
 
   /**
-   * Extracts the picture from the subrequest
-   *
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Map the extracted map
-   */
+  * Extracts the picture from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Map the extracted map
+  */
   public function extract($subRequest)
   {
     $this->id = array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;

@@ -9,7 +9,7 @@ use Jetlag\Eloquent\TextContent;
 class ArticleApiWithTextParagraphTest extends TestCase {
 
   use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
-    //(i.e. non-logged user is forbidden to access resources requiring login)
+  //(i.e. non-logged user is forbidden to access resources requiring login)
   use DatabaseMigrations;
 
   protected $baseUrl = "http://homestead.app";
@@ -47,35 +47,35 @@ class ArticleApiWithTextParagraphTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'isDraft' => 1, // why not true?
-        'authorUsers' => [$writer->id => 'writer'],
-        'paragraphs' => [
-          [
-            'id' => 1,
-            'title' => 'A first paragraph',
-            'block_content_type' => 'Jetlag\Eloquent\TextContent',
-            'block_content' => [
-              'id' => $text->id,
-              'content' => $text->content,
-            ],
-            'weather' => 'cloudy',
-            'date' => '2016-01-03',
-            'isDraft' => 1,
-            'place' => [
-              'description' => $places[1]->description,
-              'latitude' => $places[1]->latitude,
-              'longitude' => $places[1]->longitude,
-              'altitude' => $places[1]->altitude,
-            ]
+      'id' => $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1, // why not true?
+      'authorUsers' => [$writer->id => 'writer'],
+      'paragraphs' => [
+        [
+          'id' => 1,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\TextContent',
+          'block_content' => [
+            'id' => $text->id,
+            'content' => $text->content,
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'description' => $places[1]->description,
+            'latitude' => $places[1]->latitude,
+            'longitude' => $places[1]->longitude,
+            'altitude' => $places[1]->altitude,
           ]
-        ],
-      ]);
+        ]
+      ],
+    ]);
   }
 
   public function testApiStoreArticleWithTextParagraph()
@@ -83,7 +83,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -103,40 +103,40 @@ class ArticleApiWithTextParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ->assertResponseStatus(201);
     $this->seeJson([
-        'id' => 1,
-        'url' => $this->baseUrl . "/article/1",
-      ]);
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
 
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => '',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => 1,
-        'title' => 'A first paragraph',
-        'block_content_type' => 'Jetlag\Eloquent\TextContent',
-        'block_content' => [
+      'title' => 'article1',
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
           'id' => 1,
-          'content' => 'This is a long story, that is for sure',
-        ],
-        'weather' => 'cloudy',
-        'date' => '2016-01-03',
-        'isDraft' => 1,
-        'place' => [
-          'latitude' => 83.43,
-          'longitude' => -43.57,
-          'altitude' => -156.9,
-          'description' => 'lala sous mer',
-        ],
-      ]
-    ],
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\TextContent',
+          'block_content' => [
+            'id' => 1,
+            'content' => 'This is a long story, that is for sure',
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'latitude' => 83.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'description' => 'lala sous mer',
+          ],
+        ]
+      ],
     ]);
   }
 
@@ -171,7 +171,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     ]);
 
     $this->actingAs($writer)
-      ->put($this->articleApiUrl . $article->id, [
+    ->put($this->articleApiUrl . $article->id, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -193,39 +193,39 @@ class ArticleApiWithTextParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(200);
+    ->assertResponseStatus(200);
     $this->seeJson([
-        'id' => 1,
-      ]);
+      'id' => 1,
+    ]);
 
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => 'this is a cool article isnt it? id 2',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => $paragraph->id,
-        'title' => 'A first paragraph',
-        'block_content_type' => 'Jetlag\Eloquent\TextContent',
-        'block_content' => [
-          'id' => 1,
-          'content' => 'This is a long story, that is for sure',
-        ],
-        'weather' => 'sunny',
-        'date' => '2013-12-12',
-        'isDraft' => 1,
-        'place' => [
-          'latitude' => 83.43,
-          'longitude' => -43.57,
-          'altitude' => -156.9,
-          'description' => 'lala sous mer',
-        ],
-      ]
-    ],
+      'title' => 'article1',
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\TextContent',
+          'block_content' => [
+            'id' => 1,
+            'content' => 'This is a long story, that is for sure',
+          ],
+          'weather' => 'sunny',
+          'date' => '2013-12-12',
+          'isDraft' => 1,
+          'place' => [
+            'latitude' => 83.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'description' => 'lala sous mer',
+          ],
+        ]
+      ],
     ]);
   }
 
@@ -259,7 +259,7 @@ class ArticleApiWithTextParagraphTest extends TestCase {
     ]);
 
     $this->actingAs($writer)
-      ->put($this->articleApiUrl . $article->id, [
+    ->put($this->articleApiUrl . $article->id, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -276,39 +276,39 @@ class ArticleApiWithTextParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(200);
+    ->assertResponseStatus(200);
     $this->seeJson([
-        'id' => 1,
-      ]);
+      'id' => 1,
+    ]);
 
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => 'this is a cool article isnt it? id 2',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => $paragraph->id,
-        'title' => 'A first paragraph',
-        'block_content_type' => 'Jetlag\Eloquent\TextContent',
-        'block_content' => [
-          'id' => 1,
-          'content' => 'This is a long story, that is for sure',
-        ],
-        'weather' => 'cloudy',
-        'date' => '2016-01-03',
-        'isDraft' => 1,
-        'place' => [
-          'latitude' => 63.7852,
-          'longitude' => -200,
-          'altitude' => 0,
-          'description' => '',
-        ],
-      ]
-    ],
+      'title' => 'article1',
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\TextContent',
+          'block_content' => [
+            'id' => 1,
+            'content' => 'This is a long story, that is for sure',
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'latitude' => 63.7852,
+            'longitude' => -200,
+            'altitude' => 0,
+            'description' => '',
+          ],
+        ]
+      ],
     ]);
   }
 }

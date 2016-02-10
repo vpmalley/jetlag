@@ -9,12 +9,12 @@ use Jetlag\Eloquent\TextContent;
 class ArticleApiWithMapParagraphTest extends TestCase {
 
   use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
-    //(i.e. non-logged user is forbidden to access resources requiring login)
+  //(i.e. non-logged user is forbidden to access resources requiring login)
   use DatabaseMigrations;
 
   protected $baseUrl = "http://homestead.app";
   protected $articleApiUrl = "/api/0.1/articles/";
-
+  
   public function testApiGetArticleWithMapParagraph()
   {
     $authorId = 6;
@@ -55,57 +55,57 @@ class ArticleApiWithMapParagraphTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'isDraft' => 1, // why not true?
-        'authorUsers' => [$writer->id => 'writer'],
-        'paragraphs' => [
-          [
-            'id' => 1,
-            'title' => 'A first paragraph',
-            'block_content_type' => 'Jetlag\Eloquent\Map',
-            'block_content' => [
-              'id' => $map->id,
-              'caption' => $map->caption,
-              'markers' => [
-                [
-                  'id' => $marker1->id,
-                  'description' => $marker1->description,
-                  'place' => [
-                    'description' => $places[0]->description,
-                    'latitude' => $places[0]->latitude,
-                    'longitude' => $places[0]->longitude,
-                    'altitude' => $places[0]->altitude,
-                  ],
+      'id' => $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1, // why not true?
+      'authorUsers' => [$writer->id => 'writer'],
+      'paragraphs' => [
+        [
+          'id' => 1,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            'id' => $map->id,
+            'caption' => $map->caption,
+            'markers' => [
+              [
+                'id' => $marker1->id,
+                'description' => $marker1->description,
+                'place' => [
+                  'description' => $places[0]->description,
+                  'latitude' => $places[0]->latitude,
+                  'longitude' => $places[0]->longitude,
+                  'altitude' => $places[0]->altitude,
                 ],
-                [
-                  'id' => $marker2->id,
-                  'description' => $marker2->description,
-                  'place' => [
-                    'description' => $places[1]->description,
-                    'latitude' => $places[1]->latitude,
-                    'longitude' => $places[1]->longitude,
-                    'altitude' => $places[1]->altitude,
-                  ],
+              ],
+              [
+                'id' => $marker2->id,
+                'description' => $marker2->description,
+                'place' => [
+                  'description' => $places[1]->description,
+                  'latitude' => $places[1]->latitude,
+                  'longitude' => $places[1]->longitude,
+                  'altitude' => $places[1]->altitude,
                 ],
               ],
             ],
-            'weather' => 'cloudy',
-            'date' => '2016-01-03',
-            'isDraft' => 1,
-            'place' => [
-              'description' => $places[1]->description,
-              'latitude' => $places[1]->latitude,
-              'longitude' => $places[1]->longitude,
-              'altitude' => $places[1]->altitude,
-            ]
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'description' => $places[1]->description,
+            'latitude' => $places[1]->latitude,
+            'longitude' => $places[1]->longitude,
+            'altitude' => $places[1]->altitude,
           ]
-        ],
-      ]);
+        ]
+      ],
+    ]);
   }
 
   public function testApiStoreArticleWithMapParagraph()
@@ -113,7 +113,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -153,62 +153,62 @@ class ArticleApiWithMapParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ->assertResponseStatus(201);
     $this->seeJson([
-        'id' => 1,
-        'url' => $this->baseUrl . "/article/1",
-      ]);
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
 
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-    'title' => 'article1',
-    'descriptionText' => '',
-    'isDraft' => 1,
-    'descriptionMedia' => [],
-    'paragraphs' => [
-      [
-        'id' => 1,
-        'title' => 'A first paragraph',
-        'block_content_type' => 'Jetlag\Eloquent\Map',
-        'block_content' => [
-          "id" => 1,
-          "caption" => "This is a pretty cool map, that is for sure",
-          "markers" => [
-            [
-              "id" => 1,
-              "description" => "La tour eiffel ici",
-              "place" => [
-                "altitude" => 212,
-                "latitude" => 45.76388,
-                "description" => "La Tour",
-                "longitude" => 4.82244,
-              ]
-            ],
-            [
-              "id" => 2,
-              "description" => "Le bout du monde, c cool",
-              "place" => [
-                "altitude" => 14,
-                "latitude" => 48.75107,
-                "description" => "au bout du Cap, à Forillon",
-                "longitude" => -64.16094,
+      'title' => 'article1',
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'descriptionMedia' => [],
+      'paragraphs' => [
+        [
+          'id' => 1,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Map',
+          'block_content' => [
+            "id" => 1,
+            "caption" => "This is a pretty cool map, that is for sure",
+            "markers" => [
+              [
+                "id" => 1,
+                "description" => "La tour eiffel ici",
+                "place" => [
+                  "altitude" => 212,
+                  "latitude" => 45.76388,
+                  "description" => "La Tour",
+                  "longitude" => 4.82244,
+                ]
+              ],
+              [
+                "id" => 2,
+                "description" => "Le bout du monde, c cool",
+                "place" => [
+                  "altitude" => 14,
+                  "latitude" => 48.75107,
+                  "description" => "au bout du Cap, à Forillon",
+                  "longitude" => -64.16094,
+                ]
               ]
             ]
-          ]
-        ],
-        'weather' => 'cloudy',
-        'date' => '2016-01-03',
-        'isDraft' => 1,
-        'place' => [
-          'latitude' => 73.43,
-          'longitude' => -43.57,
-          'altitude' => -156.9,
-          'description' => 'lala sous mer',
-        ],
-      ]
-    ],
+          ],
+          'weather' => 'cloudy',
+          'date' => '2016-01-03',
+          'isDraft' => 1,
+          'place' => [
+            'latitude' => 73.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'description' => 'lala sous mer',
+          ],
+        ]
+      ],
     ]);
   }
 
@@ -252,7 +252,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->put($this->articleApiUrl . $article->id, [
+    ->put($this->articleApiUrl . $article->id, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -296,14 +296,14 @@ class ArticleApiWithMapParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(200);
+    ->assertResponseStatus(200);
     $this->seeJson([
-        'id' => $article->id,
-      ]);
+      'id' => $article->id,
+    ]);
 
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article1',
@@ -395,7 +395,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->put($this->articleApiUrl . $article->id, [
+    ->put($this->articleApiUrl . $article->id, [
       'title' => 'article1',
       'paragraphs' => [
         [
@@ -435,14 +435,14 @@ class ArticleApiWithMapParagraphTest extends TestCase {
         ]
       ],
     ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(200);
+    ->assertResponseStatus(200);
     $this->seeJson([
-        'id' => $article->id,
-      ]);
+      'id' => $article->id,
+    ]);
 
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article1',

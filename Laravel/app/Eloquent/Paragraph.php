@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Paragraph extends Model
 {
   /**
-   * The database table used by the model.
-   *
-   * @var string
-   */
+  * The database table used by the model.
+  *
+  * @var string
+  */
   protected $table = 'paragraphs';
 
   protected $fillable = ['id', 'title', 'block_content_type', 'date', 'weather', 'isDraft'];
@@ -19,8 +19,8 @@ class Paragraph extends Model
   protected $visible = ['id', 'title', 'blockContent', 'block_content_type', 'place', 'date', 'weather', 'isDraft'];
 
   /**
-   * The rules for validating input
-   */
+  * The rules for validating input
+  */
   static $rules = [
     'id' => 'numeric',
     'title' => 'string|required|min:3|max:200',
@@ -47,11 +47,11 @@ class Paragraph extends Model
   }
 
   /**
-   * Extracts the paragraph from the subrequest
-   *
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Paragraph the extracted paragraph
-   */
+  * Extracts the paragraph from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Paragraph the extracted paragraph
+  */
   public function extract($subRequest)
   {
     if (array_key_exists('block_content', $subRequest) && array_key_exists('block_content_type', $subRequest))

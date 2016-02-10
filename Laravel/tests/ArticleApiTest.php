@@ -8,9 +8,9 @@ use Jetlag\User;
 class ArticleApiTest extends TestCase {
 
   use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
-    //(i.e. non-logged user is forbidden to access resources requiring login)
+  //(i.e. non-logged user is forbidden to access resources requiring login)
   use DatabaseMigrations;
-
+  
   protected $baseUrl = "http://homestead.app";
   protected $articleApiUrl = "/api/0.1/articles/";
 
@@ -36,15 +36,15 @@ class ArticleApiTest extends TestCase {
 
     Log::debug(" expecting author_id=3 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->get($this->articleApiUrl)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl)
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'url' => $this->baseUrl . "/article/" . $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'authorUsers' => [$owner->id => 'owner', $writer->id => 'writer'],
-      ]);
+      'id' => $article->id,
+      'url' => $this->baseUrl . "/article/" . $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'authorUsers' => [$owner->id => 'owner', $writer->id => 'writer'],
+    ]);
   }
 
   public function testApiGetArticlesAsOwner()
@@ -69,8 +69,8 @@ class ArticleApiTest extends TestCase {
 
     Log::debug(" expecting author_id=3 and user_id=" . $owner->id . " and role=owner for article " . $article->id);
     $this->actingAs($owner)
-      ->get($this->articleApiUrl)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
       'url' => $this->baseUrl . "/article/" . $article->id,
@@ -102,8 +102,8 @@ class ArticleApiTest extends TestCase {
 
     Log::debug(" expecting author_id=3 and user_id=" . $reader->id . " and role=reader for article " . $article->id);
     $this->actingAs($reader)
-      ->get($this->articleApiUrl)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
       'url' => $this->baseUrl . "/article/" . $article->id,
@@ -129,15 +129,15 @@ class ArticleApiTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'isDraft' => 1, // why not true?
-        'authorUsers' => [$writer->id => 'writer'],
-      ]);
+      'id' => $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1, // why not true?
+      'authorUsers' => [$writer->id => 'writer'],
+    ]);
   }
 
   public function testApiGetArticleWithPicture()
@@ -166,21 +166,21 @@ class ArticleApiTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'descriptionMedia' => [
-          'id' => $picture->id,
-          'small_url' => $links[0]->url,
-          'medium_url' => $links[1]->url,
-          'big_url' => $links[2]->url,
-        ],
-        'isDraft' => 1, // why not true?
-        'authorUsers' => [$writer->id => 'writer'],
-      ]);
+      'id' => $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'descriptionMedia' => [
+        'id' => $picture->id,
+        'small_url' => $links[0]->url,
+        'medium_url' => $links[1]->url,
+        'big_url' => $links[2]->url,
+      ],
+      'isDraft' => 1, // why not true?
+      'authorUsers' => [$writer->id => 'writer'],
+    ]);
   }
 
   public function testApiGetArticleAsOwner()
@@ -199,15 +199,15 @@ class ArticleApiTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $owner->id . " and role=owner for article " . $article->id);
     $this->actingAs($owner)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'isDraft' => 1, // why not true?
-        'authorUsers' => [$owner->id => 'owner'],
-      ]);
+      'id' => $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1, // why not true?
+      'authorUsers' => [$owner->id => 'owner'],
+    ]);
   }
 
   public function testApiGetArticleAsReader()
@@ -226,15 +226,15 @@ class ArticleApiTest extends TestCase {
 
     Log::debug(" expecting author_id=4 and user_id=" . $reader->id . " and role=reader for article " . $article->id);
     $this->actingAs($reader)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'isDraft' => 1, // why not true?
-        'authorUsers' => [$reader->id => 'reader'],
-      ]);
+      'id' => $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1, // why not true?
+      'authorUsers' => [$reader->id => 'reader'],
+    ]);
   }
 
   public function testApiGetPublicArticle()
@@ -246,14 +246,14 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id,
-        'title' => "article with id 2",
-        'descriptionText' => 'this is a cool article isnt it? id 2',
-        'isDraft' => 1, // why not true?
-        'isPublic' => 1,
-      ]);
+      'id' => $article->id,
+      'title' => "article with id 2",
+      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'isDraft' => 1, // why not true?
+      'isPublic' => 1,
+    ]);
   }
 
   public function testApiCannotGetPrivateArticleWithoutLogin()
@@ -265,7 +265,7 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->get($this->articleApiUrl . $article->id)
-      ->assertResponseStatus(403);
+    ->assertResponseStatus(403);
   }
 
   public function testApiStoreArticleWithTitle()
@@ -273,8 +273,8 @@ class ArticleApiTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+    ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
       'url' => $this->baseUrl . "/article/1",
@@ -282,21 +282,21 @@ class ArticleApiTest extends TestCase {
 
     Log::debug("expecting user " . $user->id . " to be owner of article 1");
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-        'title' => "article1",
-        'id' => 1,
-        'descriptionText' => '',
-        'isDraft' => 1,
-        'authorUsers' => [ $user->id => 'owner'],
-      ]);
+      'title' => "article1",
+      'id' => 1,
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'authorUsers' => [ $user->id => 'owner'],
+    ]);
   }
 
   public function testApiCannotStoreArticleWithoutLogin()
   {
     $this->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(403);
+    ->assertResponseStatus(403);
   }
 
   public function testApiCannotStoreArticleWithoutTitle()
@@ -304,12 +304,12 @@ class ArticleApiTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [ 'descriptionText' => 'an article without a title'], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(400);
+    ->post($this->articleApiUrl, [ 'descriptionText' => 'an article without a title'], ['ContentType' => 'application/json'])
+    ->assertResponseStatus(400);
 
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseStatus(404);
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseStatus(404);
   }
 
   public function testApiStoreArticleWithMoreData()
@@ -317,30 +317,30 @@ class ArticleApiTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
       'isDraft' => 0,
       'authorUsers' => [1 => 'owner'],
-      ],
-      ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ],
+    ['ContentType' => 'application/json'])
+    ->assertResponseStatus(201);
     $this->seeJson([
-        'id' => 1,
-        'url' => $this->baseUrl . "/article/1",
-      ]);
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
 
     Log::debug("expecting users 1 and " . $user->id . " to be owner of article 1");
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => 1,
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
       'isDraft' => 0,
       'authorUsers' => [1 => 'owner', $user->id => 'owner'],
-      ]);
+    ]);
   }
 
   public function testApiStoreArticleWithPicture()
@@ -348,21 +348,21 @@ class ArticleApiTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [
+    ->post($this->articleApiUrl, [
       'title' => 'article1',
       'descriptionMedia' => [
         'url' => [ 'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg' ],
-        ],
-      ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+      ],
+    ], ['ContentType' => 'application/json'])
+    ->assertResponseStatus(201);
     $this->seeJson([
-        'id' => 1,
-        'url' => $this->baseUrl . "/article/1",
-      ]);
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
 
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => 1,
       'title' => "article1",
@@ -383,11 +383,11 @@ class ArticleApiTest extends TestCase {
     $reader = factory(Jetlag\User::class)->create();
 
     $this->actingAs($owner)
-      ->post($this->articleApiUrl, [
-        'title' => 'article1',
-        'authorUsers' => [$reader->id => 'reader'],
-      ], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ->post($this->articleApiUrl, [
+      'title' => 'article1',
+      'authorUsers' => [$reader->id => 'reader'],
+    ], ['ContentType' => 'application/json'])
+    ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
       'url' => $this->baseUrl . "/article/1",
@@ -395,15 +395,15 @@ class ArticleApiTest extends TestCase {
 
     Log::debug("expecting user " . $reader->id . " to be reader of article 1");
     $this->actingAs($reader)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-        'title' => "article1",
-        'id' => 1,
-        'descriptionText' => '',
-        'isDraft' => 1,
-        'authorUsers' => [ $owner->id => 'owner', $reader->id => 'reader'],
-      ]);
+      'title' => "article1",
+      'id' => 1,
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'authorUsers' => [ $owner->id => 'owner', $reader->id => 'reader'],
+    ]);
   }
 
   public function testApiCannotGetStoredPrivateArticle()
@@ -411,8 +411,8 @@ class ArticleApiTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-      ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
-      ->assertResponseStatus(201);
+    ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+    ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
       'url' => $this->baseUrl . "/article/1",
@@ -420,15 +420,15 @@ class ArticleApiTest extends TestCase {
 
     Log::debug("expecting user " . $user->id . " to be owner of article 1");
     $this->actingAs($user)
-      ->get($this->articleApiUrl . 1)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . 1)
+    ->assertResponseOk();
     $this->seeJson([
-        'title' => "article1",
-        'id' => 1,
-        'descriptionText' => '',
-        'isDraft' => 1,
-        'authorUsers' => [ $user->id => 'owner'],
-      ]);
+      'title' => "article1",
+      'id' => 1,
+      'descriptionText' => '',
+      'isDraft' => 1,
+      'authorUsers' => [ $user->id => 'owner'],
+    ]);
   }
 
   public function testApiUpdateFullArticleAsWriter()
@@ -455,20 +455,20 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->actingAs($writer)
-      ->put($this->articleApiUrl . $article->id, [
+    ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
-      ],
-      ['ContentType' => 'application/json'])
-      ->assertResponseOk();
+    ],
+    ['ContentType' => 'application/json'])
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id
-      ]);
+      'id' => $article->id
+    ]);
     $this->actingAs($writer)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article ' . $article->id . ' updated',
@@ -508,16 +508,16 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->actingAs($writer)
-      ->patch($this->articleApiUrl . $article->id, [
+    ->patch($this->articleApiUrl . $article->id, [
       'title' => 'article is partially updated',
-      ],
-      ['ContentType' => 'application/json'])
-      ->assertResponseOk();
+    ],
+    ['ContentType' => 'application/json'])
+    ->assertResponseOk();
     $this->seeJson([
-        'id' => $article->id
-      ]);
+      'id' => $article->id
+    ]);
     $this->get($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article is partially updated',
@@ -547,14 +547,14 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->actingAs($reader)
-      ->put($this->articleApiUrl . $article->id, [
+    ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
-      ],
-      ['ContentType' => 'application/json'])
-      ->assertResponseStatus(403);
+    ],
+    ['ContentType' => 'application/json'])
+    ->assertResponseStatus(403);
   }
 
   public function testApiCannotUpdateArticleAsLoggedIn()
@@ -563,14 +563,14 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create();
 
     $this->actingAs($user)
-      ->put($this->articleApiUrl . $article->id, [
+    ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
-      ],
-      ['ContentType' => 'application/json'])
-      ->assertResponseStatus(403);
+    ],
+    ['ContentType' => 'application/json'])
+    ->assertResponseStatus(403);
   }
 
   public function testApiCannotUpdateArticleWithoutLogin()
@@ -586,9 +586,9 @@ class ArticleApiTest extends TestCase {
       'descriptionText' => 'some updated description',
       'isDraft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
-      ],
-      ['ContentType' => 'application/json'])
-      ->assertResponseStatus(403);
+    ],
+    ['ContentType' => 'application/json'])
+    ->assertResponseStatus(403);
   }
 
   public function testApiDeleteArticleAsOwner()
@@ -605,14 +605,14 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->actingAs($owner)
-      ->delete($this->articleApiUrl . $article->id)
-      ->assertResponseOk();
+    ->delete($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
     $this->seeJson([
       'id' => $article->id
     ]);
     $this->actingAs($owner)
-      ->get($this->articleApiUrl . $article->id)
-      ->assertResponseStatus(404);
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseStatus(404);
   }
 
   public function testApiCannotDeleteArticleAsWriter()
@@ -629,8 +629,8 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->actingAs($writer)
-      ->delete($this->articleApiUrl . $article->id)
-      ->assertResponseStatus(403);
+    ->delete($this->articleApiUrl . $article->id)
+    ->assertResponseStatus(403);
   }
 
   public function testApiCannotDeleteArticleAsReader()
@@ -647,8 +647,8 @@ class ArticleApiTest extends TestCase {
     ]);
 
     $this->actingAs($reader)
-      ->delete($this->articleApiUrl . $article->id)
-      ->assertResponseStatus(403);
+    ->delete($this->articleApiUrl . $article->id)
+    ->assertResponseStatus(403);
   }
 
   public function testApiCannotDeleteArticleAsLoggedIn()
@@ -657,8 +657,8 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create();
 
     $this->actingAs($user)
-      ->delete($this->articleApiUrl . $article->id)
-      ->assertResponseStatus(403);
+    ->delete($this->articleApiUrl . $article->id)
+    ->assertResponseStatus(403);
   }
 
   public function testApiCannotDeleteArticleWithoutLogin()
@@ -666,6 +666,6 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create();
 
     $this->delete($this->articleApiUrl . $article->id)
-      ->assertResponseStatus(403);
+    ->assertResponseStatus(403);
   }
 }

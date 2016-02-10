@@ -5,13 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
-    {
-      factory(Jetlag\User::class, 10)->create();
-    }
+  /**
+  * Run the database seeds.
+  *
+  * @return void
+  */
+  public function run()
+  {
+    factory(Jetlag\User::class, 10)->create();
+  }
 }

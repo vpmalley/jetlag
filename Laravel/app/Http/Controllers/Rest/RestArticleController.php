@@ -24,10 +24,10 @@ class RestArticleController extends Controller
 {
 
   /**
-   * Create a new Rest article controller instance.
-   *
-   * @return void
-   */
+  * Create a new Rest article controller instance.
+  *
+  * @return void
+  */
   public function __construct()
   {
     $this->middleware('auth.rest', ['except' => 'show']);
@@ -210,12 +210,12 @@ class RestArticleController extends Controller
   }
 
   /**
-   * Gets the subrequest value matching the key
-   * @param array subRequest a part of the request
-   * @param string key the key matching the expected value
-   * @param default the default value when no value matches the key
-   *
-   */
+  * Gets the subrequest value matching the key
+  * @param array subRequest a part of the request
+  * @param string key the key matching the expected value
+  * @param default the default value when no value matches the key
+  *
+  */
   public static function get($subRequest, $key, $default = null)
   {
     if (array_key_exists($key, $subRequest))
@@ -244,10 +244,10 @@ class RestArticleController extends Controller
   }
 
   /**
-   * Checks whether the logged in user can modify the article as an owner. Rejects with error 403 otherwise.
-   *
-   * @param Article article the article to be owned
-   */
+  * Checks whether the logged in user can modify the article as an owner. Rejects with error 403 otherwise.
+  *
+  * @param Article article the article to be owned
+  */
   public function wantsToOwnArticle($article)
   {
     $id = Auth::user() ? Auth::user()->id : -1;
@@ -258,10 +258,10 @@ class RestArticleController extends Controller
   }
 
   /**
-   * Checks whether the logged in user can write the article. Rejects with error 403 otherwise.
-   *
-   * @param Article article the article to be written
-   */
+  * Checks whether the logged in user can write the article. Rejects with error 403 otherwise.
+  *
+  * @param Article article the article to be written
+  */
   public function wantsToWriteArticle($article)
   {
     $id = Auth::user() ? Auth::user()->id : -1;
@@ -272,10 +272,10 @@ class RestArticleController extends Controller
   }
 
   /**
-   * Checks whether the logged in user can read the article. Rejects with error 403 otherwise.
-   *
-   * @param Article article the article to be read
-   */
+  * Checks whether the logged in user can read the article. Rejects with error 403 otherwise.
+  *
+  * @param Article article the article to be read
+  */
   public function wantsToReadArticle($article)
   {
     $id = Auth::user() ? Auth::user()->id : -1;

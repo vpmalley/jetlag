@@ -6,29 +6,29 @@ use Illuminate\Database\Eloquent\Model;
 
 class Link extends Model
 {
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'links';
+  /**
+  * The database table used by the model.
+  *
+  * @var string
+  */
+  protected $table = 'links';
 
-	/**
-	 * The attributes that are mass assignable.
-   * caption is a description of the link
-   * storage is either 'web' or a disk in terms of Laravel file system (typically 'local' or 's3')
-   * url is either the url to the resource accessible online, or a path to a file if storage is local or s3
-   * author_id is the id for author(s) in the authors table
-	 *
-	 * @var array
-	 */
-	protected $fillable = ['caption', 'url'];
+  /**
+  * The attributes that are mass assignable.
+  * caption is a description of the link
+  * storage is either 'web' or a disk in terms of Laravel file system (typically 'local' or 's3')
+  * url is either the url to the resource accessible online, or a path to a file if storage is local or s3
+  * author_id is the id for author(s) in the authors table
+  *
+  * @var array
+  */
+  protected $fillable = ['caption', 'url'];
 
   protected $visible = ['url', 'caption'];
 
   /**
-   * The rules for validating input
-   */
+  * The rules for validating input
+  */
   static $rules = [
     'caption' => 'string|min:3|max:200',
     'url' => 'string|required|min:3|max:200',
@@ -64,11 +64,11 @@ class Link extends Model
   }
 
   /**
-   * Extracts the link from the subrequest
-   *
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Link the extracted link
-   */
+  * Extracts the link from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Link the extracted link
+  */
   public function extract($subRequest)
   {
     if (!array_key_exists('url', $subRequest) && !isset($this->url))

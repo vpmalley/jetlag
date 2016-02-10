@@ -62,9 +62,9 @@ class Author extends Model
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
     $count = Author::where('user_id', $userId)->where('author_id', $authorId)->where(function ($query) {
-                $query->where('role', self::K_OWNER)
-                      ->orWhere('role', self::K_WRITER);
-            })->count();
+      $query->where('role', self::K_OWNER)
+      ->orWhere('role', self::K_WRITER);
+    })->count();
     return (1 == $count);
   }
 
@@ -129,12 +129,12 @@ class Author extends Model
   }
 
   /**
-   * Determines the role of a user as an author
-   *
-   * @param authorId the id of the author
-   * @param userId the id of the user
-   * @return var string a role, or NULL
-   */
+  * Determines the role of a user as an author
+  *
+  * @param authorId the id of the author
+  * @param userId the id of the user
+  * @return var string a role, or NULL
+  */
   public static function getRole($authorId, $userId)
   {
     $author = Author::where('user_id', $userId)->where('author_id', $authorId)->first();

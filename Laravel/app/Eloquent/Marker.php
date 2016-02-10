@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Marker extends Model
 {
   /**
-   * The database table used by the model.
-   *
-   * @var string
-   */
+  * The database table used by the model.
+  *
+  * @var string
+  */
   protected $table = 'markers';
 
   protected $fillable = ['id', 'description'];
@@ -19,8 +19,8 @@ class Marker extends Model
   protected $visible = ['id', 'description', 'place'];
 
   /**
-   * The rules for validating input
-   */
+  * The rules for validating input
+  */
   static $rules = [
     'id' => 'numeric',
     'description' => 'string|min:3|max:500',
@@ -37,11 +37,11 @@ class Marker extends Model
   }
 
   /**
-   * Extracts the picture from the subrequest
-   *
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Map the extracted map
-   */
+  * Extracts the picture from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Map the extracted map
+  */
   public function extract($subRequest)
   {
     $this->id = array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;

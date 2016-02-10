@@ -13,96 +13,96 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- *
- */
+*
+*/
 class Article
 {
 
   /**
-   * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
-   *
-   * @var int
-   */
+  * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
+  *
+  * @var int
+  */
   protected $id;
 
   /**
-   * The title for the article
-   *
-   * @var string
-   */
+  * The title for the article
+  *
+  * @var string
+  */
   protected $title;
 
   /**
-   * The description for the article
-   *
-   * @var string
-   */
+  * The description for the article
+  *
+  * @var string
+  */
   protected $descriptionText;
 
   /**
-   * The description for the article
-   *
-   * @var Jetlag\Business\Picture
-   */
+  * The description for the article
+  *
+  * @var Jetlag\Business\Picture
+  */
   protected $descriptionPicture;
 
   /**
-   * Whether the article is a draft
-   *
-   * @var boolean
-   */
+  * Whether the article is a draft
+  *
+  * @var boolean
+  */
   protected $isDraft;
 
   /**
-   * Whether the article can be viewed by anyone
-   *
-   * @var boolean
-   */
+  * Whether the article can be viewed by anyone
+  *
+  * @var boolean
+  */
   protected $isPublic;
 
   /**
-   * The paragraphs of this article
-   *
-   * @var array
-   */
+  * The paragraphs of this article
+  *
+  * @var array
+  */
   protected $paragraphs = [];
 
   /**
-   * The id for the author link to users who are authors of this article
-   *
-   * @var int
-   */
+  * The id for the author link to users who are authors of this article
+  *
+  * @var int
+  */
   protected $authorId = -1;
 
   /**
-   * The hash of user ids and their roles in authoring of this article
-   *
-   * @var array
-   */
+  * The hash of user ids and their roles in authoring of this article
+  *
+  * @var array
+  */
   protected $authorUsers = [];
 
   /**
-   * The fillable properties
-   */
+  * The fillable properties
+  */
   protected $fillable = ['title', 'descriptionText', 'descriptionMediaUrl', 'isDraft'];
 
   /**
-   * The rules for validating input
-   */
+  * The rules for validating input
+  */
   static $rules = [
     'title' => 'required|min:3|max:200',
     'descriptionText' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'isDraft' => 'boolean',
-    ];
+  ];
 
   public function __construct()
   {
   }
 
   /**
-   *
-   */
+  *
+  */
   public function fromDb($storedArticle, $picture, $paragraphs, $authorId, $authorUsers)
   {
     $this->id = $storedArticle->id;
@@ -117,8 +117,8 @@ class Article
   }
 
   /**
-   *
-   */
+  *
+  */
   public function fromRequest($title)
   {
     $this->title = $title;
@@ -130,10 +130,10 @@ class Article
   }
 
   /**
-   * Constructs an Article from an App\Eloquent\Article.
-   *
-   * @param  StoredArticle  $storedArticle the stored article
-   */
+  * Constructs an Article from an App\Eloquent\Article.
+  *
+  * @param  StoredArticle  $storedArticle the stored article
+  */
   public function fromStoredArticle($storedArticle)
   {
     $picture = NULL;
@@ -248,8 +248,8 @@ class Article
   }
 
   /**
-   * @param array hash of user ids and roles to make them as the new authors of this article
-   */
+  * @param array hash of user ids and roles to make them as the new authors of this article
+  */
   public function updateAuthorUsers($authorUsers)
   {
     if (!empty($authorUsers))
@@ -264,11 +264,11 @@ class Article
   }
 
   /**
-   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   *
-   * @param  int  $articleId the id for the requested article
-   * @return  Jetlag\Business\Article
-   */
+  * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
+  *
+  * @param  int  $articleId the id for the requested article
+  * @return  Jetlag\Business\Article
+  */
   public static function getById($articleId)
   {
     $storedArticle = StoredArticle::findOrFail($articleId);
@@ -282,11 +282,11 @@ class Article
   }
 
   /**
-   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   *
-   * @param  int  $userId the id for the requested user
-   * @return  array
-   */
+  * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
+  *
+  * @param  int  $userId the id for the requested user
+  * @return  array
+  */
   public static function getAllForUser($userId)
   {
     $articles = [];
@@ -302,10 +302,10 @@ class Article
   }
 
   /**
-   * extracts the data for display
-   *
-   * @return  array
-   */
+  * extracts the data for display
+  *
+  * @return  array
+  */
   public function getForDisplay()
   {
     $descriptionMediaUrl = NULL;
@@ -323,17 +323,17 @@ class Article
     return [
       'title' => $this->title,
       'descriptionText' => $this->descriptionText,
-    //  'descriptionMediaUrl' => $descriptionMediaUrl,
+      //  'descriptionMediaUrl' => $descriptionMediaUrl,
       'isDraft' => $this->isDraft,
       'authorName' => $authorNameLabel,
     ];
   }
 
   /**
-   * extracts the data for showing as REST
-   *
-   * @return  array
-   */
+  * extracts the data for showing as REST
+  *
+  * @return  array
+  */
   public function getForRest()
   {
     $descriptionMedia = [];
@@ -343,22 +343,22 @@ class Article
     }
     return [
       'id' => $this->id,
-  	  'title' => $this->title,
+      'title' => $this->title,
       'url' => $this->getWebUrl(),
-  	  'descriptionText' => $this->descriptionText,
-  	  'descriptionMedia' => $descriptionMedia,
+      'descriptionText' => $this->descriptionText,
+      'descriptionMedia' => $descriptionMedia,
       'isDraft' => $this->isDraft,
-  	  'isPublic' => $this->isPublic,
-  	  'paragraphs' => $this->paragraphs,
-  	  'authorUsers' => $this->authorUsers,
+      'isPublic' => $this->isPublic,
+      'paragraphs' => $this->paragraphs,
+      'authorUsers' => $this->authorUsers,
     ];
   }
 
   /**
-   * extracts the data for showing as REST index (i.e. to display as a list)
-   *
-   * @return  array
-   */
+  * extracts the data for showing as REST index (i.e. to display as a list)
+  *
+  * @return  array
+  */
   public function getForRestIndex()
   {
     $descriptionMedia = [];
@@ -368,13 +368,13 @@ class Article
     }
     return [
       'id' => $this->id,
-  	  'title' => $this->title,
+      'title' => $this->title,
       'url' => $this->getWebUrl(),
-  	  'descriptionText' => $this->descriptionText,
-  	  'descriptionMedia' => $descriptionMedia,
-  	  'authorUsers' => $this->authorUsers,
-  	  'isDraft' => $this->isDraft,
-  	  'isPublic' => $this->isPublic,
+      'descriptionText' => $this->descriptionText,
+      'descriptionMedia' => $descriptionMedia,
+      'authorUsers' => $this->authorUsers,
+      'isDraft' => $this->isDraft,
+      'isPublic' => $this->isPublic,
     ];
   }
 

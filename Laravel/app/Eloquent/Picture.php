@@ -8,10 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Picture extends Model
 {
   /**
-   * The database table used by the model.
-   *
-   * @var string
-   */
+  * The database table used by the model.
+  *
+  * @var string
+  */
   protected $table = 'pictures';
 
   protected $fillable = ['id'];
@@ -21,15 +21,15 @@ class Picture extends Model
   static $relationsToLoad = ['small_url', 'medium_url', 'big_url', 'place'];
 
   /**
-   * The rules for validating input
-   */
+  * The rules for validating input
+  */
   static $rules = [
     'id' => 'numeric',
   ];
 
   public function paragraph()
   {
-      return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
+    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
   }
 
   public function small_url()
@@ -52,11 +52,11 @@ class Picture extends Model
   }
 
   /**
-   * Extracts the picture from the subrequest
-   *
-   * @param  array  $subRequest
-   * @return  Jetlag\Eloquent\Picture the extracted picture
-   */
+  * Extracts the picture from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Picture the extracted picture
+  */
   public function extract($subRequest)
   {
     $this->id = array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;
