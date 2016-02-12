@@ -31,7 +31,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
     ]);
 
     Log::debug(" expecting author_id=3 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
@@ -42,8 +42,8 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
-      'authorUsers' => [$owner->id => 'owner', $writer->id => 'writer'],
+      'description_text' => 'this is a cool article isnt it? id 2',
+      'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -64,7 +64,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
     ]);
 
     Log::debug(" expecting author_id=3 and user_id=" . $owner->id . " and role=owner for article " . $article->id);
@@ -75,8 +75,8 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
-      'authorUsers' => [$owner->id => 'owner', $writer->id => 'writer'],
+      'description_text' => 'this is a cool article isnt it? id 2',
+      'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -97,7 +97,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
     ]);
 
     Log::debug(" expecting author_id=3 and user_id=" . $reader->id . " and role=reader for article " . $article->id);
@@ -108,8 +108,8 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
-      'authorUsers' => [$owner->id => 'owner', $reader->id => 'reader'],
+      'description_text' => 'this is a cool article isnt it? id 2',
+      'author_users' => [$owner->id => 'owner', $reader->id => 'reader'],
     ]);
   }
 
@@ -124,7 +124,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     Log::debug(" expecting author_id=4 and user_id=" . $writer->id . " and role=writer for article " . $article->id);
@@ -134,9 +134,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1, // why not true?
-      'authorUsers' => [$writer->id => 'writer'],
+      'author_users' => [$writer->id => 'writer'],
     ]);
   }
 
@@ -151,7 +151,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
       'author_id' => $authorId,
@@ -171,15 +171,15 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
-      'descriptionMedia' => [
+      'description_text' => 'this is a cool article isnt it? id 2',
+      'description_media' => [
         'id' => $picture->id,
         'small_url' => $links[0]->url,
         'medium_url' => $links[1]->url,
         'big_url' => $links[2]->url,
       ],
       'is_draft' => 1, // why not true?
-      'authorUsers' => [$writer->id => 'writer'],
+      'author_users' => [$writer->id => 'writer'],
     ]);
   }
 
@@ -194,7 +194,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     Log::debug(" expecting author_id=4 and user_id=" . $owner->id . " and role=owner for article " . $article->id);
@@ -204,9 +204,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1, // why not true?
-      'authorUsers' => [$owner->id => 'owner'],
+      'author_users' => [$owner->id => 'owner'],
     ]);
   }
 
@@ -221,7 +221,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     Log::debug(" expecting author_id=4 and user_id=" . $reader->id . " and role=reader for article " . $article->id);
@@ -231,9 +231,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1, // why not true?
-      'authorUsers' => [$reader->id => 'reader'],
+      'author_users' => [$reader->id => 'reader'],
     ]);
   }
 
@@ -241,7 +241,7 @@ class ArticleApiTest extends TestCase {
   {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_public' => true,
     ]);
 
@@ -250,7 +250,7 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1, // why not true?
       'is_public' => 1,
     ]);
@@ -260,7 +260,7 @@ class ArticleApiTest extends TestCase {
   {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_public' => false,
     ]);
 
@@ -287,9 +287,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'title' => "article1",
       'id' => 1,
-      'descriptionText' => '',
+      'description_text' => '',
       'is_draft' => 1,
-      'authorUsers' => [ $user->id => 'owner'],
+      'author_users' => [ $user->id => 'owner'],
     ]);
   }
 
@@ -304,7 +304,7 @@ class ArticleApiTest extends TestCase {
     $user = factory(Jetlag\User::class)->create();
 
     $this->actingAs($user)
-    ->post($this->articleApiUrl, [ 'descriptionText' => 'an article without a title'], ['ContentType' => 'application/json'])
+    ->post($this->articleApiUrl, [ 'description_text' => 'an article without a title'], ['ContentType' => 'application/json'])
     ->assertResponseStatus(400);
 
     $this->actingAs($user)
@@ -319,9 +319,9 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($user)
     ->post($this->articleApiUrl, [
       'title' => 'article2',
-      'descriptionText' => 'un bel article, celui-ci',
+      'description_text' => 'un bel article, celui-ci',
       'is_draft' => 0,
-      'authorUsers' => [1 => 'owner'],
+      'author_users' => [1 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
     ->assertResponseStatus(201);
@@ -337,9 +337,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => 1,
       'title' => 'article2',
-      'descriptionText' => 'un bel article, celui-ci',
+      'description_text' => 'un bel article, celui-ci',
       'is_draft' => 0,
-      'authorUsers' => [1 => 'owner', $user->id => 'owner'],
+      'author_users' => [1 => 'owner', $user->id => 'owner'],
     ]);
   }
 
@@ -350,7 +350,7 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($user)
     ->post($this->articleApiUrl, [
       'title' => 'article1',
-      'descriptionMedia' => [
+      'description_media' => [
         'url' => [ 'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg' ],
       ],
     ], ['ContentType' => 'application/json'])
@@ -366,9 +366,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => 1,
       'title' => "article1",
-      'descriptionText' => '',
+      'description_text' => '',
       'is_draft' => 1,
-      'descriptionMedia' => [
+      'description_media' => [
         'id' => 1,
         'small_url' => null,
         'big_url' => null,
@@ -385,7 +385,7 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($owner)
     ->post($this->articleApiUrl, [
       'title' => 'article1',
-      'authorUsers' => [$reader->id => 'reader'],
+      'author_users' => [$reader->id => 'reader'],
     ], ['ContentType' => 'application/json'])
     ->assertResponseStatus(201);
     $this->seeJson([
@@ -400,9 +400,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'title' => "article1",
       'id' => 1,
-      'descriptionText' => '',
+      'description_text' => '',
       'is_draft' => 1,
-      'authorUsers' => [ $owner->id => 'owner', $reader->id => 'reader'],
+      'author_users' => [ $owner->id => 'owner', $reader->id => 'reader'],
     ]);
   }
 
@@ -425,9 +425,9 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'title' => "article1",
       'id' => 1,
-      'descriptionText' => '',
+      'description_text' => '',
       'is_draft' => 1,
-      'authorUsers' => [ $user->id => 'owner'],
+      'author_users' => [ $user->id => 'owner'],
     ]);
   }
 
@@ -441,7 +441,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 13,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
       'author_id' => 13,
@@ -457,9 +457,9 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($writer)
     ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
-      'descriptionText' => 'some updated description',
+      'description_text' => 'some updated description',
       'is_draft' => 0,
-      'authorUsers' => [1 => 'writer', 2 => 'owner'],
+      'author_users' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
     ->assertResponseOk();
@@ -472,15 +472,15 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article ' . $article->id . ' updated',
-      'descriptionText' => 'some updated description',
+      'description_text' => 'some updated description',
       'is_draft' => 0,
-      'descriptionMedia' => [
+      'description_media' => [
         'id' => $picture->id,
         'small_url' => $links[0]->url,
         'medium_url' => $links[1]->url,
         'big_url' => $links[2]->url,
       ],
-      'authorUsers' => [1 => 'writer', 2 => 'owner', $writer->id => 'writer'],
+      'author_users' => [1 => 'writer', 2 => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -494,7 +494,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 14,
       'title' => "article with id 2",
-      'descriptionText' => 'this is some article',
+      'description_text' => 'this is some article',
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 2)->create([
       'author_id' => 14,
@@ -521,15 +521,15 @@ class ArticleApiTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => 'article is partially updated',
-      'descriptionText' => 'this is some article',
+      'description_text' => 'this is some article',
       'is_draft' => 1,
-      'descriptionMedia' => [
+      'description_media' => [
         'id' => $picture->id,
         'small_url' => $links[0]->url,
         'medium_url' => $links[1]->url,
         'big_url' => $links[1]->url,
       ],
-      'authorUsers' => [ $writer->id => 'writer'],
+      'author_users' => [ $writer->id => 'writer'],
     ]);
   }
 
@@ -543,15 +543,15 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 13,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     $this->actingAs($reader)
     ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
-      'descriptionText' => 'some updated description',
+      'description_text' => 'some updated description',
       'is_draft' => 0,
-      'authorUsers' => [1 => 'writer', 2 => 'owner'],
+      'author_users' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
     ->assertResponseStatus(403);
@@ -565,9 +565,9 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($user)
     ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
-      'descriptionText' => 'some updated description',
+      'description_text' => 'some updated description',
       'is_draft' => 0,
-      'authorUsers' => [1 => 'writer', 2 => 'owner'],
+      'author_users' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
     ->assertResponseStatus(403);
@@ -578,14 +578,14 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'is_public' => true,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     $this->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
-      'descriptionText' => 'some updated description',
+      'description_text' => 'some updated description',
       'is_draft' => 0,
-      'authorUsers' => [1 => 'writer', 2 => 'owner'],
+      'author_users' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
     ->assertResponseStatus(403);
@@ -601,7 +601,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 16,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     $this->actingAs($owner)
@@ -625,7 +625,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 18,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     $this->actingAs($writer)
@@ -643,7 +643,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => 18,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
 
     $this->actingAs($reader)

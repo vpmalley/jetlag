@@ -78,22 +78,22 @@ class RestArticleController extends Controller
     $article = new Article;
     $article->fromRequest($request->input('title'));
 
-    $article->setDescriptionText($request->input('descriptionText', ''));
+    $article->setDescriptionText($request->input('description_text', ''));
     $article->setIsDraft($request->input('is_draft', TRUE));
     $article->setIsPublic($request->input('is_public', FALSE));
 
     $newAuthorUsers = [];
-    if ($request->has('authorUsers'))
+    if ($request->has('author_users'))
     {
-      $newAuthorUsers = $request->input('authorUsers');
+      $newAuthorUsers = $request->input('author_users');
     }
     $newAuthorUsers[Auth::user()->id] = 'owner';
     $article->updateAuthorUsers($newAuthorUsers);
 
-    if ($request->has('descriptionMedia'))
+    if ($request->has('description_media'))
     {
       $storedPicture = new Picture;
-      $storedPicture->extract($request->input('descriptionMedia'));
+      $storedPicture->extract($request->input('description_media'));
       $picture = new BPicture;
       $picture->fromStoredPicture($storedPicture);
       $article->setDescriptionPicture($picture);
@@ -165,8 +165,8 @@ class RestArticleController extends Controller
       abort(400);
     }
     $article->setTitle($request->input('title', $article->getTitle()));
-    $article->setDescriptionText($request->input('descriptionText', $article->getDescriptionText()));
-    if ($request->has('descriptionMedia'))
+    $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
+    if ($request->has('description_media'))
     {
       if ($article->hasDescriptionPicture())
       {
@@ -175,16 +175,16 @@ class RestArticleController extends Controller
       {
         $picture = new Picture;
         $storedPicture = new Picture;
-        $storedPicture->extract($request->input('descriptionMedia'));
+        $storedPicture->extract($request->input('description_media'));
         $picture = new BPicture;
         $picture->fromStoredPicture($storedPicture);
         $article->setDescriptionPicture($picture);
       }
     }
     $article->setIsDraft($request->input('is_draft', $article->isDraft()));
-    if ($request->has('authorUsers'))
+    if ($request->has('author_users'))
     {
-      $newAuthorUsers = $request->input('authorUsers');
+      $newAuthorUsers = $request->input('author_users');
       $newAuthorUsers[Auth::user()->id] = Author::getRole($article->getAuthorId(), Auth::user()->id);
       $article->updateAuthorUsers($newAuthorUsers);
     }

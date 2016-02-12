@@ -84,14 +84,14 @@ class Article
   /**
   * The fillable properties
   */
-  protected $fillable = ['title', 'descriptionText', 'descriptionMediaUrl', 'is_draft'];
+  protected $fillable = ['title', 'description_text', 'descriptionMediaUrl', 'is_draft'];
 
   /**
   * The rules for validating input
   */
   static $rules = [
     'title' => 'required|min:3|max:200',
-    'descriptionText' => 'max:500',
+    'description_text' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'is_draft' => 'boolean',
   ];
@@ -107,7 +107,7 @@ class Article
   {
     $this->id = $storedArticle->id;
     $this->title = $storedArticle->title;
-    $this->descriptionText = $storedArticle->descriptionText;
+    $this->descriptionText = $storedArticle->description_text;
     $this->isDraft = $storedArticle->is_draft;
     $this->isPublic = $storedArticle->is_public;
     $this->descriptionPicture = $picture;
@@ -322,7 +322,7 @@ class Article
 
     return [
       'title' => $this->title,
-      'descriptionText' => $this->descriptionText,
+      'description_text' => $this->descriptionText,
       //  'descriptionMediaUrl' => $descriptionMediaUrl,
       'is_draft' => $this->isDraft,
       'authorName' => $authorNameLabel,
@@ -345,12 +345,12 @@ class Article
       'id' => $this->id,
       'title' => $this->title,
       'url' => $this->getWebUrl(),
-      'descriptionText' => $this->descriptionText,
-      'descriptionMedia' => $descriptionMedia,
+      'description_text' => $this->descriptionText,
+      'description_media' => $descriptionMedia,
       'is_draft' => $this->isDraft,
       'is_public' => $this->isPublic,
       'paragraphs' => $this->paragraphs,
-      'authorUsers' => $this->authorUsers,
+      'author_users' => $this->authorUsers,
     ];
   }
 
@@ -370,9 +370,9 @@ class Article
       'id' => $this->id,
       'title' => $this->title,
       'url' => $this->getWebUrl(),
-      'descriptionText' => $this->descriptionText,
-      'descriptionMedia' => $descriptionMedia,
-      'authorUsers' => $this->authorUsers,
+      'description_text' => $this->descriptionText,
+      'description_media' => $descriptionMedia,
+      'author_users' => $this->authorUsers,
       'is_draft' => $this->isDraft,
       'is_public' => $this->isPublic,
     ];
@@ -389,7 +389,7 @@ class Article
     }
 
     $article->title = $this->title;
-    $article->descriptionText = $this->descriptionText;
+    $article->description_text = $this->descriptionText;
     $article->is_draft = $this->isDraft;
     $article->is_public = $this->isPublic;
     $article->author_id = $this->authorId;

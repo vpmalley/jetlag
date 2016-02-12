@@ -22,13 +22,13 @@ schemas:
           "minLength": 3,
           "maxLength": 200
         },
-        "descriptionText": {
+        "description_text": {
           "type": "string",
           "required": false,
           "minLength": 3,
           "maxLength": 500
         },
-        "descriptionMedia": {
+        "description_media": {
           "type": "object",
           "required": false,
           "schema" : Picture
@@ -41,16 +41,11 @@ schemas:
           "type": "boolean",
           "required": false
         },
-        "authorUsers": {
+        "author_users": {
           "type": "AuthorUser[]",
           "required": false,
           "schema" : AuthorUser
         },
-        "authorUsers": {
-          "type": "Paragraph[]",
-          "required": false,
-          "schema" : Paragraph
-        }
       }
     }
  - Picture: |

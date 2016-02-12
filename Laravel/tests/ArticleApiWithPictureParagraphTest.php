@@ -26,7 +26,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2'
+      'description_text' => 'this is a cool article isnt it? id 2'
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
       'author_id' => $authorId,
@@ -56,9 +56,9 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $this->seeJson([
       'id' => $article->id,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1, // why not true?
-      'authorUsers' => [$writer->id => 'writer'],
+      'author_users' => [$writer->id => 'writer'],
       'paragraphs' => [
         [
           'id' => 1,
@@ -132,9 +132,9 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     ->assertResponseOk();
     $this->seeJson([
       'title' => 'article1',
-      'descriptionText' => '',
+      'description_text' => '',
       'is_draft' => 1,
-      'descriptionMedia' => [],
+      'description_media' => [],
       'paragraphs' => [
         [
           'id' => 1,
@@ -181,7 +181,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
     ]);
     $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
       'author_id' => $authorId,
@@ -244,9 +244,9 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     ->assertResponseOk();
     $this->seeJson([
       'title' => 'article1',
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1,
-      'descriptionMedia' => [],
+      'description_media' => [],
       'paragraphs' => [
         [
           'id' => $paragraph->id,
@@ -298,7 +298,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'author_id' => $authorId,
       'title' => "article with id 2",
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
     ]);
     $link = factory(Jetlag\Eloquent\Link::class, 'web')->create([
       'author_id' => $authorId,
@@ -350,9 +350,9 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     ->assertResponseOk();
     $this->seeJson([
       'title' => 'article1',
-      'descriptionText' => 'this is a cool article isnt it? id 2',
+      'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1,
-      'descriptionMedia' => [],
+      'description_media' => [],
       'paragraphs' => [
         [
           'id' => $paragraph->id,

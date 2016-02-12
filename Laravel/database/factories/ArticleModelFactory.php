@@ -14,7 +14,7 @@
 $factory->define(Jetlag\Eloquent\Article::class, function (Faker\Generator $faker) {
   return [
     'title' => $faker->realText(50),
-    'descriptionText' => $faker->realText(240),
+    'description_text' => $faker->realText(240),
     'is_draft' => 1,
     'is_public' => 0,
     'author_id' => $faker->randomDigit,

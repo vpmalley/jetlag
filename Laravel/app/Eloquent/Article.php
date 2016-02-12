@@ -18,12 +18,12 @@ class Article extends Model
   /**
   * The attributes that are mass assignable.
   * title is the title of the article
-  * descriptionText is a text description of the article
+  * description_text is a text description of the article
   * is_draft is a boolean, to indicate whether the article is a draft
   *
   * @var array
   */
-  public $fillable = ['id', 'title', 'descriptionText', 'is_draft', 'is_public'];
+  public $fillable = ['id', 'title', 'description_text', 'is_draft', 'is_public'];
 
   /**
   * The rules for validating input
@@ -31,7 +31,7 @@ class Article extends Model
   static $rules = [
     'id' => 'numeric',
     'title' => 'string|required|min:3|max:200',
-    'descriptionText' => 'string|min:3|max:500',
+    'description_text' => 'string|min:3|max:500',
     'is_draft' => 'boolean',
     'is_public' => 'boolean',
   ];

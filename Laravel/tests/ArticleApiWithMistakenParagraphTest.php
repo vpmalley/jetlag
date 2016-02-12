@@ -77,9 +77,9 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     ->assertResponseOk();
     $this->seeJson([
       'title' => 'article1',
-      'descriptionText' => '',
+      'description_text' => '',
       'is_draft' => 1,
-      'descriptionMedia' => [],
+      'description_media' => [],
       'paragraphs' => [
         [
           'id' => 1,
@@ -211,9 +211,9 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     ->assertResponseOk();
     $this->seeJson([
       'title' => 'article1',
-      'descriptionText' => '',
+      'description_text' => '',
       'is_draft' => 1,
-      'descriptionMedia' => [],
+      'description_media' => [],
       'paragraphs' => [
         [
           'id' => 1,
