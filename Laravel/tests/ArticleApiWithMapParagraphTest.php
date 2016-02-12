@@ -14,7 +14,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
 
   protected $baseUrl = "http://homestead.app";
   protected $articleApiUrl = "/api/0.1/articles/";
-  
+
   public function testApiGetArticleWithMapParagraph()
   {
     $authorId = 6;
@@ -61,7 +61,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
-      'isDraft' => 1, // why not true?
+      'is_draft' => 1, // why not true?
       'authorUsers' => [$writer->id => 'writer'],
       'paragraphs' => [
         [
@@ -96,7 +96,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
-          'isDraft' => 1,
+          'is_draft' => 1,
           'place' => [
             'description' => $places[1]->description,
             'latitude' => $places[1]->latitude,
@@ -165,7 +165,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
     $this->seeJson([
       'title' => 'article1',
       'descriptionText' => '',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'descriptionMedia' => [],
       'paragraphs' => [
         [
@@ -200,7 +200,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
-          'isDraft' => 1,
+          'is_draft' => 1,
           'place' => [
             'latitude' => 73.43,
             'longitude' => -43.57,
@@ -308,7 +308,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
       'id' => $article->id,
       'title' => 'article1',
       'descriptionText' => $article->descriptionText,
-      'isDraft' => 1,
+      'is_draft' => 1,
       'descriptionMedia' => [],
       'paragraphs' => [
         [
@@ -343,7 +343,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
-          'isDraft' => 1,
+          'is_draft' => 1,
           'place' => [
             'latitude' => 73.43,
             'longitude' => -43.57,
@@ -447,7 +447,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
       'id' => $article->id,
       'title' => 'article1',
       'descriptionText' => $article->descriptionText,
-      'isDraft' => 1,
+      'is_draft' => 1,
       'descriptionMedia' => [],
       'paragraphs' => [
         [
@@ -492,7 +492,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
-          'isDraft' => 1,
+          'is_draft' => 1,
           'place' => [
             'latitude' => 73.43,
             'longitude' => -43.57,

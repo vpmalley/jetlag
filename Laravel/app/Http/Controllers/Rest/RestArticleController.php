@@ -79,8 +79,8 @@ class RestArticleController extends Controller
     $article->fromRequest($request->input('title'));
 
     $article->setDescriptionText($request->input('descriptionText', ''));
-    $article->setIsDraft($request->input('isDraft', TRUE));
-    $article->setIsPublic($request->input('isPublic', FALSE));
+    $article->setIsDraft($request->input('is_draft', TRUE));
+    $article->setIsPublic($request->input('is_public', FALSE));
 
     $newAuthorUsers = [];
     if ($request->has('authorUsers'))
@@ -181,7 +181,7 @@ class RestArticleController extends Controller
         $article->setDescriptionPicture($picture);
       }
     }
-    $article->setIsDraft($request->input('isDraft', $article->isDraft()));
+    $article->setIsDraft($request->input('is_draft', $article->isDraft()));
     if ($request->has('authorUsers'))
     {
       $newAuthorUsers = $request->input('authorUsers');

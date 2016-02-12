@@ -25,7 +25,7 @@ class CreateParagraphsTable extends Migration
             $table->date('date');
             $table->string('weather', 20);
             $table->bigInteger('author_id');
-            $table->boolean('isDraft');
+            $table->boolean('is_draft');
         });
     }
 

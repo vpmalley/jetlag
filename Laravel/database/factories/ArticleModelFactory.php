@@ -15,8 +15,8 @@ $factory->define(Jetlag\Eloquent\Article::class, function (Faker\Generator $fake
   return [
     'title' => $faker->realText(50),
     'descriptionText' => $faker->realText(240),
-    'isDraft' => 1,
-    'isPublic' => 0,
+    'is_draft' => 1,
+    'is_public' => 0,
     'author_id' => $faker->randomDigit,
   ];
 });
@@ -53,7 +53,7 @@ $factory->define(Jetlag\Eloquent\Paragraph::class, function (Faker\Generator $fa
     'title' => $faker->realText(40),
     'place_id' => $faker->randomDigit,
     'weather' => 'sunny',
-    'isDraft' => true,
+    'is_draft' => true,
     'author_id' => $faker->randomDigit,
     'article_id' => $faker->randomDigit,
   ];

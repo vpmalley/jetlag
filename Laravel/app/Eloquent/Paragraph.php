@@ -14,9 +14,9 @@ class Paragraph extends Model
   */
   protected $table = 'paragraphs';
 
-  protected $fillable = ['id', 'title', 'block_content_type', 'date', 'weather', 'isDraft'];
+  protected $fillable = ['id', 'title', 'block_content_type', 'date', 'weather', 'is_draft'];
 
-  protected $visible = ['id', 'title', 'blockContent', 'block_content_type', 'place', 'date', 'weather', 'isDraft'];
+  protected $visible = ['id', 'title', 'blockContent', 'block_content_type', 'place', 'date', 'weather', 'is_draft'];
 
   /**
   * The rules for validating input
@@ -34,7 +34,7 @@ class Paragraph extends Model
     'title' => '',
     'weather' => '',
     'date' => '',
-    'isDraft' => true,
+    'is_draft' => true,
     'author_id' => -1,
   ];
 

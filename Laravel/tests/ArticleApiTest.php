@@ -10,7 +10,7 @@ class ArticleApiTest extends TestCase {
   use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
   //(i.e. non-logged user is forbidden to access resources requiring login)
   use DatabaseMigrations;
-  
+
   protected $baseUrl = "http://homestead.app";
   protected $articleApiUrl = "/api/0.1/articles/";
 
@@ -135,7 +135,7 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
-      'isDraft' => 1, // why not true?
+      'is_draft' => 1, // why not true?
       'authorUsers' => [$writer->id => 'writer'],
     ]);
   }
@@ -178,7 +178,7 @@ class ArticleApiTest extends TestCase {
         'medium_url' => $links[1]->url,
         'big_url' => $links[2]->url,
       ],
-      'isDraft' => 1, // why not true?
+      'is_draft' => 1, // why not true?
       'authorUsers' => [$writer->id => 'writer'],
     ]);
   }
@@ -205,7 +205,7 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
-      'isDraft' => 1, // why not true?
+      'is_draft' => 1, // why not true?
       'authorUsers' => [$owner->id => 'owner'],
     ]);
   }
@@ -232,7 +232,7 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
-      'isDraft' => 1, // why not true?
+      'is_draft' => 1, // why not true?
       'authorUsers' => [$reader->id => 'reader'],
     ]);
   }
@@ -242,7 +242,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
-      'isPublic' => true,
+      'is_public' => true,
     ]);
 
     $this->get($this->articleApiUrl . $article->id)
@@ -251,8 +251,8 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
-      'isDraft' => 1, // why not true?
-      'isPublic' => 1,
+      'is_draft' => 1, // why not true?
+      'is_public' => 1,
     ]);
   }
 
@@ -261,7 +261,7 @@ class ArticleApiTest extends TestCase {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2',
-      'isPublic' => false,
+      'is_public' => false,
     ]);
 
     $this->get($this->articleApiUrl . $article->id)
@@ -288,7 +288,7 @@ class ArticleApiTest extends TestCase {
       'title' => "article1",
       'id' => 1,
       'descriptionText' => '',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'authorUsers' => [ $user->id => 'owner'],
     ]);
   }
@@ -320,7 +320,7 @@ class ArticleApiTest extends TestCase {
     ->post($this->articleApiUrl, [
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
-      'isDraft' => 0,
+      'is_draft' => 0,
       'authorUsers' => [1 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
@@ -338,7 +338,7 @@ class ArticleApiTest extends TestCase {
       'id' => 1,
       'title' => 'article2',
       'descriptionText' => 'un bel article, celui-ci',
-      'isDraft' => 0,
+      'is_draft' => 0,
       'authorUsers' => [1 => 'owner', $user->id => 'owner'],
     ]);
   }
@@ -367,7 +367,7 @@ class ArticleApiTest extends TestCase {
       'id' => 1,
       'title' => "article1",
       'descriptionText' => '',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'descriptionMedia' => [
         'id' => 1,
         'small_url' => null,
@@ -401,7 +401,7 @@ class ArticleApiTest extends TestCase {
       'title' => "article1",
       'id' => 1,
       'descriptionText' => '',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'authorUsers' => [ $owner->id => 'owner', $reader->id => 'reader'],
     ]);
   }
@@ -426,7 +426,7 @@ class ArticleApiTest extends TestCase {
       'title' => "article1",
       'id' => 1,
       'descriptionText' => '',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'authorUsers' => [ $user->id => 'owner'],
     ]);
   }
@@ -458,7 +458,7 @@ class ArticleApiTest extends TestCase {
     ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
-      'isDraft' => 0,
+      'is_draft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
@@ -473,7 +473,7 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
-      'isDraft' => 0,
+      'is_draft' => 0,
       'descriptionMedia' => [
         'id' => $picture->id,
         'small_url' => $links[0]->url,
@@ -522,7 +522,7 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => 'article is partially updated',
       'descriptionText' => 'this is some article',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'descriptionMedia' => [
         'id' => $picture->id,
         'small_url' => $links[0]->url,
@@ -550,7 +550,7 @@ class ArticleApiTest extends TestCase {
     ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
-      'isDraft' => 0,
+      'is_draft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
@@ -566,7 +566,7 @@ class ArticleApiTest extends TestCase {
     ->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
-      'isDraft' => 0,
+      'is_draft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
@@ -576,7 +576,7 @@ class ArticleApiTest extends TestCase {
   public function testApiCannotUpdateArticleWithoutLogin()
   {
     $article = factory(Jetlag\Eloquent\Article::class)->create([
-      'isPublic' => true,
+      'is_public' => true,
       'title' => "article with id 2",
       'descriptionText' => 'this is a cool article isnt it? id 2'
     ]);
@@ -584,7 +584,7 @@ class ArticleApiTest extends TestCase {
     $this->put($this->articleApiUrl . $article->id, [
       'title' => 'article ' . $article->id . ' updated',
       'descriptionText' => 'some updated description',
-      'isDraft' => 0,
+      'is_draft' => 0,
       'authorUsers' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])

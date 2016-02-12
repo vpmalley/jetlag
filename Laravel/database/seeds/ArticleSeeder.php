@@ -14,7 +14,7 @@ class ArticleSeeder extends Seeder
   {
     factory(Jetlag\Eloquent\Article::class, 3)->create();
     factory(Jetlag\Eloquent\Article::class, 3)->create([
-      'isPublic' => 1,
+      'is_public' => 1,
     ]);
   }
 }

@@ -17,8 +17,8 @@ class CreateArticlesTable extends Migration
             $table->timestamps();
             $table->string('title', 200);
             $table->string('descriptionText', 500);
-            $table->boolean('isDraft');
-            $table->boolean('isPublic');
+            $table->boolean('is_draft');
+            $table->boolean('is_public');
             $table->bigInteger('author_id');
        });
     }

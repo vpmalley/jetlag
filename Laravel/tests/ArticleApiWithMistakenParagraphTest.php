@@ -78,7 +78,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     $this->seeJson([
       'title' => 'article1',
       'descriptionText' => '',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'descriptionMedia' => [],
       'paragraphs' => [
         [
@@ -113,7 +113,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
           ],
           'weather' => 'cloudy',
           'date' => '2016-01-03',
-          'isDraft' => 1,
+          'is_draft' => 1,
           'place' => [
             'latitude' => 73.43,
             'longitude' => -43.57,
@@ -212,7 +212,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
     $this->seeJson([
       'title' => 'article1',
       'descriptionText' => '',
-      'isDraft' => 1,
+      'is_draft' => 1,
       'descriptionMedia' => [],
       'paragraphs' => [
         [
@@ -247,7 +247,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
           ],
           'weather' => '',
           'date' => '0000-00-00',
-          'isDraft' => 1,
+          'is_draft' => 1,
           'place' => [
             "altitude" => 0,
             "latitude" => -200,

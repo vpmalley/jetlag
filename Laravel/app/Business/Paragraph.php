@@ -76,7 +76,7 @@ class Paragraph
     $this->title = $storedParagraph->title;
     $this->date = $storedParagraph->date;
     $this->weather = $storedParagraph->weather;
-    $this->isDraft = $storedParagraph->isDraft;
+    $this->isDraft = $storedParagraph->is_draft;
   }
 
   public static function getFromStoredParagraph($storedParagraph)
