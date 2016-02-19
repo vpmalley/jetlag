@@ -17,6 +17,7 @@ class CreateMapsTable extends Migration
             $table->timestamps();
             $table->bigInteger('author_id');
             $table->string('caption', 500);
+            $table->softDeletes();
         });
     }
 

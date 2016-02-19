@@ -21,6 +21,7 @@ class CreatePicturesTable extends Migration
             $table->bigInteger('author_id');
             $table->bigInteger('place_id');
             $table->bigInteger('article_id')->nullable();
+            $table->softDeletes();
         });
     }
 
