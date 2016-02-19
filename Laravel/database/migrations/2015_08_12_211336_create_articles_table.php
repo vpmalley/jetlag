@@ -20,6 +20,7 @@ class CreateArticlesTable extends Migration
             $table->boolean('is_draft');
             $table->boolean('is_public');
             $table->bigInteger('author_id');
+            $table->softDeletes();
        });
     }
 

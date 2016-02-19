@@ -3,11 +3,14 @@
 namespace Jetlag\Eloquent;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Log;
 
 class Article extends Model
 {
+  use SoftDeletes;
+
   /**
   * The database table used by the model.
   *
@@ -35,6 +38,8 @@ class Article extends Model
     'is_draft' => 'boolean',
     'is_public' => 'boolean',
   ];
+
+  protected $dates = ['deleted_at'];
 
   public function descriptionPicture()
   {
