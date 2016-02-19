@@ -11,6 +11,7 @@ use Jetlag\Eloquent\Map;
 use Jetlag\UserPublic;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Log;
 
 /**
 *
@@ -145,7 +146,10 @@ class Article
     $paragraphs = $storedArticle->paragraphs;
     foreach ($paragraphs as $paragraph) {
       $paragraph->load('place');
-      if ('Jetlag\Eloquent\Picture' == get_class($paragraph->blockContent))
+      if ("" == $paragraph->block_content_type)
+      {
+        Log::warning('block content is not set');
+      } else if ('Jetlag\Eloquent\Picture' == get_class($paragraph->blockContent))
       {
         $paragraph->blockContent->load(StoredPicture::$relationsToLoad);
       } else if ('Jetlag\Eloquent\Map' == get_class($paragraph->blockContent))
