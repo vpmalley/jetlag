@@ -41,11 +41,12 @@
 
 .jl-table {
   display: table;
+  
   .jl-table-cell {
 	display: table-cell;
 	height: 100%;
 	
-	&.jl-table-cell-big {
+	&.jl-table-cell-expand {
 	  width: 100%;
 	}
   }
@@ -54,10 +55,11 @@
 .jl-btn-group {
   display: table;
   border-spacing: 2px;
+  
   .jl-btn {
     display: table-cell;
 	height: 100%;
-	width: .1%;
+	width: .01%;
   }
 }
 .jl-btn {
@@ -71,6 +73,11 @@
   vertical-align: middle;
   text-align: center;
   
+  &:hover, &:focus {
+    text-decoration: none;
+	color: @jl-orange;
+  }
+
   &.jl-btn-lg {
     font-size: 1.6rem;
 	padding: 0.8rem 1.6rem;
@@ -80,6 +87,20 @@
     background-color: inherit;
 	color: @jl-blue;
 	font-weight: lighter;
+	
+	&:hover, &:focus {
+      color: @jl-blue;
+    }
+	
+	&.jl-btn-reverse {
+	  background-color: inherit;
+	  color: @jl-orange;
+	  border-color: @jl-orange;
+	  
+	  &:hover, &:focus {
+        color: @jl-orange;
+      }
+	}
   }
   
   &.jl-btn-disabled {
@@ -87,6 +108,20 @@
 	background-color: @jl-grey !important;
 	cursor: default !important;
 	border-color: @jl-grey !important;
+	
+	&:hover, &:focus {
+      color: @jl-dark-grey !important;
+    }
+  }
+
+  &.jl-btn-reverse {
+    color: @jl-blue;
+	background-color: @jl-orange;
+	border-color: @jl-orange;
+	
+	&:hover, &:focus {
+      color: @jl-blue;
+    }
   }
 
   & ~ .jl-btn {

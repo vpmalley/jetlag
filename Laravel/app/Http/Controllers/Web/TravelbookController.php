@@ -95,6 +95,7 @@ class TravelbookController extends Controller
         //
     }
 	
+	/** TODO: remove or merge in master **/
 	public function getCreate()
 	{
 	 return view('travelbookCreator');

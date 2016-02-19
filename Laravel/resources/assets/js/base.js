@@ -6,10 +6,31 @@ ModelsManager.$inject = ['NgBackboneModel', 'NgBackboneCollection'];
   
 function ModelsManager(NgBackboneModel, NgBackboneCollection) {
  
-  function define(name, model) {
+ function initializeModel(schema) {
+   var byDefault = {};
+   _.each(schema, function(fieldDef, fieldName) {
+     var defaultValue = null;
+	 if(fieldDef.type) {
+	   if(fieldDef.type === 'string') {
+	     defaultValue = '';
+	   } else if (fieldDef.type === 'array' || fieldDef.type === 'orderedArray') {
+	     defaultValue = [];
+	   }
+	 }
+	 byDefault[fieldName] = defaultValue;
+   });
+   return function() {
+     this.set(byDefault);
+   }
+ }
+ 
+  function define(name, schema) {
     var url = '/jetlag/Laravel/public/api/'+name.toLowerCase();
-    model.urlRoot = url;	
-    var Model = NgBackboneModel.extend(model);
+    var Model = NgBackboneModel.extend({
+      initialize: initializeModel(schema),
+	  $schema: schema,
+	  urlRoot: url
+    });
     var ModelCollection = NgBackboneCollection.extend({
       model: Model,
 	  url: url
@@ -25,13 +46,34 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
   
   /* Define model */
   define('Article', {
-	id: null,
-	title: null,
-	descriptionText: null,
-	descriptionPicture: null,
-	isDraft: null,
-	paragraphs: null,
-	authorUsers: null
+	id: {
+	  remote: 'id',
+	  type: 'id'
+	},
+	title: {
+  	  remote: 'title',
+	  type: 'string'
+	},
+	descriptionText: {
+	  remote: 'descriptionText',
+	  type: 'string'
+	},
+	descriptionPicture: {
+	  remote: 'descriptionPicture',
+	  type: 'integer'
+	},
+	isDraft: {
+	  remote: 'isDraft',
+	  type: 'boolean'
+	},
+	paragraphs: {
+	  remote: 'paragraphs',
+	  type: 'orderedArray'
+	},
+	authorUsers: {
+	  remote: 'authorUsers',
+	  type: 'array'
+	}
   });
   
   define('User', {});

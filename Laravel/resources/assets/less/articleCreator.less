@@ -1,0 +1,122 @@
+@import (reference) "app.less";
+
+.angular-leaflet-map {
+	  width: 100%;
+	  height: 300px;
+	}
+	
+.paragraph-editor {
+  border: solid 2px @jl-grey;
+  margin-bottom: 2px;
+  
+  .btn-group.btn-group-justified {
+	border-collapse: collapse;
+	border-radius: 0;
+	border: 0;
+  }
+ 
+  .paragraph-input {
+	padding: 1rem;
+	textarea, input {
+	  resize: none;
+	  border: none;
+	  border-radius: 0;
+	  outline: none;
+	  box-shadow: none;
+	  box-sizing: border-box;
+	  transition: all .3s;
+	}
+	textarea {
+	  width: 100%;
+	}
+	
+	.drop-box {
+	  padding: 1rem;
+	  position: relative;
+	  
+	  .drop-text {
+		display: none;
+	  }
+	  
+	  &.dragover {
+		border: dashed 2px @jl-grey;
+		height: 100px;
+		
+		.jl-btn {
+		  display: none;
+		}
+		.drop-text {
+		  display: inline-block;
+		  vertical-align: middle;
+		  width: 100%;
+		  color: @jl-grey;
+		  text-align: center;
+		  font-size: 2rem;
+		}
+	  }
+	}
+	
+	.location-searchbar {
+	  width: 100%;
+	  height: 50px;
+	  border: solid 2px @jl-grey;
+	  padding: 0 0 0 1rem;
+	  margin-bottom: 10px;
+	}
+	
+	.external-bar {
+	  height: 40px;
+	  width: 100%;
+	  margin-bottom: 10px;
+	  padding: 1rem;
+	  border: solid 2px @jl-grey;
+	}
+  }
+}
+	
+.paragraph {
+  width: 90%;
+  margin: 20px auto;
+  display: table;
+}
+
+.paragraph-controls {
+  display: table-cell;
+  width: 0.01%;
+  font-size: 5rem;
+}
+
+.paragraph-type-text {
+  font-size: 2.1rem;
+  line-height: 3.5rem;
+  font-family: 'Publico Text Web';
+}
+  
+.paragraph-type-location, .paragraph-type-external, .paragraph-type-text {
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  display: table-cell;
+}
+
+.paragraph-type-pictures {
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  display: table-cell;
+  
+  .paragraph-type-picture {
+    width: 100%;
+	margin: auto;
+  }
+}
+
+.article-controls {
+  width: 90%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.picture-preview {
+  width: 100%;
+}

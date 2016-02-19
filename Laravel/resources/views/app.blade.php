@@ -5,16 +5,15 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Home page - Jetlag</title>
-
-	<!-- Internal CSS files -->
-	<link href="{{ asset('/css/app.css') }}" rel="stylesheet" type='text/css'>
+	
+	<link href="{{ asset('/css/app.css') }}" rel="stylesheet" type="text/css">
 	
 	<!-- External CSS files -->
-	<link href="{{ asset('/css/leaflet.css') }}" rel="stylesheet" type='text/css'>
+	<link href="{{ asset('/css/leaflet.css') }}" rel="stylesheet" type="text/css">
 
 	<!-- Fonts -->
-	<link href="{{ asset('/css/font-awesome.css') }}" rel='stylesheet' type='text/css'>
-	<link href='//fonts.googleapis.com/css?family=Roboto:400,300' rel='stylesheet' type='text/css'>
+	<link href="{{ asset('/css/font-awesome.css') }}" rel="stylesheet" type="text/css">
+	<link href="//fonts.googleapis.com/css?family=Roboto:400,300" rel="stylesheet" type="text/css">
 	
 	<!--- Page specific files --->
 	@yield('head')

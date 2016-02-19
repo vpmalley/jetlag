@@ -45,5 +45,11 @@ class ArticleController extends Controller {
     $article = Article::getById($id);
     return view('web.article.display', $article->getForDisplay());
   }
+  
+  /** TODO: remove or merge in master **/
+	public function getCreate()
+	{
+	 return view('articleCreator');
+	}
 
 }
