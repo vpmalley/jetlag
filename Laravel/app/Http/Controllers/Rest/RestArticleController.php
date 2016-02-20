@@ -129,8 +129,8 @@ class RestArticleController extends Controller
   public function show($storedArticle)
   {
     $article = new Article;
+    $this->wantsToReadArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-    $this->wantsToReadArticle($article);
     return $article->getForRest();
   }
 
@@ -143,8 +143,8 @@ class RestArticleController extends Controller
   public function edit($storedArticle)
   {
     $article = new Article;
+    $this->wantsToReadArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-    $this->wantsToReadArticle($article);
     return $article->getForRest();
   }
 
@@ -158,8 +158,8 @@ class RestArticleController extends Controller
   public function update(Request $request, $storedArticle)
   {
     $article = new Article;
+    $this->wantsToWriteArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-    $this->wantsToWriteArticle($article);
     $validator = Validator::make($request->all(), Article::$rules);
     if ($validator->fails()) {
       abort(400);
@@ -236,22 +236,20 @@ class RestArticleController extends Controller
   */
   public function destroy($storedArticle)
   {
-    $article = new Article;
-    $article->fromStoredArticle($storedArticle);
-    $this->wantsToOwnArticle($article);
-    $article->delete();
-    return ['id' => $article->getId()];
+    $this->wantsToOwnArticle($storedArticle);
+    $storedArticle->delete();
+    return ['id' => $storedArticle->id];
   }
 
   /**
   * Checks whether the logged in user can modify the article as an owner. Rejects with error 403 otherwise.
   *
-  * @param Article article the article to be owned
+  * @param StoredArticle storedArticle the article to be owned
   */
-  public function wantsToOwnArticle($article)
+  public function wantsToOwnArticle($storedArticle)
   {
     $id = Auth::user() ? Auth::user()->id : -1;
-    if (!Author::isOwner($id, $article->getAuthorId()))
+    if (!Author::isOwner($id, $storedArticle->author_id))
     {
       abort(403);
     }
@@ -260,12 +258,12 @@ class RestArticleController extends Controller
   /**
   * Checks whether the logged in user can write the article. Rejects with error 403 otherwise.
   *
-  * @param Article article the article to be written
+  * @param StoredArticle storedArticle the article to be written
   */
-  public function wantsToWriteArticle($article)
+  public function wantsToWriteArticle($storedArticle)
   {
     $id = Auth::user() ? Auth::user()->id : -1;
-    if (!Author::isWriter($id, $article->getAuthorId()))
+    if (!Author::isWriter($id, $storedArticle->author_id))
     {
       abort(403);
     }
@@ -274,12 +272,12 @@ class RestArticleController extends Controller
   /**
   * Checks whether the logged in user can read the article. Rejects with error 403 otherwise.
   *
-  * @param Article article the article to be read
+  * @param StoredArticle storedArticle the article to be read
   */
-  public function wantsToReadArticle($article)
+  public function wantsToReadArticle($storedArticle)
   {
     $id = Auth::user() ? Auth::user()->id : -1;
-    if (!$article->isPublic() && !Author::isReader($id, $article->getAuthorId()))
+    if (!$storedArticle->is_public && !Author::isReader($id, $storedArticle->author_id))
     {
       abort(403);
     }
