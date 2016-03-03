@@ -94,9 +94,7 @@ class RestArticleController extends Controller
     {
       $storedPicture = new Picture;
       $storedPicture->extract($request->input('description_media'));
-      $picture = new BPicture;
-      $picture->fromStoredPicture($storedPicture);
-      $article->setDescriptionPicture($picture);
+      $article->setDescriptionPicture($storedPicture);
     }
 
     if ($request->has('paragraphs'))
@@ -168,18 +166,9 @@ class RestArticleController extends Controller
     $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
     if ($request->has('description_media'))
     {
-      if ($article->hasDescriptionPicture())
-      {
-        $picture = $article->getDescriptionPicture();
-      } else
-      {
-        $picture = new Picture;
-        $storedPicture = new Picture;
-        $storedPicture->extract($request->input('description_media'));
-        $picture = new BPicture;
-        $picture->fromStoredPicture($storedPicture);
-        $article->setDescriptionPicture($picture);
-      }
+      $storedPicture = new Picture;
+      $storedPicture->extract($request->input('description_media'));
+      $article->setDescriptionPicture($storedPicture);
     }
     $article->setIsDraft($request->input('is_draft', $article->isDraft()));
     if ($request->has('author_users'))
