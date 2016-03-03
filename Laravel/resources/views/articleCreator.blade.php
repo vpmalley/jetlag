@@ -34,6 +34,7 @@
 				</div>
 				<div class="paragraph-controls">
 					<div ng-if="!$first"><i class="fa fa-arrow-up" ng-click="articleCreatorCtrl.paragraphUp($index)"></i></div>
+					<div><i class="fa fa-pencil" ng-click="articleCreatorCtrl.editParagraph($index)"></i></div>
 					<div><i class="fa fa-trash" ng-click="articleCreatorCtrl.removeParagraph($index)"></i></div>
 					<div ng-if="!$last"><i class="fa fa-arrow-down" ng-click="articleCreatorCtrl.paragraphDown($index)"></i></div>
 				</div>
@@ -101,7 +102,7 @@
 							</div>
 						</div>
 						<div style="text-align: right" ng-if="!articleCreatorCtrl.isInputEmpty()">
-							<div class="jl-btn jl-btn-lg jl-btn-empty" ng-click="articleCreatorCtrl.deleteParagraph()">
+							<div class="jl-btn jl-btn-lg jl-btn-empty" ng-click="articleCreatorCtrl.resetParagraph()">
 								<i class="fa fa-times"></i> Supprimer
 							</div><!--
 							--><div class="jl-btn jl-btn-lg" ng-click="articleCreatorCtrl.addParagraph()">

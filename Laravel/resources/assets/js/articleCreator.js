@@ -125,7 +125,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	  var paragraph = null;
 	  switch(input.type) {
 	  case 'text':
-	  paragraph = {type: 'text', text: input.text};
+	  paragraph = _.pick(input, ['type', 'text']);
 	    break;
 	  case 'picture':
 	  paragraph = {type: 'picture', pictures: [input.picture].concat([])}; //XXX: magical hack here to deeply copy
@@ -141,7 +141,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	  }};
 	    break;
 	  case 'external':
-	  paragraph = {type: 'external', external: {link: input.external.link} };
+	  paragraph = _.pick(input, ['type', 'external']);
 	    break;
 	  default:break;
 	  }
@@ -151,7 +151,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	  ctrl.paragraphEditor.input= {type: 'text', text: '', picture: {}, location: {}, external: {}};
 	}
 	
-	ctrl.deleteParagraph = function() {
+	ctrl.resetParagraph = function() {
 	  /* reset the paragraphEditor input */
 	  ctrl.paragraphEditor.input= {type: 'text', text: '', picture: {}, location: {}, external: {}};
 	}
@@ -196,6 +196,9 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 		return;
       }
 	  ctrl.article.$attributes.paragraphs.splice(index, 1);
+	}
+	ctrl.editParagraph = function(index) {
+	  console.warn('Not implemented yet');
 	}
 };
 
