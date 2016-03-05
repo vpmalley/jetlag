@@ -22,7 +22,5 @@ extras/documentation
 # modified files
 *~
 
-composer.*
-
 # SQL tables creation
 data/scripts/creation.sql
