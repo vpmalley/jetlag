@@ -2,7 +2,8 @@ var dependencies = [
   'jetlag.webapp.app', 
   'ngFileUpload',
   'leaflet-directive',
-  'monospaced.elastic'
+  'monospaced.elastic',
+  'jetlag.webapp.directives.paragraph'
 ];
 
 angular
@@ -10,31 +11,49 @@ angular
   .controller('ArticleCreatorController', ArticleCreatorController)
   .filter('paragraphText', ParagraphTextFilter);
 
-ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'Upload', '$sce'];
+ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'Upload', '$sce', 'JetlagUtils', '$location'];
 ParagraphTextFilter.$inject = ['$sce'];
 
-function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
+function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, JetlagUtils, $location) {
 	var ctrl = this;
 	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
 	ctrl.leafletMap = { markers: {} };
 	ctrl.paragraphs = [];
 	ctrl.article = new ModelsManager.Article();
 	ctrl.mm = ModelsManager;
+	ctrl.editedParagraph = null;
 
+	/* This wait for the article to be loaded.
+	* Actually, since this is a test, it only waits for the url to be parsed
+	* and the article id to be retrieved
+	*/
+	function getArticleID() {
+	var path = $location.path();
+	  if(path != "") {
+	    var id = parseInt(path.substring(1));
+		if(!isNaN(id)) {
+			return id;
+		} else {
+			return null;
+		}
+	  }	
+	};
+	
+	$scope.$watch(getArticleID, function(newValue, oldValue){
+		if(newValue != null) {
+			ctrl.article.$attributes.id = newValue;
+		}
+	});
+	
 	ctrl.isInputEmpty = function() {
 	  var input = ctrl.paragraphEditor.input;
 	  return input.text == '' && _.isEmpty(input.picture) && _.isEmpty(input.location) && _.isEmpty(input.external);
 	}
 	
 	var inputTypeList = ['text', 'picture', 'location', 'external']; // XXX: should be moved into a service
-	function findValue(collection, value) { // XXX: should be moved into a utils service
-		return _.find(collection, function(item) {
-			return item === value;
-			});
-	}
 	
 	ctrl.changeInputType = function(inputType) {
-		if(findValue(inputTypeList, inputType) != null) {
+		if(JetlagUtils.findValue(inputTypeList, inputType) != null) {
 			ctrl.paragraphEditor.input.type = inputType;
 		}
 	}
@@ -91,7 +110,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	  }
 	}
 	
-	$scope.$on('leafletDirectiveMarker.dragend', function(e, m) {
+	$scope.$on('leafletDirectiveMarker.paragraphEditorMap.dragend', function(e, m) {
 		ctrl.leafletMap.markers.marker = m.model;
 		var marker = ctrl.leafletMap.markers.marker;
 		  if(marker.lng !== ctrl.paragraphEditor.input.location.coordinates[0] ||
@@ -135,9 +154,9 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	    message: input.location.name,
 		lat: input.location.coordinates[1],
 		lng: input.location.coordinates[0],
-		draggable: false,
-		focus: true
-	  }}, center: angular.copy(ctrl.leafletMap.center)
+		draggable: false
+	  }}, center: angular.copy(ctrl.leafletMap.center),
+	  coordinates: angular.copy(input.location.coordinates)
 	  }};
 	    break;
 	  case 'external':
@@ -148,7 +167,8 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 	  /* add it to the article */
 	  ctrl.article.$attributes.paragraphs.push(paragraph);
 	  /* reset the paragraphEditor input */
-	  ctrl.paragraphEditor.input= {type: 'text', text: '', picture: {}, location: {}, external: {}};
+	  ctrl.paragraphEditor.input = {type: 'text', text: '', picture: {}, location: {}, external: {}};
+	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
 	}
 	
 	ctrl.resetParagraph = function() {
@@ -174,6 +194,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 		return;
       }
 	  swapParagraphs(index-1, index);
+	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
 	}
 	ctrl.paragraphDown = function(index) {
 	  if(!ctrl.article) {
@@ -185,6 +206,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 		return;
       }
 	  swapParagraphs(index, index+1);
+	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
 	}
 	ctrl.removeParagraph = function(index) {
 	  if(!ctrl.article) {
@@ -196,9 +218,35 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce) {
 		return;
       }
 	  ctrl.article.$attributes.paragraphs.splice(index, 1);
+	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
 	}
+	
 	ctrl.editParagraph = function(index) {
-	  console.warn('Not implemented yet');
+	  ctrl.editedParagraph = index;
+	}
+	
+	ctrl.saveParagraph = function(index) {
+		if(ctrl.isBeingEdited(index)) {
+			ctrl.article.save({paragraphs: ctrl.article.$attributes.paragraphs}, {patch: true}); //XXX: PATCH REQUEST
+			ctrl.editedParagraph = null;
+		}
+	}
+	
+	ctrl.isBeingEdited = function(index) {
+		return ctrl.editedParagraph === index;
+	}
+	
+	ctrl.loseArticle = function() {
+		ctrl.article.destroy();
+	}
+	
+	ctrl.saveOnlyArticle = function() {
+		ctrl.article.save();
+	}
+	
+	ctrl.publishArticle = function() {
+		ctrl.article.$attributes.is_draft = false;
+		ctrl.article.save();
 	}
 };
 

@@ -1,10 +1,11 @@
 /vendor
 /node_modules
 .env
-/bootstrap/cache/
+/bootstrap/cache
 /public/build
 /public/js
 /public/css
 /public/images
 /public/fonts
+/public/templates
 /bower_components

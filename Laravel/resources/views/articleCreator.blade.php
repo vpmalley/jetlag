@@ -11,34 +11,17 @@
 @section('content')
 <div class="jl-tbCreator row" ng-controller="ArticleCreatorController as articleCreatorCtrl"
 	 style="margin-top: 150px">
-	<div class="col-xs-12">
+	<div class="col-xs-12" ng-if="articleCreatorCtrl.article.$attributes.id != null">
 	
 		<div class="article">
-			<div class="paragraph" ng-repeat="paragraph in articleCreatorCtrl.article.$attributes.paragraphs">
-				<div class="paragraph-type-text" ng-if="paragraph.type === 'text'">
-					<div ng-bind-html="paragraph.text | paragraphText"></div>
-				</div>
-				<div class="paragraph-type-pictures" ng-if="paragraph.type === 'picture'">
-					<div class="paragraph-type-picture" ng-repeat="picture in paragraph.pictures">
-						<img class="picture-preview" ngf-thumbnail="picture">
-					</div>
-					
-				</div>
-				<div class="paragraph-type-location" ng-if="paragraph.type === 'location'">
-					<leaflet id="@{{paragraph.location.id}}" lf-center="paragraph.location.center" 
-							 markers="paragraph.location.markers">
-					</leaflet>
-				</div>
-				<div class="paragraph-type-external" ng-if="paragraph.type === 'external'">
-					<a ng-href="@{{paragraph.external.link}}" target="_blank">External content here</a>
-				</div>
-				<div class="paragraph-controls">
-					<div ng-if="!$first"><i class="fa fa-arrow-up" ng-click="articleCreatorCtrl.paragraphUp($index)"></i></div>
-					<div><i class="fa fa-pencil" ng-click="articleCreatorCtrl.editParagraph($index)"></i></div>
-					<div><i class="fa fa-trash" ng-click="articleCreatorCtrl.removeParagraph($index)"></i></div>
-					<div ng-if="!$last"><i class="fa fa-arrow-down" ng-click="articleCreatorCtrl.paragraphDown($index)"></i></div>
-				</div>
-			</div> <!-- paragraph -->
+		    <jl-paragraph model="paragraph" is-being-edited="articleCreatorCtrl.isBeingEdited($index)" save="articleCreatorCtrl.saveParagraph($index)"
+			ng-repeat-start="paragraph in articleCreatorCtrl.article.$attributes.paragraphs"></jl-paragraph>
+			<div class="paragraph-controls" ng-repeat-end>
+				<div ng-if="!$first"><i class="fa fa-arrow-up" ng-click="paragraphCtrl.paragraphUp($index)"></i></div>
+				<div><i class="fa fa-pencil" ng-if="!articleCreatorCtrl.isBeingEdited($index)" ng-click="articleCreatorCtrl.editParagraph($index)"></i></div>
+				<div><i class="fa fa-trash" ng-click="articleCreatorCtrl.removeParagraph($index)"></i></div>
+				<div ng-if="!$last"><i class="fa fa-arrow-down" ng-click="articleCreatorCtrl.paragraphDown($index)"></i></div>
+			</div>
 		</div> <!-- article -->
 	
 		<div class="article-controls">
@@ -117,9 +100,9 @@
 				<h1>Votre article est terminé ?</h1>
 				<div class="card-action">
 					<div class="jl-btn-group">
-						<div class="jl-btn jl-btn-empty"><title>Abandonner</title><br><small>(et perdre les changements)</small></div>
-						<div class="jl-btn jl-btn-empty"><title>Quitter</title><br><small>(en sauvegardant)</small></div>
-						<div class="jl-btn"><title>Publier</title></div>
+						<div class="jl-btn jl-btn-empty" ng-click="articleCreatorCtrl.loseArticle()"><title>Abandonner</title><br><small>(et perdre les changements)</small></div>
+						<div class="jl-btn jl-btn-empty" ng-click="articleCreatorCtrl.saveOnlyArticle()"><title>Quitter</title><br><small>(en sauvegardant)</small></div>
+						<div class="jl-btn" ng-click="articleCreatorCtrl.publishArticle()"><title>Publier</title></div>
 					</div>
 				</div>
 			</div>

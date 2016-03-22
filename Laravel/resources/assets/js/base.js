@@ -1,6 +1,7 @@
 angular
   .module('jetlag.webapp.base', ['ngBackbone'])
-  .factory('ModelsManager', ModelsManager);
+  .factory('ModelsManager', ModelsManager)
+  .factory('JetlagUtils', JetlagUtils);
    
 ModelsManager.$inject = ['NgBackboneModel', 'NgBackboneCollection'];
   
@@ -62,8 +63,12 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	  remote: 'descriptionPicture',
 	  type: 'integer'
 	},
-	isDraft: {
-	  remote: 'isDraft',
+	is_draft: {
+	  remote: 'is_draft',
+	  type: 'boolean'
+	},
+	is_public: {
+	  remote: 'is_public',
 	  type: 'boolean'
 	},
 	paragraphs: {
@@ -81,4 +86,16 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
   define('TravelBook', {});
   
   return returned;
+}
+
+function JetlagUtils() {
+	function findValue(collection, value) {
+		return _.find(collection, function(item) {
+			return item === value;
+			});
+	}
+	
+	return {
+		findValue: findValue
+	}
 }

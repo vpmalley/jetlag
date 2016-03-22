@@ -1,0 +1,21 @@
+<div class="paragraph">
+  <div ng-if="!ParagraphCtrl.isBeingEdited()">
+    <div class="paragraph-type-text" ng-if="ParagraphCtrl.model.type === 'text'">
+	  <div ng-bind-html="ParagraphCtrl.model.text | paragraphText"></div>
+    </div>
+    <div class="paragraph-type-pictures" ng-if="ParagraphCtrl.model.type === 'picture'">
+	  <div class="paragraph-type-picture" ng-repeat="picture in ParagraphCtrl.model.pictures">
+		<img class="picture-preview" ngf-thumbnail="picture">
+	  </div>
+    </div>
+    <div class="paragraph-type-location" ng-if="ParagraphCtrl.model.type === 'location'">
+	  <leaflet id="bad_id" lf-center="ParagraphCtrl.model.location.center" 
+			 markers="ParagraphCtrl.model.location.markers">
+	  </leaflet>
+    </div>
+    <div class="paragraph-type-external" ng-if="ParagraphCtrl.model.type === 'external'">
+	  <a ng-href="{{ParagraphCtrl.model.external.link}}" target="_blank">External content here</a>
+    </div>
+  </div>
+  <jl-paragraph-editor model="ParagraphCtrl.model" save="ParagraphCtrl.save()" ng-if="ParagraphCtrl.isBeingEdited()"></jl-paragraph-editor>
+</div> <!-- paragraph -->

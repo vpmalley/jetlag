@@ -1,0 +1,60 @@
+<div>
+<form name="oklm" novalidate>
+	<div class="paragraph-editor">
+		<div class="btn-group btn-group-justified">
+			<div class="btn jl-tab" ng-class="{'selected':ParagraphEditorCtrl.model.type === 'text'}"
+			ng-click="ParagraphEditorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
+			<div class="btn jl-tab" ng-class="{'selected':ParagraphEditorCtrl.model.type === 'picture'}"
+			ng-click="ParagraphEditorCtrl.changeInputType('picture')"><i class="fa fa-picture-o"></i></div>
+			<div class="btn jl-tab" ng-class="{'selected':ParagraphEditorCtrl.model.type === 'location'}"
+			ng-click="ParagraphEditorCtrl.changeInputType('location')"><i class="fa fa-map-marker"></i></div>
+			<div class="btn jl-tab" ng-class="{'selected':ParagraphEditorCtrl.model.type === 'external'}"
+			ng-click="ParagraphEditorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
+		</div>
+		<div class="paragraph-input">
+			<textarea 	ng-if="ParagraphEditorCtrl.model.type === 'text'"
+						placeholder="Lisez nos conseils juste au dessus si vous êtes bloqués"
+						ng-model="ParagraphEditorCtrl.model.text"
+						name="text"
+						msd-elastic="\n">
+			</textarea>
+			<div ng-if="ParagraphEditorCtrl.model.type === 'picture'">
+				<div 	ngf-drop="ParagraphEditorCtrl.uploadFiles($files)" class="drop-box"
+						ngf-drag-over-class="'dragover'"
+						ngf-pattern="'image/*'"
+						ng-disabled="ParagraphEditorCtrl.pictureSelected()">
+					<div class="jl-btn jl-btn-lg" ng-class="{'jl-btn-disabled': ParagraphEditorCtrl.pictureSelected()}"
+					ngf-select="ParagraphEditorCtrl.uploadFiles($files)"
+					ngf-pattern="'image/*'" ng-disabled="ParagraphEditorCtrl.pictureSelected()">
+						Select a picture
+					</div>
+					<div class="strut"></div><div class="drop-text">Drop a picture here</div>
+				</div>
+				<img class="picture-preview" ngf-thumbnail="ParagraphEditorCtrl.model.picture">
+			</div>
+			<div ng-if="ParagraphEditorCtrl.model.type === 'location'">
+				<div class="jl-table location-searchbar">
+					<input class="jl-table-cell" style="width:90%" type="text" name="name" placeholder="Pays, ville, adresse..."
+					ng-model="ParagraphEditorCtrl.model.location.name"></input>
+					<button  class="jl-table-cell jl-btn jl-btn-large" ng-click="ParagraphEditorCtrl.changeLocation()">Search</button>
+				</div>
+				<leaflet 	id="bad_id" lf-center="ParagraphEditorCtrl.model.location.center"
+							markers="ParagraphEditorCtrl.model.location.markers">
+				</leaflet>
+			</div>
+			<div ng-if="ParagraphEditorCtrl.model.type === 'external'">
+				<input type="text" class="external-bar" name="external" placeholder="Entrez l'URL ici"
+				ng-model="ParagraphEditorCtrl.model.external.link"></input>
+				<p>Une vignette représentant le contenu de la page distante sera insérée dans votre article</p>
+				<div class="external-preview">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div style="text-align: right" ng-if="!ParagraphEditorCtrl.isInputEmpty()">
+		<div class="jl-btn jl-btn-lg" ng-click="ParagraphEditorCtrl.save()">
+			Mettre à jour
+		</div>
+	</div>
+</form>
+</div>

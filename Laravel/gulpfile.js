@@ -34,6 +34,7 @@ elixir(function(mix) {
 			'base.js',
 			'app.js',
 		], 'public/js/jetlag.js')
+		.scriptsIn('resources/assets/js/directives', 'public/js/jetlag.directives.js')
 		.copy('resources/assets/js', 'public/js')
 		.copy('resources/assets/images', 'public/images')
 		.copy('bower_components/font-awesome/css/font-awesome.css', 'public/css/font-awesome.css')
@@ -41,5 +42,6 @@ elixir(function(mix) {
 		.copy('bower_components/bootstrap/fonts', 'public/fonts')
 		.copy('bower_components/leaflet/dist/images', 'public/images')
 		.copy('bower_components/leaflet/dist/leaflet.css', 'public/css')
+		.copy('resources/assets/templates', 'public/templates')
 		.version('js/thirds.js');
 });
