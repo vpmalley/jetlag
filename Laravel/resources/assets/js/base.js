@@ -2,11 +2,11 @@ angular
   .module('jetlag.webapp.base', ['ngBackbone'])
   .factory('ModelsManager', ModelsManager)
   .factory('JetlagUtils', JetlagUtils);
-   
+
 ModelsManager.$inject = ['NgBackboneModel', 'NgBackboneCollection'];
-  
+
 function ModelsManager(NgBackboneModel, NgBackboneCollection) {
- 
+
  function initializeModel(schema) {
    var byDefault = {};
    _.each(schema, function(fieldDef, fieldName) {
@@ -24,9 +24,9 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
      this.set(byDefault);
    }
  }
- 
+
   function define(name, schema) {
-    var url = '/jetlag/Laravel/public/api/'+name.toLowerCase();
+    var url = '/api/0.1/'+name.toLowerCase()+'s';
     var Model = NgBackboneModel.extend({
       initialize: initializeModel(schema),
 	  $schema: schema,
@@ -40,11 +40,11 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	var collectionName = name+'Collection';
 	returned[collectionName] = ModelCollection;
   }
-  
+
   var returned = {
     define: define
   };
-  
+
   /* Define model */
   define('Article', {
 	id: {
@@ -80,11 +80,11 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	  type: 'array'
 	}
   });
-  
+
   define('User', {});
-  
+
   define('TravelBook', {});
-  
+
   return returned;
 }
 
@@ -94,7 +94,7 @@ function JetlagUtils() {
 			return item === value;
 			});
 	}
-	
+
 	return {
 		findValue: findValue
 	}
