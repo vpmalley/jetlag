@@ -172,7 +172,7 @@
 					<div class="step-body-section-title">Prêt à écrire le premier chapitre ?</div>
 				</div>
 				<div class="step-body-section">
-					<a class="jl-btn jl-btn-large" href="../article/create">Ok c'est parti !</a>
+					<a class="jl-btn jl-btn-large" ng-click="tbCreatorCtrl.createArticle()">Ok c'est parti !</a>
 				</div>
 				<div class="step-body-section">
 					<div class="jl-btn jl-btn-large">Non pas tout de suite</div>

@@ -19,14 +19,10 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
 	ctrl.leafletMap = { markers: {} };
 	ctrl.paragraphs = [];
-	ctrl.article = new ModelsManager.Article();
+	ctrl.article = null;
 	ctrl.mm = ModelsManager;
 	ctrl.editedParagraph = null;
-
-	/* This wait for the article to be loaded.
-	* Actually, since this is a test, it only waits for the url to be parsed
-	* and the article id to be retrieved
-	*/
+	
 	function getArticleID() {
 	var path = $location.path();
 	  if(path != "") {
@@ -39,9 +35,37 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	  }	
 	};
 	
+	function loadArticle(articleID) {
+		ctrl.article = null;
+		var article = new ModelsManager.Article();
+		article.$attributes.id = articleID;
+		article.fetch()
+		.success(function() {
+			article.set({});
+			ctrl.article = article;
+		});
+	}
+	
+	/* This wait for the article to be loaded.
+	* XXX: need to handle if there are pending changes and user changes the URL
+	*/
 	$scope.$watch(getArticleID, function(newValue, oldValue){
 		if(newValue != null) {
-			ctrl.article.$attributes.id = newValue;
+			if(ctrl.article != null && ctrl.article.get('id') != newValue) {
+				if(ctrl.article.changedAttributes()) {
+					ctrl.article.save()
+					.success(function() {
+						loadArticle(newValue);
+					})
+					.error(function() {
+						console.error('Unable to save changes of current article');
+					})
+				} else {
+					loadArticle(newValue);
+				}
+			} else {
+				loadArticle(newValue);
+			}
 		}
 	});
 	

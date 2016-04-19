@@ -85,6 +85,10 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	authorUsers: {
 	  remote: 'authorUsers',
 	  type: 'array'
+	},
+	travelBook: {
+	  remote: 'travelBook',
+	  type: 'TravelBook'
 	}
   });
 
