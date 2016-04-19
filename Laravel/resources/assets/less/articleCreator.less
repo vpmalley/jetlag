@@ -75,12 +75,19 @@
 }
 	
 .paragraph {
-  width: 90%;
+  display: inline-block;
+  width: 100%;
   margin: 20px auto;
+  vertical-align: middle;
+  &.editor {
+	width: 90%;
+  }
 }
 
 .paragraph-controls {
   font-size: 5rem;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .paragraph-type-text {
@@ -89,7 +96,8 @@
   font-family: 'Publico Text Web';
 }
   
-.paragraph-type-location, .paragraph-type-external, .paragraph-type-text {
+.paragraph-type-location, .paragraph-type-external, .paragraph-type-text, jl-paragraph-editor {
+  display: block;
   width: 100%;
   max-width: 800px;
   margin: auto;

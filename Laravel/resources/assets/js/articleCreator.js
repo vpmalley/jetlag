@@ -168,7 +168,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	  ctrl.article.$attributes.paragraphs.push(paragraph);
 	  /* reset the paragraphEditor input */
 	  ctrl.paragraphEditor.input = {type: 'text', text: '', picture: {}, location: {}, external: {}};
-	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
+	  ctrl.article.save({paragraphs: ctrl.article.$attributes.paragraphs}, {patch: true}); //XXX: PATCH REQUEST
 	}
 	
 	ctrl.resetParagraph = function() {
@@ -194,7 +194,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 		return;
       }
 	  swapParagraphs(index-1, index);
-	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
+	  ctrl.article.save({paragraphs: ctrl.article.$attributes.paragraphs}, {patch: true}); //XXX: PATCH REQUEST
 	}
 	ctrl.paragraphDown = function(index) {
 	  if(!ctrl.article) {
@@ -206,7 +206,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 		return;
       }
 	  swapParagraphs(index, index+1);
-	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
+	  ctrl.article.save({paragraphs: ctrl.article.$attributes.paragraphs}, {patch: true}); //XXX: PATCH REQUEST
 	}
 	ctrl.removeParagraph = function(index) {
 	  if(!ctrl.article) {
@@ -218,7 +218,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 		return;
       }
 	  ctrl.article.$attributes.paragraphs.splice(index, 1);
-	  ctrl.article.save(ctrl.article.changedAttributes(), {patch: true}); //XXX: PATCH REQUEST
+	  ctrl.article.save({paragraphs: ctrl.article.$attributes.paragraphs}, {patch: true}); //XXX: PATCH REQUEST
 	}
 	
 	ctrl.editParagraph = function(index) {
@@ -241,12 +241,22 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	}
 	
 	ctrl.saveOnlyArticle = function() {
-		ctrl.article.save();
+		ctrl.article.save()
+		.error(function(errors) {
+			ctrl.errors = errors.title;
+		});
 	}
 	
 	ctrl.publishArticle = function() {
 		ctrl.article.$attributes.is_draft = false;
-		ctrl.article.save();
+		ctrl.article.save()
+		.error(function(errors) {
+			ctrl.errors = errors.title;
+		});
+	}
+	
+	ctrl.dismissErrors = function() {
+		ctrl.errors = null;
 	}
 };
 

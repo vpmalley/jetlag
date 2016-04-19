@@ -14,10 +14,10 @@
 	<div class="col-xs-12" ng-if="articleCreatorCtrl.article.$attributes.id != null">
 	
 		<div class="article">
-		    <jl-paragraph model="paragraph" is-being-edited="articleCreatorCtrl.isBeingEdited($index)" save="articleCreatorCtrl.saveParagraph($index)"
+		    <jl-paragraph model="paragraph" class="paragraph editor" is-being-edited="articleCreatorCtrl.isBeingEdited($index)" save="articleCreatorCtrl.saveParagraph($index)"
 			ng-repeat-start="paragraph in articleCreatorCtrl.article.$attributes.paragraphs"></jl-paragraph>
 			<div class="paragraph-controls" ng-repeat-end>
-				<div ng-if="!$first"><i class="fa fa-arrow-up" ng-click="paragraphCtrl.paragraphUp($index)"></i></div>
+				<div ng-if="!$first"><i class="fa fa-arrow-up" ng-click="articleCreatorCtrl.paragraphUp($index)"></i></div>
 				<div><i class="fa fa-pencil" ng-if="!articleCreatorCtrl.isBeingEdited($index)" ng-click="articleCreatorCtrl.editParagraph($index)"></i></div>
 				<div><i class="fa fa-trash" ng-click="articleCreatorCtrl.removeParagraph($index)"></i></div>
 				<div ng-if="!$last"><i class="fa fa-arrow-down" ng-click="articleCreatorCtrl.paragraphDown($index)"></i></div>
@@ -30,7 +30,9 @@
 				<p class="paragraph-tips">
 					Vous êtes allé au restaurant ? Chaque culture a sa manière de présenter les plats et de dresser la table.
 				</p>
-				<p>Un même paysage pris à deux instants différents peut réserver de sacrées surprises!</p>
+				<p class="paragraph-tips">
+					Un même paysage pris à deux instants différents peut réserver de sacrées surprises!
+				</p>
 				<div class="card-action">
 					<form name="paragraphEditor" novalidate>
 						<div class="paragraph-editor">
@@ -38,9 +40,9 @@
 								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'text'}"
 								ng-click="articleCreatorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
 								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'picture'}"
-								ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-picture-o"></i></div>
+								ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-camera-retro"></i></div>
 								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'location'}"
-								ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map-marker"></i></div>
+								ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map"></i></div>
 								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'external'}"
 								ng-click="articleCreatorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
 							</div>
@@ -96,8 +98,20 @@
 				</div>
 			</div>
 			
+			<div class="jl-card">
+				<h1>Donnez un titre à votre histoire (obligatoire)</h1>
+				<p>Court et percutant, évitez les jeux de mots trop simples.</p>
+				<div class="card-action">
+					<input type="text" class="jl-input-text" ng-model="articleCreatorCtrl.article.$attributes.title"/>
+				</div>
+			</div>
 			<div class="article-publisher jl-card">
 				<h1>Votre article est terminé ?</h1>
+				<div class="clickable" ng-if="articleCreatorCtrl.errors" ng-click="articleCreatorCtrl.dismissErrors()">
+					<p ng-repeat="error in articleCreatorCtrl.errors" class="alert alert-danger">
+						@{{error}}
+					</p>
+				</div>
 				<div class="card-action">
 					<div class="jl-btn-group">
 						<div class="jl-btn jl-btn-empty" ng-click="articleCreatorCtrl.loseArticle()"><title>Abandonner</title><br><small>(et perdre les changements)</small></div>

@@ -11,13 +11,19 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
    var byDefault = {};
    _.each(schema, function(fieldDef, fieldName) {
      var defaultValue = null;
-	 if(fieldDef.type) {
-	   if(fieldDef.type === 'string') {
-	     defaultValue = '';
-	   } else if (fieldDef.type === 'array' || fieldDef.type === 'orderedArray') {
-	     defaultValue = [];
-	   }
-	 }
+	 if(fieldDef.defaultValue != null) {
+		 defaultValue = angular.copy(fieldDef.defaultValue);
+	 } else {
+		if(fieldDef.type) {
+			if(fieldDef.type === 'string') {
+				defaultValue = '';
+			} else if (fieldDef.type === 'array' || fieldDef.type === 'orderedArray') {
+				defaultValue = [];
+			} else if (fieldDef.type === 'boolean') {
+				defaultValue = false;
+			}
+		}
+   }
 	 byDefault[fieldName] = defaultValue;
    });
    return function() {
@@ -65,7 +71,8 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	},
 	is_draft: {
 	  remote: 'is_draft',
-	  type: 'boolean'
+	  type: 'boolean',
+	  defaultValue: true
 	},
 	is_public: {
 	  remote: 'is_public',
