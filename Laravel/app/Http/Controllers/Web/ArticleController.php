@@ -52,4 +52,8 @@ class ArticleController extends Controller {
 	 return view('articleCreator');
 	}
 
+	public function getEdit()
+	{
+	 return view('articleEditor');
+	}
 }

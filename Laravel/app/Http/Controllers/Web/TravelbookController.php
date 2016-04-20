@@ -100,4 +100,9 @@ class TravelbookController extends Controller
 	{
 	 return view('travelbookCreator');
 	}
+	
+	public function getEdit()
+	{
+	 return view('travelbookEditor');
+	}
 }
