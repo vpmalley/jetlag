@@ -86,15 +86,41 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	  remote: 'authorUsers',
 	  type: 'array'
 	},
-	travelBook: {
-	  remote: 'travelBook',
-	  type: 'TravelBook'
+	travelbook: {
+	  remote: 'travelbook',
+	  type: 'Travelbook'
 	}
   });
 
   define('User', {});
 
-  define('TravelBook', {});
+  define('Travelbook', {
+	id: {
+	  remote: 'id',
+	  type: 'id'
+	},
+	title: {
+  	  remote: 'title',
+	  type: 'string'
+	},
+	begin_date: {
+		remote: 'begin_date',
+		type: 'date'
+	},
+	end_date: {
+		remote: 'end_date',
+		type: 'date'
+	},
+	is_draft: {
+	  remote: 'is_draft',
+	  type: 'boolean',
+	  defaultValue: true
+	},
+	is_public: {
+	  remote: 'is_public',
+	  type: 'boolean'
+	}
+  });
 
   return returned;
 }

@@ -11,6 +11,7 @@ TravelbookCreatorController.$inject = ['$scope', 'ModelsManager'];
 function TravelbookCreatorController($scope, ModelsManager) {
 	var ctrl = this;
 	ctrl.tbStep = 1;
+	ctrl.travelbook = new ModelsManager.Travelbook();
 	
 	ctrl.changeTbStep = function(stepNumber) {
 		if(_.isNumber(stepNumber)) {
@@ -29,6 +30,35 @@ function TravelbookCreatorController($scope, ModelsManager) {
 			ctrl.changeTbStep(stepNumber);
 		} else {
 			ctrl.changeTbStep();
+		}
+	}
+	
+	ctrl.saveTravelbook = function() {
+		if(ctrl.travelbook) {
+			ctrl.travelbook.save()
+			.success(function(data) {
+				if(data.id) {
+					window.location.href = '/travelbook/#/' + data.id;
+				}
+			});
+		}
+	}
+	
+	ctrl.createArticle = function() {
+		if(ctrl.travelbook) {
+			ctrl.travelbook.save()
+			.success(function(data) {
+				if(data.id) {
+					var article = new ModelsManager.Article();
+					article.set('travelbook', ctrl.travelbook);
+					article.save()
+					.success(function(data) {
+						if(data.id) {
+							window.location.href = '/article/create/#/' + data.id;
+						}
+					})
+				}
+			})
 		}
 	}
 };
