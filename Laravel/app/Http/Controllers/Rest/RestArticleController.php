@@ -62,7 +62,7 @@ class RestArticleController extends Controller
   */
   public function store(Request $request)
   {
-    $this->validate($request, Article::$rules); // TODO: own validator actually returning a 400 if the format is wrong
+    $this->validate($request, Article::$creationRules); // TODO: own validator actually returning a 400 if the format is wrong
     $article = new Article;
     $article->fromRequest($request->input('title'));
 
@@ -126,7 +126,7 @@ class RestArticleController extends Controller
     $article = new Article;
     $article->fromStoredArticle($storedArticle);
     $this->wantsToWriteArticle($article);
-    $this->validate($request, Article::$rules);
+    $this->validate($request, Article::$updateRules);
     $article->setTitle($request->input('title', $article->getTitle()));
     $article->setDescriptionText($request->input('descriptionText', $article->getDescriptionText()));
     if ($request->has('descriptionMedia'))
