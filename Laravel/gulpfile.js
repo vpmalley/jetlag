@@ -16,6 +16,7 @@ elixir(function(mix) {
     mix.less('app.less')
 		.less('home.less')
 		.less('travelbookCreator.less')
+		.less('travelbook.less')
 		.less('articleCreator.less')
 		.scripts([ //XXX: order matters for now, we should find a way to get rid of it
 			bower_components+'jquery/dist/jquery.js',
