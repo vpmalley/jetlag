@@ -1,32 +1,109 @@
 @import (reference) "app.less";
 
 .travelbook {
-  margin: 54px -15px 0 -15px;
+  margin: 55px -15px 0 -15px;
   .travelbook-header {
     .header-top {
       background-position: center;
 	  background-size: 100% auto;
 	  height: 400px;
 	  min-width: 800px;
-	  border-top:solid 1px transparent;
 	  
-	  h1, .description {
-	    text-align: center;
-        margin: 0 auto;
-        color: white;
+	  .header-top-content {
+	    background-color: rgba(0,0,0,0.3);
+		height: 100%;
+		padding-top: 1px;
+		position: relative;
+	    h1, .description {
+	      text-align: center;
+          margin: 0 auto;
+          color: white;
+	    }
+	  
+	    h1 {
+	      margin-top: 150px;
+		  width: 50%;
+		  font-size: 5rem;
+        }
+	    .description {
+	      margin-top: 15px;
+		  width: 70%;
+		  font-size: 2.5rem;
+		  font-weight: 100;
+        }
+		.space-and-time {
+		  text-align: center;
+		  color: #EAEAEA;
+		  font-size: 1.7rem;
+		  margin-top: 15px;
+		}
+		.social, .fullscreen {
+		  display: inline;
+		  position: absolute;
+		  .jl-btn, &.jl-btn {
+		    color: white;
+			border-color: white;
+		  }
+		}
+		.social {
+		  bottom: 2px;
+		  right: 2px;
+		  width: 134px;
+		}
+		.fullscreen {
+		  bottom: 4px;
+		  left: 4px;
+		}
+      }
+	}
+	
+	.header-bottom {
+	  margin-top: 4px;
+	  padding: 0 6px 0 4px;
+	  .jl-btn {
+	    float: left;
 	  }
-	  
-	  h1 {
-	    margin-top: 150px;
-		width: 50%;
-		font-size: 5rem;
-      }
-	  .description {
-	    margin-top: 15px;
-		width: 70%;
-		font-size: 2.5rem;
-		font-weight: 100;
-      }
-    }
+	  .authors {
+	    text-align: right;
+		line-height: 42px;
+		height: 100%;
+		font-style: italic;
+		font-size: 2rem;
+		span {
+		  &:hover {
+		    text-decoration: underline;
+			cursor: pointer;
+		  }
+		  &.more {
+		    text-decoration: underline;
+		  }
+		}
+	  }
+	  .dates {
+	    text-align: right;
+	  }
+	}
+  }
+  .travelbook-content-table {
+    margin: 15px auto;
+    width: 70%;
+	min-width: 800px;
+	text-align:center;
+	.entries-list{
+	  display: inline-block;
+	  text-align: left;
+	}
+  }
+  
+  .travelbook-first-article {
+    margin: 15px auto;
+    .article-nav-buttons {
+	  .jl-btn-group {
+	    margin: auto;
+	    .jl-btn {
+	      width: 50%;
+	    }
+	  }
+	}
   }
 }

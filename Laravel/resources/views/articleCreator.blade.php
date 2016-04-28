@@ -58,7 +58,7 @@
 											ngf-drag-over-class="'dragover'"
 											ngf-pattern="'image/*'"
 											ng-disabled="articleCreatorCtrl.pictureSelected()">
-										<div class="jl-btn jl-btn-lg" ng-class="{'jl-btn-disabled': articleCreatorCtrl.pictureSelected()}"
+										<div class="jl-btn jl-btn-big" ng-class="{'jl-btn-disabled': articleCreatorCtrl.pictureSelected()}"
 										ngf-select="articleCreatorCtrl.uploadFiles($files)"
 										ngf-pattern="'image/*'" ng-disabled="articleCreatorCtrl.pictureSelected()">
 											Select a picture
@@ -87,10 +87,10 @@
 							</div>
 						</div>
 						<div style="text-align: right" ng-if="!articleCreatorCtrl.isInputEmpty()">
-							<div class="jl-btn jl-btn-lg jl-btn-empty" ng-click="articleCreatorCtrl.resetParagraph()">
+							<div class="jl-btn jl-btn-big jl-btn-empty" ng-click="articleCreatorCtrl.resetParagraph()">
 								<i class="fa fa-times"></i> Supprimer
 							</div><!--
-							--><div class="jl-btn jl-btn-lg" ng-click="articleCreatorCtrl.addParagraph()">
+							--><div class="jl-btn jl-btn-big" ng-click="articleCreatorCtrl.addParagraph()">
 								<i class="fa fa-plus"></i> Ajouter
 							</div>
 						</div>

@@ -23,7 +23,7 @@
 						ngf-drag-over-class="'dragover'"
 						ngf-pattern="'image/*'"
 						ng-disabled="ParagraphEditorCtrl.pictureSelected()">
-					<div class="jl-btn jl-btn-lg" ng-class="{'jl-btn-disabled': ParagraphEditorCtrl.pictureSelected()}"
+					<div class="jl-btn jl-btn-big" ng-class="{'jl-btn-disabled': ParagraphEditorCtrl.pictureSelected()}"
 					ngf-select="ParagraphEditorCtrl.uploadFiles($files)"
 					ngf-pattern="'image/*'" ng-disabled="ParagraphEditorCtrl.pictureSelected()">
 						Select a picture
@@ -52,7 +52,7 @@
 		</div>
 	</div>
 	<div style="text-align: right" ng-if="!ParagraphEditorCtrl.isInputEmpty()">
-		<div class="jl-btn jl-btn-lg" ng-click="ParagraphEditorCtrl.save()">
+		<div class="jl-btn jl-btn-big" ng-click="ParagraphEditorCtrl.save()">
 			Mettre à jour
 		</div>
 	</div>
