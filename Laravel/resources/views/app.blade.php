@@ -7,6 +7,7 @@
 	<title>Home page - Jetlag</title>
 	
 	<link href="{{ asset('/css/app.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ asset('/css/jetlag.directives.css') }}" rel="stylesheet" type="text/css">
 	
 	<!-- External CSS files -->
 	<link href="{{ asset('/css/leaflet.css') }}" rel="stylesheet" type="text/css">

@@ -111,6 +111,10 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 		remote: 'end_date',
 		type: 'date'
 	},
+	articles: {
+		remote: 'articles',
+		type: 'orderedArray'
+	},
 	is_draft: {
 	  remote: 'is_draft',
 	  type: 'boolean',

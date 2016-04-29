@@ -14,8 +14,8 @@
 	<div class="col-xs-12" ng-if="articleCreatorCtrl.article.$attributes.id != null">
 	
 		<div class="article">
-		    <jl-paragraph model="paragraph" class="paragraph editor" is-being-edited="articleCreatorCtrl.isBeingEdited($index)" save="articleCreatorCtrl.saveParagraph($index)"
-			ng-repeat-start="paragraph in articleCreatorCtrl.article.$attributes.paragraphs"></jl-paragraph>
+		    <jl-paragraph ng-repeat-start="paragraph in articleCreatorCtrl.article.$attributes.paragraphs" model="paragraph" 
+			class="paragraph editor" is-being-edited="articleCreatorCtrl.isBeingEdited($index)" save="articleCreatorCtrl.saveParagraph($index)"></jl-paragraph>
 			<div class="paragraph-controls" ng-repeat-end>
 				<div ng-if="!$first"><i class="fa fa-arrow-up" ng-click="articleCreatorCtrl.paragraphUp($index)"></i></div>
 				<div><i class="fa fa-pencil" ng-if="!articleCreatorCtrl.isBeingEdited($index)" ng-click="articleCreatorCtrl.editParagraph($index)"></i></div>

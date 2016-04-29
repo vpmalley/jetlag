@@ -78,7 +78,8 @@
 				<span><i class="fa fa-fw fa-calendar-o"></i>12.03.2014</span>
 			</div>
 		</div>
-		<div class="article-body">
+		<div class="article">
+		    <jl-paragraph ng-repeat="paragraph in tbEditorCtrl.getFirstArticleParagraphs()" model="paragraph" class="paragraph"></jl-paragraph>
 		</div>
 		<div class="article-nav-buttons">
 			<div class="jl-btn-group">

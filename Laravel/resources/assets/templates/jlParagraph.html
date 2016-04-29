@@ -1,4 +1,4 @@
-<div ng-if="!ParagraphCtrl.isBeingEdited()">
+<div ng-if="!ParagraphCtrl.isBeingEdited || !ParagraphCtrl.isBeingEdited()">
 	<div class="paragraph-type-text" ng-if="ParagraphCtrl.model.type === 'text'">
 	  <div ng-bind-html="ParagraphCtrl.model.text | paragraphText"></div>
 	</div>
