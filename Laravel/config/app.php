@@ -137,6 +137,11 @@ return [
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Broadcasting\BroadcastServiceProvider',
 
+    /*
+     * Other providers
+     */
+    Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
+
 		/*
 		 * Application Service Providers...
 		 */
