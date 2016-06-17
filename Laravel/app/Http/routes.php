@@ -55,6 +55,8 @@ Route::get('article/{id}', 'Web\ArticleController@getDisplay');
 
 Route::resource('api/0.1/articles', 'Rest\RestArticleController', ['except' => ['create']]);
 
+Route::get('api/0.1/search/articles', 'Rest\SearchArticleController@search');
+
 Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
