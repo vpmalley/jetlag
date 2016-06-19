@@ -318,7 +318,6 @@ class Article
     return [
       'title' => $this->title,
       'description_text' => $this->descriptionText,
-      //  'descriptionMediaUrl' => $descriptionMediaUrl,
       'is_draft' => $this->isDraft,
       'authorName' => $authorNameLabel,
     ];
@@ -331,6 +330,10 @@ class Article
   */
   public function getForRest()
   {
+    if ($this->descriptionPicture)
+    {
+      $this->descriptionPicture->load('small_url', 'medium_url', 'big_url');
+    }
     return [
       'id' => $this->id,
       'title' => $this->title,
@@ -351,10 +354,9 @@ class Article
   */
   public function getForRestIndex()
   {
-    $descriptionMedia = [];
     if ($this->descriptionPicture)
     {
-      $descriptionMedia = $this->descriptionPicture->getForRest();
+      $this->descriptionPicture->load('small_url', 'medium_url', 'big_url');
     }
     return [
       'id' => $this->id,

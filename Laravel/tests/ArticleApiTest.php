@@ -174,9 +174,9 @@ class ArticleApiTest extends TestCase {
       'description_text' => 'this is a cool article isnt it? id 2',
       'description_media' => [
         'id' => $picture->id,
-        'small_url' => $links[0]->url,
-        'medium_url' => $links[1]->url,
-        'big_url' => $links[2]->url,
+        'small_url' => $links[0],
+        'medium_url' => $links[1],
+        'big_url' => $links[2],
       ],
       'is_draft' => 1, // why not true?
       'author_users' => [$writer->id => 'writer'],
@@ -372,7 +372,10 @@ class ArticleApiTest extends TestCase {
         'id' => 1,
         'small_url' => null,
         'big_url' => null,
-        'medium_url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+        'medium_url' => [
+        'caption' => '',
+        'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+        ]
       ],
     ]);
   }
@@ -476,9 +479,9 @@ class ArticleApiTest extends TestCase {
       'is_draft' => 0,
       'description_media' => [
         'id' => $picture->id,
-        'small_url' => $links[0]->url,
-        'medium_url' => $links[1]->url,
-        'big_url' => $links[2]->url,
+        'small_url' => $links[0],
+        'medium_url' => $links[1],
+        'big_url' => $links[2],
       ],
       'author_users' => [1 => 'writer', 2 => 'owner', $writer->id => 'writer'],
     ]);
@@ -525,9 +528,9 @@ class ArticleApiTest extends TestCase {
       'is_draft' => 1,
       'description_media' => [
         'id' => $picture->id,
-        'small_url' => $links[0]->url,
-        'medium_url' => $links[1]->url,
-        'big_url' => $links[1]->url,
+        'small_url' => $links[0],
+        'medium_url' => $links[1],
+        'big_url' => $links[1],
       ],
       'author_users' => [ $writer->id => 'writer'],
     ]);
