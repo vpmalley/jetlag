@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel {
 	 */
 	protected $commands = [
 		'Jetlag\Console\Commands\Inspire',
+		'Jetlag\Console\Commands\IndexArticles',
 	];
 
 	/**

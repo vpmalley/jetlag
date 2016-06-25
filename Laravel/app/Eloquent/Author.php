@@ -37,9 +37,9 @@ class Author extends Model
     'role' => 'min:5|max:6',
   ];
 
-  const K_OWNER = 'owner';
-  const K_WRITER = 'writer';
-  const K_READER = 'reader';
+  const ROLE_OWNER = 'owner';
+  const ROLE_WRITER = 'writer';
+  const ROLE_READER = 'reader';
 
   /**
   * @param  int  $userId the user we want to check is an owner (usually the logged in user)
@@ -49,7 +49,7 @@ class Author extends Model
   public static function isOwner($userId, $authorId)
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
-    $count = Author::where('userId', $userId)->where('authorId', $authorId)->where('role', self::K_OWNER)->count();
+    $count = Author::where('userId', $userId)->where('authorId', $authorId)->where('role', self::ROLE_OWNER)->count();
     return (1 == $count);
   }
 
@@ -62,8 +62,8 @@ class Author extends Model
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
     $count = Author::where('userId', $userId)->where('authorId', $authorId)->where(function ($query) {
-                $query->where('role', self::K_OWNER)
-                      ->orWhere('role', self::K_WRITER);
+                $query->where('role', self::ROLE_OWNER)
+                      ->orWhere('role', self::ROLE_WRITER);
             })->count();
     return (1 == $count);
   }

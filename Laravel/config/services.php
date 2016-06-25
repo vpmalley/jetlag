@@ -35,4 +35,13 @@ return [
 		'secret' => '',
 	],
 
+  'tntsearch' => [
+      'driver'   => 'mysql',
+      'host'     => 'localhost',
+      'database'  => 'homestead',
+      'username'  => 'homestead',
+      'password'  => 'secret',
+      'storage'  => '/home/vagrant/storage/tntsearch/',
+  ]
+
 ];

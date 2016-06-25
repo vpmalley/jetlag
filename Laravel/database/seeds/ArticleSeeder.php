@@ -19,5 +19,6 @@ class ArticleSeeder extends Seeder
             'isDraft' => true,
             'authorId' => 1,
         ]);
+        factory(Jetlag\Eloquent\Article::class,4)->create();
     }
 }

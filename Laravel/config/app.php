@@ -140,6 +140,7 @@ return [
     /*
      * Other providers
      */
+    TeamTNT\TNTSearch\TNTSearchServiceProvider::class,
     Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
 
 		/*
@@ -198,6 +199,8 @@ return [
 		'URL'       => 'Illuminate\Support\Facades\URL',
 		'Validator' => 'Illuminate\Support\Facades\Validator',
 		'View'      => 'Illuminate\Support\Facades\View',
+
+    'TNTSearch' => TeamTNT\TNTSearch\Facades\TNTSearch::class,
 
 	],
 
