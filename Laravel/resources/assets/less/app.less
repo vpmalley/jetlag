@@ -217,7 +217,7 @@ body.jetlag-app {
 		.side-bar {
 			position: fixed;
 			top: 0;
-			z-index: 3;
+			z-index: 1003;
 			background-color: @jl-blue;
 			height: 100%;
 			width: 290px;
@@ -250,5 +250,8 @@ body.jetlag-app {
 		&.pushed-left {
 			margin-right: 290px;
 		}
+        /* XXX: because of the header */
+        position: relative;
+        top: 55px;
 	}
 }

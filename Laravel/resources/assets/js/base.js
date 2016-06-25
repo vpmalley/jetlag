@@ -7,7 +7,7 @@ ModelsManager.$inject = ['NgBackboneModel', 'NgBackboneCollection'];
 
 function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 
- function initializeModel(schema) {
+ function defaultsModel(schema) {
    var byDefault = {};
    _.each(schema, function(fieldDef, fieldName) {
      var defaultValue = null;
@@ -26,15 +26,13 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
    }
 	 byDefault[fieldName] = defaultValue;
    });
-   return function() {
-     this.set(byDefault);
-   }
+   return byDefault;
  }
 
   function define(name, schema) {
     var url = '/api/0.1/'+name.toLowerCase()+'s';
     var Model = NgBackboneModel.extend({
-      initialize: initializeModel(schema),
+      defaults: defaultsModel(schema),
 	  $schema: schema,
 	  urlRoot: url
     });
@@ -70,7 +68,7 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	  type: 'integer'
 	},
 	is_draft: {
-	  remote: 'is_draft',
+	  remote: 'isDraft',
 	  type: 'boolean',
 	  defaultValue: true
 	},
@@ -89,7 +87,11 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 	travelbook: {
 	  remote: 'travelbook',
 	  type: 'Travelbook'
-	}
+	},
+    url: {
+        remote: 'url',
+        type: 'string'
+    }
   });
 
   define('User', {});
