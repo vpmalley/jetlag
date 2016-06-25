@@ -6,7 +6,7 @@ HomepageController.$inject = ['$scope', 'ModelsManager'];
 
 function HomepageController($scope, ModelsManager) {
 	var ctrl = this;
-	
+    
 	ctrl.articles = new ModelsManager.ArticleCollection();
 	ctrl.articles.fetch();
 };
