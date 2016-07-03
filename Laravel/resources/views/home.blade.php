@@ -25,7 +25,6 @@
 		<div class="col-xs-6 col-sm-4 home-thumbnail big"
 		ng-style="{'background-image': homepageCtrl.articles.at(0) != null ? 'url('+homepageCtrl.articles.at(0).$attributes.descriptionMedia.smallUrl+')' : '/images/generic.png'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(0).$attributes.id}}" class="book-overview">
-				<div class="strut"></div>
 				<div class="book-overview-content">
 					<div class="line"><i class="fa fa-fw fa-map-marker"></i>Bombay</div>
 					<div class="line"><i class="fa fa-fw fa-user"></i>Rajesh</div>

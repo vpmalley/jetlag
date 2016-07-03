@@ -3,39 +3,39 @@
 .homepage {
 
 	.home-thumbnail {
+    
+        background-size: cover;
+        background-position: 50%;
 		
 		&.big {
 			height: 260px;
-			background-size: cover;
 			padding: 0;
 			
 			.book-overview {
 				width: 100%;
 				height: 100%;
-				background-color: fade(@jl-blue, 60);
-				color: white;
-				display: none;
-				padding: 10px;
+                display: block;
 				
 				.book-overview-content {
-					vertical-align: middle;
-					font-size: 2.5vw;
-					font-size: 30px;
-					display: inline-block;
-					padding-left: 30px;
-					.fa {
-						margin-right: 15px;
-					}
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    display: none;
+                    background-color: white;
+                    font-size: 1.5vw;
+                    margin: 0;
+                    padding: 5px;
+                    border: solid 1px #e0e0e0;
+                    color: black;
 				}
-			}
-			
-			&:hover .book-overview {
-				display: block;
+                
+                &:hover .book-overview-content {
+                    display: block;
+                }
 			}
 		}
 		&.small {
 			height: 130px;
-			background-size: cover;
 		}
 	}
 	
