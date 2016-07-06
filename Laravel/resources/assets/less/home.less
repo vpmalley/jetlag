@@ -27,6 +27,18 @@
                     padding: 5px;
                     border: solid 1px #e0e0e0;
                     color: black;
+                    
+                    &.fake {
+                        cursor: default;
+                        
+                        .fake-link {
+                            cursor: pointer;
+                            
+                            &:hover {
+                                text-decoration: underline;
+                            }
+                        }
+                    }
 				}
                 
                 &:hover .book-overview-content {
