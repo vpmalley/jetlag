@@ -24,7 +24,8 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	ctrl.editedParagraph = null;
 	
 	function getArticleID() {
-	var path = $location.path();
+      
+      var path = $location.path();
 	  if(path != "") {
 	    var id = parseInt(path.substring(1));
 		if(!isNaN(id)) {

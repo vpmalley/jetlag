@@ -28,7 +28,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(0).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(0).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(0).$attributes.title}}</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(0).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -36,8 +40,12 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-					<div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-				</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
+                </div>
 			</a>
 		</div>
 		
@@ -45,15 +53,23 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(1).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(1).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(1).$attributes.title}}</div>
-				</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(1).$attributes.title}}</div>
+                    </div>
+                </div>
 			</a>
 		</div>
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(1) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -63,15 +79,23 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(2).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(2).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(2).$attributes.title}}</div>
-				</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(2).$attributes.title}}</div>
+                    </div>
+                </div>
 			</a>
 		</div>
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(2) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -86,15 +110,23 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(0).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(0).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(0).$attributes.title}}</div>
-				</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(0).$attributes.title}}</div>
+                    </div>
+                </div>
 			</a>
 		</div>
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(0) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -103,15 +135,23 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(1).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(1).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(1).$attributes.title}}</div>
-				</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(1).$attributes.title}}</div>
+                    </div>
+                </div>
 			</a>
 		</div>
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(1) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -137,7 +177,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(3).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(3).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(3).$attributes.title}}</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(3).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -145,7 +189,11 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-					<div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -154,7 +202,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(4).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(4).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(4).$attributes.title}}</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(4).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -162,7 +214,11 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -172,7 +228,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(5).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(5).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(5).$attributes.title}}</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(5).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -180,7 +240,11 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -195,7 +259,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(2).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(2).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(2).$attributes.title}}</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(2).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -203,7 +271,11 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -212,7 +284,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(3).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(3).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(3).$attributes.title}}</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(3).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -220,7 +296,11 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -235,7 +315,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(4).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(4).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(4).$attributes.title}}</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(4).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -243,7 +327,11 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
@@ -252,7 +340,11 @@
 		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(5).$attributes.descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(5).$attributes.id}}" class="book-overview">
 				<div class="book-overview-content">
-					<div class="line">@{{homepageCtrl.articles.at(5).$attributes.title}}</div>
+					<div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">@{{homepageCtrl.articles.at(5).$attributes.title}}</div>
+                    </div>
 				</div>
 			</a>
 		</div>
@@ -260,7 +352,11 @@
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
-                    <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    <div class="sun-line">
+                    </div>
+                    <div class="book-overview-content-inner">
+                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
+                    </div>
                 </div>
 			</a>
 		</div>
