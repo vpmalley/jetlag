@@ -25,6 +25,12 @@ class Article extends Model
    */
   public $fillable = ['title', 'descriptionText', 'isDraft', 'isPublic', 'authorId'];
 
+
+  protected $casts = [
+      'isDraft' => 'boolean',
+      'isPublic' => 'boolean',
+  ];
+
   /**
    * The rules for validating input
    */
