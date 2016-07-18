@@ -34,7 +34,7 @@
 		</div>
 		
 		<div class="jl-icon jl-icon-middle">
-			<i class="fa fa-fw fa-plane"></i>
+			Jetlag
 		</div>
 		
 		<div class="jl-icon jl-icon-right clickable" ng-show="!appCtrl.rightMenuOpen">
