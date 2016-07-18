@@ -11,22 +11,26 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\Article;
-use Jetlag\Business\Picture;
-use Jetlag\Eloquent\Author;
+use Jetlag\Business\Picture as BPicture;
 use Jetlag\Eloquent\Article as StoredArticle;
+use Jetlag\Eloquent\Author;
+use Jetlag\Eloquent\Link;
+use Jetlag\Eloquent\Paragraph;
+use Jetlag\Eloquent\Picture;
+use Jetlag\Eloquent\Place;
 use Log;
 
 class RestArticleController extends Controller
 {
 
   /**
-   * Create a new Rest article controller instance.
-   *
-   * @return void
-   */
+  * Create a new Rest article controller instance.
+  *
+  * @return void
+  */
   public function __construct()
   {
-    $this->middleware('auth');
+    $this->middleware('auth.rest', ['except' => 'show']);
   }
 
   /**
@@ -62,25 +66,59 @@ class RestArticleController extends Controller
   */
   public function store(Request $request)
   {
+<<<<<<< HEAD
     $this->validate($request, Article::$creationRules); // TODO: own validator actually returning a 400 if the format is wrong
+=======
+    $validator = Validator::make($request->all(), Article::$rules);
+    if ($validator->fails()) {
+      abort(400);
+    }
+    if (null == Auth::user())
+    {
+      abort(403);
+    }
+
+>>>>>>> develop
     $article = new Article;
     $article->fromRequest($request->input('title'));
 
-    $article->setDescriptionText($request->input('descriptionText', ''));
-    $article->setIsDraft($request->input('isDraft', TRUE));
-    $article->setIsPublic($request->input('isPublic', FALSE));
+    $article->setDescriptionText($request->input('description_text', ''));
+    $article->setIsDraft($request->input('is_draft', TRUE));
+    $article->setIsPublic($request->input('is_public', FALSE));
 
     $newAuthorUsers = [];
-    if ($request->has('authorUsers'))
+    if ($request->has('author_users'))
     {
-      $newAuthorUsers = $request->input('authorUsers');
+      $newAuthorUsers = $request->input('author_users');
     }
     $newAuthorUsers[Auth::user()->id] = 'owner';
     $article->updateAuthorUsers($newAuthorUsers);
 
-    if ($request->has('descriptionMedia'))
+    if ($request->has('description_media'))
     {
-      $article->setDescriptionPicture($this->extractPicture(new Picture, $request));
+      $storedPicture = new Picture;
+      $storedPicture->extract($request->input('description_media'));
+      $picture = new BPicture;
+      $picture->fromStoredPicture($storedPicture);
+      $article->setDescriptionPicture($picture);
+    }
+
+    if ($request->has('paragraphs'))
+    {
+      foreach ($request->input('paragraphs') as $paragraphSubRequest) {
+        if (array_key_exists('id', $paragraphSubRequest))
+        {
+          abort(400);
+        }
+        $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
+        $validator = Validator::make($paragraphSubRequest, Paragraph::$rules);
+        if ($validator->fails()) {
+          abort(400);
+        }
+        $paragraph = Paragraph::create($paragraphSubRequest);
+        $paragraph->extract($paragraphSubRequest);
+        $article->addParagraph($paragraph);
+      }
     }
     $article->persist();
     return response()->json(['id' => $article->getId(), 'url' => $article->getWebUrl()], 201);
@@ -95,8 +133,8 @@ class RestArticleController extends Controller
   public function show($storedArticle)
   {
     $article = new Article;
+    $this->wantsToReadArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-    $this->wantsToReadArticle($article);
     return $article->getForRest();
   }
 
@@ -109,8 +147,8 @@ class RestArticleController extends Controller
   public function edit($storedArticle)
   {
     $article = new Article;
+    $this->wantsToReadArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-    $this->wantsToReadArticle($article);
     return $article->getForRest();
   }
 
@@ -124,12 +162,20 @@ class RestArticleController extends Controller
   public function update(Request $request, $storedArticle)
   {
     $article = new Article;
+    $this->wantsToWriteArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
+<<<<<<< HEAD
     $this->wantsToWriteArticle($article);
     $this->validate($request, Article::$updateRules);
+=======
+    $validator = Validator::make($request->all(), Article::$rules);
+    if ($validator->fails()) {
+      abort(400);
+    }
+>>>>>>> develop
     $article->setTitle($request->input('title', $article->getTitle()));
-    $article->setDescriptionText($request->input('descriptionText', $article->getDescriptionText()));
-    if ($request->has('descriptionMedia'))
+    $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
+    if ($request->has('description_media'))
     {
       if ($article->hasDescriptionPicture())
       {
@@ -137,49 +183,59 @@ class RestArticleController extends Controller
       } else
       {
         $picture = new Picture;
+        $storedPicture = new Picture;
+        $storedPicture->extract($request->input('description_media'));
+        $picture = new BPicture;
+        $picture->fromStoredPicture($storedPicture);
+        $article->setDescriptionPicture($picture);
       }
-      $article->setDescriptionPicture($this->extractPicture($picture, $request));
     }
-    $article->setIsDraft($request->input('isDraft', $article->isDraft()));
-    if ($request->has('authorUsers'))
+    $article->setIsDraft($request->input('is_draft', $article->isDraft()));
+    if ($request->has('author_users'))
     {
-      $newAuthorUsers = $request->input('authorUsers');
+      $newAuthorUsers = $request->input('author_users');
       $newAuthorUsers[Auth::user()->id] = Author::getRole($article->getAuthorId(), Auth::user()->id);
       $article->updateAuthorUsers($newAuthorUsers);
+    }
+
+    if ($request->has('paragraphs'))
+    {
+      foreach ($request->input('paragraphs') as $paragraphSubRequest) {
+        if (array_key_exists('id', $paragraphSubRequest))
+        {
+          $paragraph = Paragraph::find($paragraphSubRequest['id']);
+          $paragraph->fill($paragraphSubRequest);
+        } else
+        {
+          $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
+          $paragraph = Paragraph::create($paragraphSubRequest);
+        }
+        $paragraph->extract($paragraphSubRequest);
+        $article->addParagraph($paragraph);
+      }
     }
     $article->persist();
     return ['id' => $article->getId()];
   }
 
   /**
-   * Extracts the picture from the request
-   *
-   * @param  Jetlag\Business\Picture  $picture
-   * @param  Request  $request
-   * @return  Jetlag\Business\Picture the extracted picture
-   */
-  public function extractPicture(Picture $picture, Request $request)
+  * Gets the subrequest value matching the key
+  * @param array subRequest a part of the request
+  * @param string key the key matching the expected value
+  * @param default the default value when no value matches the key
+  *
+  */
+  public static function get($subRequest, $key, $default = null)
   {
-    $picture->setId($request->input('descriptionMedia.id', -1));
-    if ($request->has('descriptionMedia.smallUrl'))
+    if (array_key_exists($key, $subRequest))
     {
-      $picture->setSmallDisplayUrl($request->input('descriptionMedia.smallUrl'));
-    }
-    if ($request->has('descriptionMedia.url'))
+      return $subRequest[$key];
+    } else
     {
-      $picture->setMediumDisplayUrl($request->input('descriptionMedia.url'));
+      return $default;
     }
-    if ($request->has('descriptionMedia.mediumUrl'))
-    {
-      $picture->setMediumDisplayUrl($request->input('descriptionMedia.mediumUrl'));
-    }
-    if ($request->has('descriptionMedia.bigUrl'))
-    {
-      $picture->setBigDisplayUrl($request->input('descriptionMedia.bigUrl'));
-    }
-    $picture->setAuthorId(-1); // TODO use logged in user
-    return $picture;
   }
+
 
   /**
   * Remove the specified resource from storage.
@@ -189,47 +245,48 @@ class RestArticleController extends Controller
   */
   public function destroy($storedArticle)
   {
-    $article = new Article;
-    $article->fromStoredArticle($storedArticle);
-    $this->wantsToOwnArticle($article);
-    $article->delete();
-    return ['id' => $article->getId()];
+    $this->wantsToOwnArticle($storedArticle);
+    $storedArticle->delete();
+    return ['id' => $storedArticle->id];
   }
 
   /**
-   * Checks whether the logged in user can modify the article as an owner. Rejects with error 403 otherwise.
-   *
-   * @param Article article the article to be owned
-   */
-  public function wantsToOwnArticle($article)
+  * Checks whether the logged in user can modify the article as an owner. Rejects with error 403 otherwise.
+  *
+  * @param StoredArticle storedArticle the article to be owned
+  */
+  public function wantsToOwnArticle($storedArticle)
   {
-    if (!Author::isOwner(Auth::user()->id, $article->getAuthorId()))
+    $id = Auth::user() ? Auth::user()->id : -1;
+    if (!Author::isOwner($id, $storedArticle->author_id))
     {
       abort(403);
     }
   }
 
   /**
-   * Checks whether the logged in user can write the article. Rejects with error 403 otherwise.
-   *
-   * @param Article article the article to be written
-   */
-  public function wantsToWriteArticle($article)
+  * Checks whether the logged in user can write the article. Rejects with error 403 otherwise.
+  *
+  * @param StoredArticle storedArticle the article to be written
+  */
+  public function wantsToWriteArticle($storedArticle)
   {
-    if (!Author::isWriter(Auth::user()->id, $article->getAuthorId()))
+    $id = Auth::user() ? Auth::user()->id : -1;
+    if (!Author::isWriter($id, $storedArticle->author_id))
     {
       abort(403);
     }
   }
 
   /**
-   * Checks whether the logged in user can read the article. Rejects with error 403 otherwise.
-   *
-   * @param Article article the article to be read
-   */
-  public function wantsToReadArticle($article)
+  * Checks whether the logged in user can read the article. Rejects with error 403 otherwise.
+  *
+  * @param StoredArticle storedArticle the article to be read
+  */
+  public function wantsToReadArticle($storedArticle)
   {
-    if (!$article->isPublic() && !Author::isReader(Auth::user()->id, $article->getAuthorId()))
+    $id = Auth::user() ? Auth::user()->id : -1;
+    if (!$storedArticle->is_public && !Author::isReader($id, $storedArticle->author_id))
     {
       abort(403);
     }

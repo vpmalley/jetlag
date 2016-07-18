@@ -15,8 +15,8 @@ class CreateTextcontentsTable extends Migration
         Schema::create('textcontents', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->mediumtext('content');
-            $table->bigInteger('authorId');
+            $table->text('content');
+            $table->bigInteger('author_id');
         });
     }
 

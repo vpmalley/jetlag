@@ -18,7 +18,7 @@ class CreateLinksTable extends Migration
             $table->string('caption', 200);
             $table->string('storage', 30);
             $table->string('url', 200);
-            $table->bigInteger('authorId');
+            $table->bigInteger('author_id');
         });
     }
 

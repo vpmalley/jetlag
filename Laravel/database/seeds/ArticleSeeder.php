@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArticleSeeder extends Seeder
 {
+<<<<<<< HEAD
     /**
      * Run the database seeds.
      *
@@ -21,4 +22,18 @@ class ArticleSeeder extends Seeder
         ]);
         factory(Jetlag\Eloquent\Article::class,4)->create();
     }
+=======
+  /**
+  * Run the database seeds.
+  *
+  * @return void
+  */
+  public function run()
+  {
+    factory(Jetlag\Eloquent\Article::class, 3)->create();
+    factory(Jetlag\Eloquent\Article::class, 3)->create([
+      'is_public' => 1,
+    ]);
+  }
+>>>>>>> develop
 }

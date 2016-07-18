@@ -16,7 +16,7 @@ class CreateGalleriesTable extends Migration
             $table->increments('id');
             $table->timestamps();
             $table->string('description', 500);
-            $table->bigInteger('authorId');
+            $table->bigInteger('author_id');
         });
     }
 

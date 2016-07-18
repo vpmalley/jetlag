@@ -119,7 +119,7 @@ class TravellerController extends Controller {
     $this->validate($request, UserPublic::$rules);
 
     $publicUser = UserPublic::getFromRequestAndPersist($request, $id);
-    $display = UserPublic::getForDisplay($publicUser, $publicUser->userId);
+    $display = UserPublic::getForDisplay($publicUser, $publicUser->user_id);
     $display['saved'] = true;
     return view('web.user.edit', $display);
   }

@@ -3,96 +3,105 @@
 namespace Jetlag\Business;
 
 use Jetlag\Eloquent\Article as StoredArticle;
+use Jetlag\Eloquent\Picture as StoredPicture;
 use Jetlag\Eloquent\Author;
 use Jetlag\Business\Picture;
-use Jetlag\Business\Paragraph;
+use Jetlag\Eloquent\Paragraph;
+use Jetlag\Eloquent\Map;
 use Jetlag\UserPublic;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Log;
 
 /**
- *
- */
+*
+*/
 class Article
 {
 
   /**
-   * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
-   *
-   * @var int
-   */
+  * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
+  *
+  * @var int
+  */
   protected $id;
 
   /**
-   * The title for the article
-   *
-   * @var string
-   */
+  * The title for the article
+  *
+  * @var string
+  */
   protected $title;
 
   /**
-   * The description for the article
-   *
-   * @var string
-   */
+  * The description for the article
+  *
+  * @var string
+  */
   protected $descriptionText;
 
   /**
-   * The description for the article
-   *
-   * @var Jetlag\Business\Picture
-   */
+  * The description for the article
+  *
+  * @var Jetlag\Business\Picture
+  */
   protected $descriptionPicture;
 
   /**
-   * Whether the article is a draft
-   *
-   * @var boolean
-   */
+  * Whether the article is a draft
+  *
+  * @var boolean
+  */
   protected $isDraft;
 
   /**
-   * Whether the article can be viewed by anyone
-   *
-   * @var boolean
-   */
+  * Whether the article can be viewed by anyone
+  *
+  * @var boolean
+  */
   protected $isPublic;
 
   /**
-   * The paragraphs of this article
-   *
-   * @var array
-   */
-  protected $paragraphs;
+  * The paragraphs of this article
+  *
+  * @var array
+  */
+  protected $paragraphs = [];
 
   /**
-   * The id for the author link to users who are authors of this article
-   *
-   * @var int
-   */
+  * The id for the author link to users who are authors of this article
+  *
+  * @var int
+  */
   protected $authorId = -1;
 
   /**
-   * The hash of user ids and their roles in authoring of this article
-   *
-   * @var array
-   */
+  * The hash of user ids and their roles in authoring of this article
+  *
+  * @var array
+  */
   protected $authorUsers = [];
 
   /**
-   * The fillable properties
-   */
-  protected $fillable = ['title', 'descriptionText', 'descriptionMediaUrl', 'isDraft'];
+  * The fillable properties
+  */
+  protected $fillable = ['title', 'description_text', 'descriptionMediaUrl', 'is_draft'];
 
   /**
+<<<<<<< HEAD
    * The rules for validating input
    */
   static $creationRules = [
+=======
+  * The rules for validating input
+  */
+  static $rules = [
+>>>>>>> develop
     'title' => 'required|min:3|max:200',
-    'descriptionText' => 'max:500',
+    'description_text' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
-    'isDraft' => 'boolean',
-    ];
+    'is_draft' => 'boolean',
+  ];
 
   /**
    * The rules for validating input
@@ -109,24 +118,24 @@ class Article
   }
 
   /**
-   *
-   */
+  *
+  */
   public function fromDb($storedArticle, $picture, $paragraphs, $authorId, $authorUsers)
   {
     $this->id = $storedArticle->id;
     $this->title = $storedArticle->title;
-    $this->descriptionText = $storedArticle->descriptionText;
-    $this->isDraft = $storedArticle->isDraft;
-    $this->isPublic = $storedArticle->isPublic;
+    $this->descriptionText = $storedArticle->description_text;
+    $this->isDraft = $storedArticle->is_draft;
+    $this->isPublic = $storedArticle->is_public;
     $this->descriptionPicture = $picture;
     $this->paragraphs = $paragraphs;
     $this->authorUsers = $authorUsers;
-    $this->authorId = $storedArticle->authorId;
+    $this->authorId = $storedArticle->author_id;
   }
 
   /**
-   *
-   */
+  *
+  */
   public function fromRequest($title)
   {
     $this->title = $title;
@@ -138,10 +147,10 @@ class Article
   }
 
   /**
-   * Constructs an Article from an App\Eloquent\Article.
-   *
-   * @param  StoredArticle  $storedArticle the stored article
-   */
+  * Constructs an Article from an App\Eloquent\Article.
+  *
+  * @param  StoredArticle  $storedArticle the stored article
+  */
   public function fromStoredArticle($storedArticle)
   {
     $picture = NULL;
@@ -150,9 +159,22 @@ class Article
       $picture = new Picture;
       $picture->fromStoredPicture($storedArticle->descriptionPicture);
     }
-    $paragraphs = Paragraph::getAllForArticle($storedArticle->id);
-    $authorUsers = Author::getUserRoles($storedArticle->authorId);
-    $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->authorId, $authorUsers);
+    $paragraphs = $storedArticle->paragraphs;
+    foreach ($paragraphs as $paragraph) {
+      $paragraph->load('place');
+      if ("" == $paragraph->block_content_type)
+      {
+        Log::warning('block content is not set');
+      } else if ('Jetlag\Eloquent\Picture' == get_class($paragraph->blockContent))
+      {
+        $paragraph->blockContent->load(StoredPicture::$relationsToLoad);
+      } else if ('Jetlag\Eloquent\Map' == get_class($paragraph->blockContent))
+      {
+        $paragraph->blockContent->load(Map::$relationsToLoad);
+      }
+    }
+    $authorUsers = Author::getUserRoles($storedArticle->author_id);
+    $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->author_id, $authorUsers);
   }
 
   public function getId()
@@ -240,9 +262,14 @@ class Article
     return url('/article/' . $this->id);
   }
 
+  public function addParagraph($paragraph)
+  {
+    $this->paragraphs[] = $paragraph;
+  }
+
   /**
-   * @param array hash of user ids and roles to make them as the new authors of this article
-   */
+  * @param array hash of user ids and roles to make them as the new authors of this article
+  */
   public function updateAuthorUsers($authorUsers)
   {
     if (!empty($authorUsers))
@@ -257,11 +284,11 @@ class Article
   }
 
   /**
-   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   *
-   * @param  int  $articleId the id for the requested article
-   * @return  Jetlag\Business\Article
-   */
+  * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
+  *
+  * @param  int  $articleId the id for the requested article
+  * @return  Jetlag\Business\Article
+  */
   public static function getById($articleId)
   {
     $storedArticle = StoredArticle::findOrFail($articleId);
@@ -275,16 +302,16 @@ class Article
   }
 
   /**
-   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   *
-   * @param  int  $userId the id for the requested user
-   * @return  array
-   */
+  * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
+  *
+  * @param  int  $userId the id for the requested user
+  * @return  array
+  */
   public static function getAllForUser($userId)
   {
     $articles = [];
     $authorIds = Author::getAuthorsForUser($userId);
-    $storedArticles = StoredArticle::whereIn('authorId', $authorIds)->get();
+    $storedArticles = StoredArticle::whereIn('author_id', $authorIds)->get();
     foreach ($storedArticles as $storedArticle)
     {
       $article = new Article;
@@ -295,10 +322,10 @@ class Article
   }
 
   /**
-   * extracts the data for display
-   *
-   * @return  array
-   */
+  * extracts the data for display
+  *
+  * @return  array
+  */
   public function getForDisplay()
   {
     $descriptionMediaUrl = NULL;
@@ -315,18 +342,18 @@ class Article
 
     return [
       'title' => $this->title,
-      'descriptionText' => $this->descriptionText,
-    //  'descriptionMediaUrl' => $descriptionMediaUrl,
-      'isDraft' => $this->isDraft,
+      'description_text' => $this->descriptionText,
+      //  'descriptionMediaUrl' => $descriptionMediaUrl,
+      'is_draft' => $this->isDraft,
       'authorName' => $authorNameLabel,
     ];
   }
 
   /**
-   * extracts the data for showing as REST
-   *
-   * @return  array
-   */
+  * extracts the data for showing as REST
+  *
+  * @return  array
+  */
   public function getForRest()
   {
     $descriptionMedia = [];
@@ -336,22 +363,22 @@ class Article
     }
     return [
       'id' => $this->id,
-  	  'title' => $this->title,
+      'title' => $this->title,
       'url' => $this->getWebUrl(),
-  	  'descriptionText' => $this->descriptionText,
-  	  'descriptionMedia' => $descriptionMedia,
-      'isDraft' => $this->isDraft,
-  	  'isPublic' => $this->isPublic,
-  	  'paragraphs' => $this->paragraphs,
-  	  'authorUsers' => $this->authorUsers,
+      'description_text' => $this->descriptionText,
+      'description_media' => $descriptionMedia,
+      'is_draft' => $this->isDraft,
+      'is_public' => $this->isPublic,
+      'paragraphs' => $this->paragraphs,
+      'author_users' => $this->authorUsers,
     ];
   }
 
   /**
-   * extracts the data for showing as REST index (i.e. to display as a list)
-   *
-   * @return  array
-   */
+  * extracts the data for showing as REST index (i.e. to display as a list)
+  *
+  * @return  array
+  */
   public function getForRestIndex()
   {
     $descriptionMedia = [];
@@ -361,13 +388,13 @@ class Article
     }
     return [
       'id' => $this->id,
-  	  'title' => $this->title,
+      'title' => $this->title,
       'url' => $this->getWebUrl(),
-  	  'descriptionText' => $this->descriptionText,
-  	  'descriptionMedia' => $descriptionMedia,
-  	  'authorUsers' => $this->authorUsers,
-  	  'isDraft' => $this->isDraft,
-  	  'isPublic' => $this->isPublic,
+      'description_text' => $this->descriptionText,
+      'description_media' => $descriptionMedia,
+      'author_users' => $this->authorUsers,
+      'is_draft' => $this->isDraft,
+      'is_public' => $this->isPublic,
     ];
   }
 
@@ -382,10 +409,10 @@ class Article
     }
 
     $article->title = $this->title;
-    $article->descriptionText = $this->descriptionText;
-    $article->isDraft = $this->isDraft;
-    $article->isPublic = $this->isPublic;
-    $article->authorId = $this->authorId;
+    $article->description_text = $this->descriptionText;
+    $article->is_draft = $this->isDraft;
+    $article->is_public = $this->isPublic;
+    $article->author_id = $this->authorId;
     $article->save();
 
     if ($this->descriptionPicture)
@@ -394,6 +421,9 @@ class Article
       $article->descriptionPicture()->save($storedPicture);
       $this->descriptionPicture->setId($storedPicture->id);
       $this->descriptionPicture->persist();
+    }
+    foreach ($this->paragraphs as $paragraph) {
+      $article->paragraphs()->save($paragraph);
     }
 
     $this->id = $article->id;

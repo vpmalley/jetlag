@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
-class PictureSeeder extends Seeder
+class UserSeeder extends Seeder
 {
   /**
   * Run the database seeds.
@@ -12,6 +12,6 @@ class PictureSeeder extends Seeder
   */
   public function run()
   {
-    factory(Jetlag\Eloquent\Picture::class, 9)->create();
+    factory(Jetlag\User::class, 10)->create();
   }
 }

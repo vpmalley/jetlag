@@ -8,51 +8,51 @@ use Jetlag\Eloquent\Place;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
- *
- */
+*
+*/
 class Picture
 {
 
   /**
-   * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
-   *
-   * @var int
-   */
+  * The id for the article, matching a Jetlag\Eloquent\Article stored in DB
+  *
+  * @var int
+  */
   protected $id;
 
   /**
-   * The link to the small picture
-   *
-   * @var Jetlag\Eloquent\Link
-   */
+  * The link to the small picture
+  *
+  * @var Jetlag\Eloquent\Link
+  */
   protected $smallPictureLink;
 
   /**
-   * The link to the medium picture
-   *
-   * @var Jetlag\Eloquent\Link
-   */
+  * The link to the medium picture
+  *
+  * @var Jetlag\Eloquent\Link
+  */
   protected $mediumPictureLink;
 
   /**
-   * The link to the big picture
-   *
-   * @var Jetlag\Eloquent\Link
-   */
+  * The link to the big picture
+  *
+  * @var Jetlag\Eloquent\Link
+  */
   protected $bigPictureLink;
 
   /**
-   * The id for the author
-   *
-   * @var int
-   */
+  * The id for the author
+  *
+  * @var int
+  */
   protected $authorId;
 
   /**
-   * The place where the picture was taken
-   *
-   * @var Jetlag\Eloquent\Place
-   */
+  * The place where the picture was taken
+  *
+  * @var Jetlag\Eloquent\Place
+  */
   protected $location;
 
   // probably whether the photo is public, its license, ...
@@ -62,20 +62,20 @@ class Picture
   }
 
   /**
-   *
-   */
+  *
+  */
   public function fromDb($storedPicture)
   {
     $this->id = $storedPicture->id;
-    $this->authorId = $storedPicture->authorId;
+    $this->authorId = $storedPicture->author_id;
   }
 
   /**
-   *
-   *
-   * @param  int  $picId the id for the requested picture
-   * @return  Jetlag\Business\Picture
-   */
+  *
+  *
+  * @param  int  $picId the id for the requested picture
+  * @return  Jetlag\Business\Picture
+  */
   public static function getById($picId)
   {
     $storedPicture = StoredPicture::findOrFail($picId);
@@ -92,11 +92,11 @@ class Picture
   {
     $this->id = $storedPicture->id;
     // links
-    $this->smallPictureLink = $storedPicture->smallPictureLink;
-    $this->mediumPictureLink = $storedPicture->mediumPictureLink;
-    $this->bigPictureLink = $storedPicture->bigPictureLink;
+    $this->smallPictureLink = $storedPicture->small_url;
+    $this->mediumPictureLink = $storedPicture->medium_url;
+    $this->bigPictureLink = $storedPicture->big_url;
     // location
-    $this->location = Place::find($storedPicture->locationId);
+    $this->location = $storedPicture->place;
   }
 
   public function getId()
@@ -180,18 +180,18 @@ class Picture
   {
     return [
       'id' => $this->getId(),
-      'smallUrl' => $this->getSmallDisplayUrl(),
-      'mediumUrl' => $this->getMediumDisplayUrl(),
-      'bigUrl' => $this->getBigDisplayUrl(),
+      'small_url' => $this->getSmallDisplayUrl(),
+      'medium_url' => $this->getMediumDisplayUrl(),
+      'big_url' => $this->getBigDisplayUrl(),
     ];
   }
 
   /**
-   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
-   *
-   * @param  int  $userId the id for the requested user
-   * @return  array
-   */
+  * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
+  *
+  * @param  int  $userId the id for the requested user
+  * @return  array
+  */
   public function getAllForUser($userId)
   {
   }
@@ -199,7 +199,7 @@ class Picture
   public function getStoredPicture()
   {
     $picture = StoredPicture::findOrNew($this->id);
-    $picture->authorId = $this->authorId;
+    $picture->author_id = $this->authorId;
     return $picture;
   }
 

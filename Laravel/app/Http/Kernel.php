@@ -26,6 +26,7 @@ class Kernel extends HttpKernel {
 	protected $routeMiddleware = [
 		'auth' => 'Jetlag\Http\Middleware\Authenticate',
 		'auth.basic' => 'Illuminate\Auth\Middleware\AuthenticateWithBasicAuth',
+		'auth.rest' => 'Jetlag\Http\Middleware\RestAuthenticate',
 		'guest' => 'Jetlag\Http\Middleware\RedirectIfAuthenticated',
 		'author' => 'Jetlag\Http\Middleware\AuthorOf',
 	];

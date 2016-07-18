@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #%RAML 1.0
 title: schemas for article and its children
 schemas:
@@ -104,3 +105,256 @@ schemas:
         }
       }
     }
+=======
+#%RAML 1.0
+title: schemas for article and its children
+schemas:
+ - Article: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false,
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "url": {
+          "description" : "the url to access the article's web page. Only used when reading from the server.",
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "description_text": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 500
+        },
+        "description_media": {
+          "type": "object",
+          "required": false,
+          "schema" : Picture
+        },
+        "is_draft": {
+          "type": "boolean",
+          "required": false
+        },
+        "is_public": {
+          "type": "boolean",
+          "required": false
+        },
+        "author_users": {
+          "type": "AuthorUser[]",
+          "required": false,
+          "schema" : AuthorUser
+        },
+      }
+    }
+ - Picture: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "title": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "url": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 100
+        },
+        "small_url": {
+          "type": "Link",
+          "required": false,
+          "schema" : Link
+        },
+        "medium_url": {
+          "type": "Link",
+          "required": false,
+          "schema" : Link
+        },
+        "big_url": {
+          "type": "Link",
+          "required": false,
+          "schema" : Link
+        },
+        "place": {
+          "type": "Place",
+          "required": false,
+          "schema" : Place
+        }
+      }
+    },
+ - Link: |
+    {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "caption": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+         "maxLength": 200
+        }
+      }
+    },
+ - AuthorUser: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "role": {
+          "type": "string",
+          "required": false,
+          "minLength": 5,
+          "maxLength": 10
+        }
+      }
+    },
+ - Paragraph: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "title": {
+          "type": "string",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "block_content": {
+          "type": "Picture|Text|Map",
+          "required": true,
+          "schema" : Picture|Text|Map
+        },
+        "block_content_type": {
+          "type": "string",
+          "required": true,
+          "minLength": 3,
+          "maxLength": 15,
+          "options": ["picture", "text", "map"]
+        },
+        "place": {
+          "type": "Place",
+          "required": false,
+          "schema" : Place
+        },
+        "date": {
+          "type": "string",
+          "required": false
+        },
+        "weather": {
+          "type": "string",
+          "required": false
+        },
+        "is_draft": {
+          "type": "boolean",
+          "required": false
+        }
+      }
+    },
+ - Text: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "content": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": *
+        },
+      }
+    },
+ - Map: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "caption": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "markers": {
+          "type": "Marker[]",
+          "required": false,
+          "schema" : Marker
+        },
+      }
+    },
+ - Marker: |
+    {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false,
+          "minLength": 3,
+          "maxLength": 200
+        },
+        "place": {
+          "type": "Place",
+          "required": true,
+          "schema" : Place
+        },
+      }
+    },
+ - Place: |
+    {
+      "type": "object",
+      "properties": {
+        "latitude": {
+          "type": "double",
+          "required": true
+        },
+        "longitude": {
+          "type": "double",
+          "required": true
+        },
+        "altitude": {
+          "type": "double",
+          "required": false
+        },
+        "description": {
+          "type": "string",
+          "required": false
+        }
+      }
+    }
+>>>>>>> develop
