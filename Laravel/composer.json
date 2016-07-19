@@ -6,13 +6,9 @@
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-<<<<<<< HEAD
         "laravel/framework": "5.1.*",
         "mpociot/laravel-apidoc-generator": "^1.1",
         "teamtnt/tntsearch": "0.6.*"
-=======
-        "laravel/framework": "5.1.*"
->>>>>>> develop
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

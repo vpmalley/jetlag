@@ -38,7 +38,17 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
     });
     var ModelCollection = NgBackboneCollection.extend({
       model: Model,
-	  url: url
+	  url: url,
+      sync: function(method, model, options) {
+            if (model.methodUrl && model.methodUrl(method.toLowerCase())) {
+                options = options || {};
+                options.url = model.methodUrl(method.toLowerCase());
+            }
+            if(method === 'read' && options != null && options.data != null) {
+                options.url = url+'/search';
+            }
+           Backbone.sync(method, model, options);
+        }
     });
 	returned[name] = Model;
 	var collectionName = name+'Collection';

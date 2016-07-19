@@ -9,5 +9,15 @@ function HomepageController($scope, ModelsManager) {
     
 	ctrl.articles = new ModelsManager.ArticleCollection();
 	ctrl.articles.fetch();
+    
+    ctrl.search = function() {
+        if(ctrl.searchInput != null && ctrl.searchInput !== '') {
+            ctrl.articles.fetch({
+                data: {query: ctrl.searchInput}
+            });
+        } else {
+            ctrl.articles.fetch();
+        }
+    }
 };
 

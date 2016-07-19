@@ -13,10 +13,13 @@
     <!-- mobile searchbar -->
 	<div class="row visible-xs">
 		<div class="col-xs-12 searchbar">
-			<div class="input-group input-group-lg">
-				<span class="input-group-addon"><i class="fa fa-search fa-fw clickable"></i></span>
-				<input class="form-control" type="text" placeholder="Search...">
-			</div>
+            <form novalidate>
+                <div class="input-group input-group-lg">
+                    <span ng-click="homepageCtrl.search()" class="input-group-addon"><i class="fa fa-search fa-fw clickable"></i></span>
+                    <input class="form-control" type="text" name="searchInput" ng-model="homepageCtrl.searchInput" placeholder="Search...">
+                    <input type="submit" ng-show="false" ng-click="homepageCtrl.search()">
+                </div>
+            </form>
 		</div>
 	</div>
     <!-- /mobile searchbar -->
@@ -162,10 +165,13 @@
     <!-- searchbar -->
 	<div class="row hidden-xs">
 		<div class="col-sm-offset-3 col-sm-6 searchbar">
-			<div class="input-group input-group-lg">
-				<span class="input-group-addon"><i class="fa fa-search fa-fw clickable"></i></span>
-				<input class="form-control" type="text" placeholder="Search...">
-			</div>
+            <form novalidate>
+                <div class="input-group input-group-lg">
+                    <span ng-click="homepageCtrl.search()" class="input-group-addon"><i class="fa fa-search fa-fw clickable"></i></span>
+                    <input class="form-control" type="text" name="searchInput" ng-model="homepageCtrl.searchInput" placeholder="Search...">
+                    <input type="submit" ng-show="false" ng-click="homepageCtrl.search()">
+                </div>
+            </form>
 		</div>
 	</div>
     <!-- /searchbar -->

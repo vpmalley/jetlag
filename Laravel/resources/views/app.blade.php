@@ -41,7 +41,7 @@
 			<i class="fa fa-fw fa-user"
 			ng-click="appCtrl.openRightMenu()"></i>
 			@if (Auth::guest())
-			<span><a href="{{ url('/auth/login') }}">Login</a> / <a href="{{ url('/auth/register') }}">Register</a></span>
+			<span><a ng-href="@{{'/auth/login?redirectTo='+appCtrl.redirectTo}}">Login</a> / <a href="{{ url('/auth/register') }}">Register</a></span>
 			@endif
 		</div>
 
