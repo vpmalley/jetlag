@@ -31,6 +31,7 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
 
   function define(name, schema) {
     var url = '/api/0.1/'+name.toLowerCase()+'s';
+    var searchUrl = '/api/0.1/search/'+name.toLowerCase()+'s';
     var Model = NgBackboneModel.extend({
       defaults: defaultsModel(schema),
 	  $schema: schema,
@@ -45,7 +46,7 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection) {
                 options.url = model.methodUrl(method.toLowerCase());
             }
             if(method === 'read' && options != null && options.data != null) {
-                options.url = url+'/search';
+                options.url = searchUrl;
             }
            Backbone.sync(method, model, options);
         }
