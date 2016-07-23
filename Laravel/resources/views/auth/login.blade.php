@@ -15,7 +15,7 @@
 			
             <div id="not-registered">
                 <p>
-                    Pas encore inscrit ? <a href="/auth/register">Créez un compte</a> et faites nous voyager !
+                    Not registered yet? <a href="/auth/register">Sign in</a> and share your trip memories!
                 </p>
             </div>
             
@@ -37,7 +37,7 @@
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 						<div class="form-group">
-							<label class="col-md-4 control-label">E-Mail Address</label>
+							<label class="col-md-4 control-label">E-mail address</label>
 							<div class="col-md-6">
 								<input type="email" class="form-control" name="email" value="{{ old('email') }}">
 							</div>
@@ -54,7 +54,7 @@
 							<div class="col-md-6 col-md-offset-4">
 								<div class="checkbox">
 									<label>
-										<input type="checkbox" name="remember"> Remember Me
+										<input type="checkbox" name="remember">Remember me
 									</label>
 								</div>
 							</div>
@@ -62,8 +62,8 @@
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-                                <button class="jl-btn" type="submit">Se connecter</button>
-                                <button class="jl-btn jl-btn-link" ng-href="/password/email">Mot de passe oublié ?</button>
+                                <button class="jl-btn" type="submit">Login</button>
+                                <button class="jl-btn jl-btn-link" ng-href="/password/email">Forgot your password?</button>
 							</div>
 						</div>
 					</form>
