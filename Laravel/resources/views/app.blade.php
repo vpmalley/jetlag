@@ -55,7 +55,7 @@
 			</div>
 			<h2>Menu</h2>
 			<div class="side-bar-content clearfix">
-			Something
+			<p>Follow us on <a href="https://twitter.com/JetLagFr" class="no-decoration">Twitter</a>!</p>
 			</div>
 		</div>
 	</div>
@@ -68,7 +68,7 @@
 			@if(Auth::guest())
 			<h2>User</h2>
 			@else
-			<h2>{{ Auth::user()->name }}</h2>
+			<h2><a href="/me" class="no-decoration">{{ Auth::user()->name }}</a></h2>
 			@endif
 			<div class="side-bar-content clearfix">
 			<ul>

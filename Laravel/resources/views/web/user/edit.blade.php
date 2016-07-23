@@ -1,10 +1,14 @@
 @extends('app')
 
+@section('ngApp')
+<html lang="en" ng-app="jetlag.webapp.user">
+@endsection
+
 @section('content')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
+			<div class="panel panel-default" style="margin-top: 20px">
 				<div class="panel-heading">You can edit your public information</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
@@ -57,7 +61,7 @@
             
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">
+								<button type="submit" class="jl-btn">
 									Save
 								</button>
 							</div>
@@ -68,4 +72,8 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('/js/user.js') }}"></script>
 @endsection

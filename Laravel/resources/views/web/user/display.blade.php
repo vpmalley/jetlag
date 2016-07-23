@@ -4,9 +4,6 @@
 <html lang="en" ng-app="jetlag.webapp.user">
 @endsection
 
-@section('head')
-@endsection
-
 @section('content')
 <div class="container-fluid">
 	<div class="row">
@@ -45,5 +42,5 @@
 @endsection
 
 @section('scripts')
-<script src="//localhost/jetlag/Laravel/public/js/user.js"></script>
+<script src="{{ asset('/js/user.js') }}"></script>
 @endsection
