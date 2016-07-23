@@ -34,7 +34,7 @@
 		</div>
 		
 		<div class="jl-icon jl-icon-middle">
-			Jetlag
+			<a href="/home" class="no-decoration">Jetlag</a>
 		</div>
 		
 		<div class="jl-icon jl-icon-right clickable" ng-show="!appCtrl.rightMenuOpen">

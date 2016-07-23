@@ -18,6 +18,11 @@
 	cursor: pointer;
 }
 
+a.no-decoration {
+    text-decoration: none;
+    color: inherit;
+}
+
 .jl-card {
   margin: 3rem auto;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
@@ -123,6 +128,16 @@
       color: @jl-blue;
     }
   }
+  
+  &.jl-btn-link {
+      background-color: inherit;
+      color: @jl-blue;
+      border-color: transparent;
+      
+      &:hover, &:focus {
+        color: @jl-orange;
+      }
+    }
 
   & ~ .jl-btn {
     margin-left: 2px;

@@ -1,10 +1,25 @@
 @extends('app')
 
+@section('ngApp')
+<html lang="en" ng-app="jetlag.webapp.login">
+@endsection
+
+@section('head')
+<link href="{{ asset('/css/login.css') }}" rel="stylesheet" type='text/css'>
+@endsection
+
 @section('content')
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<div class="panel panel-default">
+			
+            <div id="not-registered">
+                <p>
+                    Pas encore inscrit ? <a href="/auth/register">Créez un compte</a> et faites nous voyager !
+                </p>
+            </div>
+            
+            <div class="panel panel-default">
 				<div class="panel-heading">Login</div>
 				<div class="panel-body">
 					@if (count($errors) > 0)
@@ -47,9 +62,8 @@
 
 						<div class="form-group">
 							<div class="col-md-6 col-md-offset-4">
-								<button type="submit" class="btn btn-primary">Login</button>
-
-								<a class="btn btn-link" href="{{ url('/password/email') }}">Forgot Your Password?</a>
+                                <button class="jl-btn" type="submit">Se connecter</button>
+                                <button class="jl-btn jl-btn-link" ng-href="/password/email">Mot de passe oublié ?</button>
 							</div>
 						</div>
 					</form>
@@ -58,4 +72,8 @@
 		</div>
 	</div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{ asset('/js/login.js') }}"></script>
 @endsection

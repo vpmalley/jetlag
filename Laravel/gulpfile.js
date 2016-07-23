@@ -15,6 +15,7 @@ elixir(function(mix) {
 	var bower_components = '../../../bower_components/';
     mix.less('app.less')
 		.less('home.less')
+        .less('login.less')
 		.less('travelbookCreator.less')
 		.less('travelbook.less')
 		.less('articleCreator.less')
