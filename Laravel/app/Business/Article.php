@@ -88,15 +88,14 @@ class Article
   protected $fillable = ['title', 'description_text', 'descriptionMediaUrl', 'is_draft'];
 
   /**
-<<<<<<< HEAD
    * The rules for validating input
    */
-  static $creationRules = [
-=======
+  
+  /* XXX: was in 201601-creators -- 
+  * static $creationRules = [
   * The rules for validating input
   */
   static $rules = [
->>>>>>> develop
     'title' => 'required|min:3|max:200',
     'description_text' => 'max:500',
     'descriptionMediaUrl' => 'max:200',

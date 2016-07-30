@@ -66,7 +66,7 @@ class RestArticleController extends Controller
   */
   public function store(Request $request)
   {
-/*
+/* XXX: was in 201601-creators --
     $this->validate($request, Article::$creationRules); // TODO: own validator actually returning a 400 if the format is wrong
 */
     $validator = Validator::make($request->all(), Article::$rules);
@@ -163,7 +163,7 @@ class RestArticleController extends Controller
     $article = new Article;
     $this->wantsToWriteArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-/*
+/* XXX: was in 201601-creators --
     $this->wantsToWriteArticle($article);
     $this->validate($request, Article::$updateRules);
 */
