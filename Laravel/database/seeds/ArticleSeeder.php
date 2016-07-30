@@ -5,13 +5,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArticleSeeder extends Seeder
 {
-<<<<<<< HEAD
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
+/* XXX: was in 201601-creators--   
+   public function run()
     {
         $id = 2;
         DB::table('articles')->insert([
@@ -22,7 +22,7 @@ class ArticleSeeder extends Seeder
         ]);
         factory(Jetlag\Eloquent\Article::class,4)->create();
     }
-=======
+*/
   /**
   * Run the database seeds.
   *
@@ -35,5 +35,4 @@ class ArticleSeeder extends Seeder
       'is_public' => 1,
     ]);
   }
->>>>>>> develop
 }
