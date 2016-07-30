@@ -66,9 +66,9 @@ class RestArticleController extends Controller
   */
   public function store(Request $request)
   {
-<<<<<<< HEAD
+/*
     $this->validate($request, Article::$creationRules); // TODO: own validator actually returning a 400 if the format is wrong
-=======
+*/
     $validator = Validator::make($request->all(), Article::$rules);
     if ($validator->fails()) {
       abort(400);
@@ -78,7 +78,6 @@ class RestArticleController extends Controller
       abort(403);
     }
 
->>>>>>> develop
     $article = new Article;
     $article->fromRequest($request->input('title'));
 
@@ -164,15 +163,14 @@ class RestArticleController extends Controller
     $article = new Article;
     $this->wantsToWriteArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-<<<<<<< HEAD
+/*
     $this->wantsToWriteArticle($article);
     $this->validate($request, Article::$updateRules);
-=======
+*/
     $validator = Validator::make($request->all(), Article::$rules);
     if ($validator->fails()) {
       abort(400);
     }
->>>>>>> develop
     $article->setTitle($request->input('title', $article->getTitle()));
     $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
     if ($request->has('description_media'))
