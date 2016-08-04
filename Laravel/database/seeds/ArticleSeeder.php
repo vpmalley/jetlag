@@ -10,7 +10,7 @@ class ArticleSeeder extends Seeder
      *
      * @return void
      */
-/* XXX: was in 201601-creators--   
+/* XXX: was in 201601-creators --   
    public function run()
     {
         $id = 2;

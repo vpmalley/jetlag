@@ -18,10 +18,9 @@ class Paragraph extends Model
 
   protected $visible = ['id', 'title', 'blockContent', 'block_content_type', 'place', 'date', 'weather', 'is_draft'];
 
-  /**
-<<<<<<< HEAD
+  /** XXX: was in 201601-creators --
    * The rules for validating input
-   */
+   *
   static $creationRules = [
         'title' => 'required|min:3|max:200',
         'weather' => 'min:3|max:20',
@@ -32,7 +31,7 @@ class Paragraph extends Model
 
   /**
    * The rules for validating input
-   */
+   *
   static $updateRules = [
         'title' => 'required|min:3|max:200',
         'weather' => 'min:3|max:20',
@@ -40,7 +39,9 @@ class Paragraph extends Model
         'blockContentType' => 'required|min:3|max:15',
         'hublotContentType' => 'min:3|max:15',
     ];
-=======
+    */
+  
+  /**
   * The rules for validating input
   */
   static $rules = [
@@ -140,7 +141,6 @@ class Paragraph extends Model
     $text->save();
     $this->blockContent()->associate($text);
   }
->>>>>>> develop
 
   public function extractAndBindMap($mapSubRequest)
   {
