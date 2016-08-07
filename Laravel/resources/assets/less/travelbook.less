@@ -1,7 +1,7 @@
 @import (reference) "app.less";
 
 .travelbook {
-  margin: 55px -15px 0 -15px;
+  margin: 0 -15px;
   .travelbook-header {
     .header-top {
       background-position: center;
@@ -86,16 +86,31 @@
   }
   .travelbook-content-table {
     margin: 15px auto;
-    width: 70%;
-	min-width: 800px;
-	text-align:center;
-	.entries-list{
+    width: 100%;
+	
+    .content-entry {
 	  display: inline-block;
-	  text-align: left;
+      width: 25%;
+      min-width: 300px;
+      padding: 10px;
+      
+      .content-entry-inner {
+        height: 150px;
+        overflow: hidden;
+        background-color: white;
+        padding: 5px;
+        border: solid black 2px;
+        
+        .entry-title {
+            font-style: italic;
+            margin-bottom: 10px;
+            font-size: 1.5vw;
+        }
+      }
 	}
   }
   
-  .travelbook-first-article {
+  .travelbook-article {
     margin: 15px auto;
     .article-nav-buttons {
 	  .jl-btn-group {
