@@ -69,7 +69,7 @@ class TravelbookController extends Controller
    */
   public function getDisplay($id)
   {
-    
+    return view('travelbook');
   }
 
     /**

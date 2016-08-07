@@ -86,21 +86,18 @@ class Article
   * The fillable properties
   */
   protected $fillable = ['title', 'description_text', 'descriptionMediaUrl', 'is_draft'];
-
-  /**
-   * The rules for validating input
-   */
   
   /* XXX: was in 201601-creators -- 
   * static $creationRules = [
   * The rules for validating input
-  */
+  *
   static $rules = [
     'title' => 'required|min:3|max:200',
     'description_text' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'is_draft' => 'boolean',
   ];
+  */
 
   /**
    * The rules for validating input

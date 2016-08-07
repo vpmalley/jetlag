@@ -13,7 +13,7 @@
 |
 */
 
-Route::get('/', 'WelcomeController@index');
+Route::get('/', 'HomeController@index');
 
 Route::get('home', 'HomeController@index');
 
@@ -43,12 +43,10 @@ Route::get('article/create', 'Web\ArticleController@getCreate');
 Route::get('article/edit', 'Web\ArticleController@getEdit');
 
   // Travelbook routes
-Route::get('travelbook/{id}', 'Web\TravelbookController@getIndex');
+Route::get('travelbook/{id}', 'Web\TravelbookController@getDisplay');
 Route::get('travelbook/{id}/display', 'Web\TravelbookController@getDisplay');
 Route::get('travelbook/{id}/edit', 'Web\TravelbookController@getEdit');
 Route::post('travelbook/{id}/edit', 'Web\TravelbookController@postEdit');
-
-
 
   // Article routes
 Route::get('article/{id}', 'Web\ArticleController@getDisplay');
