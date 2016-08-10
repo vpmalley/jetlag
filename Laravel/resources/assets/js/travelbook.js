@@ -15,7 +15,7 @@ function TravelbookController($scope, ModelsManager, $location) {
     ctrl.currentArticle = null;
     
     ctrl.navigateTo = function(article) {
-        if(ctrl.travelbook !== null && article !== null) {
+        if(article !== null) {
             window.location.hash = article.id;
             ctrl.currentArticle = article;
         }
@@ -47,6 +47,35 @@ function TravelbookController($scope, ModelsManager, $location) {
             });
         }
         return ret;
+    }
+    
+    ctrl.navigateToPrevious = function() {
+        if(ctrl.currentArticle === null || !ctrl.hasPreviousArticle(ctrl.currentArticle)) {
+          return;  
+        } 
+        
+        ctrl.travelbook.articles.some(function(article, idx) {
+           if(article.id === ctrl.currentArticle.id) {
+               ctrl.navigateTo(ctrl.travelbook.articles[idx - 1]);
+               return true;
+           } 
+           return false;
+        });
+        
+    }
+    
+    ctrl.navigateToNext = function() {
+        if(ctrl.currentArticle === null || !ctrl.hasNextArticle(ctrl.currentArticle)) {
+          return;  
+        } 
+        
+        ctrl.travelbook.articles.some(function(article, idx) {
+           if(article.id === ctrl.currentArticle.id) {
+               ctrl.navigateTo(ctrl.travelbook.articles[idx + 1]);
+               return true;
+           } 
+           return false;
+        });
     }
     
     ctrl.travelbook = {

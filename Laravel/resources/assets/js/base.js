@@ -2,7 +2,7 @@ angular
   .module('jetlag.webapp.base', ['ngBackbone'])
   .factory('ModelsManager', ModelsManager)
   .factory('JetlagUtils', JetlagUtils)
-  .filter('momentToDate', momentToDate);
+  .filter('momentToString', momentToString);
 
 ModelsManager.$inject = ['NgBackboneModel', 'NgBackboneCollection'];
 
@@ -155,6 +155,8 @@ function JetlagUtils() {
 	}
 }
 
-function momentToDate(m) {
-    return m.format("DD.MM.YYYY");
+function momentToString() {
+    return function(input) {
+        return input.format("DD.MM.YYYY");
+    }
 }
