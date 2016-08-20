@@ -40,11 +40,13 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 		ctrl.article = null;
 		var article = new ModelsManager.Article();
 		article.$attributes.id = articleID;
-		article.fetch()
+		/*article.fetch()
 		.success(function() {
 			article.set({});
 			ctrl.article = article;
 		});
+        */
+        ctrl.article = article;
 	}
 	
 	/* This wait for the article to be loaded.
@@ -172,7 +174,8 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	  paragraph = _.pick(input, ['type', 'text']);
 	    break;
 	  case 'picture':
-	  paragraph = {type: 'picture', pictures: [input.picture].concat([])}; //XXX: magical hack here to deeply copy
+      paragraph = _.pick(input, ['type', 'picture']);
+	  //paragraph = {type: 'picture', pictures: [input.picture].concat([])}; //XXX: magical hack here to deeply copy
 	    break;
 	  case 'location':
 	  paragraph = {type: 'location', location: { name: input.location.name, markers: {marker: {

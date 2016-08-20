@@ -58,14 +58,14 @@
 											ngf-drag-over-class="'dragover'"
 											ngf-pattern="'image/*'"
 											ng-disabled="articleCreatorCtrl.pictureSelected()">
-										<div class="jl-btn jl-btn-big" ng-class="{'jl-btn-disabled': articleCreatorCtrl.pictureSelected()}"
+										<div class="jl-btn jl-btn-big"
 										ngf-select="articleCreatorCtrl.uploadFiles($files)"
-										ngf-pattern="'image/*'" ng-disabled="articleCreatorCtrl.pictureSelected()">
+										ngf-pattern="'image/*'">
 											Select a picture
 										</div>
 										<div class="strut"></div><div class="drop-text">Drop a picture here</div>
 									</div>
-									<img class="picture-preview" ngf-thumbnail="articleCreatorCtrl.paragraphEditor.input.picture">
+									<img class="picture-preview" ng-if="articleCreatorCtrl.paragraphEditor.input.picture.size > 0" ngf-thumbnail="articleCreatorCtrl.paragraphEditor.input.picture">
 								</div>
 								<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
 									<div class="jl-table location-searchbar">

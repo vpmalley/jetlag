@@ -3,8 +3,8 @@
 	  <div ng-bind-html="ParagraphCtrl.model.text | paragraphText"></div>
 	</div>
 	<div class="paragraph-type-pictures" ng-if="ParagraphCtrl.model.type === 'picture'">
-	  <div class="paragraph-type-picture" ng-repeat="picture in ParagraphCtrl.model.pictures">
-		<img class="picture-preview" ngf-thumbnail="picture">
+	  <div class="paragraph-type-picture">
+		<img class="picture-preview" ngf-src="ParagraphCtrl.model.picture">
 	  </div>
 	</div>
 	<div class="paragraph-type-location" ng-if="ParagraphCtrl.model.type === 'location'">
