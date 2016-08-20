@@ -259,6 +259,10 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 			ctrl.editedParagraph = null;
 		}
 	}
+    
+    ctrl.cancelParagraphEdition = function() {
+        ctrl.editedParagraph = null;
+    }
 	
 	ctrl.isBeingEdited = function(index) {
 		return ctrl.editedParagraph === index;

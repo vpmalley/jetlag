@@ -51,8 +51,11 @@
 			</div>
 		</div>
 	</div>
-	<div style="text-align: right" ng-if="!ParagraphEditorCtrl.isInputEmpty()">
-		<div class="jl-btn jl-btn-big" ng-click="ParagraphEditorCtrl.save()">
+	<div style="text-align: right">
+        <div class="jl-btn jl-btn-big jl-btn-empty" ng-click="ParagraphEditorCtrl.revert()">
+			Annuler
+		</div>
+		<div class="jl-btn jl-btn-big" ng-click="ParagraphEditorCtrl.save()" ng-if="!ParagraphEditorCtrl.isInputEmpty()">
 			Mettre à jour
 		</div>
 	</div>

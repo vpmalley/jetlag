@@ -119,6 +119,19 @@ function ParagraphEditorController($scope, ModelsManager, $http, Upload, JetlagU
 	  }
   });
   
+  ctrl.revert = function() {
+      if(ctrl.model.type === 'text') {
+          ctrl.model.text = ctrl._previous.text;
+      } else if(ctrl.model.type === 'picture') {
+        ctrl.model.picture = ctrl._previous.picture;
+      } else if(ctrl.model.type === 'location') {
+        ctrl.model.location = ctrl._previous.location;
+      } else if(ctrl.model.type === 'external') {
+          ctrl.model.external = ctrl._previous.external;
+      }
+      ctrl.cancel();
+  }
+  
 }
 
 function JlParagraphEditorDirective() {
@@ -127,10 +140,14 @@ function JlParagraphEditorDirective() {
     scope: {},
 	bindToController: {
 		model: '=',
-		save: '&'
+		save: '&',
+        cancel: '&'
 	},
     restrict: 'E',
     controller: 'ParagraphEditorController',
-    controllerAs: 'ParagraphEditorCtrl'
+    controllerAs: 'ParagraphEditorCtrl',
+    link: function(scope, element, attrs, controller) {
+        controller._previous = JSON.parse(JSON.stringify(controller.model));
+    }
   }
 }

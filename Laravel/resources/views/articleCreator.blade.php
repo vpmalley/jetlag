@@ -15,12 +15,15 @@
 	
 		<div class="article">
 		    <jl-paragraph ng-repeat-start="paragraph in articleCreatorCtrl.article.$attributes.paragraphs" model="paragraph" 
-			class="paragraph editor" is-being-edited="articleCreatorCtrl.isBeingEdited($index)" save="articleCreatorCtrl.saveParagraph($index)"></jl-paragraph>
+			class="paragraph editor" 
+            is-being-edited="articleCreatorCtrl.isBeingEdited($index)" 
+            save="articleCreatorCtrl.saveParagraph($index)"
+            cancel="articleCreatorCtrl.cancelParagraphEdition()"></jl-paragraph>
 			<div class="paragraph-controls" ng-repeat-end>
-				<div ng-if="!$first"><i class="fa fa-arrow-up" ng-click="articleCreatorCtrl.paragraphUp($index)"></i></div>
-				<div><i class="fa fa-pencil" ng-if="!articleCreatorCtrl.isBeingEdited($index)" ng-click="articleCreatorCtrl.editParagraph($index)"></i></div>
-				<div><i class="fa fa-trash" ng-click="articleCreatorCtrl.removeParagraph($index)"></i></div>
-				<div ng-if="!$last"><i class="fa fa-arrow-down" ng-click="articleCreatorCtrl.paragraphDown($index)"></i></div>
+				<div ng-if="!$first" class="clickable"><i class="fa fa-arrow-up" ng-click="articleCreatorCtrl.paragraphUp($index)"></i></div>
+				<div class="clickable"><i class="fa fa-pencil" ng-if="!articleCreatorCtrl.isBeingEdited($index)" ng-click="articleCreatorCtrl.editParagraph($index)"></i></div>
+				<div class="clickable"><i class="fa fa-trash" ng-click="articleCreatorCtrl.removeParagraph($index)"></i></div>
+				<div ng-if="!$last" class="clickable"><i class="fa fa-arrow-down" ng-click="articleCreatorCtrl.paragraphDown($index)"></i></div>
 			</div>
 		</div> <!-- article -->
 	

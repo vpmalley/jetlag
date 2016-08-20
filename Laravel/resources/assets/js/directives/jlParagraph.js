@@ -41,7 +41,8 @@ function JlParagraphDirective() {
 	bindToController: {
 		model: '=',
 		isBeingEdited: '&',
-		save: '&'
+		save: '&',
+        cancel: '&'
 	},
     restrict: 'E',
     controller: 'ParagraphController',
