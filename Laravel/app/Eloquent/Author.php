@@ -49,10 +49,7 @@ class Author extends Model
   public static function isOwner($userId, $authorId)
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
-/* XXX: was in 201601-creators --
-    $count = Author::where('userId', $userId)->where('authorId', $authorId)->where('role', self::ROLE_OWNER)->count();
-*/
-    $count = Author::where('user_id', $userId)->where('author_id', $authorId)->where('role', self::K_OWNER)->count();
+    $count = Author::where('user_id', $userId)->where('author_id', $authorId)->where('role', self::ROLE_OWNER)->count();
     return (1 == $count);
   }
 
@@ -64,15 +61,9 @@ class Author extends Model
   public static function isWriter($userId, $authorId)
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
-/* XXX: was in 201601-creators --
-    $count = Author::where('userId', $userId)->where('authorId', $authorId)->where(function ($query) {
-                $query->where('role', self::ROLE_OWNER)
-                      ->orWhere('role', self::ROLE_WRITER);
-            })->count();
-*/
     $count = Author::where('user_id', $userId)->where('author_id', $authorId)->where(function ($query) {
-      $query->where('role', self::K_OWNER)
-      ->orWhere('role', self::K_WRITER);
+      $query->where('role', self::ROLE_OWNER)
+      ->orWhere('role', self::ROLE_WRITER);
     })->count();
     return (1 == $count);
   }
