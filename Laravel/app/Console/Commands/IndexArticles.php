@@ -39,7 +39,7 @@ class IndexArticles extends Command
     public function handle()
     {
         $indexer = TNTSearch::createIndex('articles.index');
-        $indexer->query('SELECT id, title, descriptionText FROM articles;');
+        $indexer->query('SELECT id, title, description_text FROM articles;');
         $indexer->run();
     }
 }
