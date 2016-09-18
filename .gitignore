@@ -24,3 +24,5 @@ extras/documentation
 
 # SQL tables creation
 data/scripts/creation.sql
+
+notepad_workspace
