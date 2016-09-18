@@ -4,6 +4,10 @@
 <html lang="en" ng-app="jetlag.webapp.user">
 @endsection
 
+@section('head')
+<link href="{{ asset('/css/user.css') }}" rel="stylesheet" type='text/css'>
+@endsection
+
 @section('content')
 <div class="container-fluid">
     

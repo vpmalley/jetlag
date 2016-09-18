@@ -19,6 +19,7 @@ elixir(function(mix) {
 		.less('travelbookCreator.less')
 		.less('travelbook.less')
 		.less('articleCreator.less')
+        .less('user.less')
 		.less('directives/*.less', 'public/css/jetlag.directives.css')
 		.scripts([ //XXX: order matters for now, we should find a way to get rid of it
 			bower_components+'jquery/dist/jquery.js',
