@@ -50,13 +50,21 @@
 
 	<div class="side-bar-wrapper" ng-show="appCtrl.leftMenuOpen">
 		<div class="side-bar side-bar-left">
-			<div class="pull-right">
+			<div class="pull-left">
 				<i class="fa fa-fw fa-times clickable"
 				ng-click="appCtrl.closeLeftMenu()"></i>
 			</div>
-			<h2>Menu</h2>
 			<div class="side-bar-content clearfix">
-			<p>Follow us on <a href="https://twitter.com/JetLagFr" class="no-decoration">Twitter</a>!</p>
+                <div class="social-networks">
+                    <h2>Let's keep in touch!</h2>
+                    <ul>
+                        <li>
+                            <a href="https://twitter.com/JetLagFr" class="no-decoration">
+                                <img src="{{asset('/images/twitter.png') }}" width=64/>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -66,18 +74,23 @@
 				<i class="fa fa-fw fa-times clickable"
 				ng-click="appCtrl.closeRightMenu()"></i>
 			</div>
-			@if(Auth::guest())
-			<h2>User</h2>
-			@else
-			<h2><a href="/me" class="no-decoration">{{ Auth::user()->name }}</a></h2>
-			@endif
-			<div class="side-bar-content clearfix">
-			<ul>
-			@if(!Auth::guest())
-			<li><a href="{{ url('/auth/logout') }}">Logout</a></li>
-			@endif
-			</ul>
-			</div>
+            <div class="side-bar-content">
+                <div class="user-picture">
+                    <img src="{{ asset('/images/user-profile.png') }}" />
+                </div>
+                <div class="user-profile">
+                    @if(Auth::guest())
+                    <h2>User</h2>
+                    @else
+                    <h2><a href="/me" class="no-decoration">{{ Auth::user()->name }}</a></h2>
+                    @endif
+                </div>
+                @if(!Auth::guest())
+                <div class="user-subprofile">
+                    <a href="{{ url('/auth/logout') }}">Logout</a>
+                </div>
+                @endif
+            </div>
 		</div>
 	</div>
 	<div id="main" class="container-fluid"
