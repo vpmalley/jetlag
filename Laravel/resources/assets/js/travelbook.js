@@ -25,9 +25,48 @@ function TravelbookController($scope, ModelsManager, $location) {
     ctrl.navigateTo = function(article) {
         if(article !== null) {
             window.location.hash = article.id;
-            ctrl.currentArticle = article;
         }
     }
+    
+    function filterInt(val) {
+      if(/^[0-9]+$/.test(val)) {
+        return Number(val);
+      }
+      return NaN;
+    }
+    
+    function parseHash(hash) {
+        var articleID = null;
+        var idx = hash.indexOf('/');
+        
+        if(idx !== -1 && hash.length > idx + 1 ) {
+            var sub = hash.substring(idx + 1, hash.length);
+            
+            sub = filterInt(sub);
+            if(!isNaN(sub)) {
+                articleID = sub;
+            }
+        }
+        
+        return articleID;
+    }
+    
+    $scope.$watch(function() { return window.location.hash; }, function(newValue, oldValue) {
+        console.log(newValue, oldValue, ctrl.currentArticle);
+       var articleID = parseHash(newValue);
+       
+       if(articleID !== null) {
+           ctrl.travelbook.articles.find(function(article) { //TODO: $attributes
+               if(article.id === articleID) {
+                   ctrl.currentArticle = article;
+                   return true;
+               }
+               return false;
+           });
+       } else {
+            ctrl.currentArticle = null;
+       }
+    });
     
     ctrl.hasPreviousArticle = function() {
         var ret = false;

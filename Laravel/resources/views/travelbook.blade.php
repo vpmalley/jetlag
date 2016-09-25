@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div class="article-header">
-			<h2 class="article-title"></h2>
+			<h2 class="article-title">@{{travelbookCtrl.currentArticle.title}}</h2>
 			<div class="article-details">
 				<span><i class="fa fa-fw fa-map-marker"></i> @{{travelbookCtrl.currentArticle.location.label}}</span>
 				<span><i class="fa fa-fw fa-calendar-o"></i> @{{travelbookCtrl.currentArticle.date | momentToString}}</span>
