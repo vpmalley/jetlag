@@ -2,7 +2,7 @@
 
 namespace Jetlag\Business;
 
-use TNTSearch;
+use TeamTNT\TNTSearch\TNTSearch;
 use Jetlag\Eloquent\Article;
 
 class ArticleSearch
@@ -16,8 +16,19 @@ class ArticleSearch
   */
   public function search($query)
   {
-    TNTSearch::selectIndex("articles.index");
-    $results = TNTSearch::searchBoolean($query, 50);
+    Log::debug('storage_path: ' . storage_path());
+    $tnt = new TNTSearch;
+    $config = [
+      'driver'    => 'mysql',
+      'host'      => getenv('DB_HOST'),
+      'database'  => getenv('DB_DATABASE'),
+      'username'  => getenv('DB_USERNAME'),
+      'password'  => getenv('DB_PASSWORD'),
+      'storage'   => getenv('SEARCH_INDEX_LOC') ?? storage_path()
+    ];
+    $tnt->loadConfig($config);
+    $tnt->selectIndex("articles.index");
+    $results = $tnt->searchBoolean($query, 50);
     $articles = Article::whereIn('id', $results['ids'])->paginate(5);
     return $articles;
   }

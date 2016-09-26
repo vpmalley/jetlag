@@ -3,7 +3,7 @@
 namespace Jetlag\Console\Commands;
 
 use Illuminate\Console\Command;
-use TNTSearch;
+use TeamTNT\TNTSearch\TNTSearch;
 
 class IndexArticles extends Command
 {
@@ -38,7 +38,17 @@ class IndexArticles extends Command
      */
     public function handle()
     {
-        $indexer = TNTSearch::createIndex('articles.index');
+        $tnt = new TNTSearch;
+        $config = [
+          'driver'    => 'mysql',
+          'host'      => getenv('DB_HOST'),
+          'database'  => getenv('DB_DATABASE'),
+          'username'  => getenv('DB_USERNAME'),
+          'password'  => getenv('DB_PASSWORD'),
+          'storage'   => getenv('SEARCH_INDEX_LOC') ?? storage_path()
+        ];
+        $tnt->loadConfig($config);
+        $indexer = $tnt->createIndex('articles.index');
         $indexer->query('SELECT id, title, description_text FROM articles;');
         $indexer->run();
     }

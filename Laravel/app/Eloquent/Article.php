@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
 use Log;
+use TeamTNT\TNTSearch\TNTSearch;
 
 class Article extends Model
 {
@@ -56,4 +57,46 @@ class Article extends Model
   {
     return $this->hasMany('Jetlag\Eloquent\Paragraph');
   }
+
+  public static function boot()
+  {
+      Article::created([__CLASS__, 'insertToIndex']);
+      Article::updated([__CLASS__, 'updateIndex']);
+      Article::deleted([__CLASS__, 'deleteFromIndex']);
+  }
+
+  public static function insertToIndex($article)
+  {
+      $index = Article::getIndex();
+      $index->insert($article->toArray());
+  }
+
+  public static function deleteFromIndex($article)
+  {
+      $index = Article::getIndex();
+      $index->delete($article->id);
+  }
+
+  public static function updateIndex($article)
+  {
+      $index = Article::getIndex();
+      $index->update($article->id, $article->toArray());
+  }
+
+  private static function getIndex()
+  {
+    $tnt = new TNTSearch;
+    $config = [
+      'driver'    => 'mysql',
+      'host'      => getenv('DB_HOST'),
+      'database'  => getenv('DB_DATABASE'),
+      'username'  => getenv('DB_USERNAME'),
+      'password'  => getenv('DB_PASSWORD'),
+      'storage'   => getenv('SEARCH_INDEX_LOC') ?? storage_path()
+    ];
+    $tnt->loadConfig($config);
+    $tnt->selectIndex("articles.index");
+    return $tnt->getIndex();
+  }
+
 }
