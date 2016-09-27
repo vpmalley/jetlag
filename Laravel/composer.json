@@ -8,7 +8,8 @@
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
         "mpociot/laravel-apidoc-generator": "^1.1",
-        "teamtnt/tntsearch": "0.6.*"
+        "teamtnt/tntsearch": "0.6.*",
+        "garygreen/pretty-routes": "^0.0.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

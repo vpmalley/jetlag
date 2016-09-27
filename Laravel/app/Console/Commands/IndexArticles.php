@@ -45,7 +45,7 @@ class IndexArticles extends Command
           'database'  => getenv('DB_DATABASE'),
           'username'  => getenv('DB_USERNAME'),
           'password'  => getenv('DB_PASSWORD'),
-          'storage'   => getenv('SEARCH_INDEX_LOC') ?? storage_path()
+          'storage'   => env('SEARCH_INDEX_LOC', storage_path())
         ];
         $tnt->loadConfig($config);
         $indexer = $tnt->createIndex('articles.index');

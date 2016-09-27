@@ -142,6 +142,7 @@ return [
      */
     TeamTNT\TNTSearch\TNTSearchServiceProvider::class,
     Mpociot\ApiDoc\ApiDocGeneratorServiceProvider::class,
+    PrettyRoutes\ServiceProvider::class,
 
 		/*
 		 * Application Service Providers...
