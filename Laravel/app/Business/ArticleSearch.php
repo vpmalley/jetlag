@@ -16,7 +16,6 @@ class ArticleSearch
   */
   public function search($query)
   {
-    Log::debug('storage_path: ' . storage_path());
     $tnt = new TNTSearch;
     $config = [
       'driver'    => 'mysql',
