@@ -27,7 +27,7 @@ class RestPictureController extends Controller
    * @param  Request  $request
    * @return Response
    */
-  public function update(Request $request)
+  public function upload(Request $request)
   {
     $pictureId = $request->input('pictureId');
     $picture = Picture::find($pictureId);
@@ -40,7 +40,7 @@ class RestPictureController extends Controller
       }
       $picture->url = $path;
       $picture->save();
-      return 'stored pic ' . $pictureId;
+      return 'stored pic ' . $pictureId . ' at ' . Storage::url($path);
     } else {
       return 'no pic ' . $pictureId;
     }
