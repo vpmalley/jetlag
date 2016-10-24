@@ -66,7 +66,7 @@ class RestArticleController extends Controller
   */
   public function store(Request $request)
   {
-    $validator = Validator::make($request->all(), Article::$rules);
+    $validator = Validator::make($request->all(), Article::$creationRules);
     if ($validator->fails()) {
       abort(400);
     }
@@ -160,7 +160,7 @@ class RestArticleController extends Controller
     $article = new Article;
     $this->wantsToWriteArticle($storedArticle);
     $article->fromStoredArticle($storedArticle);
-    $validator = Validator::make($request->all(), Article::$rules);
+    $validator = Validator::make($request->all(), Article::$updateRules);
     if ($validator->fails()) {
       abort(400);
     }
@@ -237,8 +237,13 @@ class RestArticleController extends Controller
   public function destroy($storedArticle)
   {
     $this->wantsToOwnArticle($storedArticle);
-    $storedArticle->delete();
-    return ['id' => $storedArticle->id];
+    if ($storedArticle->delete())
+    {
+      return ['id' => $storedArticle->id];
+    } else
+    {
+      abort(500, 'not deleted');
+    }
   }
 
   /**
