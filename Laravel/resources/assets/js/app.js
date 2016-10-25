@@ -1,15 +1,23 @@
 angular
   .module('jetlag.webapp.app', ['jetlag.webapp.base'])
+  .config(AppConfig)
   .controller('AppController', AppController);
   
-  AppController.$inject = ['$location'];
+  AppController.$inject = ['$location', '$scope'];
+  AppConfig.$inject = ['$locationProvider'];
+  
+function AppConfig($locationProvider) {
+ //   $locationProvider.html5Mode(false).hashPrefix('');
+}
 
-function AppController($location) {
+function AppController($location, $scope) {
 
   var ctrl = this;
   ctrl.leftMenuOpen = false;
   ctrl.rightMenuOpen = false;
   ctrl.redirectTo = window.location.pathname+window.location.search;
+  
+  $scope.location = $location;
   
   ctrl.openLeftMenu = function() {
 	ctrl.rightMenuOpen = false;

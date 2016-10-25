@@ -1,26 +1,48 @@
-(function(angular) {
+(function(window) {
+
+var angular = window.angular;
+var $ = window.$;
 
 var dependencies = [
     'jetlag.webapp.app', 
     'ngFileUpload',
     'leaflet-directive',
     'monospaced.elastic',
-    'jetlag.webapp.directives.paragraph'
+    'jetlag.webapp.directives.paragraph',
+    'jetlag.webapp.directives.inContextEditable'
 ];
     
 angular
   .module('jetlag.webapp.travelbook', dependencies)
   .controller('TravelbookController', TravelbookController);
 
-TravelbookController.$inject = ['$scope', 'ModelsManager', '$location'];
+TravelbookController.$inject = ['$scope', 'ModelsManager'];
 
-function TravelbookController($scope, ModelsManager, $location) {
+function TravelbookController($scope, ModelsManager) {
 	var ctrl = this;
 	
 	ctrl.travelbooks = new ModelsManager.TravelbookCollection();
 	ctrl.travelbooks.fetch();
-    ctrl.location = $location;
     ctrl.currentArticle = null;
+    ctrl.mode = "display";
+    
+    ctrl.editTravelbook = function() {
+        // TODO: check current user has right to
+        if(ctrl.mode === "display") {
+            ctrl.mode = "edit";
+        } else if(ctrl.mode === "edit") {
+            // TODO: check unsaved changes
+            ctrl.mode = "display";
+        }
+    }
+    
+    ctrl.isBeingEdited = function() {
+        return ctrl.mode === "edit";
+    }
+    
+    ctrl.editableClicked = function(e) {
+        $(e.currentTarget).addClass("editing");
+    }
     
     ctrl.navigateTo = function(article) {
         if(article !== null) {
@@ -52,7 +74,6 @@ function TravelbookController($scope, ModelsManager, $location) {
     }
     
     $scope.$watch(function() { return window.location.hash; }, function(newValue, oldValue) {
-        console.log(newValue, oldValue, ctrl.currentArticle);
        var articleID = parseHash(newValue);
        
        if(articleID !== null) {
@@ -171,7 +192,7 @@ function TravelbookController($scope, ModelsManager, $location) {
             url: "4.jpg"
         },
         descriptionText: "Au pays de la Guinness, des bus à deux étages, du hurling, des trèfles à quatre feuilles" + 
-		  "et des paysages qui en mettent plein la vue !",
+		  " et des paysages qui en mettent plein la vue !",
         location: {
           label: "Dublin, Ireland"  
         },
@@ -237,5 +258,5 @@ function TravelbookController($scope, ModelsManager, $location) {
     };
 };
 
-})(angular);
+})(window);
 
