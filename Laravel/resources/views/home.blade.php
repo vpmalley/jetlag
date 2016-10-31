@@ -167,8 +167,9 @@
 		<div class="col-sm-offset-3 col-sm-6 searchbar">
             <form novalidate>
                 <div class="input-group input-group-lg">
-                    <span ng-click="homepageCtrl.search()" class="input-group-addon"><i class="fa fa-search fa-fw clickable"></i></span>
-                    <input class="form-control" type="text" name="searchInput" ng-model="homepageCtrl.searchInput" placeholder="Search...">
+                    <span ng-if="!homepageCtrl.isSearching" ng-click="homepageCtrl.search()" class="input-group-addon"><i class="fa fa-search fa-fw clickable"></i></span>
+                    <span ng-if="homepageCtrl.isSearching" class="input-group-addon"><i class="fa fa-circle-o-notch fa-spin fa-fw"></i></span>
+                    <input class="form-control" type="text" name="searchInput" ng-disabled="homepageCtrl.isSearching" ng-model="homepageCtrl.searchInput" placeholder="Search...">
                     <input type="submit" ng-show="false" ng-click="homepageCtrl.search()">
                 </div>
             </form>
