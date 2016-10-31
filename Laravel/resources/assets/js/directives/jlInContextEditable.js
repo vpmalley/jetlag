@@ -63,9 +63,6 @@ function InContextEditableController($scope) {
             ctrl.hidden = ctrl.element.find('.editing-hidden');
             ctrl.visible = ctrl.element.find('.editing-visible');
             ctrl.element.addClass('in-context-editable');
-            console.log("ctrl.element", ctrl.element);
-            console.log("ctrl.visible", ctrl.visible);
-            console.log("ctrl.hidden", ctrl.hidden);
             elementWatcher();
         }
     });
@@ -144,7 +141,6 @@ function InContextEditableDirective() {
 	},
     scope: {},
     link: function($scope, element, attrs, controller, transclude) {
-        console.log("Scope ID: "+$scope.$id);
         $scope.element = element;
     },
     transclude: true,
