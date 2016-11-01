@@ -32,7 +32,7 @@ class RestPictureController extends Controller
     $pictureId = $request->input('picture_id');
     $picture = Picture::find($pictureId);
 
-    if ($picture) {
+    if ($picture) { // TODO check the user's rights
       $uploadedFile = $request->file('picture_file');
       if ($uploadedFile && $uploadedFile->isValid()) {
         $path = 'pix/' . $request->user()->id . '/pik' . $pictureId . '.' . $uploadedFile->guessExtension();

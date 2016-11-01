@@ -12,6 +12,10 @@ class UserSeeder extends Seeder
   */
   public function run()
   {
-    factory(Jetlag\User::class, 10)->create();
+    factory(Jetlag\User::class, 7)->create();
+    factory(Jetlag\User::class, 1)->create([
+      'email' => 'jetlag@yopmail.com',
+      'password' => Hash::make('secret'),
+    ]);
   }
 }
