@@ -10,12 +10,17 @@
 | database. Just tell the factory how a default model should look.
 |
 */
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 $factory->define(Jetlag\User::class, function (Faker\Generator $faker) {
+  $email = $faker->email;
+  $password = str_random(10);
+  $output = new ConsoleOutput();
+  $output->writeln("Created user with credentials " . $email . " / ". $password);
   return [
     'name' => $faker->name,
-    'email' => $faker->email,
-    'password' => Hash::make(str_random(10)),
+    'email' => $email,
+    'password' => Hash::make($password),
     'remember_token' => str_random(10),
   ];
 });
