@@ -43,7 +43,7 @@ class Article
   /**
   * The description for the article
   *
-  * @var Jetlag\Business\Picture
+  * @var Jetlag\Eloquent\Picture
   */
   protected $descriptionPicture;
 
@@ -147,12 +147,6 @@ class Article
   */
   public function fromStoredArticle($storedArticle)
   {
-    $picture = NULL;
-    if ($storedArticle->descriptionPicture)
-    {
-      $picture = new Picture;
-      $picture->fromStoredPicture($storedArticle->descriptionPicture);
-    }
     $paragraphs = $storedArticle->paragraphs;
     foreach ($paragraphs as $paragraph) {
       $paragraph->load('place');
@@ -168,7 +162,7 @@ class Article
       }
     }
     $authorUsers = Author::getUserRoles($storedArticle->author_id);
-    $this->fromDb($storedArticle, $picture, $paragraphs, $storedArticle->author_id, $authorUsers);
+    $this->fromDb($storedArticle, $storedArticle->descriptionPicture, $paragraphs, $storedArticle->author_id, $authorUsers);
   }
 
   public function getId()
@@ -204,9 +198,9 @@ class Article
   public function getDescriptionMediaUrl()
   {
     $descriptionMediaUrl = '';
-    if ($this->descriptionPicture)
+    if ($this->descriptionPicture && $this->descriptionPicture->small_url)
     {
-      $descriptionMediaUrl = $this->descriptionPicture->getMediumDisplayUrl();
+      $descriptionMediaUrl = $this->descriptionPicture->small_url->url;
     }
     return $descriptionMediaUrl;
   }
@@ -322,10 +316,7 @@ class Article
   */
   public function getForDisplay()
   {
-    $descriptionMediaUrl = NULL;
-    if ($this->descriptionPicture) {
-      $descriptionMediaUrl = $this->descriptionPicture->getSmallDisplayUrl();
-    }
+    $descriptionMediaUrl = $this->getDescriptionMediaUrl();
 
     $authorNameLabel = '';
     $authorNames = UserPublic::select('name')->whereIn('id', array_keys($this->authorUsers))->get();
@@ -337,7 +328,6 @@ class Article
     return [
       'title' => $this->title,
       'description_text' => $this->descriptionText,
-      //  'descriptionMediaUrl' => $descriptionMediaUrl,
       'is_draft' => $this->isDraft,
       'authorName' => $authorNameLabel,
     ];
@@ -350,17 +340,16 @@ class Article
   */
   public function getForRest()
   {
-    $descriptionMedia = [];
     if ($this->descriptionPicture)
     {
-      $descriptionMedia = $this->descriptionPicture->getForRest();
+      $this->descriptionPicture->load('small_url', 'medium_url', 'big_url');
     }
     return [
       'id' => $this->id,
       'title' => $this->title,
       'url' => $this->getWebUrl(),
       'description_text' => $this->descriptionText,
-      'description_media' => $descriptionMedia,
+      'description_media' => $this->descriptionPicture,
       'is_draft' => $this->isDraft,
       'is_public' => $this->isPublic,
       'paragraphs' => $this->paragraphs,
@@ -375,17 +364,16 @@ class Article
   */
   public function getForRestIndex()
   {
-    $descriptionMedia = [];
     if ($this->descriptionPicture)
     {
-      $descriptionMedia = $this->descriptionPicture->getForRest();
+      $this->descriptionPicture->load('small_url', 'medium_url', 'big_url');
     }
     return [
       'id' => $this->id,
       'title' => $this->title,
       'url' => $this->getWebUrl(),
       'description_text' => $this->descriptionText,
-      'description_media' => $descriptionMedia,
+      'description_media' => $this->descriptionPicture,
       'author_users' => $this->authorUsers,
       'is_draft' => $this->isDraft,
       'is_public' => $this->isPublic,
@@ -411,10 +399,7 @@ class Article
 
     if ($this->descriptionPicture)
     {
-      $storedPicture = $this->descriptionPicture->getStoredPicture();
-      $article->descriptionPicture()->save($storedPicture);
-      $this->descriptionPicture->setId($storedPicture->id);
-      $this->descriptionPicture->persist();
+      $article->descriptionPicture()->save($this->descriptionPicture);
     }
     foreach ($this->paragraphs as $paragraph) {
       $article->paragraphs()->save($paragraph);

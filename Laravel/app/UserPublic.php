@@ -24,7 +24,7 @@ class UserPublic extends Model
   *
   * @var array
   */
-  protected $fillable = ['id', 'name', 'profilePicUrl', 'country', 'city'];
+  protected $fillable = ['id', 'name', 'profile_pic_url', 'country', 'city'];
 
   /**
   * The rules for validating input
