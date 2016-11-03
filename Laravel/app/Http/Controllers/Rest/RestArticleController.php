@@ -10,14 +10,15 @@ use Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
+use Jetlag\Business\ResourceAccess;
 use Jetlag\Business\Article;
 use Jetlag\Business\Picture as BPicture;
 use Jetlag\Eloquent\Article as StoredArticle;
-use Jetlag\Eloquent\Author;
 use Jetlag\Eloquent\Link;
 use Jetlag\Eloquent\Paragraph;
 use Jetlag\Eloquent\Picture;
 use Jetlag\Eloquent\Place;
+use Jetlag\Eloquent\Author;
 use Log;
 
 class RestArticleController extends Controller
@@ -94,9 +95,7 @@ class RestArticleController extends Controller
     {
       $storedPicture = new Picture;
       $storedPicture->extract($request->input('description_media'));
-      $picture = new BPicture;
-      $picture->fromStoredPicture($storedPicture);
-      $article->setDescriptionPicture($picture);
+      $article->setDescriptionPicture($storedPicture);
     }
 
     if ($request->has('paragraphs'))
@@ -129,7 +128,7 @@ class RestArticleController extends Controller
   public function show($storedArticle)
   {
     $article = new Article;
-    $this->wantsToReadArticle($storedArticle);
+    ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
     $article->fromStoredArticle($storedArticle);
     return $article->getForRest();
   }
@@ -143,7 +142,7 @@ class RestArticleController extends Controller
   public function edit($storedArticle)
   {
     $article = new Article;
-    $this->wantsToReadArticle($storedArticle);
+    ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
     $article->fromStoredArticle($storedArticle);
     return $article->getForRest();
   }
@@ -158,7 +157,7 @@ class RestArticleController extends Controller
   public function update(Request $request, $storedArticle)
   {
     $article = new Article;
-    $this->wantsToWriteArticle($storedArticle);
+    ResourceAccess::wantsToWriteResource($storedArticle->author_id);
     $article->fromStoredArticle($storedArticle);
     $validator = Validator::make($request->all(), Article::$updateRules);
     if ($validator->fails()) {
@@ -168,18 +167,9 @@ class RestArticleController extends Controller
     $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
     if ($request->has('description_media'))
     {
-      if ($article->hasDescriptionPicture())
-      {
-        $picture = $article->getDescriptionPicture();
-      } else
-      {
-        $picture = new Picture;
-        $storedPicture = new Picture;
-        $storedPicture->extract($request->input('description_media'));
-        $picture = new BPicture;
-        $picture->fromStoredPicture($storedPicture);
-        $article->setDescriptionPicture($picture);
-      }
+      $storedPicture = new Picture;
+      $storedPicture->extract($request->input('description_media'));
+      $article->setDescriptionPicture($storedPicture);
     }
     $article->setIsDraft($request->input('is_draft', $article->isDraft()));
     if ($request->has('author_users'))
@@ -236,55 +226,13 @@ class RestArticleController extends Controller
   */
   public function destroy($storedArticle)
   {
-    $this->wantsToOwnArticle($storedArticle);
+    ResourceAccess::wantsToOwnResource($storedArticle->author_id);
     if ($storedArticle->delete())
     {
       return ['id' => $storedArticle->id];
     } else
     {
       abort(500, 'not deleted');
-    }
-  }
-
-  /**
-  * Checks whether the logged in user can modify the article as an owner. Rejects with error 403 otherwise.
-  *
-  * @param StoredArticle storedArticle the article to be owned
-  */
-  public function wantsToOwnArticle($storedArticle)
-  {
-    $id = Auth::user() ? Auth::user()->id : -1;
-    if (!Author::isOwner($id, $storedArticle->author_id))
-    {
-      abort(403);
-    }
-  }
-
-  /**
-  * Checks whether the logged in user can write the article. Rejects with error 403 otherwise.
-  *
-  * @param StoredArticle storedArticle the article to be written
-  */
-  public function wantsToWriteArticle($storedArticle)
-  {
-    $id = Auth::user() ? Auth::user()->id : -1;
-    if (!Author::isWriter($id, $storedArticle->author_id))
-    {
-      abort(403);
-    }
-  }
-
-  /**
-  * Checks whether the logged in user can read the article. Rejects with error 403 otherwise.
-  *
-  * @param StoredArticle storedArticle the article to be read
-  */
-  public function wantsToReadArticle($storedArticle)
-  {
-    $id = Auth::user() ? Auth::user()->id : -1;
-    if (!$storedArticle->is_public && !Author::isReader($id, $storedArticle->author_id))
-    {
-      abort(403);
     }
   }
 }

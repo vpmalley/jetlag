@@ -50,7 +50,7 @@ class Author extends Model
   {
     // the number of rows matching the authenticated user and element's author : either 0 or 1
     $count = Author::where('user_id', $userId)->where('author_id', $authorId)->where('role', self::ROLE_OWNER)->count();
-    return (1 == $count);
+    return ($count > 0);
   }
 
   /**
@@ -65,7 +65,7 @@ class Author extends Model
       $query->where('role', self::ROLE_OWNER)
       ->orWhere('role', self::ROLE_WRITER);
     })->count();
-    return (1 == $count);
+    return ($count > 0);
   }
 
   /**
@@ -79,7 +79,7 @@ class Author extends Model
     // the number of rows matching the authenticated user and element's author : either 0 or 1
     $count = Author::where('user_id', $userId)->where('author_id', $authorId)->count();
     Log::debug("user with id " . $userId . " appears with author_id=" . $authorId . " " . $count . " times.");
-    return (1 == $count);
+    return ($count > 0);
   }
 
   /**

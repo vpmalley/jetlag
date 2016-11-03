@@ -36,10 +36,10 @@ class PictureStorageTest extends TestCase {
       'place_id' => $places[0]->id,
     ]);
     $file = new UploadedFile(
-                public_path() . '/images/8.jpg',
-                '8.jpg',
+                public_path() . '/images/4.jpg',
+                '4.jpg',
                 'image/jpeg',
-                filesize(public_path() . '/images/8.jpg'),
+                filesize(public_path() . '/images/4.jpg'),
                 null,
                 true // for $test
             );
@@ -71,6 +71,27 @@ class PictureStorageTest extends TestCase {
 
   public function testApiWrongFormatOfPictureFile()
   {
+    $authorId = 6;
+    $writer = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
+      'author_id' => $authorId,
+      'user_id' => $writer->id
+    ]);
+    $picture = factory(Jetlag\Eloquent\Picture::class)->create([
+      'author_id' => $authorId,
+    ]);
+
+    Log::debug(" expecting to fail storing picture " . $picture->id);
+    $this->actingAs($writer)
+    ->post($this->pictureStorageApiUrl, [
+      'picture_id' => $picture->id,
+      'picture_file' => 'some content of picture',
+    ])
+    ->assertResponseStatus(400);
+  }
+
+  public function testApiUserHasNoWritingRight()
+  {
     $picture = factory(Jetlag\Eloquent\Picture::class)->create();
 
     Log::debug(" expecting to fail storing picture " . $picture->id);
@@ -79,7 +100,7 @@ class PictureStorageTest extends TestCase {
       'picture_id' => $picture->id,
       'picture_file' => 'some content of picture',
     ])
-    ->assertResponseStatus(400);
+    ->assertResponseStatus(403);
   }
 
 }
