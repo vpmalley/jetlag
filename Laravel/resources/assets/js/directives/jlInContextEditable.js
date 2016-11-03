@@ -82,6 +82,8 @@ function InContextEditableController($scope) {
         if(ctrl.element === null || ctrl.hidden === null || ctrl.visible === null)
             return;
         
+        ctrl.element.addClass('active');
+        
         /* Add controls */
         
         ctrl.hidden.after(function() {
@@ -116,6 +118,8 @@ function InContextEditableController($scope) {
     ctrl.removeControlsAndListeners = function() {
         if(ctrl.element === null || ctrl.hidden === null || ctrl.visible === null)
             return;
+        
+        ctrl.element.removeClass('active');
         
         /* Remove controls and delete their click listeners*/
         ctrl.hidden.siblings("i.fa-pencil").off("click", null, ctrl.hiddenClickListener).remove();

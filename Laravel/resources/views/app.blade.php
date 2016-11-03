@@ -12,6 +12,7 @@
 	
 	<!-- External CSS files -->
 	<link href="{{ asset('/css/leaflet.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('/css/angular-moment-picker.css') }}" rel="stylesheet" type="text/css">
 
 	<!-- Fonts -->
 	<link href="{{ asset('/css/font-awesome.css') }}" rel="stylesheet" type="text/css">

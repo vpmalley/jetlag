@@ -157,6 +157,9 @@ function JetlagUtils() {
 
 function momentToString() {
     return function(input) {
-        return input.format("DD.MM.YYYY");
+        /* XXX: temp hack cause moment-picker has strange behaviour
+        * cf https://github.com/indrimuska/angular-moment-picker/issues/60
+        */
+        return moment.isMoment(input) ? input.format("DD.MM.YYYY") : input;
     }
 }

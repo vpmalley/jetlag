@@ -28,7 +28,8 @@
     "ng-file-upload": "~11.1.1",
     "leaflet": "~0.7.7",
     "angular-leaflet-directive": "~0.10.0",
-    "angular-elastic": "~2.5.1"
+    "angular-elastic": "~2.5.1",
+    "moment-picker": "~0.6.8"
   },
   "repository": {
     "type": "git",

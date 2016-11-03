@@ -1,4 +1,5 @@
 (function(window) {
+    'use strict';
 
 var angular = window.angular;
 var $ = window.$;
@@ -9,7 +10,8 @@ var dependencies = [
     'leaflet-directive',
     'monospaced.elastic',
     'jetlag.webapp.directives.paragraph',
-    'jetlag.webapp.directives.inContextEditable'
+    'jetlag.webapp.directives.inContextEditable',
+    'moment-picker'
 ];
     
 angular
@@ -38,10 +40,6 @@ function TravelbookController($scope, ModelsManager) {
     
     ctrl.isBeingEdited = function() {
         return ctrl.mode === "edit";
-    }
-    
-    ctrl.editableClicked = function(e) {
-        $(e.currentTarget).addClass("editing");
     }
     
     ctrl.navigateTo = function(article) {
@@ -143,6 +141,24 @@ function TravelbookController($scope, ModelsManager) {
                return true;
            } 
            return false;
+        });
+    }
+    
+    ctrl.createNewArticle = function() {
+        var newArticle = new ModelsManager.Article({
+            travelbook: {
+                id: ctrl.travelbook.id
+            }
+        });
+        newArticle.id = undefined;
+        console.log("isnew",newArticle.isNew());
+        console.log(newArticle.isNew);
+        newArticle.save()
+        .success(function(article) {
+           console.log('Creation successful', article); 
+        })
+        .error(function(error) {
+            console.log('Error when creating new article', error);
         });
     }
     

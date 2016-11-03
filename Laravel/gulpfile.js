@@ -26,13 +26,14 @@ elixir(function(mix) {
 			bower_components+'angular/angular.js',
 			bower_components+'underscore/underscore.js',
 			bower_components+'backbone/backbone.js',
-			bower_components+'moment/moment.js',
+			bower_components+'moment/min/moment-with-locales.js',
 			bower_components+'ng-backbone/ng-backbone.js',
 			bower_components+'bootstrap/dist/js/bootstrap.js',
 			bower_components+'ng-file-upload/ng-file-upload.js',
 			bower_components+'leaflet/dist/leaflet.js',
 			bower_components+'angular-leaflet-directive/dist/angular-leaflet-directive.js',
-			bower_components+'angular-elastic/elastic.js'
+			bower_components+'angular-elastic/elastic.js',
+            bower_components+'moment-picker/dist/angular-moment-picker.js'
 		], 'public/js/thirds.js')
 		.scripts([
 			'base.js',
@@ -46,6 +47,7 @@ elixir(function(mix) {
 		.copy('bower_components/bootstrap/fonts', 'public/fonts')
 		.copy('bower_components/leaflet/dist/images', 'public/images')
 		.copy('bower_components/leaflet/dist/leaflet.css', 'public/css')
+        .copy('bower_components/moment-picker/dist/angular-moment-picker.css', 'public/css')
 		.copy('resources/assets/templates', 'public/templates')
 		.version('js/thirds.js');
 });

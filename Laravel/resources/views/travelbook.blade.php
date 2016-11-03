@@ -31,8 +31,16 @@
                 <span class="editing-visible"><i class="fa fa-fw fa-map-marker"></i> <input type="text" name="travelbook-location" ng-model="travelbookCtrl.travelbook.location.label" /></span>
             </span>
 		    <span jl-in-context-editable active="travelbookCtrl.isBeingEdited()" cancel-edit="travelbookCtrl.toggleActive()" valid-edit="travelbookCtrl.toggleActive()">
-                <span class="editing-hidden"><i class="fa fa-fw fa-calendar-o"></i> @{{travelbookCtrl.travelbook.begin_date | momentToString}}</span>
-                <span class="editing-visible"><i class="fa fa-fw fa-calendar-o"></i> <input type="date" name="travelbook-location" ng-model="travelbookCtrl.travelbook.begin_date" /></span>
+                <span class="editing-hidden"><i class="fa fa-fw fa-calendar-o"> </i>@{{travelbookCtrl.travelbook.begin_date | momentToString}}</span>
+                <span class="editing-visible"><i class="fa fa-fw fa-calendar-o"> </i>
+                    <input ng-model="travelbookCtrl.travelbook.begin_date" 
+                        moment-picker="travelbookCtrl.travelbook.begin_date"
+                        format="DD.MM.YYYY"
+                        min-view="year"
+                        max-view="day"
+                        start-view="day"
+                        autoclose="true">
+                </span>
             </span>
           </div>
 		  <div class="jl-btn jl-btn-empty jl-btn-big fullscreen" style="display:none">FULL</div>
@@ -57,7 +65,15 @@
 		<div class="dates">Publié le 25.04.2016. Dernière modification le 28.04.2016.</div>
 	  </div>
 	</div>
+    
+    <!-- Travelbook content table with the different articles -->
 	<div class="travelbook-content-table">
+        <div class="content-entry create-article" ng-if="travelbookCtrl.mode === 'edit'">
+            <div class="content-entry-inner clickable" ng-click="travelbookCtrl.createNewArticle()">
+                <span class="strut"></span><!--
+                --><span><i class="fa fa-fw fa-plus"> </i>write new story</span>
+             </div>
+        </div>
         <div class="content-entry" ng-repeat="article in travelbookCtrl.travelbook.articles">
             <div class="content-entry-inner clickable" ng-click="travelbookCtrl.navigateTo(article)">
                 <h2 class="entry-title">@{{article.title}}</h2>
@@ -68,6 +84,8 @@
              </div>
         </div>
 	</div>
+    
+    <!-- Display of the selected article if any -->
 	<div class="travelbook-article" ng-if="travelbookCtrl.currentArticle !== null">
 		<div class="article-nav-buttons">
 			<div class="jl-btn-group">
