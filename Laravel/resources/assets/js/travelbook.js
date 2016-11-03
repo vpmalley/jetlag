@@ -150,12 +150,9 @@ function TravelbookController($scope, ModelsManager) {
                 id: ctrl.travelbook.id
             }
         });
-        newArticle.id = undefined;
-        console.log("isnew",newArticle.isNew());
-        console.log(newArticle.isNew);
         newArticle.save()
         .success(function(article) {
-           console.log('Creation successful', article); 
+            window.location.href = window.location.protocol + "//" + window.location.host + "/articles/create/#/" + article.id;
         })
         .error(function(error) {
             console.log('Error when creating new article', error);

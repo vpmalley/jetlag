@@ -91,7 +91,7 @@ class Article
   * The rules for validating input
   */
   static $creationRules = [
-    'title' => 'required|min:3|max:200',
+    'title' => 'min:3|max:200',
     'description_text' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'is_draft' => 'boolean',
@@ -101,7 +101,7 @@ class Article
    * The rules for validating input
    */
   static $updateRules = [
-    'title' => 'min:3|max:200',
+    'title' => 'required|min:3|max:200',
     'descriptionText' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'isDraft' => 'boolean',
