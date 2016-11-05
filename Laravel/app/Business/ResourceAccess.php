@@ -50,4 +50,16 @@ class ResourceAccess
       abort(403);
     }
   }
+
+  /**
+  * Checks whether the logged in user can read the resource. Returns false otherwise
+  *
+  * @param bool isPublic whether the resource is public
+  * @param int authorId the id of the author for this resource
+  */
+  public static function canReadResource($isPublic, $authorId)
+  {
+    $id = Auth::user() ? Auth::user()->id : -1;
+    return $isPublic || Author::isReader($id, $authorId);
+  }
 }
