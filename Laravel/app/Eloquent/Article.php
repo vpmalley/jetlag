@@ -40,7 +40,7 @@ class Article extends Model
   */
   static $rules = [
     'id' => 'numeric',
-    'title' => 'string|required|min:3|max:200',
+    'title' => 'string|max:200',
     'description_text' => 'string|min:3|max:500',
     'is_draft' => 'boolean',
     'is_public' => 'boolean',

@@ -305,11 +305,12 @@ class ArticleApiTest extends TestCase {
 
     $this->actingAs($user)
     ->post($this->articleApiUrl, [ 'description_text' => 'an article without a title'], ['ContentType' => 'application/json'])
-    ->assertResponseStatus(400);
+    ->assertResponseStatus(201);
 
-    $this->actingAs($user)
-    ->get($this->articleApiUrl . 1)
-    ->assertResponseStatus(404);
+    $this->seeJson([
+      'id' => 1,
+      'url' => $this->baseUrl . "/article/1",
+    ]);
   }
 
   public function testApiStoreArticleWithMoreData()

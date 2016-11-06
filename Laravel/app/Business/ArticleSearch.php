@@ -3,7 +3,7 @@
 namespace Jetlag\Business;
 
 use TeamTNT\TNTSearch\TNTSearch;
-use Jetlag\Eloquent\Article;
+use Jetlag\Eloquent\Article as StoredArticle;
 
 class ArticleSearch
 {
@@ -28,7 +28,7 @@ class ArticleSearch
     $tnt->loadConfig($config);
     $tnt->selectIndex("articles.index");
     $results = $tnt->searchBoolean($query, 50);
-    $articles = Article::whereIn('id', $results['ids'])->paginate(5);
+    $articles = StoredArticle::whereIn('id', $results['ids'])->paginate(5);
     return $articles;
   }
 }
