@@ -44,7 +44,7 @@ class PictureStorageTest extends TestCase {
                 true // for $test
             );
 
-    Log::debug(" expecting to store picture " . $picture->id . " from file " . public_path() . '/images/8.jpg');
+    Log::debug(" expecting to store picture " . $picture->id . " from file " . public_path() . '/images/4.jpg');
     $this->actingAs($writer)
     ->post($this->pictureStorageApiUrl, [
       'picture_id' => $picture->id,
@@ -52,8 +52,14 @@ class PictureStorageTest extends TestCase {
     ])
     ->assertResponseOk();
     $this->seeJson([
-      'picture_id' => $picture->id,
-      'url' => 'pix/' . $user->id . '/pik' . $picture->id . '.txt',
+      'id' => $picture->id,
+      'small_url' => $links[0],
+      'medium_url' => $links[1],
+      'big_url' => [
+        'caption' => '',
+        'url' => 'pix/' . $user->id . '/pik' . $picture->id . '.txt',
+      ],
+      'place' => $places[0],
     ]);
   }
 

@@ -55,6 +55,7 @@ class RestPictureController extends Controller
       $picture->big_url()->associate($link);
     }
     $picture->save();
-    return response()->json(['picture_id' => $pictureId, 'url' => $path], 200); // TODO return actual url
+    $picture->load(Picture::$relationsToLoad);
+    return $picture;
   }
 }
