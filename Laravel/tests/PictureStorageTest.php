@@ -47,8 +47,9 @@ class PictureStorageTest extends TestCase {
     Log::debug(" expecting to store picture " . $picture->id . " from file " . public_path() . '/images/4.jpg');
     $this->actingAs($writer)
     ->post($this->pictureStorageApiUrl, [
-      'picture_id' => $picture->id,
-      'picture_file' => $file,
+      'id' => $picture->id,
+      'caption' => 'a different caption',
+      'file' => $file,
     ])
     ->assertResponseOk();
     $this->seeJson([
@@ -56,7 +57,7 @@ class PictureStorageTest extends TestCase {
       'small_url' => $links[0],
       'medium_url' => $links[1],
       'big_url' => [
-        'caption' => '',
+        'caption' => 'a different caption',
         'url' => 'pix/' . $user->id . '/pik' . $picture->id . '.txt',
       ],
       'place' => $places[0],
@@ -69,8 +70,8 @@ class PictureStorageTest extends TestCase {
     Log::debug(" expecting to fail storing picture");
     $this
     ->post($this->pictureStorageApiUrl, [
-      'picture_id' => 1234,
-      'picture_file' => 'some invalid content',
+      'id' => 1234,
+      'file' => 'some invalid content',
     ])
     ->assertResponseStatus(404);
   }
@@ -90,8 +91,8 @@ class PictureStorageTest extends TestCase {
     Log::debug(" expecting to fail storing picture " . $picture->id);
     $this->actingAs($writer)
     ->post($this->pictureStorageApiUrl, [
-      'picture_id' => $picture->id,
-      'picture_file' => 'some content of picture',
+      'id' => $picture->id,
+      'file' => 'some content of picture',
     ])
     ->assertResponseStatus(400);
   }
@@ -103,8 +104,8 @@ class PictureStorageTest extends TestCase {
     Log::debug(" expecting to fail storing picture " . $picture->id);
     $this
     ->post($this->pictureStorageApiUrl, [
-      'picture_id' => $picture->id,
-      'picture_file' => 'some content of picture',
+      'id' => $picture->id,
+      'file' => 'some content of picture',
     ])
     ->assertResponseStatus(403);
   }

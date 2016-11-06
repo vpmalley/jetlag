@@ -8,6 +8,7 @@ use Jetlag\Business\ResourceAccess;
 use Jetlag\Eloquent\Picture;
 use Jetlag\Eloquent\Link;
 use Storage;
+use Validator;
 
 class RestPictureController extends Controller
 {
@@ -30,7 +31,8 @@ class RestPictureController extends Controller
   */
   public function upload(Request $request)
   {
-    $pictureId = $request->input('picture_id');
+    $validator = Validator::make($request->all(), Picture::$rules);
+    $pictureId = $request->input('id');
     $picture = Picture::find($pictureId);
     if (!$picture) {
       abort(404);
@@ -38,7 +40,7 @@ class RestPictureController extends Controller
 
     // TODO use when the authoring is done properly
     // ResourceAccess::wantsToWriteResource($picture->author_id);
-    $uploadedFile = $request->file('picture_file');
+    $uploadedFile = $request->file('file');
     if (!$uploadedFile || !$uploadedFile->isValid()) {
       abort(400, 'wrong format');
     }
@@ -47,10 +49,12 @@ class RestPictureController extends Controller
     Storage::put($path, file_get_contents($uploadedFile->getRealPath()));
     if ($picture->big_url) {
       $picture->big_url->url = $path;
+      $picture->big_url->caption = $request->input('caption');
       $picture->big_url->save();
     } else {
       $link = new Link;
       $link->fromUrl($path);
+      $link->caption = $request->input('caption');
       $link->save();
       $picture->big_url()->associate($link);
     }
