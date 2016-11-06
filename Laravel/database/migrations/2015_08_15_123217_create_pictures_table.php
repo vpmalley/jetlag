@@ -15,11 +15,11 @@ class CreatePicturesTable extends Migration
         Schema::create('pictures', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->bigInteger('small_picture_link_id');
-            $table->bigInteger('medium_picture_link_id');
-            $table->bigInteger('big_picture_link_id');
+            $table->bigInteger('small_picture_link_id')->nullable();
+            $table->bigInteger('medium_picture_link_id')->nullable();
+            $table->bigInteger('big_picture_link_id')->nullable();
             $table->bigInteger('author_id');
-            $table->bigInteger('place_id');
+            $table->bigInteger('place_id')->nullable();
             $table->bigInteger('article_id')->nullable();
             $table->softDeletes();
         });

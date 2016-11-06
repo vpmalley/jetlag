@@ -287,6 +287,112 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
     ]);
   }
 
+  public function testApiUpdateArticleWithPictureParagraphWithoutPlace()
+  {
+    $authorId = 6;
+    $writer = factory(Jetlag\User::class)->create();
+    factory(Jetlag\Eloquent\Author::class, 'writer')->create([
+      'author_id' => $authorId,
+      'user_id' => $writer->id
+    ]);
+    $article = factory(Jetlag\Eloquent\Article::class)->create([
+      'author_id' => $authorId,
+      'title' => "article with id 2",
+      'description_text' => 'this is a cool article isnt it? id 2',
+    ]);
+    $links = factory(Jetlag\Eloquent\Link::class, 'web', 3)->create([
+      'author_id' => $authorId,
+    ]);
+    $places = factory(Jetlag\Eloquent\Place::class, 2)->create();
+    $picture = factory(Jetlag\Eloquent\Picture::class)->create([
+      'author_id' => $authorId,
+      'small_picture_link_id' => null,
+      'medium_picture_link_id' => $links[1]->id,
+      'big_picture_link_id' => $links[2]->id,
+      'place_id' => null,
+      'article_id' => null,
+    ]);
+    $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create([
+      'title' => 'A first paragraph',
+      'weather' => 'cloudy',
+      'date' => '2016-01-03',
+      'article_id' => $article->id,
+      'block_content_id' => $picture->id,
+      'block_content_type' => 'Jetlag\Eloquent\Picture',
+      'place_id' => $places[1]->id,
+    ]);
+
+    $this->actingAs($writer)
+    ->put($this->articleApiUrl . $article->id, [
+      'title' => 'article1',
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Picture',
+          'block_content' => [
+            'id' => $picture->id,
+            'big_url' => [
+              'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+            ],
+          ],
+          'weather' => 'sunny',
+          'date' => '2013-12-12',
+          'place' => [
+            'latitude' => 83.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'description' => 'lala sous mer',
+          ],
+        ]
+      ],
+    ], ['ContentType' => 'application/json'])
+    ->assertResponseStatus(200);
+    $this->seeJson([
+      'id' => $article->id,
+    ]);
+
+    $this->actingAs($writer)
+    ->get($this->articleApiUrl . $article->id)
+    ->assertResponseOk();
+    $this->seeJson([
+      'title' => 'article1',
+      'description_text' => 'this is a cool article isnt it? id 2',
+      'is_draft' => 1,
+      'description_media' => null,
+      'paragraphs' => [
+        [
+          'id' => $paragraph->id,
+          'title' => 'A first paragraph',
+          'block_content_type' => 'Jetlag\Eloquent\Picture',
+          'block_content' => [
+            'id' => $picture->id,
+            'small_url' => null,
+            'medium_url' => [
+              'caption' => $links[1]->caption,
+              'url' => $links[1]->url,
+            ],
+            'big_url' => [
+              'caption' => $links[2]->caption,
+              'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+            ],
+            'place' => null,
+          ],
+          'weather' => 'sunny',
+          'date' => '2013-12-12',
+          'is_draft' => 1,
+          'place' => [
+            'latitude' => 83.43,
+            'longitude' => -43.57,
+            'altitude' => -156.9,
+            'description' => 'lala sous mer',
+          ],
+        ]
+      ],
+    ]);
+  }
+
+
   public function testApiPartialUpdateArticleWithPictureParagraph()
   {
     $authorId = 6;
