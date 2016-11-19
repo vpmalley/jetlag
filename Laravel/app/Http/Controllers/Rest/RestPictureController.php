@@ -35,7 +35,7 @@ class RestPictureController extends Controller
     $pictureId = $request->input('id');
     $picture = Picture::find($pictureId);
     if (!$picture) {
-      abort(404);
+      abort(400);
     }
 
     // TODO use when the authoring is done properly
