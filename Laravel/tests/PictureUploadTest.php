@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Jetlag\User;
 use Jetlag\Eloquent\TextContent;
 
-class PictureStorageTest extends TestCase {
+class PictureUploadTest extends TestCase {
 
   use WithoutMiddleware; // note: as we bypass middleware (in particular auth), we expect 403 instead of 401
   //(i.e. non-logged user is forbidden to access resources requiring login)
@@ -73,7 +73,7 @@ class PictureStorageTest extends TestCase {
       'id' => 1234,
       'file' => 'some invalid content',
     ])
-    ->assertResponseStatus(404);
+    ->assertResponseStatus(400);
   }
 
   public function testApiWrongFormatOfPictureFile()

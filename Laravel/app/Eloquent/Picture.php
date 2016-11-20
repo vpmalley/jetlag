@@ -62,7 +62,7 @@ class Picture extends Model
   */
   public function extract($subRequest)
   {
-    $this->id = array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;
+    $this->id = $this->id ? $this->id : array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;
     $this->author_id = -1; // TODO authoring refacto
 
     $this->extractAndBindLink($subRequest, 'small_url', $this->small_url());

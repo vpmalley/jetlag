@@ -52,6 +52,7 @@ Route::post('travelbook/{id}/edit', 'Web\TravelbookController@postEdit');
 Route::get('article/{id}', 'Web\ArticleController@getDisplay');
 
 Route::resource('api/0.1/articles', 'Rest\RestArticleController', ['except' => ['create']]);
+Route::resource('api/0.1/pictures', 'Rest\RestPictureController', ['except' => ['create']]);
 
 Route::get('api/0.1/search/articles', 'Rest\SearchArticleController@search');
 

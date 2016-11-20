@@ -9,6 +9,7 @@ use Jetlag\Eloquent\Picture;
 use Jetlag\Eloquent\Link;
 use Storage;
 use Validator;
+use Auth;
 
 class RestPictureController extends Controller
 {
@@ -21,6 +22,112 @@ class RestPictureController extends Controller
   public function __construct()
   {
     $this->middleware('auth.rest', ['except' => 'show']);
+  }
+
+  /**
+  * Display a listing of the resource for the logged in user.
+  *
+  * @return Response
+  */
+  public function index()
+  {
+    // $articles = Article::getAllForUser(Auth::user()->id);
+    return [];
+  }
+
+  /**
+  * Show the form for creating a new resource.
+  *
+  * @return Response
+  */
+  public function create()
+  {
+    // do not fill, but leave it for cookies
+  }
+
+  /**
+  * Store a newly created resource in storage.
+  *
+  * @param  Request  $request
+  * @return Response
+  */
+  public function store(Request $request)
+  {
+    $validator = Validator::make($request->all(), Picture::$rules);
+    if ($validator->fails()) {
+      abort(400);
+    }
+    if (null == Auth::user())
+    {
+      abort(403);
+    }
+
+    $picture = new Picture;
+    $picture->extract($request->all());
+    $picture->load(Picture::$relationsToLoad);
+    return $picture;
+  }
+
+  /**
+  * Display the specified resource.
+  *
+  * @param  Jetlag\Eloquent\Picture $storedPicture
+  * @return Response
+  */
+  public function show($storedPicture)
+  {
+    // ResourceAccess::wantsToReadResource($storedPicture->is_public, $storedPicture->author_id);
+    $storedPicture->load(Picture::$relationsToLoad);
+    return $storedPicture;
+  }
+
+  /**
+  * Show the form for editing the specified resource.
+  *
+  * @param  Jetlag\Eloquent\Picture $storedPicture
+  * @return Response
+  */
+  public function edit($storedPicture)
+  {
+    // ResourceAccess::wantsToReadResource($storedPicture->is_public, $storedPicture->author_id);
+    return $storedPicture;
+  }
+
+  /**
+  * Update the specified resource in storage.
+  *
+  * @param  Request  $request
+  * @param  Jetlag\Eloquent\Picture $storedPicture
+  * @return Response
+  */
+  public function update(Request $request, $storedPicture)
+  {
+    // ResourceAccess::wantsToWriteResource($storedArticle->author_id);
+    $validator = Validator::make($request->all(), Picture::$rules);
+    if ($validator->fails()) {
+      abort(400);
+    }
+    $storedPicture->extract($request->all());
+    $storedPicture->load(Picture::$relationsToLoad);
+    return $storedPicture;
+  }
+
+  /**
+  * Remove the specified resource from storage.
+  *
+  * @param  Jetlag\Eloquent\Picture $storedPicture
+  * @return Response
+  */
+  public function destroy($storedPicture)
+  {
+    // ResourceAccess::wantsToOwnResource($storedPicture->author_id);
+    if ($storedPicture->delete())
+    {
+      return ['id' => $storedPicture->id];
+    } else
+    {
+      abort(500, 'not deleted');
+    }
   }
 
   /**

@@ -18,6 +18,7 @@ class CreatePicturesTable extends Migration
             $table->bigInteger('small_picture_link_id')->nullable();
             $table->bigInteger('medium_picture_link_id')->nullable();
             $table->bigInteger('big_picture_link_id')->nullable();
+            $table->boolean('is_public');
             $table->bigInteger('author_id');
             $table->bigInteger('place_id')->nullable();
             $table->bigInteger('article_id')->nullable();
