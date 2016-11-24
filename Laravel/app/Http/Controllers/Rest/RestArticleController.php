@@ -12,7 +12,6 @@ use Jetlag\Http\Requests;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Business\ResourceAccess;
 use Jetlag\Business\Article;
-use Jetlag\Business\Picture as BPicture;
 use Jetlag\Eloquent\Article as StoredArticle;
 use Jetlag\Eloquent\Link;
 use Jetlag\Eloquent\Paragraph;

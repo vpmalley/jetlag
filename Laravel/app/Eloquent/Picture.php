@@ -2,6 +2,7 @@
 
 namespace Jetlag\Eloquent;
 
+use Log;
 use Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -62,7 +63,9 @@ class Picture extends Model
   */
   public function extract($subRequest)
   {
-    $this->id = $this->id ? $this->id : array_key_exists('id', $subRequest) ? $subRequest['id'] : -1;
+    if (!isset($this->id) && array_key_exists('id', $subRequest)) {
+      $this->id = $subRequest['id'];
+    }
     $this->author_id = -1; // TODO authoring refacto
 
     $this->extractAndBindLink($subRequest, 'small_url', $this->small_url());

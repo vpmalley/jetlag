@@ -3,9 +3,8 @@
 namespace Jetlag\Business;
 
 use Jetlag\Eloquent\Article as StoredArticle;
-use Jetlag\Eloquent\Picture as StoredPicture;
+use Jetlag\Eloquent\Picture;
 use Jetlag\Eloquent\Author;
-use Jetlag\Business\Picture;
 use Jetlag\Eloquent\Paragraph;
 use Jetlag\Eloquent\Map;
 use Jetlag\UserPublic;
@@ -155,7 +154,7 @@ class Article
         Log::warning('block content is not set');
       } else if ('Jetlag\Eloquent\Picture' == get_class($paragraph->blockContent))
       {
-        $paragraph->blockContent->load(StoredPicture::$relationsToLoad);
+        $paragraph->blockContent->load(Picture::$relationsToLoad);
       } else if ('Jetlag\Eloquent\Map' == get_class($paragraph->blockContent))
       {
         $paragraph->blockContent->load(Map::$relationsToLoad);
