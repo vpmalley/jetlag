@@ -2,10 +2,11 @@
 
 namespace Jetlag\Eloquent;
 
+use Log;
+use Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
-use Log;
 use TeamTNT\TNTSearch\TNTSearch;
 
 class Article extends Model
@@ -36,12 +37,23 @@ class Article extends Model
   ];
 
   /**
-  * The rules for validating input
-  */
-  static $rules = [
-    'id' => 'numeric',
-    'title' => 'string|max:200',
-    'description_text' => 'string|min:3|max:500',
+   * The rules for validating input
+   */
+  static $creationRules = [
+    'title' => 'max:200',
+    'description_text' => 'max:500',
+    'descriptionMediaUrl' => 'max:200',
+    'is_draft' => 'boolean',
+    'is_public' => 'boolean',
+  ];
+
+  /**
+   * The rules for validating input
+   */
+  static $updateRules = [
+    'title' => 'required|min:3|max:200',
+    'descriptionText' => 'max:500',
+    'descriptionMediaUrl' => 'max:200',
     'is_draft' => 'boolean',
     'is_public' => 'boolean',
   ];
@@ -57,6 +69,91 @@ class Article extends Model
   {
     return $this->hasMany('Jetlag\Eloquent\Paragraph');
   }
+
+  // -- Extraction
+
+  /**
+  * Extracts the picture from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Picture the extracted picture
+  */
+  public function extract($subRequest)
+  {
+    if (array_key_exists('title', $subRequest)) {
+        $this->title = $subRequest['title'];
+    }
+    if (array_key_exists('description_text', $subRequest)) {
+        $this->description_text = $subRequest['description_text'];
+    }
+    if (array_key_exists('is_draft', $subRequest)) {
+        $this->is_draft = $subRequest['is_draft'];
+    }
+    if (array_key_exists('is_public', $subRequest)) {
+        $this->is_public = $subRequest['is_public'];
+    }
+
+    $this->save();
+
+    $this->extractParagraphs($subRequest);
+    $this->extractDescriptionPicture($subRequest);
+
+    return $this;
+  }
+
+  /**
+  * Extracts the picture from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Picture the extracted picture
+  */
+  public function extractDescriptionPicture($subRequest)
+  {
+    if (array_key_exists('description_media', $subRequest)) {
+      $pictureSubRequest = $subRequest['description_media'];
+      $validator = Validator::make($pictureSubRequest, Picture::$rules);
+      if ($validator->fails()) {
+        abort(400, $validator->errors());
+      }
+      if (array_key_exists('id', $pictureSubRequest)) {
+        $picture = Picture::find($pictureSubRequest['id']);
+      } else {
+        $picture = new Picture;
+      }
+      $picture->extract($request->input('description_media'));
+      $this->descriptionPicture()->save($picture);
+    }
+
+  }
+
+  /**
+  * Extracts the paragraphs from the subrequest
+  *
+  * @param  array  $subRequest
+  * @return  Jetlag\Eloquent\Paragraph the extracted picture
+  */
+  public function extractParagraphs($subRequest)
+  {
+    if (array_key_exists('paragraphs', $subRequest)) {
+      foreach ($subRequest['paragraphs'] as $paragraphSubRequest) {
+        $validator = Validator::make($paragraphSubRequest, Paragraph::$rules);
+        if ($validator->fails()) {
+          abort(400, $validator->errors());
+        }
+        if (array_key_exists('id', $paragraphSubRequest)) {
+          $paragraph = Paragraph::find($paragraphSubRequest['id']);
+        } else {
+          $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
+          $paragraph = Paragraph::create($paragraphSubRequest);
+        }
+        $paragraph->extract($paragraphSubRequest);
+        $this->paragraphs()->save($paragraph);
+      }
+    }
+    return $this->paragraphs;
+  }
+
+  // -- Indexing
 
   public static function boot()
   {

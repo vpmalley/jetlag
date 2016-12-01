@@ -104,7 +104,7 @@ class Article
     'descriptionText' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'isDraft' => 'boolean',
-    ];
+  ];
 
   public function __construct()
   {

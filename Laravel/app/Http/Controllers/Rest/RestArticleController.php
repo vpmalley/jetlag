@@ -75,47 +75,10 @@ class RestArticleController extends Controller
       abort(403);
     }
 
-    $article = new Article;
-    $article->fromRequest($request->input('title'));
-
-    $article->setDescriptionText($request->input('description_text', ''));
-    $article->setIsDraft($request->input('is_draft', TRUE));
-    $article->setIsPublic($request->input('is_public', FALSE));
-
-    $newAuthorUsers = [];
-    if ($request->has('author_users'))
-    {
-      $newAuthorUsers = $request->input('author_users');
-    }
-    $newAuthorUsers[Auth::user()->id] = 'owner';
-    $article->updateAuthorUsers($newAuthorUsers);
-
-    if ($request->has('description_media'))
-    {
-      $storedPicture = new Picture;
-      $storedPicture->extract($request->input('description_media'));
-      $article->setDescriptionPicture($storedPicture);
-    }
-
-    if ($request->has('paragraphs'))
-    {
-      foreach ($request->input('paragraphs') as $paragraphSubRequest) {
-        if (array_key_exists('id', $paragraphSubRequest))
-        {
-          abort(400);
-        }
-        $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
-        $validator = Validator::make($paragraphSubRequest, Paragraph::$rules);
-        if ($validator->fails()) {
-          abort(400);
-        }
-        $paragraph = Paragraph::create($paragraphSubRequest);
-        $paragraph->extract($paragraphSubRequest);
-        $article->addParagraph($paragraph);
-      }
-    }
-    $article->persist();
-    return response()->json(['id' => $article->getId(), 'url' => $article->getWebUrl()], 201);
+    $article = new StoredArticle;
+    $article->extract($request->all());
+    
+    return response($article, 201);
   }
 
   /**
@@ -155,13 +118,14 @@ class RestArticleController extends Controller
   */
   public function update(Request $request, $storedArticle)
   {
-    $article = new Article;
     ResourceAccess::wantsToWriteResource($storedArticle->author_id);
-    $article->fromStoredArticle($storedArticle);
     $validator = Validator::make($request->all(), Article::$updateRules);
     if ($validator->fails()) {
       abort(400);
     }
+
+    $article = new Article;
+    $article->fromStoredArticle($storedArticle);
     $article->setTitle($request->input('title', $article->getTitle()));
     $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
     if ($request->has('description_media'))
