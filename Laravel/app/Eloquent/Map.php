@@ -83,4 +83,10 @@ class Map extends Model
     }
   }
 
+  // -- Loading relations
+
+  public function loadRelations() {
+    $this->load(Map::$relationsToLoad);
+  }
+
 }

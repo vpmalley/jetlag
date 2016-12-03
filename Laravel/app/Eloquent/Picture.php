@@ -55,6 +55,8 @@ class Picture extends Model
     return $this->belongsTo('Jetlag\Eloquent\Place');
   }
 
+  // -- Extraction
+
   /**
   * Extracts the picture from the subrequest
   *
@@ -108,5 +110,11 @@ class Picture extends Model
       $link->extract($subRequest[$key]);
       $relation->associate($link);
     }
+  }
+
+  // -- Loading relations
+
+  public function loadRelations() {
+    $this->load(Picture::$relationsToLoad);
   }
 }

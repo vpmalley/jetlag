@@ -30,7 +30,6 @@ class Article extends Model
   */
   public $fillable = ['id', 'title', 'description_text', 'is_draft', 'is_public'];
 
-
   protected $casts = [
       'isDraft' => 'boolean',
       'isPublic' => 'boolean',
@@ -52,11 +51,13 @@ class Article extends Model
    */
   static $updateRules = [
     'title' => 'required|min:3|max:200',
-    'descriptionText' => 'max:500',
+    'description_text' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'is_draft' => 'boolean',
     'is_public' => 'boolean',
   ];
+
+  static $relationsToLoad = ['description_picture', 'paragraphs'];
 
   protected $dates = ['deleted_at'];
 
@@ -109,8 +110,8 @@ class Article extends Model
   */
   public function extractDescriptionPicture($subRequest)
   {
-    if (array_key_exists('description_media', $subRequest)) {
-      $pictureSubRequest = $subRequest['description_media'];
+    if (array_key_exists('description_picture', $subRequest)) {
+      $pictureSubRequest = $subRequest['description_picture'];
       $validator = Validator::make($pictureSubRequest, Picture::$rules);
       if ($validator->fails()) {
         abort(400, $validator->errors());
@@ -120,7 +121,7 @@ class Article extends Model
       } else {
         $picture = new Picture;
       }
-      $picture->extract($request->input('description_media'));
+      $picture->extract($request->input('description_picture'));
       $this->descriptionPicture()->save($picture);
     }
 
@@ -151,6 +152,15 @@ class Article extends Model
       }
     }
     return $this->paragraphs;
+  }
+
+  // -- Loading relations
+
+  public function loadRelations() {
+    $this->load(Article::$relationsToLoad);
+    if (isset($this->descriptionPicture)) {
+      $this->descriptionPicture->loadRelations();
+    }
   }
 
   // -- Indexing

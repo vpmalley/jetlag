@@ -77,7 +77,7 @@ class RestArticleController extends Controller
 
     $article = new StoredArticle;
     $article->extract($request->all());
-    
+
     return response($article, 201);
   }
 
@@ -89,10 +89,9 @@ class RestArticleController extends Controller
   */
   public function show($storedArticle)
   {
-    $article = new Article;
     ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
-    $article->fromStoredArticle($storedArticle);
-    return $article->getForRest();
+    $storedArticle->loadRelations();
+    return $storedArticle;
   }
 
   /**
@@ -103,10 +102,9 @@ class RestArticleController extends Controller
   */
   public function edit($storedArticle)
   {
-    $article = new Article;
     ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
-    $article->fromStoredArticle($storedArticle);
-    return $article->getForRest();
+    $storedArticle->loadRelations();
+    return $storeArticle;
   }
 
   /**
