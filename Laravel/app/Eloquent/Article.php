@@ -61,7 +61,7 @@ class Article extends Model
 
   protected $dates = ['deleted_at'];
 
-  public function descriptionPicture()
+  public function description_picture()
   {
     return $this->hasOne('Jetlag\Eloquent\Picture');
   }

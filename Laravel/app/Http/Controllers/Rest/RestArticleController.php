@@ -104,7 +104,7 @@ class RestArticleController extends Controller
   {
     ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
     $storedArticle->loadRelations();
-    return $storeArticle;
+    return $storedArticle;
   }
 
   /**
@@ -122,42 +122,9 @@ class RestArticleController extends Controller
       abort(400);
     }
 
-    $article = new Article;
-    $article->fromStoredArticle($storedArticle);
-    $article->setTitle($request->input('title', $article->getTitle()));
-    $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
-    if ($request->has('description_media'))
-    {
-      $storedPicture = new Picture;
-      $storedPicture->extract($request->input('description_media'));
-      $article->setDescriptionPicture($storedPicture);
-    }
-    $article->setIsDraft($request->input('is_draft', $article->isDraft()));
-    if ($request->has('author_users'))
-    {
-      $newAuthorUsers = $request->input('author_users');
-      $newAuthorUsers[Auth::user()->id] = Author::getRole($article->getAuthorId(), Auth::user()->id);
-      $article->updateAuthorUsers($newAuthorUsers);
-    }
+    $storedArticle->extract($request->all());
 
-    if ($request->has('paragraphs'))
-    {
-      foreach ($request->input('paragraphs') as $paragraphSubRequest) {
-        if (array_key_exists('id', $paragraphSubRequest))
-        {
-          $paragraph = Paragraph::find($paragraphSubRequest['id']);
-          $paragraph->fill($paragraphSubRequest);
-        } else
-        {
-          $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
-          $paragraph = Paragraph::create($paragraphSubRequest);
-        }
-        $paragraph->extract($paragraphSubRequest);
-        $article->addParagraph($paragraph);
-      }
-    }
-    $article->persist();
-    return ['id' => $article->getId()];
+    return response($storedArticle, 200);
   }
 
   /**
