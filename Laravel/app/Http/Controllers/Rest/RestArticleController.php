@@ -75,8 +75,10 @@ class RestArticleController extends Controller
       abort(403);
     }
 
+    $requestBody = array_merge(StoredArticle::$default_fillable_values, $request->all());
     $article = new StoredArticle;
-    $article->extract($request->all());
+    $article->extract($requestBody);
+    $article->addUrl();
 
     return response($article, 201);
   }
@@ -89,8 +91,9 @@ class RestArticleController extends Controller
   */
   public function show($storedArticle)
   {
-    ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
+    // ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
     $storedArticle->loadRelations();
+    $storedArticle->addUrl();
     return $storedArticle;
   }
 
@@ -102,8 +105,9 @@ class RestArticleController extends Controller
   */
   public function edit($storedArticle)
   {
-    ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
+    // ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
     $storedArticle->loadRelations();
+    $storedArticle->addUrl();
     return $storedArticle;
   }
 
@@ -116,13 +120,16 @@ class RestArticleController extends Controller
   */
   public function update(Request $request, $storedArticle)
   {
-    ResourceAccess::wantsToWriteResource($storedArticle->author_id);
+    // ResourceAccess::wantsToWriteResource($storedArticle->author_id);
     $validator = Validator::make($request->all(), Article::$updateRules);
     if ($validator->fails()) {
       abort(400);
     }
 
-    $storedArticle->extract($request->all());
+    $requestBody = array_merge(StoredArticle::$default_fillable_values, $request->all());
+    $storedArticle->extract($requestBody);
+    $storedArticle->loadRelations();
+    $storedArticle->addUrl();
 
     return response($storedArticle, 200);
   }

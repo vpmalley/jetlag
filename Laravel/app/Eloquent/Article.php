@@ -30,9 +30,11 @@ class Article extends Model
   */
   public $fillable = ['id', 'title', 'description_text', 'is_draft', 'is_public'];
 
+  protected $visible = ['id', 'title', 'description_text', 'is_draft', 'is_public', 'description_picture', 'paragraphs', 'url'];
+
   protected $casts = [
-      'isDraft' => 'boolean',
-      'isPublic' => 'boolean',
+      'is_draft' => 'boolean',
+      'is_public' => 'boolean',
   ];
 
   /**
@@ -57,9 +59,17 @@ class Article extends Model
     'is_public' => 'boolean',
   ];
 
+  static $default_fillable_values = [
+    'title' => '',
+    'description_text' => '',
+    'date' => '',
+    'is_draft' => true,
+    'is_public' => false,
+  ];
+
   static $relationsToLoad = ['description_picture', 'paragraphs'];
 
-  protected $dates = ['deleted_at'];
+  protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
   public function description_picture()
   {
@@ -121,8 +131,8 @@ class Article extends Model
       } else {
         $picture = new Picture;
       }
-      $picture->extract($request->input('description_picture'));
-      $this->descriptionPicture()->save($picture);
+      $picture->extract($pictureSubRequest);
+      $this->description_picture()->save($picture);
     }
 
   }
@@ -158,9 +168,13 @@ class Article extends Model
 
   public function loadRelations() {
     $this->load(Article::$relationsToLoad);
-    if (isset($this->descriptionPicture)) {
-      $this->descriptionPicture->loadRelations();
+    if ($this->description_picture) {
+      $this->description_picture->loadRelations();
     }
+  }
+
+  public function addUrl() {
+    $this->url = url('/article/' . $this->id);
   }
 
   // -- Indexing
