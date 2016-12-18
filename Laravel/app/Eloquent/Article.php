@@ -69,6 +69,8 @@ class Article extends Model
 
   static $relationsToLoad = ['description_picture', 'paragraphs'];
 
+  static $paragraphsRelationsToLoad = ['paragraphs.block_content', 'paragraphs.place'];
+
   protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
   public function description_picture()
@@ -171,6 +173,7 @@ class Article extends Model
     if ($this->description_picture) {
       $this->description_picture->loadRelations();
     }
+    $this->load(Article::$paragraphsRelationsToLoad);
   }
 
   public function addUrl() {

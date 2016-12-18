@@ -45,7 +45,7 @@ class ArticleApiTest extends TestCase {
       'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => $article->is_draft,
       'is_public' => $article->is_public,
-      'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
+      // 'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -78,7 +78,7 @@ class ArticleApiTest extends TestCase {
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
+      // 'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -111,7 +111,7 @@ class ArticleApiTest extends TestCase {
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'author_users' => [$owner->id => 'owner', $reader->id => 'reader'],
+      // 'author_users' => [$owner->id => 'owner', $reader->id => 'reader'],
     ]);
   }
 
@@ -414,6 +414,7 @@ class ArticleApiTest extends TestCase {
         'id' => 1,
         'small_url' => null,
         'big_url' => null,
+        'place' => null,
         'medium_url' => [
         'caption' => '',
         'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',

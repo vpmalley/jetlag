@@ -78,6 +78,7 @@ class RestArticleController extends Controller
     $requestBody = array_merge(StoredArticle::$default_fillable_values, $request->all());
     $article = new StoredArticle;
     $article->extract($requestBody);
+    $article->loadRelations();
     $article->addUrl();
 
     return response($article, 201);
@@ -126,7 +127,7 @@ class RestArticleController extends Controller
       abort(400);
     }
 
-    $requestBody = array_merge(StoredArticle::$default_fillable_values, $request->all());
+    $requestBody = $request->all();
     $storedArticle->extract($requestBody);
     $storedArticle->loadRelations();
     $storedArticle->addUrl();

@@ -16,7 +16,7 @@ class Paragraph extends Model
 
   protected $fillable = ['id', 'title', 'block_content_type', 'date', 'weather', 'is_draft'];
 
-  protected $visible = ['id', 'title', 'blockContent', 'block_content_type', 'place', 'date', 'weather', 'is_draft'];
+  protected $visible = ['id', 'title', 'block_content', 'block_content_type', 'place', 'date', 'weather', 'is_draft'];
 
   /**
   * The rules for validating input
@@ -42,7 +42,7 @@ class Paragraph extends Model
     return $this->belongsTo('Jetlag\Eloquent\Place');
   }
 
-  public function blockContent() {
+  public function block_content() {
     return $this->morphTo();
   }
 
@@ -78,6 +78,12 @@ class Paragraph extends Model
       $place = Place::create(array_merge(Place::$default_fillable_values, $subRequest['place']));
       $this->place()->associate($place);
     }
+    if (array_key_exists('date', $subRequest)) {
+        $this->date = $subRequest['date'];
+    }
+    if (array_key_exists('weather', $subRequest)) {
+        $this->weather = $subRequest['weather'];
+    }
     $this->save();
     return $this;
   }
@@ -96,7 +102,7 @@ class Paragraph extends Model
       $picture = new Picture;
     }
     $picture->extract($pictureSubRequest);
-    $this->blockContent()->associate($picture);
+    $this->block_content()->associate($picture);
   }
 
   public function extractAndBindText($textSubRequest)
@@ -116,7 +122,7 @@ class Paragraph extends Model
     $text->content = array_key_exists('content', $textSubRequest) ? $textSubRequest['content'] : $text->content;
     $text->author_id = -1;
     $text->save();
-    $this->blockContent()->associate($text);
+    $this->block_content()->associate($text);
   }
 
   public function extractAndBindMap($mapSubRequest)
@@ -133,6 +139,6 @@ class Paragraph extends Model
       $map = new Map;
     }
     $map->extract($mapSubRequest);
-    $this->blockContent()->associate($map);
+    $this->block_content()->associate($map);
   }
 }

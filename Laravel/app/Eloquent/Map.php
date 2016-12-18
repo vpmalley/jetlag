@@ -33,7 +33,7 @@ class Map extends Model
 
   public function paragraph()
   {
-    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
+    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'block_content');
   }
 
   public function markers()
