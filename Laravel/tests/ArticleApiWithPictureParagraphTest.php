@@ -134,7 +134,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => '',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => 1,
@@ -246,7 +246,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => $paragraph->id,
@@ -359,7 +359,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => $paragraph->id,
@@ -458,7 +458,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => $paragraph->id,

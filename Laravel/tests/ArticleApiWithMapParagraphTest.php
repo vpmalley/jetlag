@@ -62,7 +62,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1, // why not true?
-      'author_users' => [$writer->id => 'writer'],
+      // 'author_users' => [$writer->id => 'writer'],
       'paragraphs' => [
         [
           'id' => 1,
@@ -166,7 +166,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => '',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => 1,
@@ -309,7 +309,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => $article->description_text,
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => $paragraph->id,
@@ -448,7 +448,7 @@ class ArticleApiWithMapParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => $article->description_text,
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => $paragraph->id,

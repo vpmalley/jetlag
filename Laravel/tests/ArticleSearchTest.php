@@ -46,8 +46,8 @@ class ArticleSearchTest extends TestCase {
         'title' => $writtenArticle->title,
         'description_text' => $writtenArticle->description_text,
         'author_users' => [$writer->id => 'writer'],
-        'description_media' => null,
-        'is_draft' => 0,
+        'description_picture' => null,
+        'is_draft' => false,
         'is_public' => $writtenArticle->is_public,
         'paragraphs' => [],
       ]);
@@ -80,9 +80,9 @@ class ArticleSearchTest extends TestCase {
         'title' => $publicArticle->title,
         'description_text' => $publicArticle->description_text,
         'author_users' => [],
-        'description_media' => null,
-        'is_draft' => 0,
-        'is_public' => 1,
+        'description_picture' => null,
+        'is_draft' => false,
+        'is_public' => true,
         'paragraphs' => [],
       ]);
     }
@@ -114,9 +114,9 @@ class ArticleSearchTest extends TestCase {
         'title' => $publishedArticle->title,
         'description_text' => $publishedArticle->description_text,
         'author_users' => [],
-        'description_media' => null,
-        'is_draft' => 0,
-        'is_public' => 1,
+        'description_picture' => null,
+        'is_draft' => false,
+        'is_public' => true,
         'paragraphs' => [],
       ]);
     }

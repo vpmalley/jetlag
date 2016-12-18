@@ -79,7 +79,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => '',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => 1,
@@ -213,7 +213,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => '',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => 1,

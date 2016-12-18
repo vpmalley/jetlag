@@ -16,7 +16,7 @@ var modelsDefinition = {
           type: 'string'
         },
         descriptionMedia: {
-          remote: 'description_media',
+          remote: 'description_picture',
           type: 'integer' //XXX: really few chance to have an integer here
         },
         isDraft: {
