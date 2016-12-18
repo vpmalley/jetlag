@@ -58,7 +58,7 @@ class ArticleApiWithPictureParagraphTest extends TestCase {
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
       'is_draft' => 1, // why not true?
-      'author_users' => [$writer->id => 'writer'],
+      // 'author_users' => [$writer->id => 'writer'],
       'paragraphs' => [
         [
           'id' => 1,

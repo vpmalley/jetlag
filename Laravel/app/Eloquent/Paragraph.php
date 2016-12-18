@@ -148,7 +148,7 @@ class Paragraph extends Model
 
   public function loadRelations() {
     $this->load(Paragraph::$relationsToLoad);
-    if ($this->block_content && 'Jetlag\Eloquent\Map' == $this->block_content_type) {
+    if ($this->block_content && ('Jetlag\Eloquent\Picture' == $this->block_content_type || 'Jetlag\Eloquent\Map' == $this->block_content_type)) {
       $this->block_content->loadRelations();
     }
   }
