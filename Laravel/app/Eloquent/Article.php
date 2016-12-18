@@ -2,7 +2,6 @@
 
 namespace Jetlag\Eloquent;
 
-use Log;
 use Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,10 +29,11 @@ class Article extends Model
   */
   public $fillable = ['id', 'title', 'description_text', 'is_draft', 'is_public'];
 
+  protected $visible = ['id', 'title', 'description_text', 'is_draft', 'is_public', 'description_picture', 'paragraphs', 'url'];
 
   protected $casts = [
-      'isDraft' => 'boolean',
-      'isPublic' => 'boolean',
+      'is_draft' => 'boolean',
+      'is_public' => 'boolean',
   ];
 
   /**
@@ -52,15 +52,25 @@ class Article extends Model
    */
   static $updateRules = [
     'title' => 'required|min:3|max:200',
-    'descriptionText' => 'max:500',
+    'description_text' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'is_draft' => 'boolean',
     'is_public' => 'boolean',
   ];
 
-  protected $dates = ['deleted_at'];
+  static $default_fillable_values = [
+    'title' => '',
+    'description_text' => '',
+    'date' => '',
+    'is_draft' => true,
+    'is_public' => false,
+  ];
 
-  public function descriptionPicture()
+  static $relationsToLoad = ['description_picture', 'paragraphs'];
+
+  protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+
+  public function description_picture()
   {
     return $this->hasOne('Jetlag\Eloquent\Picture');
   }
@@ -109,8 +119,8 @@ class Article extends Model
   */
   public function extractDescriptionPicture($subRequest)
   {
-    if (array_key_exists('description_media', $subRequest)) {
-      $pictureSubRequest = $subRequest['description_media'];
+    if (array_key_exists('description_picture', $subRequest)) {
+      $pictureSubRequest = $subRequest['description_picture'];
       $validator = Validator::make($pictureSubRequest, Picture::$rules);
       if ($validator->fails()) {
         abort(400, $validator->errors());
@@ -120,8 +130,8 @@ class Article extends Model
       } else {
         $picture = new Picture;
       }
-      $picture->extract($request->input('description_media'));
-      $this->descriptionPicture()->save($picture);
+      $picture->extract($pictureSubRequest);
+      $this->description_picture()->save($picture);
     }
 
   }
@@ -151,6 +161,24 @@ class Article extends Model
       }
     }
     return $this->paragraphs;
+  }
+
+  // -- Loading relations
+
+  public function loadRelations() {
+    $this->load(Article::$relationsToLoad);
+    if ($this->description_picture) {
+      $this->description_picture->loadRelations();
+    }
+    if ($this->paragraphs) {
+      foreach ($this->paragraphs as $paragraph) {
+        $paragraph->loadRelations();
+      }
+    }
+  }
+
+  public function addUrl() {
+    $this->url = url('/article/' . $this->id);
   }
 
   // -- Indexing

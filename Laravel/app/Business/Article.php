@@ -152,12 +152,12 @@ class Article
       if ("" == $paragraph->block_content_type)
       {
         Log::warning('block content is not set');
-      } else if ('Jetlag\Eloquent\Picture' == get_class($paragraph->blockContent))
+      } else if ('Jetlag\Eloquent\Picture' == get_class($paragraph->block_content))
       {
-        $paragraph->blockContent->load(Picture::$relationsToLoad);
-      } else if ('Jetlag\Eloquent\Map' == get_class($paragraph->blockContent))
+        $paragraph->block_content->load(Picture::$relationsToLoad);
+      } else if ('Jetlag\Eloquent\Map' == get_class($paragraph->block_content))
       {
-        $paragraph->blockContent->load(Map::$relationsToLoad);
+        $paragraph->block_content->load(Map::$relationsToLoad);
       }
     }
     $authorUsers = Author::getUserRoles($storedArticle->author_id);
@@ -348,7 +348,7 @@ class Article
       'title' => $this->title,
       'url' => $this->getWebUrl(),
       'description_text' => $this->descriptionText,
-      'description_media' => $this->descriptionPicture,
+      'description_picture' => $this->descriptionPicture,
       'is_draft' => $this->isDraft,
       'is_public' => $this->isPublic,
       'paragraphs' => $this->paragraphs,
@@ -372,7 +372,7 @@ class Article
       'title' => $this->title,
       'url' => $this->getWebUrl(),
       'description_text' => $this->descriptionText,
-      'description_media' => $this->descriptionPicture,
+      'description_picture' => $this->descriptionPicture,
       'author_users' => $this->authorUsers,
       'is_draft' => $this->isDraft,
       'is_public' => $this->isPublic,

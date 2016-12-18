@@ -79,7 +79,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => '',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => 1,
@@ -213,7 +213,7 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
       'title' => 'article1',
       'description_text' => '',
       'is_draft' => 1,
-      'description_media' => null,
+      'description_picture' => null,
       'paragraphs' => [
         [
           'id' => 1,
@@ -257,39 +257,6 @@ class ArticleApiWithMistakenParagraphTest extends TestCase {
         ]
       ],
     ]);
-  }
-
-  public function testApiCannotStoreArticleWithMapParagraphWithId()
-  {
-    $user = factory(Jetlag\User::class)->create();
-    $paragraph = factory(Jetlag\Eloquent\Paragraph::class)->create();
-
-    $this->actingAs($user)
-    ->post($this->articleApiUrl, [
-      'title' => 'article1',
-      'paragraphs' => [
-        [
-          'id' => 1,
-          'title' => 'A first paragraph',
-          'block_content_type' => 'Jetlag\Eloquent\Map',
-          'block_content' => [
-            "markers" => [
-              [
-                "place" => [
-                ]
-              ],
-              [
-                "place" => [
-                ]
-              ]
-            ]
-          ],
-          'place' => [
-          ],
-        ]
-      ],
-    ], ['ContentType' => 'application/json'])
-    ->assertResponseStatus(400);
   }
 
 }

@@ -68,16 +68,19 @@ class RestArticleController extends Controller
   {
     $validator = Validator::make($request->all(), Article::$creationRules);
     if ($validator->fails()) {
-      abort(400);
+      abort(400, $validator->errors());
     }
     if (null == Auth::user())
     {
       abort(403);
     }
 
+    $requestBody = array_merge(StoredArticle::$default_fillable_values, $request->all());
     $article = new StoredArticle;
-    $article->extract($request->all());
-    
+    $article->extract($requestBody);
+    $article->loadRelations();
+    $article->addUrl();
+
     return response($article, 201);
   }
 
@@ -89,10 +92,10 @@ class RestArticleController extends Controller
   */
   public function show($storedArticle)
   {
-    $article = new Article;
-    ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
-    $article->fromStoredArticle($storedArticle);
-    return $article->getForRest();
+    // ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
+    $storedArticle->loadRelations();
+    $storedArticle->addUrl();
+    return $storedArticle;
   }
 
   /**
@@ -103,10 +106,10 @@ class RestArticleController extends Controller
   */
   public function edit($storedArticle)
   {
-    $article = new Article;
-    ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
-    $article->fromStoredArticle($storedArticle);
-    return $article->getForRest();
+    // ResourceAccess::wantsToReadResource($storedArticle->is_public, $storedArticle->author_id);
+    $storedArticle->loadRelations();
+    $storedArticle->addUrl();
+    return $storedArticle;
   }
 
   /**
@@ -118,48 +121,18 @@ class RestArticleController extends Controller
   */
   public function update(Request $request, $storedArticle)
   {
-    ResourceAccess::wantsToWriteResource($storedArticle->author_id);
+    // ResourceAccess::wantsToWriteResource($storedArticle->author_id);
     $validator = Validator::make($request->all(), Article::$updateRules);
     if ($validator->fails()) {
-      abort(400);
+      abort(400, $validator->errors());
     }
 
-    $article = new Article;
-    $article->fromStoredArticle($storedArticle);
-    $article->setTitle($request->input('title', $article->getTitle()));
-    $article->setDescriptionText($request->input('description_text', $article->getDescriptionText()));
-    if ($request->has('description_media'))
-    {
-      $storedPicture = new Picture;
-      $storedPicture->extract($request->input('description_media'));
-      $article->setDescriptionPicture($storedPicture);
-    }
-    $article->setIsDraft($request->input('is_draft', $article->isDraft()));
-    if ($request->has('author_users'))
-    {
-      $newAuthorUsers = $request->input('author_users');
-      $newAuthorUsers[Auth::user()->id] = Author::getRole($article->getAuthorId(), Auth::user()->id);
-      $article->updateAuthorUsers($newAuthorUsers);
-    }
+    $requestBody = $request->all();
+    $storedArticle->extract($requestBody);
+    $storedArticle->loadRelations();
+    $storedArticle->addUrl();
 
-    if ($request->has('paragraphs'))
-    {
-      foreach ($request->input('paragraphs') as $paragraphSubRequest) {
-        if (array_key_exists('id', $paragraphSubRequest))
-        {
-          $paragraph = Paragraph::find($paragraphSubRequest['id']);
-          $paragraph->fill($paragraphSubRequest);
-        } else
-        {
-          $paragraphSubRequest = array_merge(Paragraph::$default_fillable_values, $paragraphSubRequest);
-          $paragraph = Paragraph::create($paragraphSubRequest);
-        }
-        $paragraph->extract($paragraphSubRequest);
-        $article->addParagraph($paragraph);
-      }
-    }
-    $article->persist();
-    return ['id' => $article->getId()];
+    return response($storedArticle, 200);
   }
 
   /**
@@ -179,7 +152,6 @@ class RestArticleController extends Controller
       return $default;
     }
   }
-
 
   /**
   * Remove the specified resource from storage.

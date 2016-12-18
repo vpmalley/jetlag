@@ -33,7 +33,7 @@ class Picture extends Model
 
   public function paragraph()
   {
-    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
+    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'block_content');
   }
 
   public function small_url()
@@ -54,6 +54,8 @@ class Picture extends Model
   public function place() {
     return $this->belongsTo('Jetlag\Eloquent\Place');
   }
+
+  // -- Extraction
 
   /**
   * Extracts the picture from the subrequest
@@ -108,5 +110,11 @@ class Picture extends Model
       $link->extract($subRequest[$key]);
       $relation->associate($link);
     }
+  }
+
+  // -- Loading relations
+
+  public function loadRelations() {
+    $this->load(Picture::$relationsToLoad);
   }
 }

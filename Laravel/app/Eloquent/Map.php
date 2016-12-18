@@ -33,7 +33,7 @@ class Map extends Model
 
   public function paragraph()
   {
-    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'blockContent');
+    return $this->morphOne('Jetlag\Eloquent\Paragraph', 'block_content');
   }
 
   public function markers()
@@ -81,6 +81,12 @@ class Map extends Model
     } else if (!isset($this[$key])) {
       $this[$key] = '';
     }
+  }
+
+  // -- Loading relations
+
+  public function loadRelations() {
+    $this->load(Map::$relationsToLoad);
   }
 
 }

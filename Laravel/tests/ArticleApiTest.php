@@ -43,7 +43,9 @@ class ArticleApiTest extends TestCase {
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
+      'is_draft' => $article->is_draft,
+      'is_public' => $article->is_public,
+      // 'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -76,7 +78,7 @@ class ArticleApiTest extends TestCase {
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
+      // 'author_users' => [$owner->id => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -109,7 +111,7 @@ class ArticleApiTest extends TestCase {
       'url' => $this->baseUrl . "/article/" . $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'author_users' => [$owner->id => 'owner', $reader->id => 'reader'],
+      // 'author_users' => [$owner->id => 'owner', $reader->id => 'reader'],
     ]);
   }
 
@@ -135,8 +137,9 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'is_draft' => 1, // why not true?
-      'author_users' => [$writer->id => 'writer'],
+      'is_draft' => $article->is_draft,
+      'is_public' => $article->is_public,
+      // 'author_users' => [$writer->id => 'writer'],
     ]);
   }
 
@@ -172,14 +175,16 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'description_media' => [
+      'description_picture' => [
         'id' => $picture->id,
         'small_url' => $links[0],
         'medium_url' => $links[1],
         'big_url' => $links[2],
+        'place' => null,
       ],
-      'is_draft' => 1, // why not true?
-      'author_users' => [$writer->id => 'writer'],
+      'is_draft' => $article->is_draft,
+      'is_public' => $article->is_public,
+      // 'author_users' => [$writer->id => 'writer'],
     ]);
   }
 
@@ -205,8 +210,9 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'is_draft' => 1, // why not true?
-      'author_users' => [$owner->id => 'owner'],
+      'is_draft' => $article->is_draft,
+      'is_public' => $article->is_public,
+      // 'author_users' => [$owner->id => 'owner'],
     ]);
   }
 
@@ -232,8 +238,9 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'is_draft' => 1, // why not true?
-      'author_users' => [$reader->id => 'reader'],
+      'is_draft' => $article->is_draft,
+      'is_public' => $article->is_public,
+      // 'author_users' => [$reader->id => 'reader'],
     ]);
   }
 
@@ -251,8 +258,8 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => "article with id 2",
       'description_text' => 'this is a cool article isnt it? id 2',
-      'is_draft' => 1, // why not true?
-      'is_public' => 1,
+      'is_draft' => $article->is_draft,
+      'is_public' => true,
     ]);
   }
 
@@ -276,8 +283,13 @@ class ArticleApiTest extends TestCase {
     ->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
     ->assertResponseStatus(201);
     $this->seeJson([
+      'title' => "article1",
       'id' => 1,
+      'description_text' => '',
+      'is_draft' => true,
+      'is_public' => false,
       'url' => $this->baseUrl . "/article/1",
+      // 'author_users' => [ $user->id => 'owner'],
     ]);
 
     Log::debug("expecting user " . $user->id . " to be owner of article 1");
@@ -288,18 +300,14 @@ class ArticleApiTest extends TestCase {
       'title' => "article1",
       'id' => 1,
       'description_text' => '',
-      'is_draft' => 1,
-      'author_users' => [ $user->id => 'owner'],
+      'is_draft' => true,
+      'is_public' => false,
+      'url' => $this->baseUrl . "/article/1",
+      // 'author_users' => [ $user->id => 'owner'],
     ]);
   }
 
-  public function testApiCannotStoreArticleWithoutLogin()
-  {
-    $this->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
-    ->assertResponseStatus(403);
-  }
-
-  public function testApiCannotStoreArticleWithoutTitle()
+  public function testApiStoreArticleWithoutTitle()
   {
     $user = factory(Jetlag\User::class)->create();
 
@@ -308,9 +316,19 @@ class ArticleApiTest extends TestCase {
     ->assertResponseStatus(201);
 
     $this->seeJson([
+      'title' => '',
       'id' => 1,
+      'description_text' => 'an article without a title',
+      'is_draft' => true,
+      'is_public' => false,
       'url' => $this->baseUrl . "/article/1",
     ]);
+  }
+
+  public function testApiCannotStoreArticleWithoutLogin()
+  {
+    $this->post($this->articleApiUrl, [ 'title' => 'article1'], ['ContentType' => 'application/json'])
+    ->assertResponseStatus(403);
   }
 
   public function testApiStoreArticleWithMoreData()
@@ -321,14 +339,19 @@ class ArticleApiTest extends TestCase {
     ->post($this->articleApiUrl, [
       'title' => 'article2',
       'description_text' => 'un bel article, celui-ci',
-      'is_draft' => 0,
+      'is_draft' => false,
       'author_users' => [1 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
     ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
+      'title' => 'article2',
+      'description_text' => 'un bel article, celui-ci',
+      'is_draft' => false,
+      'is_public' => false,
       'url' => $this->baseUrl . "/article/1",
+      // 'author_users' => [1 => 'owner', $user->id => 'owner'],
     ]);
 
     Log::debug("expecting users 1 and " . $user->id . " to be owner of article 1");
@@ -339,8 +362,10 @@ class ArticleApiTest extends TestCase {
       'id' => 1,
       'title' => 'article2',
       'description_text' => 'un bel article, celui-ci',
-      'is_draft' => 0,
-      'author_users' => [1 => 'owner', $user->id => 'owner'],
+      'is_draft' => false,
+      'is_public' => false,
+      'url' => $this->baseUrl . "/article/1",
+      // 'author_users' => [1 => 'owner', $user->id => 'owner'],
     ]);
   }
 
@@ -351,14 +376,28 @@ class ArticleApiTest extends TestCase {
     $this->actingAs($user)
     ->post($this->articleApiUrl, [
       'title' => 'article1',
-      'description_media' => [
+      'description_picture' => [
         'url' => [ 'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg' ],
       ],
     ], ['ContentType' => 'application/json'])
     ->assertResponseStatus(201);
     $this->seeJson([
       'id' => 1,
+      'title' => "article1",
+      'description_text' => '',
+      'is_draft' => true,
+      'is_public' => false,
       'url' => $this->baseUrl . "/article/1",
+      'description_picture' => [
+        'id' => 1,
+        'small_url' => null,
+        'big_url' => null,
+        'place' => null,
+        'medium_url' => [
+          'caption' => '',
+          'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
+        ]
+      ],
     ]);
 
     $this->actingAs($user)
@@ -368,11 +407,14 @@ class ArticleApiTest extends TestCase {
       'id' => 1,
       'title' => "article1",
       'description_text' => '',
-      'is_draft' => 1,
-      'description_media' => [
+      'is_draft' => true,
+      'is_public' => false,
+      'url' => $this->baseUrl . "/article/1",
+      'description_picture' => [
         'id' => 1,
         'small_url' => null,
         'big_url' => null,
+        'place' => null,
         'medium_url' => [
         'caption' => '',
         'url' => 'http://s2.lemde.fr/image2x/2015/11/15/92x61/4810325_7_5d59_mauri7-rue-du-faubourg-saint-denis-10e_86775f5ea996250791714e43e8058b07.jpg',
@@ -405,8 +447,9 @@ class ArticleApiTest extends TestCase {
       'title' => "article1",
       'id' => 1,
       'description_text' => '',
-      'is_draft' => 1,
-      'author_users' => [ $owner->id => 'owner', $reader->id => 'reader'],
+      'is_draft' => true,
+      'is_public' => false,
+      // 'author_users' => [ $owner->id => 'owner', $reader->id => 'reader'],
     ]);
   }
 
@@ -430,8 +473,9 @@ class ArticleApiTest extends TestCase {
       'title' => "article1",
       'id' => 1,
       'description_text' => '',
-      'is_draft' => 1,
-      'author_users' => [ $user->id => 'owner'],
+      'is_draft' => true,
+      'is_public' => false,
+      // 'author_users' => [ $user->id => 'owner'],
     ]);
   }
 
@@ -460,10 +504,18 @@ class ArticleApiTest extends TestCase {
 
     $this->actingAs($writer)
     ->put($this->articleApiUrl . $article->id, [
+      'id' => $article->id,
       'title' => 'article ' . $article->id . ' updated',
       'description_text' => 'some updated description',
-      'is_draft' => 0,
-      'author_users' => [1 => 'writer', 2 => 'owner'],
+      'is_public' => false,
+      'is_draft' => false,
+      'description_picture' => [
+        'id' => $picture->id,
+        'small_url' => $links[0]->toArray(),
+        'medium_url' => $links[1]->toArray(),
+        'big_url' => $links[2]->toArray(),
+      ],
+      // 'author_users' => [1 => 'writer', 2 => 'owner'],
     ],
     ['ContentType' => 'application/json'])
     ->assertResponseOk();
@@ -477,14 +529,16 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => 'article ' . $article->id . ' updated',
       'description_text' => 'some updated description',
-      'is_draft' => 0,
-      'description_media' => [
+      'is_public' => false,
+      'is_draft' => false,
+      'description_picture' => [
         'id' => $picture->id,
         'small_url' => $links[0],
         'medium_url' => $links[1],
         'big_url' => $links[2],
+        'place' => null,
       ],
-      'author_users' => [1 => 'writer', 2 => 'owner', $writer->id => 'writer'],
+      // 'author_users' => [1 => 'writer', 2 => 'owner', $writer->id => 'writer'],
     ]);
   }
 
@@ -518,7 +572,18 @@ class ArticleApiTest extends TestCase {
     ['ContentType' => 'application/json'])
     ->assertResponseOk();
     $this->seeJson([
-      'id' => $article->id
+      'id' => $article->id,
+      'title' => 'article is partially updated',
+      'description_text' => 'this is some article',
+      'is_draft' => true,
+      'is_public' => false,
+      'description_picture' => [
+        'id' => $picture->id,
+        'small_url' => $links[0],
+        'medium_url' => $links[1],
+        'big_url' => $links[1],
+        'place' => null,
+      ],
     ]);
     $this->get($this->articleApiUrl . $article->id)
     ->assertResponseOk();
@@ -526,14 +591,16 @@ class ArticleApiTest extends TestCase {
       'id' => $article->id,
       'title' => 'article is partially updated',
       'description_text' => 'this is some article',
-      'is_draft' => 1,
-      'description_media' => [
+      'is_draft' => true,
+      'is_public' => false,
+      'description_picture' => [
         'id' => $picture->id,
         'small_url' => $links[0],
         'medium_url' => $links[1],
         'big_url' => $links[1],
+        'place' => null,
       ],
-      'author_users' => [ $writer->id => 'writer'],
+      // 'author_users' => [ $writer->id => 'writer'],
     ]);
   }
 
