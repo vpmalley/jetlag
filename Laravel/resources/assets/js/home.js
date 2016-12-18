@@ -2,12 +2,14 @@ angular
   .module('jetlag.webapp.home', ['jetlag.webapp.app'])
   .controller('HomepageController', HomepageController);
 
-HomepageController.$inject = ['$scope', 'ModelsManager'];
+HomepageController.$inject = ['$scope', 'ModelsManager', 'ModelsMaker', 'JLModelsManager'];
 
-function HomepageController($scope, ModelsManager) {
+function HomepageController($scope, ModelsManager, ModelsMaker, MM) {
 	var ctrl = this;
     
     ctrl.isSearching = false;
+    ctrl.mm = ModelsMaker;
+    ctrl.MM = MM;
     
 	ctrl.articles = new ModelsManager.ArticleCollection();
 	ctrl.articles.fetch();

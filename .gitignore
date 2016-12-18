@@ -25,4 +25,6 @@ extras/documentation
 # SQL tables creation
 data/scripts/creation.sql
 
+# workspaces files
 notepad_workspace
+.idea/

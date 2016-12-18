@@ -4,15 +4,23 @@
     function ModelsMaker() {
         
         var apiVersion = "0.1";
-        
+
+        /* The different status one instance of a Model can be,
+         * only 'STABLE' means there is no pending request made for
+         * this model (at least not via the normal way)
+         */
         var STATUS = {
             STABLE: 'STABLE',
             FETCHING: 'FETCHING',
             CREATING: 'CREATING',
             SAVING: 'SAVING',
-            DELETING: 'DELETING'
+            DELETING: 'DELETING',
+            DELETED: 'DELETED'
         }
-        
+
+        /* Construct a plain Javascript model error object
+        * for both server and front sides
+        */
         function modelError(error, isServerError) {
             var err = {
                 isServerError: isServerError,
@@ -75,9 +83,6 @@
             }
             
             Model.prototype = {
-                create: function() {
-                    console.warn("Not implemented yet.");
-                },
                 getUrl: function() {
                     if (this.url !== undefined) {
                         return this.url;
@@ -94,7 +99,14 @@
                     var model = this;
                     var url = null;
                     var q = $q.defer();
-                    
+
+                    /* Can't retrieve deleted models */
+                    if(model._status === STATUS.DELETED) {
+                        var errorMessage = "Unable to fetch resource " + model._name + ": resource is deleted.";
+                        console.warn(errorMessage);
+                        return q.reject(modelError(errorMessage, false));
+                    }
+
                     /* Retrieve what URL should be used to get the resource */
                     url = getModelUrl(model, options);
                     if(url === null) {
@@ -104,7 +116,7 @@
                     }
                     
                     if(model.isNew()) {
-                        var errorMessage = "Unable to fetch resource " + model._name + ": cannot fetch new models.";
+                        var errorMessage = "Unable to fetch resource " + model._name + ": cannot fetch new resources.";
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
@@ -127,17 +139,24 @@
                     var model = this;
                     var q = $q.defer();
                     var validationErrors, serverAttrs, url, requestPromise;
-                    
+
+                    /* Can't save deleted models */
+                    if(model._status === STATUS.DELETED) {
+                        var errorMessage = "Unable to save resource " + model._name + ": resource is deleted.";
+                        console.warn(errorMessage);
+                        return q.reject(modelError(errorMessage, false));
+                    }
+
                     if(!model.hasChanged()) {
                         q.resolve(model);
                         return q.promise;
                     }
                     
                     validationErrors = model.validate();
-                    if(validationErrors.length > 0) {
+                    if(!_.isEmpty(validationErrors)) {
                         console.warn("Unable to save resource " + model._name + ": validation failed.");
-                        validationErrors.forEach(function(error) {
-                           console.warn("  " + error); 
+                        _.each(validationErrors, function(value, attrName) {
+                           console.warn("  " + attrName + " -> " + value);
                         });
                         q.reject(modelError(validationErrors, false));
                         return q.promise;
@@ -194,14 +213,20 @@
                     });
                 },
                 delete: function(options) {
-                    console.warn("`delete` not implemented yet!");
                     var model = this;
                     var url = null;
                     var q = $q.defer();
-                    
+
+                    /* Can't delete deleted models */
+                    if(model._status === STATUS.DELETED) {
+                        var errorMessage = "Unable to delete resource " + model._name + ": resource is already deleted.";
+                        console.warn(errorMessage);
+                        return q.reject(modelError(errorMessage, false));
+                    }
+
                     url = getModelUrl(options);
                     if(url === null) {
-                        var errorMessage = "Unable to save resource " + model._name + ": no URL defined.";
+                        var errorMessage = "Unable to delete resource " + model._name + ": no URL defined.";
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
@@ -211,6 +236,17 @@
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
+
+                    url += '/' + model.id;
+                    model._status = STATUS.DELETING;
+
+                    $http.delete(url).then(function(result) {
+                        model._status = STATUS.DELETED;
+                        q.resolve(result);
+                    }, function(error) {
+                        model._status = STATUS.STABLE;
+                        q.reject(modelError(error, true));
+                    });
                     
                     return q.promise;
                 },
@@ -225,9 +261,10 @@
                        model[name] = angular.copy(value); 
                     });
                 },
+                /* XXX: should call the validate function, if defined, of the different attributes */
                 validate: function() {
-                    console.warn("`Validate` not implemented yet !");
-                    var validationErrors = [];
+                    console.warn("`Validate` not implemented yet ! (considered valid as long as not implemented)");
+                    var validationErrors = {};
                     
                     return validationErrors;
                 },
@@ -235,8 +272,9 @@
                     var model = this;
                     var validationErrors = model.validate();
 
-                    return validationErrors.length === 0;
+                    return _.isEmpty(validationErrors);
                 },
+                /* XXX: should also call the map function, if defined, of the different attributes */
                 _map: function(serverAttrs) {
                     var reverseSchema = this._reverseSchema;
                     var model = this;
@@ -247,6 +285,7 @@
                         }
                     });
                 },
+                /* XXX: should also call the unmap function, if defined, of the different attributes */
                 _unmap: function() {
                     var schema = this._schema;
                     var model = this;
@@ -263,9 +302,22 @@
                 isNew: function() {
                     return this.id !== undefined && this.id !== null;
                 },
+                /* XXX: call the equals function, if defined, instead of angular.equals */
+                changedAttributes: function() {
+                    var model = this;
+                    var changedAttr = [];
+
+                    _.each(model._schema, function(value, name) {
+                        if(!angular.equals(model[name], model._serverAttributes[name])) {
+                            changedAttr.push(name);
+                        }
+                    });
+                    return changedAttr;
+                },
                 hasChanged: function() {
-                    console.warn("`hasChanged` not implemented yet!");
-                    return false;
+                    var changedAttributes = this.changedAttributes();
+
+                    return changedAttributes.lenght > 0;
                 },
                 clone: function() {
                     var model = this;

@@ -1,5 +1,5 @@
 angular
-  .module('jetlag.webapp.app', ['jetlag.webapp.base'])
+  .module('jetlag.webapp.app', ['jetlag.webapp.base', 'jetlag.webapp.etc'])
   .config(AppConfig)
   .controller('AppController', AppController);
   
