@@ -2,7 +2,6 @@
 
 namespace Jetlag\Eloquent;
 
-use Log;
 use Validator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -68,8 +67,6 @@ class Article extends Model
   ];
 
   static $relationsToLoad = ['description_picture', 'paragraphs'];
-
-  static $paragraphsRelationsToLoad = ['paragraphs.block_content', 'paragraphs.place'];
 
   protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
@@ -173,7 +170,11 @@ class Article extends Model
     if ($this->description_picture) {
       $this->description_picture->loadRelations();
     }
-    $this->load(Article::$paragraphsRelationsToLoad);
+    if ($this->paragraphs) {
+      foreach ($this->paragraphs as $paragraph) {
+        $paragraph->loadRelations();
+      }
+    }
   }
 
   public function addUrl() {

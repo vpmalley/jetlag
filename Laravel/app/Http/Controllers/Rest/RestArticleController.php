@@ -68,7 +68,7 @@ class RestArticleController extends Controller
   {
     $validator = Validator::make($request->all(), Article::$creationRules);
     if ($validator->fails()) {
-      abort(400);
+      abort(400, $validator->errors());
     }
     if (null == Auth::user())
     {
@@ -124,7 +124,7 @@ class RestArticleController extends Controller
     // ResourceAccess::wantsToWriteResource($storedArticle->author_id);
     $validator = Validator::make($request->all(), Article::$updateRules);
     if ($validator->fails()) {
-      abort(400);
+      abort(400, $validator->errors());
     }
 
     $requestBody = $request->all();
@@ -152,7 +152,6 @@ class RestArticleController extends Controller
       return $default;
     }
   }
-
 
   /**
   * Remove the specified resource from storage.

@@ -23,7 +23,7 @@ class Paragraph extends Model
   */
   static $rules = [
     'id' => 'numeric',
-    'title' => 'string|required|min:3|max:200',
+    'title' => 'string|min:3|max:200',
     'weather' => 'string|min:3|max:20',
     'date' => 'date',
     'block_content_type' => 'string|min:3|max:30|required_with:block_content',
@@ -37,6 +37,8 @@ class Paragraph extends Model
     'is_draft' => true,
     'author_id' => -1,
   ];
+
+  static $relationsToLoad = ['block_content', 'place'];
 
   public function place() {
     return $this->belongsTo('Jetlag\Eloquent\Place');
@@ -140,5 +142,14 @@ class Paragraph extends Model
     }
     $map->extract($mapSubRequest);
     $this->block_content()->associate($map);
+  }
+
+  // -- Loading relations
+
+  public function loadRelations() {
+    $this->load(Paragraph::$relationsToLoad);
+    if ($this->block_content && 'Jetlag\Eloquent\Map' == $this->block_content_type) {
+      $this->block_content->loadRelations();
+    }
   }
 }
