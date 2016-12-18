@@ -150,6 +150,9 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection, ModelsDefinition) 
 
     var models = {};
     
+    /* Not used at the moment but it stores what would be the default
+    * values if creating an object from scratch.
+    */
     function defaultsModel(schema) {
         var byDefault = {};
         _.each(schema, function(fieldDef, fieldName) {
@@ -171,27 +174,58 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection, ModelsDefinition) 
         });
         return byDefault;
     }
+    
+    /* Set 'undefined' for every property of the model
+    * because a property set to 'undefined' means 'not initialized'
+    * and will not be sent to the server in case of PATCH request.
+    * That makes possible to work with partial objects.
+    */
+    function initModel(schema) {
+        var initValues = {};
+        
+        _.each(schema, function(fieldDef, fieldName) {
+           initValues[fieldName] = undefined; 
+        });
+        
+        return initValues;
+    }
 
     function define(name, schema) {
         var url = '/api/0.1/'+name.toLowerCase()+'s';
         var searchUrl = '/api/0.1/search/'+name.toLowerCase()+'s';
         var Model = NgBackboneModel.extend({
-          defaults: defaultsModel(schema),
-          $schema: schema,
-          urlRoot: url
+          defaults: initModel(schema),
+          __defaults: defaultsModel(schema),
+          __schema: schema,
+          urlRoot: url,
+          sync: function(method, model, options) {
+              console.log('Sync method of Model has been called');
+              options = options || {};
+              options.success = function(result) {
+                  model.__serverAttrs = _.clone(model.attributes);
+              }
+              return NgBackboneModel.prototype.sync.apply(this, arguments);
+          }
         });
         var ModelCollection = NgBackboneCollection.extend({
           model: Model,
           url: url,
-          sync: function(method, model, options) {
-                if (model.methodUrl && model.methodUrl(method.toLowerCase())) {
-                    options = options || {};
-                    options.url = model.methodUrl(method.toLowerCase());
+          sync: function(method, collection, options) {
+                console.log('Sync method of Collection has been called');
+                options = options || {};
+                if (collection.methodUrl && collection.methodUrl(collection.toLowerCase())) {
+                    options.url = collection.methodUrl(method.toLowerCase());
                 }
                 if(method === 'read' && options != null && options.data != null) {
                     options.url = searchUrl;
                 }
-               Backbone.sync(method, model, options);
+                options.success(function() {
+                    collection.$models.forEach(function($model) {
+                        console.log("Saving the server attrs");
+                       $model.__serverAttrs = $model.attributes; 
+                    });
+                });
+                return NgBackboneCollection.prototype.sync.apply(this, arguments);
             }
         });
         models[name] = Model;

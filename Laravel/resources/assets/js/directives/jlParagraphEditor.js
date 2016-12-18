@@ -50,6 +50,27 @@ function ParagraphEditorController($scope, ModelsManager, $http, Upload, JetlagU
   ctrl.uploadFiles = function(files) {
     if(files && files.length == 1) {
 	  ctrl.model.picture = files[0];
+      /* Create the picture object
+        * XXX: hardcoded for now cause endpoint does not exist yet.
+        */
+        var picture = new ModelsManager.Picture();
+        picture.$attributes.id = 2;
+        picture.$attributes.create_at = moment('2016-09-17T13:52:55Z');
+        picture.$attributes.update_at = moment('2016-09-17T13:52:55Z');
+        picture.$attributes.small_picture = { id: 7};
+        picture.$attributes.medium_picture = { id: 8};
+        picture.$attributes.big_picture = { id: 2};
+        picture.$attributes.article = {id: ctrl.article.id};
+        
+        /* Do upload the file and associate it with the Picture object */
+        Upload.upload({
+            url: '/api/0.1/pix/upload',
+            data: {picture_id: picture.$attributes.id, picture_file: files[0]}
+        }).then(function (data) {
+            console.log('File successfully uploaded', data);
+        }, function (resp) {
+            console.log('Error status: ' + resp.status);
+        });
     }
   }
 
