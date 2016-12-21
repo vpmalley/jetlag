@@ -1,8 +1,9 @@
 <?php namespace Jetlag\Http\Controllers\Web;
 
 use Jetlag\Http\Controllers\Controller;
-use Jetlag\Business\Article;
+use Jetlag\Eloquent\Article;
 use Jetlag\Eloquent\Link;
+use Jetlag\Business\ResourceAccess;
 
 class ArticleController extends Controller {
 
@@ -42,10 +43,11 @@ class ArticleController extends Controller {
    */
   public function getDisplay($id)
   {
-    $article = Article::getById($id);
-    return view('article', $article->getForDisplay());
+    $article = Article::find($id);
+    // ResourceAccess::wantsToReadResource($article->is_public, $article->author_id);
+    return view('article', $article);
   }
-  
+
   /** TODO: remove or merge in master **/
 	public function getCreate($id)
 	{

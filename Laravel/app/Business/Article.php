@@ -274,7 +274,7 @@ class Article
   * Retrieves and updates or constructs a UserPublic from the request and an id, then persists it
   *
   * @param  int  $articleId the id for the requested article
-  * @return  Jetlag\Business\Article
+  * @return  Jetlag\Eloquent\Article
   */
   public static function getById($articleId)
   {

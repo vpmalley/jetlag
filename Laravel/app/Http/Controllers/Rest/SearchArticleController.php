@@ -6,7 +6,6 @@ use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Jetlag\Business\ArticleSearch;
-use Jetlag\Business\Article;
 use Jetlag\Business\ResourceAccess;
 use Jetlag\Eloquent\Author;
 use Jetlag\Http\Requests;
@@ -38,10 +37,8 @@ class SearchArticleController extends Controller
     $articles = [];
     foreach ($foundArticles as &$storedArticle)
     {
-      $article = new Article;
-      $article->fromStoredArticle($storedArticle);
       if (ResourceAccess::canReadResource($storedArticle->is_public, $storedArticle->author_id) && !$storedArticle->is_draft) {
-        $articles[] = $article->getForRest();
+        $articles[] = $storedArticle;
       }
     }
     return $articles;

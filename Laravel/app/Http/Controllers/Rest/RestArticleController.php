@@ -66,7 +66,7 @@ class RestArticleController extends Controller
   */
   public function store(Request $request)
   {
-    $validator = Validator::make($request->all(), Article::$creationRules);
+    $validator = Validator::make($request->all(), StoredArticle::$creationRules);
     if ($validator->fails()) {
       abort(400, $validator->errors());
     }
@@ -122,7 +122,7 @@ class RestArticleController extends Controller
   public function update(Request $request, $storedArticle)
   {
     // ResourceAccess::wantsToWriteResource($storedArticle->author_id);
-    $validator = Validator::make($request->all(), Article::$updateRules);
+    $validator = Validator::make($request->all(), StoredArticle::$updateRules);
     if ($validator->fails()) {
       abort(400, $validator->errors());
     }

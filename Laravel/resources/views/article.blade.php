@@ -12,7 +12,7 @@
 <div class="row" ng-controller="ArticleController as articleCtrl"
 	 style="margin-top: 150px">
 	<div class="col-xs-12" ng-if="articleCtrl.articleLoaded">
-	
+
 		<div class="article">
 		    <jl-paragraph
 		        ng-repeat="paragraph in articleCtrl.article.paragraphs"
