@@ -1,9 +1,152 @@
 (function(angular) {
     'use strict';
+
+    var modelsDefinition = {
+    Article: {
+        id: {
+          remote: 'id',
+          type: 'id'
+        },
+        title: {
+          remote: 'title',
+          type: 'string'
+        },
+        descriptionText: {
+          remote: 'description_text',
+          type: 'string'
+        },
+        descriptionMedia: {
+          remote: 'description_picture',
+          type: 'integer' //XXX: really few chance to have an integer here
+        },
+        isDraft: {
+          remote: 'is_draft',
+          type: 'boolean',
+          defaultValue: true
+        },
+        isPublic: {
+          remote: 'is_public',
+          type: 'boolean',
+          defaultValue: false
+        },
+        paragraphs: {
+          remote: 'paragraphs',
+          type: 'orderedArray'
+        },
+        authorUsers: {
+          remote: 'author_users',
+          type: 'array'
+        },
+        travelbook: {
+          remote: 'travelbook',
+          type: 'Model.Travelbook'
+        },
+        url: {
+            remote: 'url',
+            type: 'string'
+        }
+    },
+    Travelbook: {
+        id: {
+          remote: 'id',
+          type: 'id'
+        },
+        title: {
+          remote: 'title',
+          type: 'string'
+        },
+        beginDate: {
+            remote: 'begin_date',
+            type: 'date'
+        },
+        endDate: {
+            remote: 'end_date',
+            type: 'date'
+        },
+        articles: {
+            remote: 'articles',
+            type: 'orderedArray'
+        },
+        isDraft: {
+          remote: 'is_draft',
+          type: 'boolean',
+          defaultValue: true
+        },
+        isPublic: {
+          remote: 'is_public',
+          type: 'boolean',
+          defaultValue: false
+        }
+    },
+    Picture: {
+        id: {
+          remote: 'id',
+          type: 'id'
+        },
+        createAt: {
+          remote: 'created_at',
+          type: 'datetime'
+        },
+        updateAt: {
+          remote: 'update_at',
+          type: 'datetime'
+        },
+        smallPicture: {
+          remote: 'small_picture_link',
+          type: 'Model.Link'
+        },
+        mediumPicture: {
+          remote: 'medium_picture_link',
+          type: 'Model.Link'
+        },
+        bigPicture: {
+          remote: 'big_picture_link',
+          type: 'Model.Link'
+        },
+        authorUsers: {
+          remote: 'author_users',
+          type: 'orderedArray'
+        },
+        deleteAt: {
+          remote: 'deleted_at',
+          type: 'datetime'
+        }
+    },
+    Link: {
+        id: {
+          remote: 'id',
+          type: 'id'
+        },
+        updateDate: {
+          remote: 'updated_at',
+          type: 'datetime'
+        },
+        createAt: {
+          remote: 'create_at',
+          type: 'datetime'
+        },
+        caption: {
+          remote: 'caption',
+          type: 'string'
+        },
+        storage: {
+          remote: 'storage',
+          type: 'string'
+        },
+        url: {
+          remote: 'url',
+          type: 'string'
+        },
+        authorUsers: {
+          remote: 'author_users',
+          type: 'orderedArray'
+        }
+    }
+};
     
-    function ModelsMaker() {
+    function ModelsMaker($q, $http) {
         
-        var apiVersion = "0.1";
+        var apiVersion = '0.1';
 
         /* The different status one instance of a Model can be,
          * only 'STABLE' means there is no pending request made for
@@ -54,7 +197,7 @@
         }
         
         function getDefaultModelApiUrl(name) {
-            return "/api/" + apiVersion + "/" + name ;
+            return '/api/' + apiVersion + '/' + pluralize(name.toLowerCase()) ;
         }
         
         function makeReverseSchema(schema) {
@@ -77,20 +220,25 @@
                 this._default = angular.copy(initialValues);
                 this._name = name;
                 this._serverAttributes = {};
-                this.url = undefined;
+                this._url = undefined;
                 this._status = STATUS.STABLE;
                 this._defaultUrl = getDefaultModelApiUrl(name);
+
+                var model = this;
+                Object.keys(schema).forEach(function(pptyName) {
+                    model[pptyName] = initialValues != null ? initialValues[pptyName] : undefined;
+                });
             }
             
             Model.prototype = {
                 getUrl: function() {
-                    if (this.url !== undefined) {
-                        return this.url;
+                    if (this._url !== undefined) {
+                        return this._url;
                     } else if(this._defaultUrl !== undefined) {
                         return this._defaultUrl;
                     }
                     
-                    console.warn("No default url defined for " + model._name);
+                    console.warn('No default nor custom url defined for ' + model._name);
                     return null;
                 },
                 fetch: function(options) {
@@ -102,7 +250,7 @@
 
                     /* Can't retrieve deleted models */
                     if(model._status === STATUS.DELETED) {
-                        var errorMessage = "Unable to fetch resource " + model._name + ": resource is deleted.";
+                        var errorMessage = 'Unable to fetch resource ' + model._name + ': resource is deleted.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
@@ -110,27 +258,27 @@
                     /* Retrieve what URL should be used to get the resource */
                     url = getModelUrl(model, options);
                     if(url === null) {
-                        var errorMessage = "Unable to fetch resource " + model._name + ": no URL defined.";
+                        var errorMessage = 'Unable to fetch resource ' + model._name + ': no URL defined.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
                     
                     if(model.isNew()) {
-                        var errorMessage = "Unable to fetch resource " + model._name + ": cannot fetch new resources.";
+                        var errorMessage = 'Unable to fetch resource ' + model._name + ': cannot fetch new resources.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
-                    url += "/" + model.id;
+                    url += '/' + model.id;
                     
                     model._status = STATUS.FETCHING;
                     $http.get(url).then(function(result) {
-                        model._map(result);
+                        model._map(result.data);
                         model._saveServerAttributes();
                         model._status = STATUS.STABLE;
-                        q.resolve(result);
+                        q.resolve(result.data);
                     }, function(error) {
                         model._status = STATUS.STABLE;
-                        q.reject(modelError(error, true));
+                        q.reject(modelError(error.data, true));
                     });
                     
                     return q.promise;
@@ -142,7 +290,7 @@
 
                     /* Can't save deleted models */
                     if(model._status === STATUS.DELETED) {
-                        var errorMessage = "Unable to save resource " + model._name + ": resource is deleted.";
+                        var errorMessage = 'Unable to save resource ' + model._name + ': resource is deleted.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
@@ -154,9 +302,9 @@
                     
                     validationErrors = model.validate();
                     if(!_.isEmpty(validationErrors)) {
-                        console.warn("Unable to save resource " + model._name + ": validation failed.");
+                        console.warn('Unable to save resource ' + model._name + ': validation failed.');
                         _.each(validationErrors, function(value, attrName) {
-                           console.warn("  " + attrName + " -> " + value);
+                           console.warn('  ' + attrName + ' -> ' + value);
                         });
                         q.reject(modelError(validationErrors, false));
                         return q.promise;
@@ -166,18 +314,18 @@
                     url = getModelUrl(model, options);
                     
                     if(url === null) {
-                        var errorMessage = "Unable to save resource " + model._name + ": no URL defined.";
+                        var errorMessage = 'Unable to save resource ' + model._name + ': no URL defined.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
                     
                     if(options.isPatch === true || isPatch === true) {
                         if(model.isNew()) {
-                            var errorMessage = "Unable to save resource " + model._name + ": cannot make PATCH request on new models.";
+                            var errorMessage = 'Unable to save resource ' + model._name + ': cannot make PATCH request on new models.';
                             console.warn(errorMessage);
                             return q.reject(modelError(errorMessage, false));
                         } else {
-                            url += "/" + model.id;
+                            url += '/' + model.id;
                             model._status = STATUS.SAVING;
                             requestPromise = $http.patch(url, serverAttrs);
                         }
@@ -185,20 +333,20 @@
                         if(model.isNew()) {
                             model._status = STATUS.CREATING;
                         } else {
-                            url += "/" + model.id;
+                            url += '/' + model.id;
                             model._status = STATUS.SAVING;
                         }
                         requestPromise = $http.post(url, serverAttrs)
                     }
                     
                     requestPromise.then(function(result) {
-                        model._map(result);
+                        model._map(result.data);
                         model._saveServerAttributes();
                         model._status = STATUS.STABLE;
-                        q.resolve(result);
+                        q.resolve(result.data);
                     }, function(error) {
                         model._status = STATUS.STABLE;
-                        q.reject(modelError(error, true));
+                        q.reject(modelError(error.data, true));
                     });
                     
                     return q.promise;
@@ -219,20 +367,20 @@
 
                     /* Can't delete deleted models */
                     if(model._status === STATUS.DELETED) {
-                        var errorMessage = "Unable to delete resource " + model._name + ": resource is already deleted.";
+                        var errorMessage = 'Unable to delete resource ' + model._name + ': resource is already deleted.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
 
                     url = getModelUrl(options);
                     if(url === null) {
-                        var errorMessage = "Unable to delete resource " + model._name + ": no URL defined.";
+                        var errorMessage = 'Unable to delete resource ' + model._name + ': no URL defined.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
                     
                     if(model.isNew()) {
-                        var errorMessage = "Unable to delete resource " + model._name + ": cannot delete new models.";
+                        var errorMessage = 'Unable to delete resource ' + model._name + ': cannot delete new models.';
                         console.warn(errorMessage);
                         return q.reject(modelError(errorMessage, false));
                     }
@@ -242,10 +390,10 @@
 
                     $http.delete(url).then(function(result) {
                         model._status = STATUS.DELETED;
-                        q.resolve(result);
+                        q.resolve(result.data);
                     }, function(error) {
                         model._status = STATUS.STABLE;
-                        q.reject(modelError(error, true));
+                        q.reject(modelError(error.data, true));
                     });
                     
                     return q.promise;
@@ -263,7 +411,7 @@
                 },
                 /* XXX: should call the validate function, if defined, of the different attributes */
                 validate: function() {
-                    console.warn("`Validate` not implemented yet ! (considered valid as long as not implemented)");
+                    console.warn('`Validate` not implemented yet ! (considered valid as long as not implemented)');
                     var validationErrors = {};
                     
                     return validationErrors;
@@ -300,7 +448,7 @@
                     return serverAttrs;
                 },
                 isNew: function() {
-                    return this.id !== undefined && this.id !== null;
+                    return this.id === undefined || this.id === null;
                 },
                 /* XXX: call the equals function, if defined, instead of angular.equals */
                 changedAttributes: function() {
@@ -342,13 +490,14 @@
     function ModelsManager(ModelsMaker) {
         var models = {};
         
-        models.Article = ModelsMaker("Article");
-        models.Travelbook = ModelsMaker("Travelbook");
+        models.Article = ModelsMaker('Article', modelsDefinition.Article);
+        models.Travelbook = ModelsMaker('Travelbook', modelsDefinition.Travelbook);
         
         return models;
     }
     
   ModelsManager.$inject = ['ModelsMaker'];
+  ModelsMaker.$inject = ['$q', '$http'];
   
   angular
   .module('jetlag.webapp.etc', [])

@@ -33,7 +33,8 @@ elixir(function(mix) {
 			bower_components+'leaflet/dist/leaflet.js',
 			bower_components+'angular-leaflet-directive/dist/angular-leaflet-directive.js',
 			bower_components+'angular-elastic/elastic.js',
-            bower_components+'moment-picker/dist/angular-moment-picker.js'
+            bower_components+'moment-picker/dist/angular-moment-picker.js',
+            bower_components+'pluralize/pluralize.js'
 		], 'public/js/thirds.js')
 		.scripts([
 			'base.js',
