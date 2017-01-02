@@ -27,19 +27,19 @@
     <!-- first row of articles -->
 	<div class="row hidden-xs">
 		
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(0) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(0).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(0).$attributes.id}}" class="book-overview">
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) !== null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(0).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(0).id}}" class="book-overview">
 				<div class="book-overview-content">
                     <div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(0).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(0).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(0) == null"
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -52,19 +52,19 @@
 			</a>
 		</div>
 		
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(1) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(1).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(1).$attributes.id}}" class="book-overview">
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(1).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(1).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(1).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(1).title}}</div>
                     </div>
                 </div>
 			</a>
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(1) == null"
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -78,19 +78,19 @@
 		</div>
         
         
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(2) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(2).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(2).$attributes.id}}" class="book-overview">
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(2).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(2).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(2).title}}</div>
                     </div>
                 </div>
 			</a>
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(2) == null"
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -109,19 +109,19 @@
     <!-- first mobile row of articles -->
 	<div class="row visible-xs">
     
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(0) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(0).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(0).$attributes.id}}" class="book-overview">
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(0).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(0).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(0).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(0).title}}</div>
                     </div>
                 </div>
 			</a>
 		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(0) == null"
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -134,19 +134,19 @@
 			</a>
 		</div>
         
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(1) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(1).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(1).$attributes.id}}" class="book-overview">
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(1).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(1).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(1).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(1).title}}</div>
                     </div>
                 </div>
 			</a>
 		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(1) == null"
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -180,19 +180,19 @@
     <!-- second row of articles -->
     <div class="row hidden-xs">
 		
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(3) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(3).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(3).$attributes.id}}" class="book-overview">
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(3).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(3).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(3).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(3) == null"
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -205,19 +205,19 @@
 			</a>
 		</div>
 		
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(4) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(4).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(4).$attributes.id}}" class="book-overview">
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(4).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(4).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(4).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(4) == null"
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -231,19 +231,19 @@
 		</div>
         
         
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(5) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(5).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(5).$attributes.id}}" class="book-overview">
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(5).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(5).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(5).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articles.at(5) == null"
+        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -262,19 +262,19 @@
     <!-- second mobile row of articles -->
 	<div class="row visible-xs">
     
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(2) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(2).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(2).$attributes.id}}" class="book-overview">
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(2).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(2).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(2).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(2) == null"
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -287,19 +287,19 @@
 			</a>
 		</div>
         
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(3) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(3).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(3).$attributes.id}}" class="book-overview">
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(3).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(3).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(3).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(3) == null"
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -318,19 +318,19 @@
     <!-- third mobile row of articles -->
 	<div class="row visible-xs">
     
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(4) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(4).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(4).$attributes.id}}" class="book-overview">
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(4).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(4).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(4).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(4) == null"
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">
@@ -343,19 +343,19 @@
 			</a>
 		</div>
         
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(5) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articles.at(5).$attributes.descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articles.at(5).$attributes.id}}" class="book-overview">
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) != null"
+		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(5).descriptionMedia.smallUrl+')'}">
+			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
                     <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articles.at(5).$attributes.title}}</div>
+                        <div class="line">@{{homepageCtrl.articleAt(5).title}}</div>
                     </div>
 				</div>
 			</a>
 		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articles.at(5) == null"
+        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) == null"
 		style="background-image: url('/images/generic.png')">
 			<a href="/auth/login" class="book-overview">
 				<div class="book-overview-content fake">

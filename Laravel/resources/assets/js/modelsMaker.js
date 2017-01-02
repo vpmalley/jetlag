@@ -465,7 +465,7 @@
                 hasChanged: function() {
                     var changedAttributes = this.changedAttributes();
 
-                    return changedAttributes.lenght > 0;
+                    return changedAttributes.length > 0;
                 },
                 clone: function() {
                     var model = this;
@@ -482,6 +482,40 @@
                     return newModel;
                 }
             }
+
+            Model.fetchCollection = function(options) {
+                var url = getDefaultModelApiUrl(name);
+                var q = $q.defer();
+
+                options = options || {};
+
+                if(options.url !== undefined) {
+                    url = options.url;
+                }
+
+                $http.get(url, {
+                    params: options.params
+                }).then(function(results) {
+                    var collection = [];
+
+                    results.data.forEach(function(result) {
+                        var instance = new Model();
+
+                        instance._status = STATUS.CREATING;
+                        instance._map(result);
+                        instance._saveServerAttributes();
+                        instance._status = STATUS.STABLE;
+                        collection.push(instance);
+                    });
+
+                    q.resolve(collection);
+                }, function(error) {
+                    q.reject(modelError(error.data, true));
+                });
+
+                return q.promise;
+            }
+
             return Model;
         }
         return Generic;
