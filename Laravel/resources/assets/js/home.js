@@ -2,30 +2,28 @@ angular
   .module('jetlag.webapp.home', ['jetlag.webapp.app'])
   .controller('HomepageController', HomepageController);
 
-HomepageController.$inject = ['$scope', 'ModelsManager', 'ModelsMaker', 'JLModelsManager'];
+HomepageController.$inject = ['$scope', 'ModelsManager', 'JLModelsManager'];
 
-function HomepageController($scope, ModelsManager, ModelsMaker, MM) {
+function HomepageController($scope, MM, JLModelsManager) {
 	var ctrl = this;
     
     ctrl.isSearching = false;
-    ctrl.mm = ModelsMaker;
-    ctrl.MM = MM;
     
 	/* OLD WAY
 
-	ctrl.articles = new ModelsManager.ArticleCollection();
+	ctrl.articles = new MM.ArticleCollection();
 	ctrl.articles.fetch();
     */
 
     /* NEW WAY */
     ctrl.articles = [];
-    MM.Article.fetchCollection().then(function(collection) {
+    JLModelsManager.Article.fetchCollection().then(function(collection) {
         ctrl.articles = collection;
     });
 
     ctrl.articleAt = function(idx) {
         if(idx >= 0 && ctrl.articles.length > 0 && idx < ctrl.articles.length) {
-            return ctrl.articles[idx];
+            return ctrl.articles[idx] != null ? ctrl.articles[idx] : null;
         } else {
             return null;
         }

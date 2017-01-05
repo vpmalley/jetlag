@@ -20,13 +20,13 @@
         <div class="col-md-12 tab-content">
             <div class="row tab-pane active" role="tabpanel" id="travelbooks">
                 
-                <div class="col-sm-4 home-thumbnail big" ng-repeat="article in userCtrl.articles.$models"
-                ng-style="{'background-image': 'url('+article.$attributes.descriptionMedia.smallUrl+')'}">
-                    <a ng-href="@{{'/article/#/'+article.$attributes.id}}" class="book-overview">
+                <div class="col-sm-4 home-thumbnail big" ng-repeat="article in userCtrl.articles"
+                ng-style="{'background-image': 'url('+article.descriptionMedia.smallUrl+')'}">
+                    <a ng-href="@{{'/article/#/'+article.id}}" class="book-overview">
                         <div class="book-overview-content">
                             <div class="sun-line"></div>
                             <div class="book-overview-content-inner">
-                                <div class="line">@{{article.$attributes.title}}</div>
+                                <div class="line">@{{article.title}}</div>
                             </div>
                         </div>
                     </a>

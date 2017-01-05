@@ -2,12 +2,21 @@ angular
   .module('jetlag.webapp.user', ['jetlag.webapp.app'])
   .controller('UserController', UserController);
 
-UserController.$inject = ['$scope', 'ModelsManager'];
+UserController.$inject = ['$scope', 'ModelsManager', 'JLModelsManager'];
 
-function UserController($scope, ModelsManager) {
+function UserController($scope, MM, JLModelsManager) {
 	var ctrl = this;
     
-    ctrl.articles = new ModelsManager.ArticleCollection();
+    /* OLD WAY 
+    
+    ctrl.articles = new MM.ArticleCollection();
 	ctrl.articles.fetch();
+    */
+    
+    /* NEW WAY */
+    ctrl.articles = [];
+    JLModelsManager.Article.fetchCollection().then(function(collection) {
+        ctrl.articles = collection;
+    });
 };
 
