@@ -101,6 +101,7 @@
 
 	<!-- Scripts -->
 	<script src="{{ asset(elixir('js/thirds.js')) }}"></script>
+	<script src="{{ asset('js/jetlag.components.js') }}"></script>
 	<script src="{{ asset('js/jetlag.directives.js') }}"></script>
 	<script src="{{ asset('/js/jetlag.js') }}"></script>
 	@yield('scripts')

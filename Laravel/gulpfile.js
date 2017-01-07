@@ -42,6 +42,7 @@ elixir(function(mix) {
             'modelsMaker.js'
 		], 'public/js/jetlag.js')
 		.scriptsIn('resources/assets/js/directives', 'public/js/jetlag.directives.js')
+		.scriptsIn('resources/assets/js/components', 'public/js/jetlag.components.js')
 		.copy('resources/assets/js', 'public/js')
 		.copy('resources/assets/images', 'public/images')
 		.copy('bower_components/font-awesome/css/font-awesome.css', 'public/css/font-awesome.css')

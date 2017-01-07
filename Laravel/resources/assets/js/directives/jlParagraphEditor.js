@@ -1,7 +1,9 @@
 var dependencies = [
   'ngFileUpload',
   'leaflet-directive',
-  'monospaced.elastic'
+  'monospaced.elastic',
+  'jetlag.webapp.components.geocoding',
+  'jetlag.webapp.components.uploader'
 ];
 
 angular
@@ -10,9 +12,11 @@ angular
   .controller('ParagraphEditorController', ParagraphEditorController);
   
 
-ParagraphEditorController.$inject = ['$scope', 'ModelsManager', '$http', 'Upload', 'JetlagUtils'];
+ParagraphEditorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictureUploaderService',
+    'JetlagUtils', 'geocodingService'];
 
-function ParagraphEditorController($scope, ModelsManager, $http, Upload, JetlagUtils) {
+function ParagraphEditorController($scope, ModelsManager, $http, pictureUploaderService,
+    JetlagUtils, geocodingService) {
   var ctrl = this;
   ctrl.leafletMap = { markers: {} };
   
@@ -50,26 +54,16 @@ function ParagraphEditorController($scope, ModelsManager, $http, Upload, JetlagU
   ctrl.uploadFiles = function(files) {
     if(files && files.length == 1) {
 	  ctrl.model.picture = files[0];
-      /* Create the picture object
-        * XXX: hardcoded for now cause endpoint does not exist yet.
-        */
-        var picture = new ModelsManager.Picture();
-        picture.$attributes.id = 2;
-        picture.$attributes.create_at = moment('2016-09-17T13:52:55Z');
-        picture.$attributes.update_at = moment('2016-09-17T13:52:55Z');
-        picture.$attributes.small_picture = { id: 7};
-        picture.$attributes.medium_picture = { id: 8};
-        picture.$attributes.big_picture = { id: 2};
-        picture.$attributes.article = {id: ctrl.article.id};
         
         /* Do upload the file and associate it with the Picture object */
-        Upload.upload({
-            url: '/api/0.1/pix/upload',
-            data: {picture_id: picture.$attributes.id, picture_file: files[0]}
-        }).then(function (data) {
-            console.log('File successfully uploaded', data);
-        }, function (resp) {
-            console.log('Error status: ' + resp.status);
+        pictureUploaderService.upload({
+            id: 2, //XXX: fake ID for now because endpoint requires one
+            file: files[0],
+            caption: ''
+        }).then(function(result) {
+            console.log('File successfully uploaded', result);
+        }, function(error) {
+            console.log('Error status: ' + error.status);
         });
     }
   }
@@ -79,19 +73,16 @@ function ParagraphEditorController($scope, ModelsManager, $http, Upload, JetlagU
   }
 
   ctrl.changeLocation = function() {
-	if(ctrl.model.type === 'location' && ctrl.model.location.name != null) {
-	  $http.get('https://search.mapzen.com/v1/search', { params: {
-	    text: ctrl.model.location.name,
-		api_key: 'search-KjBcCm0'
-		}}).success(function(results) {
-		  if(_.isObject(results) && results.features.length > 0) {
-			var firstMatch = results.features[0];
-			ctrl.model.location.name = firstMatch.properties.label;
-			ctrl.model.location.coordinates = firstMatch.geometry.coordinates;
-		  }
-		}).error(function(error) {
-		  console.log(error);
-		});
+    if(ctrl.model.type === 'location' && ctrl.model.location.name != null) {
+	    geocodingService.geocode(ctrl.model.location.name)
+	    .then(function(results) {
+	        if(_.isObject(results) && results.features.length > 0) {
+			    var firstMatch = results.features[0];
+
+			    ctrl.model.location.name = firstMatch.properties.label;
+			    ctrl.model.location.coordinates = firstMatch.geometry.coordinates;
+		    }
+	    });
 	}
   }
 
@@ -124,19 +115,15 @@ function ParagraphEditorController($scope, ModelsManager, $http, Upload, JetlagU
 	var marker = ctrl.model.location.markers.marker;
 	  if(marker.lng !== ctrl.model.location.coordinates[0] ||
 		 marker.lat !== ctrl.model.location.coordinates[1]) {
-		  $http.get('https://search.mapzen.com/v1/reverse', { params: {
-			  'point.lat': marker.lat,
-			  'point.lon': marker.lng,
-			  api_key: 'search-KjBcCm0'
-			}}).success(function(results) {
-			  if(_.isObject(results) && results.features.length > 0) {
-				var firstMatch = results.features[0];
+		 geocodingService.reverseGeocode(marker)
+         .then(function(results) {
+            if(_.isObject(results) && results.features.length > 0) {
+                var firstMatch = results.features[0];
+
 				ctrl.model.location.name = firstMatch.properties.label;
 				ctrl.model.location.markers.marker.message = firstMatch.properties.label;
-			  }
-			}).error(function(error) {
-			  console.log(error);
-			});
+            }
+         });
 	  }
   });
   

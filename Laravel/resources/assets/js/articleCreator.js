@@ -3,18 +3,20 @@ var dependencies = [
   'ngFileUpload',
   'leaflet-directive',
   'monospaced.elastic',
-  'jetlag.webapp.directives.paragraph'
+  'jetlag.webapp.directives.paragraph',
+  'jetlag.webapp.components.geocoding',
+  'jetlag.webapp.components.uploader'
 ];
 
 angular
   .module('jetlag.webapp.articleCreator', dependencies)
-  .controller('ArticleCreatorController', ArticleCreatorController)
-  .filter('paragraphText', ParagraphTextFilter);
+  .controller('ArticleCreatorController', ArticleCreatorController);
 
-ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'Upload', '$sce', 'JetlagUtils', '$location'];
-ParagraphTextFilter.$inject = ['$sce'];
+ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictureUploaderService',
+    'JetlagUtils', '$location', 'JLModelsManager', 'geocodingService'];
 
-function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, JetlagUtils, $location) {
+function ArticleCreatorController($scope, ModelsManager, $http, pictureUploaderService,
+    JetlagUtils, $location, JLModelsManager, geocodingService) {
 	var ctrl = this;
 	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
 	ctrl.leafletMap = { markers: {} };
@@ -22,12 +24,14 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	ctrl.article = null;
 	ctrl.mm = ModelsManager;
 	ctrl.editedParagraph = null;
+	ctrl.articleLoaded = false;
 	
 	function getArticleID() {
-      
       var path = $location.path();
-	  if(path != "") {
+
+	  if(path !== '') {
 	    var id = parseInt(path.substring(1));
+
 		if(!isNaN(id)) {
 			return id;
 		} else {
@@ -37,16 +41,12 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	};
 	
 	function loadArticle(articleID) {
-		ctrl.article = null;
-		var article = new ModelsManager.Article();
-		article.$attributes.id = articleID;
-		/*article.fetch()
-		.success(function() {
-			article.set({});
-			ctrl.article = article;
+	    ctrl.articleLoaded = false;
+		ctrl.article = new JLModelsManager.Article();
+		ctrl.article.id = articleID;
+		ctrl.article.fetch().then(function() {
+		    ctrl.articleLoaded = true;
 		});
-        */
-        ctrl.article = article;
 	}
 	
 	/* This wait for the article to be loaded.
@@ -54,15 +54,14 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	*/
 	$scope.$watch(getArticleID, function(newValue, oldValue){
 		if(newValue != null) {
-			if(ctrl.article != null && ctrl.article.get('id') != newValue) {
-				if(ctrl.article.changedAttributes()) {
+			if(ctrl.article != null && ctrl.article.id !== newValue) {
+				if(ctrl.article.hasChanged()) {
 					ctrl.article.save()
-					.success(function() {
+					.then(function() {
 						loadArticle(newValue);
-					})
-					.error(function() {
+					}, function() {
 						console.error('Unable to save changes of current article');
-					})
+					});
 				} else {
 					loadArticle(newValue);
 				}
@@ -74,13 +73,13 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	
 	ctrl.isInputEmpty = function() {
 	  var input = ctrl.paragraphEditor.input;
-	  return input.text == '' && _.isEmpty(input.picture) && _.isEmpty(input.location) && _.isEmpty(input.external);
+	  return input.text === '' && _.isEmpty(input.picture) && _.isEmpty(input.location) && _.isEmpty(input.external);
 	}
 	
 	var inputTypeList = ['text', 'picture', 'location', 'external']; // XXX: should be moved into a service
 	
 	ctrl.changeInputType = function(inputType) {
-		if(JetlagUtils.findValue(inputTypeList, inputType) != null) {
+		if(JetlagUtils.findValue(inputTypeList, inputType) !== null) {
 			ctrl.paragraphEditor.input.type = inputType;
 		}
 	}
@@ -88,22 +87,10 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	ctrl.uploadFiles = function(files) {
 	  if(files && files.length == 1) {
 	    ctrl.paragraphEditor.input.picture = files[0];
-        /* Create the picture object
-        * XXX: hardcoded for now cause endpoint does not exist yet.
-        */
-        var picture = new ModelsManager.Picture();
-        picture.$attributes.id = 2;
-        picture.$attributes.create_at = moment('2016-09-17T13:52:55Z');
-        picture.$attributes.update_at = moment('2016-09-17T13:52:55Z');
-        picture.$attributes.small_picture = { id: 7};
-        picture.$attributes.medium_picture = { id: 8};
-        picture.$attributes.big_picture = { id: 2};
-        picture.$attributes.article = {id: ctrl.article.id};
-        
-        /* Do upload the file and associate it with the Picture object */
-        Upload.upload({
-            url: '/api/0.1/pix/upload',
-            data: {id: picture.$attributes.id, file: files[0]}
+	    pictureUploaderService.upload({
+                id: 2, //XXX: fake ID because endpoint requires one for now
+                file: files[0],
+                caption: ''
         }).then(function (data) {
             console.log('File successfully uploaded', data);
         }, function (resp) {
@@ -118,22 +105,20 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	
 	ctrl.changeLocation = function() {
 		if(ctrl.paragraphEditor.input.type === 'location' && ctrl.paragraphEditor.input.location.name != null) {
-			$http.get('https://search.mapzen.com/v1/search', { params: {
-			  text: ctrl.paragraphEditor.input.location.name,
-			  api_key: 'search-KjBcCm0'
-			}}).success(function(results) {
-			  if(_.isObject(results) && results.features.length > 0) {
-			    var firstMatch = results.features[0];
-				ctrl.paragraphEditor.input.location = {
-				  name: firstMatch.properties.label,
-				  coordinates: firstMatch.geometry.coordinates
-				};
-			  }
-			}).error(function(error) {
-			  console.log(error);
-			});
+		    geocodingService.geocode(ctrl.paragraphEditor.input.location.name)
+		    .then(function(results) {
+		        if(_.isObject(results) && results.features.length > 0) {
+                    var firstMatch = results.features[0];
+
+                    ctrl.paragraphEditor.input.location = {
+                        name: firstMatch.properties.label,
+                        coordinates: firstMatch.geometry.coordinates
+                    };
+                }
+		    });
 		}
 	}
+
 	function getLeafletMapMarkerCoordinates() {
 	  if(ctrl.paragraphEditor.input &&
 	     ctrl.paragraphEditor.input.location) {
@@ -159,24 +144,21 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	}
 	
 	$scope.$on('leafletDirectiveMarker.paragraphEditorMap.dragend', function(e, m) {
-		ctrl.leafletMap.markers.marker = m.model;
+	    ctrl.leafletMap.markers.marker = m.model;
 		var marker = ctrl.leafletMap.markers.marker;
-		  if(marker.lng !== ctrl.paragraphEditor.input.location.coordinates[0] ||
+
+		if(marker.lng !== ctrl.paragraphEditor.input.location.coordinates[0] ||
 			 marker.lat !== ctrl.paragraphEditor.input.location.coordinates[1]) {
-			  $http.get('https://search.mapzen.com/v1/reverse', { params: {
-				  'point.lat': marker.lat,
-				  'point.lon': marker.lng,
-				  api_key: 'search-KjBcCm0'
-				}}).success(function(results) {
-				  if(_.isObject(results) && results.features.length > 0) {
+			 geocodingService.reverseGeocode(marker)
+			 .then(function(results) {
+			    if(_.isObject(results) && results.features.length > 0) {
 					var firstMatch = results.features[0];
+
 					ctrl.paragraphEditor.input.location.name = firstMatch.properties.label;
 					ctrl.leafletMap.markers.marker.message = firstMatch.properties.label;
-				  }
-				}).error(function(error) {
-				  console.log(error);
-				});
-			 }
+				}
+			 });
+		}
 	});
 	
 	/* XXX: Many functions and code relative to Leaflet should go to a Leaflet service */
@@ -311,11 +293,4 @@ function ArticleCreatorController($scope, ModelsManager, $http, Upload, $sce, Je
 	ctrl.dismissErrors = function() {
 		ctrl.errors = null;
 	}
-};
-
-function ParagraphTextFilter($sce) { // My custom filter
-  return function (input) {
-    var formatedInput = input.replace(new RegExp('\n', 'g'), '<br>');
-    return $sce.trustAsHtml(formatedInput);
-  }
 };
