@@ -320,6 +320,7 @@
                     }
                     
                     if(options.isPatch === true || isPatch === true) {
+                        /* XXX: we should only send changed attrs here */
                         if(model.isNew()) {
                             var errorMessage = 'Unable to save resource ' + model._name + ': cannot make PATCH request on new models.';
                             console.warn(errorMessage);

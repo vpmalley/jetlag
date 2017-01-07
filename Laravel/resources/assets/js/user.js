@@ -6,6 +6,7 @@ UserController.$inject = ['$scope', 'ModelsManager', 'JLModelsManager'];
 
 function UserController($scope, MM, JLModelsManager) {
 	var ctrl = this;
+	ctrl.changePasswordChecked = false;
     
     /* OLD WAY 
     
@@ -18,5 +19,26 @@ function UserController($scope, MM, JLModelsManager) {
     JLModelsManager.Article.fetchCollection().then(function(collection) {
         ctrl.articles = collection;
     });
+
+    ctrl.changePasswordCheckedChanged = function() {
+        if(!ctrl.changePasswordChecked) {
+            ctrl.newPassword = null;
+            ctrl.oldPassword = null;
+            ctrl.confirmOldPassword = null;
+        }
+    }
+
+    ctrl.isPrivateDetailsFormValid = function() {
+        var valid = true;
+
+        if(ctrl.changePasswordChecked) {
+            if(ctrl.newPassword == null
+            || ctrl.oldPassword == null || ctrl.oldPassword !== ctrl.confirmOldPassword) {
+                valid = false;
+            }
+        }
+
+        return valid && false; // XXX: form is not active for now
+    }
 };
 

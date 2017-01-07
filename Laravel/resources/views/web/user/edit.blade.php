@@ -113,34 +113,61 @@
                                 <input type="email" class="form-control" name="Email address">
                             </div>
                         </div>
-                        
+
                         <div class="form-group">
-                            <label class="col-md-4 control-label">New password</br> 
-                            (leave blank if you don't want to change your password)</label>
+                            <label class="col-md-4 control-label">Change password?</label>
                             <div class="col-md-6">
-                                <input type="password" class="form-control" name="New password">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"
+                                            name="changePasswordChecked"
+                                            ng-model="userCtrl.changePasswordChecked"
+                                            ng-change="userCtrl.changePasswordCheckedChanged()"> Yes
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                        
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Old password<br>
-                            (only if you want to change your password)</label>
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="Old password">
+
+                        <div ng-if="userCtrl.changePasswordChecked">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">New password</br>
+                                (leave blank if you don't want to change your password)</label>
+                                <div class="col-md-6">
+                                    <input type="password"
+                                        class="form-control"
+                                        name="New password"
+                                        ng-model="userCtrl.newPassword">
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="col-md-4 control-label">Confirm old password<br>
-                            (only if you want to change your password)</label>
-                            <div class="col-md-6">
-                                <input type="password" class="form-control" name="Confirm password">
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Old password<br>
+                                (only if you want to change your password)</label>
+                                <div class="col-md-6">
+                                    <input type="password"
+                                        class="form-control"
+                                        name="Old password"
+                                        ng-model="userCtrl.oldPassword">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Confirm old password<br>
+                                (only if you want to change your password)</label>
+                                <div class="col-md-6">
+                                    <input type="password"
+                                        class="form-control"
+                                        name="Confirm password"
+                                        ng-model="userCtrl.confirmOldPassword">
+                                </div>
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="jl-btn" ng-disabled="true">
+                                <button type="submit"
+                                    class="jl-btn"
+                                    ng-disabled="!userCtrl.isPrivateDetailsFormValid()">
                                     Save
                                 </button>
                             </div>
