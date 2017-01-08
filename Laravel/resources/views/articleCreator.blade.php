@@ -15,7 +15,7 @@
 	
 		<div class="article">
 		    <jl-paragraph
-		        ng-repeat-start="paragraph in articleCreatorCtrl.article.$attributes.paragraphs"
+		        ng-repeat-start="paragraph in articleCreatorCtrl.article.paragraphs"
 		        model="paragraph"
 			    class="paragraph editor"
                 is-being-edited="articleCreatorCtrl.isBeingEdited($index)"
@@ -50,67 +50,11 @@
 					Un même paysage pris à deux instants différents peut réserver de sacrées surprises!
 				</p>
 				<div class="card-action">
-					<form name="paragraphEditor" novalidate>
-						<div class="paragraph-editor">
-							<div class="btn-group btn-group-justified">
-								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'text'}"
-								ng-click="articleCreatorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
-								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'picture'}"
-								ng-click="articleCreatorCtrl.changeInputType('picture')"><i class="fa fa-camera-retro"></i></div>
-								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'location'}"
-								ng-click="articleCreatorCtrl.changeInputType('location')"><i class="fa fa-map"></i></div>
-								<div class="btn jl-tab" ng-class="{'selected':articleCreatorCtrl.paragraphEditor.input.type === 'external'}"
-								ng-click="articleCreatorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
-							</div>
-							<div class="paragraph-input">
-								<textarea 	ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'text'"
-											placeholder="Lisez nos conseils juste au dessus si vous êtes bloqués"
-											ng-model="articleCreatorCtrl.paragraphEditor.input.text"
-											name="text"
-											msd-elastic="\n">
-								</textarea>
-								<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'picture'">
-									<div 	ngf-drop="articleCreatorCtrl.uploadFiles($files)" class="drop-box"
-											ngf-drag-over-class="'dragover'"
-											ngf-pattern="'image/*'"
-											ng-disabled="articleCreatorCtrl.pictureSelected()">
-										<div class="jl-btn jl-btn-big"
-										ngf-select="articleCreatorCtrl.uploadFiles($files)"
-										ngf-pattern="'image/*'">
-											Select a picture
-										</div>
-										<div class="strut"></div><div class="drop-text">Drop a picture here</div>
-									</div>
-									<img class="picture-preview" ng-if="articleCreatorCtrl.paragraphEditor.input.picture.size > 0" ngf-thumbnail="articleCreatorCtrl.paragraphEditor.input.picture">
-								</div>
-								<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'location'">
-									<div class="jl-table location-searchbar">
-										<input class="jl-table-cell" style="width:90%" type="text" name="name" placeholder="Pays, ville, adresse..."
-										ng-model="articleCreatorCtrl.paragraphEditor.input.location.name"></input>
-										<button  class="jl-table-cell jl-btn jl-btn-large" ng-click="articleCreatorCtrl.changeLocation()">Search</button>
-									</div>
-									<leaflet 	id="paragraphEditorMap" lf-center="articleCreatorCtrl.leafletMap.center"
-												markers="articleCreatorCtrl.leafletMap.markers" events="articleCreatorCtrl.leafletMap.events">
-									</leaflet>
-								</div>
-								<div ng-if="articleCreatorCtrl.paragraphEditor.input.type === 'external'">
-									<input type="text" class="external-bar" name="external" placeholder="Entrez l'URL ici"
-									ng-model="articleCreatorCtrl.paragraphEditor.input.external.link"></input>
-									<p>Une vignette représentant le contenu de la page distante sera insérée dans votre article</p>
-									<div class="external-preview">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div style="text-align: right" ng-if="!articleCreatorCtrl.isInputEmpty()">
-							<div class="jl-btn jl-btn-big jl-btn-empty" ng-click="articleCreatorCtrl.resetParagraph()">
-								<i class="fa fa-times"></i> Supprimer
-							</div><!--
-							--><div class="jl-btn jl-btn-big" ng-click="articleCreatorCtrl.addParagraph()">
-								<i class="fa fa-plus"></i> Ajouter
-							</div>
-						</div>
-					</form>
+				    <jl-paragraph-editor model="articleCreatorCtrl.paragraphEditor.input"
+				                         mode="creation"
+                                         save="articleCreatorCtrl.addParagraph()"
+                                         cancel="articleCreatorCtrl.resetParagraph()">
+                    </jl-paragraph-editor>
 				</div>
 			</div>
 			
@@ -118,7 +62,7 @@
 				<h1>Donnez un titre à votre histoire (obligatoire)</h1>
 				<p>Court et percutant, évitez les jeux de mots trop simples.</p>
 				<div class="card-action">
-					<input type="text" class="jl-input-text" ng-model="articleCreatorCtrl.article.$attributes.title"/>
+					<input type="text" class="jl-input-text" ng-model="articleCreatorCtrl.article.title"/>
 				</div>
 			</div>
 			<div class="article-publisher jl-card">

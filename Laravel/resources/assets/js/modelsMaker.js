@@ -331,13 +331,17 @@
                             requestPromise = $http.patch(url, serverAttrs);
                         }
                     } else {
+                        var httpMethod;
+
                         if(model.isNew()) {
+                            httpMethod = $http.post;
                             model._status = STATUS.CREATING;
                         } else {
+                            httpMethod = $http.put;
                             url += '/' + model.id;
                             model._status = STATUS.SAVING;
                         }
-                        requestPromise = $http.post(url, serverAttrs)
+                        requestPromise = httpMethod(url, serverAttrs);
                     }
                     
                     requestPromise.then(function(result) {

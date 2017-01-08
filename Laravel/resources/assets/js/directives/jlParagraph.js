@@ -25,6 +25,16 @@ function ParagraphController($scope) {
 		 }
 	 } 
   });
+
+  ctrl.getPictureUrl = function() {
+    if(ctrl.model.picture != null) {
+        if(ctrl.model.picture instanceof File) {
+            return ctrl.model.picture;
+        } else {
+            return ctrl.model.picture.big_url.url;
+        }
+    }
+  }
 }
 
 function ParagraphTextFilter($sce) { // My custom filter
@@ -46,6 +56,6 @@ function JlParagraphDirective() {
 	},
     restrict: 'E',
     controller: 'ParagraphController',
-    controllerAs: 'ParagraphCtrl'
+    controllerAs: 'paragraphCtrl'
   }
 }

@@ -62,6 +62,7 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
             caption: ''
         }).then(function(result) {
             console.log('File successfully uploaded', result);
+            ctrl.model.picture = result;
         }, function(error) {
             console.log('Error status: ' + error.status);
         });
@@ -139,6 +140,17 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
       }
       ctrl.cancel();
   }
+
+  ctrl.isCreation = function() {
+    return ctrl.mode === 'creation';
+  }
+
+  function isModeValid() {
+    if(!JetlagUtils.findValue(['creation', 'edition'], ctrl.mode)) {
+        console.warn('The `mode` parameter of the jlParagraphEditor directive is not valid.');
+    }
+  }
+  isModeValid();
   
 }
 
@@ -149,11 +161,12 @@ function JlParagraphEditorDirective() {
 	bindToController: {
 		model: '=',
 		save: '&',
-        cancel: '&'
+        cancel: '&',
+        mode: '@'
 	},
     restrict: 'E',
     controller: 'ParagraphEditorController',
-    controllerAs: 'ParagraphEditorCtrl',
+    controllerAs: 'paragraphEditorCtrl',
     link: function(scope, element, attrs, controller) {
         controller._previous = JSON.parse(JSON.stringify(controller.model));
     }

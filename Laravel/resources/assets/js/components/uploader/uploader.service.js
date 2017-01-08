@@ -16,8 +16,7 @@ function uploaderService(Upload, $q) {
             url: url,
             data: data
         }).then(function (result) {
-            q.resolve(result);
-            console.log('File successfully uploaded', result);
+            q.resolve(result.data);
         }, function (resp) {
             console.warn('Unable to upload file', resp);
             q.reject(resp);
