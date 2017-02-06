@@ -29,7 +29,7 @@
 		
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) !== null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(0).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(0).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(0).id}}" class="book-overview">
 				<div class="book-overview-content">
                     <div class="sun-line">
                     </div>
@@ -54,7 +54,7 @@
 		
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(1).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(1).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(1).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -80,7 +80,7 @@
         
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(2).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -111,7 +111,7 @@
     
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(0).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(0).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(0).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -136,7 +136,7 @@
         
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(1).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(1).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(1).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -182,7 +182,7 @@
 		
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(3).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -207,7 +207,7 @@
 		
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(4).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -233,7 +233,7 @@
         
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(5).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -264,7 +264,7 @@
     
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(2).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -289,7 +289,7 @@
         
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(3).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -320,7 +320,7 @@
     
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(4).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>
@@ -345,7 +345,7 @@
         
         <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) != null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(5).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/#/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
+			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
 				<div class="book-overview-content">
 					<div class="sun-line">
                     </div>

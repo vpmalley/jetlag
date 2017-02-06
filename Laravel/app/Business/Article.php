@@ -325,6 +325,7 @@ class Article
     }
 
     return [
+      'id' => $this->id,
       'title' => $this->title,
       'description_text' => $this->descriptionText,
       'is_draft' => $this->isDraft,

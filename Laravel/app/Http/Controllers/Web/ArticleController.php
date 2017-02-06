@@ -43,7 +43,7 @@ class ArticleController extends Controller {
   public function getDisplay($id)
   {
     $article = Article::getById($id);
-    return view('web.article.display', $article->getForDisplay());
+    return view('article', $article->getForDisplay());
   }
   
   /** TODO: remove or merge in master **/
