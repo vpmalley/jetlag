@@ -1,5 +1,6 @@
 <?php namespace Jetlag\Exceptions;
 
+use Log;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -26,6 +27,7 @@ class Handler extends ExceptionHandler {
   */
   public function report(Exception $e)
   {
+    Log::warning($e->getStatusCode() . ' : ' . $e->getMessage());
     return parent::report($e);
   }
 
@@ -40,6 +42,15 @@ class Handler extends ExceptionHandler {
   {
     if ($e instanceof ModelNotFoundException) {
       abort(404);
+    }
+    if ($request->ajax() || 'api' === $request->segment(1)) {
+      $errorBody =  [
+                  'error' => [
+                    'status' => $e->getStatusCode(),
+                    'message' => $e->getMessage(),
+                  ]
+                ];
+      return response()->json($errorBody, $e->getStatusCode());
     }
     return parent::render($request, $e);
   }
