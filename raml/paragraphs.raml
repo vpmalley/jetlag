@@ -1,0 +1,67 @@
+#%RAML 1.0
+title: Jetlag Articles API
+version: v0.1
+baseUri: /api/0.1/
+mediaType:  application/json
+types:
+  Paragraph:
+    type: object
+    properties:
+      id: integer
+      created_at: timestamp
+      update_at?: timestamp
+      deleted_at?: timestamp
+      title?: string
+      block_content: Picture | Map | Text | Link
+      block_content_type:
+        enum: [ picture, map, text, link ]
+  Picture:
+    type: object
+    properties:
+      id: integer
+      created_at: timestamp
+      update_at?: timestamp
+      deleted_at?: timestamp
+      small_picture?: Link # using directly a url wouldn't be better ?
+      medium_picture?: Link
+      big_picture?: Link # the fullsize picture as uploaded
+      authors: User[] # User[] instead of AuthorUser[] which is a bit complex
+      taken_at?: timestamp
+      main_place?: Place
+  Text:
+    type: object
+    properties:
+      id: integer
+      created_at: timestamp
+      update_at?: timestamp
+      deleted_at?: timestamp
+      value: string
+  Map:
+    type: object
+    properties:
+      id: integer
+      created_at: timestamp
+      update_at?: timestamp
+      deleted_at?: timestamp
+      caption?: string
+      center: Location
+      zoom: integer
+      place?: Place # if there is one, we display it as a marker
+  Place:
+    type: object
+    properties:
+      id: integer
+      label: string # from geocoding service
+      location: Location
+  Location: # Maybe we don't need this object and can directly merge it into Place
+    type: object
+     properties:
+      id: integer
+      latitude: number
+      longitude: number
+  Link:
+    type: object
+    properties:
+      id: number
+      url: string
+      mime_type?: string #helpful to know in advance how to handle this link
