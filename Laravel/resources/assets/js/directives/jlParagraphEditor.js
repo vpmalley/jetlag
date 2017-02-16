@@ -3,7 +3,8 @@ var dependencies = [
   'leaflet-directive',
   'monospaced.elastic',
   'jetlag.webapp.components.geocoding',
-  'jetlag.webapp.components.uploader'
+  'jetlag.webapp.components.uploader',
+  'jetlag.webapp.components.paragraphs'
 ];
 
 angular
@@ -13,39 +14,38 @@ angular
   
 
 ParagraphEditorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictureUploaderService',
-    'JetlagUtils', 'geocodingService'];
+    'JetlagUtils', 'geocodingService', 'paragraphsService'];
 
 function ParagraphEditorController($scope, ModelsManager, $http, pictureUploaderService,
-    JetlagUtils, geocodingService) {
+    JetlagUtils, geocodingService, paragraphsService) {
   var ctrl = this;
   ctrl.leafletMap = { markers: {} };
-  
-  var inputTypeList = ['text', 'picture', 'location', 'external']; // XXX: should be moved into a service
-  
+
   var defaultCenter = {
         lat: 45.74,
         lng: 4.87,
         zoom: 8
   }
   
-  ctrl.isInputEmpty = function() {
-	return _.every(inputTypeList, function(type) {
-	  return _.isEmpty(ctrl.model[type]);
-    })
-  }
+  ctrl.isInputEmpty = paragraphsService.isEmpty;
 
   ctrl.changeInputType = function(inputType) {
-	if(JetlagUtils.findValue(inputTypeList, inputType) != null) {
-		ctrl.model.type = inputType;
-		if(inputType === 'location') {
-			if(ctrl.model.location == null) {
-				ctrl.model.location = {};
+	if(paragraphsService.contentTypes[inputType] !== undefined) {
+		ctrl.model.blockContentType = paragraphsService.contentTypes[inputType];
+
+		if(ctrl.model.blockContentType === paragraphsService.contentTypes.MAP) {
+			if(ctrl.model.blockContent == null) {
+				ctrl.model.blockContent = {};
 			}
-			if(ctrl.model.location.markers == null) {
-				ctrl.model.location.markers = {};
+			if(ctrl.model.blockContent.marker == null) {
+				ctrl.model.blockContent.marker = {};
 			}
-			if(ctrl.model.location.center == null) {
-				ctrl.model.location.center = defaultCenter;
+			if(ctrl.model.blockContent.center == null) {
+				ctrl.model.blockContent.center = {
+				    latitude: defaultCenter.lat,
+				    longitude: defaultCenter.lng
+				};
+				ctrl.model.blockContent.zoom = defaultCenter.zoom;
 			}
 		}
 	}
@@ -53,8 +53,6 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
 
   ctrl.uploadFiles = function(files) {
     if(files && files.length == 1) {
-	  ctrl.model.picture = files[0];
-        
         /* Do upload the file and associate it with the Picture object */
         pictureUploaderService.upload({
             id: 2, //XXX: fake ID for now because endpoint requires one
@@ -62,7 +60,9 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
             caption: ''
         }).then(function(result) {
             console.log('File successfully uploaded', result);
-            ctrl.model.picture = result;
+            if(ctrl.model.blockContentType === paragraphsService.contentTypes.PICTURE) {
+                ctrl.model.blockContent = result;
+            }
         }, function(error) {
             console.log('Error status: ' + error.status);
         });
@@ -70,75 +70,75 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
   }
 
   ctrl.pictureSelected = function() {
-	return !_.isEmpty(ctrl.model.picture);
+	return ctrl.model.blockContentType === paragraphsService.contentTypes.PICTURE
+	&& !_.isEmpty(ctrl.model.blockContent);
   }
 
   ctrl.changeLocation = function() {
-    if(ctrl.model.type === 'location' && ctrl.model.location.name != null) {
-	    geocodingService.geocode(ctrl.model.location.name)
+    var place = ctrl.model.blockContent.place;
+    if(ctrl.model.blockContentType === paragraphsService.contentTypes.MAP
+    && place.label != null) {
+	    geocodingService.geocode(place.label)
 	    .then(function(results) {
 	        if(_.isObject(results) && results.features.length > 0) {
 			    var firstMatch = results.features[0];
-
-			    ctrl.model.location.name = firstMatch.properties.label;
-			    ctrl.model.location.coordinates = firstMatch.geometry.coordinates;
+			    place.label = firstMatch.properties.label;
+			    place.latitude = firstMatch.geometry.coordinates[1];
+			    place.longitude = firstMatch.geometry.coordinates[0];
 		    }
 	    });
 	}
   }
 
   function getLeafletMapMarkerCoordinates() {
-    if(ctrl.model && ctrl.model.location) {
-	  return ctrl.model.location.coordinates;
+    if(ctrl.model
+    && ctrl.model.blockContentType === paragraphsService.contentTypes.MAP
+    && ctrl.model.blockContent.place != null) {
+        return ctrl.model.blockContent.place;
     } else {
 	  return null;
     }
   }
 
   $scope.$watch(getLeafletMapMarkerCoordinates, function(newValue, oldValue) {
-    if(newValue != null && newValue != oldValue && newValue.length === 2) {
+    if(newValue != null && newValue != oldValue) {
 	  ctrl.changeMarkerPosition(newValue);
     }
   });
 
   ctrl.changeMarkerPosition = function(coordinates) {
-    ctrl.model.location.markers.marker = {
-	  message: ctrl.model.location.name,
-	  lat: coordinates[1],
-	  lng: coordinates[0],
+    var place = ctrl.model.blockContent.place;
+
+    place.marker = {
+	  message: place.label,
+	  lat: coordinates.latitude,
+	  lng: coordinates.longitude,
 	  draggable: true,
 	  focus: true
     }
   }
 
   $scope.$on('leafletDirectiveMarker.bad_id.dragend', function(e, m) {
-	ctrl.model.location.markers.marker = m.model;
-	var marker = ctrl.model.location.markers.marker;
-	  if(marker.lng !== ctrl.model.location.coordinates[0] ||
-		 marker.lat !== ctrl.model.location.coordinates[1]) {
-		 geocodingService.reverseGeocode(marker)
-         .then(function(results) {
+    var marker, place = ctrl.model.blockContent.place;
+
+	marker = (place.marker = m.model);
+    if(marker.lng !== place.longitude ||
+    marker.lat !== place.latitude) {
+        geocodingService.reverseGeocode(marker)
+        .then(function(results) {
             if(_.isObject(results) && results.features.length > 0) {
                 var firstMatch = results.features[0];
 
-				ctrl.model.location.name = firstMatch.properties.label;
-				ctrl.model.location.markers.marker.message = firstMatch.properties.label;
+                place.label = firstMatch.properties.label;
+                place.marker.message = firstMatch.properties.label;
             }
-         });
-	  }
+        });
+    }
   });
   
   ctrl.revert = function() {
-      if(ctrl.model.type === 'text') {
-          ctrl.model.text = ctrl._previous.text;
-      } else if(ctrl.model.type === 'picture') {
-        ctrl.model.picture = ctrl._previous.picture;
-      } else if(ctrl.model.type === 'location') {
-        ctrl.model.location = ctrl._previous.location;
-      } else if(ctrl.model.type === 'external') {
-          ctrl.model.external = ctrl._previous.external;
-      }
-      ctrl.cancel();
+    ctrl.blockContent = ctrl._previous.blockContent;
+    ctrl.cancel();
   }
 
   ctrl.isCreation = function() {
@@ -146,7 +146,7 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
   }
 
   function isModeValid() {
-    if(!JetlagUtils.findValue(['creation', 'edition'], ctrl.mode)) {
+    if(['creation', 'edition'].indexOf(ctrl.mode) === -1) {
         console.warn('The `mode` parameter of the jlParagraphEditor directive is not valid.');
     }
   }

@@ -241,14 +241,20 @@ function ModelsManager(NgBackboneModel, NgBackboneCollection, ModelsDefinition) 
 }
 
 function JetlagUtils() {
-	function findValue(collection, value) {
-		return _.find(collection, function(item) {
-			return item === value;
-			});
+	/* Based on Typescript behaviour */
+	function makeEnum(enumValues) {
+	    var enumObject;
+        (function (enumObject) {
+            var index = 0;
+            enumValues.forEach(function(value) {
+                enumObject[enumObject[value] = index++] = value;
+            });
+        })(enumObject || (enumObject = {}));
+        return enumObject;
 	}
 
 	return {
-		findValue: findValue
+		makeEnum: makeEnum
 	}
 }
 

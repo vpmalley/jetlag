@@ -44,7 +44,7 @@ types:
       update_at?: timestamp
       deleted_at?: timestamp
       caption?: string
-      center: Location
+      center: Place
       zoom: integer
       place?: Place # if there is one, we display it as a marker
   Place:
@@ -52,11 +52,6 @@ types:
     properties:
       id: integer
       label: string # from geocoding service
-      location: Location
-  Location: # Maybe we don't need this object and can directly merge it into Place
-    type: object
-     properties:
-      id: integer
       latitude: number
       longitude: number
   Link:

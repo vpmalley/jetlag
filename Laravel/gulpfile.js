@@ -39,7 +39,8 @@ elixir(function(mix) {
 		.scripts([
 			'base.js',
 			'app.js',
-            'modelsMaker.js'
+            'modelsMaker.js',
+            'typeMapper.js'
 		], 'public/js/jetlag.js')
 		.scriptsIn('resources/assets/js/directives', 'public/js/jetlag.directives.js')
 		.scriptsIn('resources/assets/js/components', 'public/js/jetlag.components.js')

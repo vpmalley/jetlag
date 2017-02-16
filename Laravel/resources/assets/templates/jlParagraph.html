@@ -1,19 +1,19 @@
 <div ng-if="!paragraphCtrl.isBeingEdited || !paragraphCtrl.isBeingEdited()">
-	<div class="paragraph-type-text" ng-if="paragraphCtrl.model.type === 'text'">
-	  <div ng-bind-html="paragraphCtrl.model.text | paragraphText"></div>
+	<div class="paragraph-type-text" ng-if="paragraphCtrl.isTextType()">
+	  <div ng-bind-html="paragraphCtrl.model.blockContent | paragraphText"></div>
 	</div>
-	<div class="paragraph-type-pictures" ng-if="paragraphCtrl.model.type === 'picture'">
+	<div class="paragraph-type-pictures" ng-if="paragraphCtrl.isPictureType()">
 	  <div class="paragraph-type-picture">
 		<img class="picture-preview" ngf-src="paragraphCtrl.getPictureUrl()">
 	  </div>
 	</div>
-	<div class="paragraph-type-location" ng-if="paragraphCtrl.model.type === 'location'">
-	  <leaflet id="bad_id" lf-center="paragraphCtrl.model.location.center" 
-			 markers="paragraphCtrl.model.location.markers">
+	<div class="paragraph-type-location" ng-if="paragraphCtrl.isMapType()">
+	  <leaflet id="bad_id" lf-center="paragraphCtrl.getMapCenter()"
+			 markers="paragraphCtrl.getMapMarkers()">
 	  </leaflet>
 	</div>
-	<div class="paragraph-type-external" ng-if="paragraphCtrl.model.type === 'external'">
-	  <a ng-href="{{paragraphCtrl.model.external.link}}" target="_blank">External content here</a>
+	<div class="paragraph-type-external" ng-if="paragraphCtrl.isLinkType()">
+	  <a ng-href="{{paragraphCtrl.model.blockContent.url}}" target="_blank">External content here</a>
 	</div>
 </div>
 <jl-paragraph-editor model="paragraphCtrl.model"

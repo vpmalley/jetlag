@@ -1,150 +1,26 @@
 (function(angular) {
     'use strict';
 
-    var modelsDefinition = {
-    Article: {
+    var commonProperties = {
         id: {
-          remote: 'id',
-          type: 'id'
+            remote: 'id',
+            type: 'id'
         },
-        title: {
-          remote: 'title',
-          type: 'string'
+        createdAt: {
+            remote: 'created_at',
+            type: 'datetime'
         },
-        descriptionText: {
-          remote: 'description_text',
-          type: 'string'
+        updatedAt: {
+            remote: 'updated_at',
+            type: 'datetime'
         },
-        descriptionMedia: {
-          remote: 'description_picture',
-          type: 'integer' //XXX: really few chance to have an integer here
-        },
-        isDraft: {
-          remote: 'is_draft',
-          type: 'boolean',
-          defaultValue: true
-        },
-        isPublic: {
-          remote: 'is_public',
-          type: 'boolean',
-          defaultValue: false
-        },
-        paragraphs: {
-          remote: 'paragraphs',
-          type: 'orderedArray'
-        },
-        authorUsers: {
-          remote: 'author_users',
-          type: 'array'
-        },
-        travelbook: {
-          remote: 'travelbook',
-          type: 'Model.Travelbook'
-        },
-        url: {
-            remote: 'url',
-            type: 'string'
+        deletedAt: {
+            remote: 'deleted_at',
+            type: 'datetime'
         }
-    },
-    Travelbook: {
-        id: {
-          remote: 'id',
-          type: 'id'
-        },
-        title: {
-          remote: 'title',
-          type: 'string'
-        },
-        beginDate: {
-            remote: 'begin_date',
-            type: 'date'
-        },
-        endDate: {
-            remote: 'end_date',
-            type: 'date'
-        },
-        articles: {
-            remote: 'articles',
-            type: 'orderedArray'
-        },
-        isDraft: {
-          remote: 'is_draft',
-          type: 'boolean',
-          defaultValue: true
-        },
-        isPublic: {
-          remote: 'is_public',
-          type: 'boolean',
-          defaultValue: false
-        }
-    },
-    Picture: {
-        id: {
-          remote: 'id',
-          type: 'id'
-        },
-        createAt: {
-          remote: 'created_at',
-          type: 'datetime'
-        },
-        updateAt: {
-          remote: 'update_at',
-          type: 'datetime'
-        },
-        smallPicture: {
-          remote: 'small_picture_link',
-          type: 'Model.Link'
-        },
-        mediumPicture: {
-          remote: 'medium_picture_link',
-          type: 'Model.Link'
-        },
-        bigPicture: {
-          remote: 'big_picture_link',
-          type: 'Model.Link'
-        },
-        authorUsers: {
-          remote: 'author_users',
-          type: 'orderedArray'
-        },
-        deleteAt: {
-          remote: 'deleted_at',
-          type: 'datetime'
-        }
-    },
-    Link: {
-        id: {
-          remote: 'id',
-          type: 'id'
-        },
-        updateDate: {
-          remote: 'updated_at',
-          type: 'datetime'
-        },
-        createAt: {
-          remote: 'create_at',
-          type: 'datetime'
-        },
-        caption: {
-          remote: 'caption',
-          type: 'string'
-        },
-        storage: {
-          remote: 'storage',
-          type: 'string'
-        },
-        url: {
-          remote: 'url',
-          type: 'string'
-        },
-        authorUsers: {
-          remote: 'author_users',
-          type: 'orderedArray'
-        }
-    }
-};
+    };
     
-    function ModelsMaker($q, $http) {
+    function ModelsMaker($q, $http, typeMapper) {
         
         var apiVersion = '0.1';
 
@@ -159,7 +35,7 @@
             SAVING: 'SAVING',
             DELETING: 'DELETING',
             DELETED: 'DELETED'
-        }
+        };
 
         /* Construct a plain Javascript model error object
         * for both server and front sides
@@ -216,6 +92,7 @@
         function Generic(name, schema, initialValues) {
             function Model() {
                 this._schema = angular.copy(schema);
+                _.assign(this._schema, commonProperties);
                 this._reverseSchema = makeReverseSchema(this._schema);
                 this._default = angular.copy(initialValues);
                 this._name = name;
@@ -432,9 +309,16 @@
                     var reverseSchema = this._reverseSchema;
                     var model = this;
                     
-                    _.each(serverAttrs, function(serverAttrValue, serverAttrName) {
-                        if(reverseSchema[serverAttrName] !== undefined) {
-                            model[reverseSchema[serverAttrName].local] = serverAttrValue;
+                    _.each(this._schema, function(frontAttrValue, frontAttrName) {
+                        if(frontAttrValue.remote !== undefined) {
+                            if(typeof frontAttrValue.map === 'function') {
+                                model[frontAttrName] = frontAttrValue.map(serverAttrs[frontAttrValue.remote]);
+                            } else {
+                                model[frontAttrName] =
+                                    typeMapper.map(serverAttrs[frontAttrValue.remote], frontAttrValue.type);
+                            }
+                        } else {
+                            model[frontAttrName] = undefined;
                         }
                     });
                 },
@@ -443,11 +327,18 @@
                     var schema = this._schema;
                     var model = this;
                     var serverAttrs = {};
-                    
-                    _.each(model, function(localAttrValue, localAttrName) {
-                       if(schema[localAttrName] !== undefined) {
-                           serverAttrs[schema[localAttrName].remote] = localAttrValue;
-                       } 
+
+                    _.each(this._reverseSchema, function(serverAttrValue, serverAttrName) {
+                        if(serverAttrValue.local !== undefined) {
+                            if(typeof serverAttrValue.unmap === 'function') {
+                                serverAttrs[serverAttrName] = serverAttrValue.unmap(model[serverAttrValue.local]);
+                            } else {
+                                serverAttrs[serverAttrName] =
+                                typeMapper.unmap(model[serverAttrValue.local], serverAttrValue.type);
+                            }
+                        } else {
+                            serverAttrs[serverAttrName] = null;
+                        }
                     });
                     
                     return serverAttrs;
@@ -526,8 +417,117 @@
         return Generic;
     }
     
-    function ModelsManager(ModelsMaker) {
+    function ModelsManager(ModelsMaker, paragraphsService) {
         var models = {};
+
+        var modelsDefinition = {
+            Article: {
+                title: {
+                  remote: 'title',
+                  type: 'string'
+                },
+                descriptionText: {
+                  remote: 'description_text',
+                  type: 'string'
+                },
+                descriptionMedia: {
+                  remote: 'description_picture',
+                  type: 'integer' //XXX: really few chance to have an integer here
+                },
+                isDraft: {
+                  remote: 'is_draft',
+                  type: 'boolean',
+                  defaultValue: true
+                },
+                isPublic: {
+                  remote: 'is_public',
+                  type: 'boolean',
+                  defaultValue: false
+                },
+                paragraphs: {
+                  remote: 'paragraphs',
+                  type: 'orderedArray',
+                  map: paragraphsService.map,
+                  unmap: paragraphsService.unmap
+                },
+                authorUsers: {
+                  remote: 'author_users',
+                  type: 'array'
+                },
+                travelbook: {
+                  remote: 'travelbook',
+                  type: 'Model.Travelbook'
+                },
+                url: {
+                    remote: 'url',
+                    type: 'string'
+                }
+            },
+            Travelbook: {
+                title: {
+                  remote: 'title',
+                  type: 'string'
+                },
+                beginDate: {
+                    remote: 'begin_date',
+                    type: 'date'
+                },
+                endDate: {
+                    remote: 'end_date',
+                    type: 'date'
+                },
+                articles: {
+                    remote: 'articles',
+                    type: 'orderedArray'
+                },
+                isDraft: {
+                  remote: 'is_draft',
+                  type: 'boolean',
+                  defaultValue: true
+                },
+                isPublic: {
+                  remote: 'is_public',
+                  type: 'boolean',
+                  defaultValue: false
+                }
+            },
+            Picture: {
+                smallPicture: {
+                  remote: 'small_picture_link',
+                  type: 'Model.Link'
+                },
+                mediumPicture: {
+                  remote: 'medium_picture_link',
+                  type: 'Model.Link'
+                },
+                bigPicture: {
+                  remote: 'big_picture_link',
+                  type: 'Model.Link'
+                },
+                authorUsers: {
+                  remote: 'author_users',
+                  type: 'orderedArray'
+                }
+            },
+            Link: {
+                caption: {
+                  remote: 'caption',
+                  type: 'string'
+                },
+                storage: {
+                  remote: 'storage',
+                  type: 'string'
+                },
+                url: {
+                  remote: 'url',
+                  type: 'string'
+                },
+                authorUsers: {
+                  remote: 'author_users',
+                  type: 'orderedArray'
+                }
+            }
+        };
         
         models.Article = ModelsMaker('Article', modelsDefinition.Article);
         models.Travelbook = ModelsMaker('Travelbook', modelsDefinition.Travelbook);
@@ -535,11 +535,11 @@
         return models;
     }
     
-  ModelsManager.$inject = ['ModelsMaker'];
-  ModelsMaker.$inject = ['$q', '$http'];
+  ModelsManager.$inject = ['ModelsMaker', 'paragraphsService'];
+  ModelsMaker.$inject = ['$q', '$http', 'typeMapper'];
   
   angular
-  .module('jetlag.webapp.etc', [])
+  .module('jetlag.webapp.etc', ['jetlag.webapp.components.paragraphs'])
   .factory('ModelsMaker', ModelsMaker)
   .factory('JLModelsManager', ModelsManager);
 })(angular);
