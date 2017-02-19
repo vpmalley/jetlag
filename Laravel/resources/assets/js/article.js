@@ -1,7 +1,8 @@
 var dependencies = [
   'jetlag.webapp.app',
   'leaflet-directive',
-  'jetlag.webapp.directives.paragraph'
+  'jetlag.webapp.directives.paragraph',
+  'jetlag.webapp.components.paragraphs'
 ];
 
 angular
@@ -9,10 +10,10 @@ angular
   .controller('ArticleController', ArticleController);
 
 ArticleController.$inject = ['$scope', 'ModelsManager', '$http',
-    'JetlagUtils', 'JLModelsManager'];
+    'JetlagUtils', 'JLModelsManager', 'paragraphsService'];
 
 function ArticleController($scope, ModelsManager, $http,
-    JetlagUtils, JLModelsManager) {
+    JetlagUtils, JLModelsManager, paragraphsService) {
 	var ctrl = this;
 
 	ctrl.article = null;
@@ -25,6 +26,7 @@ function ArticleController($scope, ModelsManager, $http,
 		ctrl.article.id = articleID;
 		ctrl.article.fetch().then(function() {
 		    ctrl.articleLoaded = true;
+		    ctrl.article.paragraphs = paragraphsService.getFakeParagraphs()
 		});
 	}
 

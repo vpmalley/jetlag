@@ -1,6 +1,6 @@
-<div ng-if="!paragraphCtrl.isBeingEdited || !paragraphCtrl.isBeingEdited()">
+<div ng-if="!paragraphCtrl.isBeingEdited || !paragraphCtrl.isBeingEdited() || !paragraphCtrl.isEmpty()">
 	<div class="paragraph-type-text" ng-if="paragraphCtrl.isTextType()">
-	  <div ng-bind-html="paragraphCtrl.model.blockContent | paragraphText"></div>
+	  <div ng-bind-html="paragraphCtrl.model.blockContent.value | paragraphText"></div>
 	</div>
 	<div class="paragraph-type-pictures" ng-if="paragraphCtrl.isPictureType()">
 	  <div class="paragraph-type-picture">

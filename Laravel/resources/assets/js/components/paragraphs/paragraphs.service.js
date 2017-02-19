@@ -290,5 +290,101 @@ function paragraphsService(JetlagUtils, typeMapper) {
 
         return serverModel;
     }
+
+    this.getFakeParagraphs = function() {
+        var paragraphs = [];
+
+        var fakeText, fakePicture, fakeMap, fakeLink;
+
+        fakeText = {
+            id: 1,
+            createdAt: moment(),
+            updatedAt: undefined,
+            deletedAt: undefined,
+            value: "Ma jolie histoire"
+        };
+
+        fakePicture = {
+            id: 1,
+            createdAt: moment(),
+            updatedAt: undefined,
+            deletedAt: undefined,
+            smallPicture: undefined,
+            mediumPicture: undefined,
+            bigPicture: {
+                id: 1,
+                url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Armoiries_r%C3%' +
+                    'A9publique_fran%C3%A7aise.svg/2000px-Armoiries_r%C3%A9publique_fran%C3%A7aise.svg.png?uselang=fr',
+                mimeType: 'image/png'
+            },
+            authors: [],
+            takenAt: undefined,
+            mainPlace: undefined
+        };
+
+        fakeMap = {
+            id: 1,
+            createdAt: moment(),
+            updatedAt: undefined,
+            deletedAt: undefined,
+            caption: undefined,
+            zoom: 15,
+            center: {
+                id: 1,
+                latitude:45.7730879,
+                longitude: 4.8418078,
+                label: undefined
+            },
+            place: undefined
+        };
+
+        fakeLink = {
+            id: 1,
+            url: 'https://github.com/vpmalley/jetlag/issues/53#issuecomment-279249254',
+            mimeType: 'text/html'
+        };
+
+        paragraphs.push({
+            id: 1,
+            createdAt: moment(),
+            updatedAt: undefined,
+            deletedAt: undefined,
+            title: undefined,
+            blockContent: fakeText,
+            blockContentType: _this.contentTypes.TEXT
+        });
+
+        paragraphs.push({
+            id: 2,
+            createdAt: moment(),
+            updatedAt: undefined,
+            deletedAt: undefined,
+            title: undefined,
+            blockContent: fakePicture,
+            blockContentType: _this.contentTypes.PICTURE
+        });
+
+        paragraphs.push({
+            id: 3,
+            createdAt: moment(),
+            updatedAt: undefined,
+            deletedAt: undefined,
+            title: undefined,
+            blockContent: fakeMap,
+            blockContentType: _this.contentTypes.MAP
+        });
+
+        paragraphs.push({
+            id: 4,
+            createdAt: moment(),
+            updatedAt: undefined,
+            deletedAt: undefined,
+            title: undefined,
+            blockContent: fakeLink,
+            blockContentType: _this.contentTypes.LINK
+        });
+
+        return paragraphs;
+    }
 }
 })(angular);

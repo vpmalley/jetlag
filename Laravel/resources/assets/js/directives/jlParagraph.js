@@ -52,11 +52,15 @@ function ParagraphController($scope, paragraphsService) {
 
   ctrl.getMapCenter = function() {
     if(ctrl.isMapType()) {
-        return {
-            lat: ctrl.model.blockContent.center.latitude,
-            lng: ctrl.model.blockContent.center.longitude,
-            zoom: ctrl.model.blockContent.zoom
-        };
+        if(ctrl.mapCenter === undefined) {
+            ctrl.mapCenter = {
+                lat: ctrl.model.blockContent.center.latitude,
+                lng: ctrl.model.blockContent.center.longitude,
+                zoom: ctrl.model.blockContent.zoom
+            };
+        }
+
+        return ctrl.mapCenter;
     } else {
         return null;
     }
@@ -66,11 +70,17 @@ function ParagraphController($scope, paragraphsService) {
     if(ctrl.isMapType()
     && ctrl.model.blockContent.place != null
     && ctrl.model.blockContent.marker != null) {
-        return [ctrl.model.blockContent.place.marker];
+        if(ctrl.mapMarkers === undefined) {
+            ctrl.mapMarkers = [ctrl.model.blockContent.place.marker];
+        }
+
+        return ctrl.mapMarkers;
     } else {
         return null;
     }
   }
+
+  ctrl.isEmpty = paragraphsService.isEmpty;
 }
 
 function ParagraphTextFilter($sce) {

@@ -152,7 +152,8 @@ function TravelbookController($scope, ModelsManager) {
         });
         newArticle.save()
         .success(function(article) {
-            window.location.href = window.location.protocol + "//" + window.location.host + "/articles/create/#/" + article.id;
+            window.location.href = window.location.protocol + "//" + window.location.host
+                + "/articles/create/#/" + article.id;
         })
         .error(function(error) {
             console.log('Error when creating new article', error);
