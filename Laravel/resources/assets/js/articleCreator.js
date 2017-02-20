@@ -5,7 +5,8 @@ var dependencies = [
   'monospaced.elastic',
   'jetlag.webapp.directives.paragraph',
   'jetlag.webapp.components.geocoding',
-  'jetlag.webapp.components.uploader'
+  'jetlag.webapp.components.uploader',
+  'jetlag.webapp.components.paragraphs'
 ];
 
 angular
@@ -13,31 +14,22 @@ angular
   .controller('ArticleCreatorController', ArticleCreatorController);
 
 ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictureUploaderService',
-    'JetlagUtils', '$location', 'JLModelsManager', 'geocodingService'];
+    'JetlagUtils', '$location', 'JLModelsManager', 'geocodingService', 'paragraphsService'];
 
 function ArticleCreatorController($scope, ModelsManager, $http, pictureUploaderService,
-    JetlagUtils, $location, JLModelsManager, geocodingService) {
+    JetlagUtils, $location, JLModelsManager, geocodingService, paragraphsService) {
 	var ctrl = this;
-	ctrl.paragraphEditor = { input: {type: 'text', text: '', picture: {}, location: {}, external: {}}};
+	ctrl.paragraphEditor = {
+	    blockContentType: paragraphsService.contentTypes.TEXT,
+	    blockContent: {
+	        value: null
+	    }
+	};
 	ctrl.paragraphs = [];
 	ctrl.article = null;
 	ctrl.mm = ModelsManager;
 	ctrl.editedParagraph = null;
 	ctrl.articleLoaded = false;
-	
-	function getArticleID() {
-      var path = $location.path();
-
-	  if(path !== '') {
-	    var id = parseInt(path.substring(1));
-
-		if(!isNaN(id)) {
-			return id;
-		} else {
-			return null;
-		}
-	  }	
-	};
 	
 	function loadArticle(articleID) {
 	    ctrl.articleLoaded = false;
@@ -47,74 +39,28 @@ function ArticleCreatorController($scope, ModelsManager, $http, pictureUploaderS
 		    ctrl.articleLoaded = true;
 		});
 	}
-	
-	/* This wait for the article to be loaded.
-	* XXX: need to handle if there are pending changes and user changes the URL
-	*/
-	$scope.$watch(getArticleID, function(newValue, oldValue){
-		if(newValue != null) {
-			if(ctrl.article != null && ctrl.article.id !== newValue) {
-				if(ctrl.article.hasChanged()) {
-					ctrl.article.save()
-					.then(function() {
-						loadArticle(newValue);
-					}, function() {
-						console.error('Unable to save changes of current article');
-					});
-				} else {
-					loadArticle(newValue);
-				}
-			} else {
-				loadArticle(newValue);
-			}
-		}
-	});
-	
+
+	if(preload.articleId != null) {
+	    loadArticle(preload.articleId);
+	}
+
 	/* Transform what's in the paragraphEditor.input into a proper paragraph ready to be displayed */
 	ctrl.addParagraph = function() {
-	  var input = ctrl.paragraphEditor.input;
-	  var paragraph = null;
-	  switch(input.type) {
-          case 'text':
-          paragraph = _.pick(input, ['type', 'text']);
-            break;
-          case 'picture':
-          paragraph = _.pick(input, ['type', 'picture']);
-          //paragraph = {type: 'picture', pictures: [input.picture].concat([])}; //XXX: magical hack here to deeply copy
-            break;
-          case 'location':
-          paragraph = {
-            type: 'location',
-            location: {
-                name: input.location.name,
-                markers: {
-                    marker: {
-                        message: input.location.name,
-                        lat: input.location.coordinates[1],
-                        lng: input.location.coordinates[0],
-                        draggable: false
-                    }
-                },
-                center: angular.copy(ctrl.leafletMap.center),
-                coordinates: angular.copy(input.location.coordinates)
-            }
-          };
-            break;
-          case 'external':
-          paragraph = _.pick(input, ['type', 'external']);
-            break;
-          default:break;
-	  }
-	  /* add it to the article */
-	  ctrl.article.paragraphs.push(paragraph);
+	  ctrl.article.paragraphs.push(ctrl.paragraphEditor);
 	  /* reset the paragraphEditor input */
-	  ctrl.resetParagraph();
-	  ctrl.article.save({paragraphs: ctrl.article.paragraphs}, {patch: true}); //XXX: PATCH REQUEST
+	  ctrl.resetParagraphEditor();
+
+	  // TODO: handle auto save during creation
+	  //ctrl.article.save({paragraphs: ctrl.article.paragraphs}, {patch: true}); //XXX: PATCH REQUEST
 	}
 	
-	ctrl.resetParagraph = function() {
-	  /* reset the paragraphEditor input */
-	  ctrl.paragraphEditor.input = {type: 'text', text: '', picture: {}, location: {}, external: {}};
+	ctrl.resetParagraphEditor = function() {
+	  ctrl.paragraphEditor = {
+        blockContentType: paragraphsService.contentTypes.TEXT,
+        blockContent: {
+            value: null
+        }
+	  };
 	}
 	
 	function swapParagraphs(index1, index2) {

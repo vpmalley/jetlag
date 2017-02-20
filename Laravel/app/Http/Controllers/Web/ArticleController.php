@@ -47,9 +47,9 @@ class ArticleController extends Controller {
   }
   
   /** TODO: remove or merge in master **/
-	public function getCreate()
+	public function getCreate($id)
 	{
-	 return view('articleCreator');
+	 return view('articleCreator', ['id' => $id]);
 	}
 
 	public function getEdit()

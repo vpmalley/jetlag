@@ -19,40 +19,92 @@ ParagraphEditorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictur
 function ParagraphEditorController($scope, ModelsManager, $http, pictureUploaderService,
     JetlagUtils, geocodingService, paragraphsService) {
   var ctrl = this;
-  ctrl.leafletMap = { markers: {} };
-
+  ctrl.blockContents = {};
+  ctrl.blockContents[paragraphsService.contentTypes.TEXT] = {
+    blockContentType: paragraphsService.contentTypes.TEXT,
+    blockContent: undefined
+  };
+  ctrl.blockContents[paragraphsService.contentTypes.PICTURE] = {
+    blockContentType: paragraphsService.contentTypes.PICTURE,
+    blockContent: undefined
+  };
+  ctrl.blockContents[paragraphsService.contentTypes.MAP] = {
+    blockContentType: paragraphsService.contentTypes.MAP,
+    blockContent: undefined
+  };
+  ctrl.blockContents[paragraphsService.contentTypes.LINK] = {
+    blockContentType: paragraphsService.contentTypes.LINK,
+    blockContent: undefined
+  };
+  ctrl.currentContentType = paragraphsService.contentTypes.TEXT;
   var defaultCenter = {
         lat: 45.74,
         lng: 4.87,
         zoom: 8
+  };
+  var inputMapMarkers = [];
+  var inputMapCenter = defaultCenter;
+  var previewPicture;
+  ctrl.contentTypes = paragraphsService.contentTypes;
+
+  ctrl.isInputEmpty = function() {
+    return ctrl.blockContents[ctrl.currentContentType] === undefined
+        || paragraphsService.isEmpty(ctrl.blockContents[ctrl.currentContentType]);
   }
-  
-  ctrl.isInputEmpty = paragraphsService.isEmpty;
+
+  ctrl.isPictureType = function() {
+    return ctrl.currentContentType === paragraphsService.contentTypes.PICTURE;
+  }
+
+  ctrl.isMapType = function() {
+    return ctrl.currentContentType === paragraphsService.contentTypes.MAP;
+  }
+
+  ctrl.isTextType = function() {
+    return ctrl.currentContentType === paragraphsService.contentTypes.TEXT;
+  }
+
+  ctrl.isLinkType = function() {
+    return ctrl.currentContentType === paragraphsService.contentTypes.LINK;
+  }
 
   ctrl.changeInputType = function(inputType) {
-	if(paragraphsService.contentTypes[inputType] !== undefined) {
-		ctrl.model.blockContentType = paragraphsService.contentTypes[inputType];
+    if(inputType === paragraphsService.contentTypes.MAP
+        && ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent === undefined) {
+        var blockContent = {};
 
-		if(ctrl.model.blockContentType === paragraphsService.contentTypes.MAP) {
-			if(ctrl.model.blockContent == null) {
-				ctrl.model.blockContent = {};
-			}
-			if(ctrl.model.blockContent.marker == null) {
-				ctrl.model.blockContent.marker = {};
-			}
-			if(ctrl.model.blockContent.center == null) {
-				ctrl.model.blockContent.center = {
-				    latitude: defaultCenter.lat,
-				    longitude: defaultCenter.lng
-				};
-				ctrl.model.blockContent.zoom = defaultCenter.zoom;
-			}
-		}
-	}
+        blockContent.center = {
+            latitude: defaultCenter.lat,
+            longitude: defaultCenter.lng
+        };
+        blockContent.zoom = defaultCenter.zoom;
+        blockContent.place = {
+            label: undefined
+        };
+        ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent = blockContent;
+    }
+    ctrl.currentContentType = inputType;
+  }
+
+  ctrl.getMapCenter = function() {
+    if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
+        return ctrl.inputMapCenter;
+    } else {
+        return null;
+    }
+  }
+
+  ctrl.getMapMarkers = function() {
+    if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
+        return ctrl.inputMapMarkers;
+    } else {
+        return null;
+    }
   }
 
   ctrl.uploadFiles = function(files) {
     if(files && files.length == 1) {
+        previewPicture = files[0];
         /* Do upload the file and associate it with the Picture object */
         pictureUploaderService.upload({
             id: 2, //XXX: fake ID for now because endpoint requires one
@@ -60,84 +112,88 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
             caption: ''
         }).then(function(result) {
             console.log('File successfully uploaded', result);
-            if(ctrl.model.blockContentType === paragraphsService.contentTypes.PICTURE) {
-                ctrl.model.blockContent = result;
-            }
+            ctrl.blockContents[paragraphsService.contentTypes.PICTURE].blockContent = result;
+            previewPicture = undefined;
         }, function(error) {
             console.log('Error status: ' + error.status);
+            previewPicture = undefined;
         });
     }
   }
 
   ctrl.pictureSelected = function() {
-	return ctrl.model.blockContentType === paragraphsService.contentTypes.PICTURE
-	&& !_.isEmpty(ctrl.model.blockContent);
+	return ctrl.currentContentType === paragraphsService.contentTypes.PICTURE
+	&& (previewPicture !== undefined || !paragraphsService.isEmpty(ctrl.blockContents[paragraphsService.contentTypes.PICTURE]));
+  }
+
+  ctrl.getPreviewPicture = function() {
+    if(!paragraphsService.isEmpty(ctrl.blockContents[paragraphsService.contentTypes.PICTURE])) {
+        return ctrl.blockContents[paragraphsService.contentTypes.PICTURE].blockContent.bigPicture.url;
+    } else if(previewPicture !== undefined) {
+        return previewPicture;
+    } else {
+        return null;
+    }
   }
 
   ctrl.changeLocation = function() {
-    var place = ctrl.model.blockContent.place;
-    if(ctrl.model.blockContentType === paragraphsService.contentTypes.MAP
-    && place.label != null) {
-	    geocodingService.geocode(place.label)
-	    .then(function(results) {
-	        if(_.isObject(results) && results.features.length > 0) {
-			    var firstMatch = results.features[0];
-			    place.label = firstMatch.properties.label;
-			    place.latitude = firstMatch.geometry.coordinates[1];
-			    place.longitude = firstMatch.geometry.coordinates[0];
-		    }
-	    });
+    if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
+        var place = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent.place;
+
+        if(place.label !== undefined) {
+            geocodingService.geocode(place.label)
+            .then(function(results) {
+                if(_.isObject(results) && results.features.length > 0) {
+                    var firstMatch = results.features[0];
+                    place.label = firstMatch.properties.label;
+                    place.latitude = firstMatch.geometry.coordinates[1];
+                    place.longitude = firstMatch.geometry.coordinates[0];
+                    updateMarker();
+                }
+            });
+	    }
 	}
   }
 
-  function getLeafletMapMarkerCoordinates() {
-    if(ctrl.model
-    && ctrl.model.blockContentType === paragraphsService.contentTypes.MAP
-    && ctrl.model.blockContent.place != null) {
-        return ctrl.model.blockContent.place;
-    } else {
-	  return null;
-    }
-  }
+  /* Since the reference on the Marker object does not change
+  * the map won't update manually the marker position when the
+  * location changes.
+  * So we do it manually.
+  */
+  function updateMarker() {
+    var place = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent.place;
 
-  $scope.$watch(getLeafletMapMarkerCoordinates, function(newValue, oldValue) {
-    if(newValue != null && newValue != oldValue) {
-	  ctrl.changeMarkerPosition(newValue);
-    }
-  });
-
-  ctrl.changeMarkerPosition = function(coordinates) {
-    var place = ctrl.model.blockContent.place;
-
-    place.marker = {
-	  message: place.label,
-	  lat: coordinates.latitude,
-	  lng: coordinates.longitude,
-	  draggable: true,
-	  focus: true
-    }
+    inputMapMarkers = [{
+        lat: place.latitude,
+        lng: place.longitude,
+        message: place.label,
+        draggable: true,
+        focus: false
+    }];
   }
 
   $scope.$on('leafletDirectiveMarker.bad_id.dragend', function(e, m) {
-    var marker, place = ctrl.model.blockContent.place;
+    var marker, place = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent.place;
 
-	marker = (place.marker = m.model);
+	marker = m.model;
     if(marker.lng !== place.longitude ||
-    marker.lat !== place.latitude) {
+        marker.lat !== place.latitude) {
         geocodingService.reverseGeocode(marker)
         .then(function(results) {
             if(_.isObject(results) && results.features.length > 0) {
                 var firstMatch = results.features[0];
 
                 place.label = firstMatch.properties.label;
-                place.marker.message = firstMatch.properties.label;
+                marker.message = place.label;
             }
         });
     }
   });
   
   ctrl.revert = function() {
-    ctrl.blockContent = ctrl._previous.blockContent;
+    if(ctrl._previous !== undefined) {
+        ctrl.model = ctrl._previous;
+    }
     ctrl.cancel();
   }
 
@@ -151,6 +207,32 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
     }
   }
   isModeValid();
+
+  /* Init the leaflet map (center + marker) in case there is a current paragraph
+  * (e.g. mode === 'edition') and it's of type MAP.
+  */
+  function initMap() {
+    if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
+        var blockContent = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent;
+        inputMapCenter = {
+            lat: blockContent.center.latitude,
+            lng: blockContent.center.longitude,
+            zoom: blockContent.zoom
+        };
+        if(blockContent.place != null) {
+            var place = blockContent.place;
+
+            inputMapMarkers = [{
+                lat: place.latitude,
+                lng: place.longitude,
+                message: place.label,
+                draggable: true,
+                focus: false
+            }];
+        }
+    }
+  }
+  initMap();
   
 }
 
@@ -168,7 +250,9 @@ function JlParagraphEditorDirective() {
     controller: 'ParagraphEditorController',
     controllerAs: 'paragraphEditorCtrl',
     link: function(scope, element, attrs, controller) {
-        controller._previous = JSON.parse(JSON.stringify(controller.model));
+        if(controller.model != null) {
+            controller._previous = JSON.parse(JSON.stringify(controller.model));
+        }
     }
   }
 }

@@ -29,7 +29,7 @@ function ParagraphController($scope, paragraphsService) {
 
   ctrl.getPictureUrl = function() {
     if(ctrl.model.blockContentType === paragraphsService.contentTypes.PICTURE
-    && ctrl.model.blockContent != null && ctrl.model.blockContent.bigPicture != null) {
+    && !paragraphsService.isEmpty(ctrl.model)) {
         return ctrl.model.blockContent.bigPicture.url;
     }
   }
@@ -68,12 +68,19 @@ function ParagraphController($scope, paragraphsService) {
 
   ctrl.getMapMarkers = function() {
     if(ctrl.isMapType()
-    && ctrl.model.blockContent.place != null
-    && ctrl.model.blockContent.marker != null) {
+    && ctrl.model.blockContent.place != null) {
+        if(ctrl.model.blockContent.place.marker === undefined) {
+            ctrl.model.blockContent.place.marker = {
+              message: ctrl.model.blockContent.place.label,
+              lat: ctrl.model.blockContent.place.latitude,
+              lng: ctrl.model.blockContent.place.longitude,
+              draggable: false,
+              focus: false
+            };
+        }
         if(ctrl.mapMarkers === undefined) {
             ctrl.mapMarkers = [ctrl.model.blockContent.place.marker];
         }
-
         return ctrl.mapMarkers;
     } else {
         return null;

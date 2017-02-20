@@ -50,10 +50,10 @@
 					Un même paysage pris à deux instants différents peut réserver de sacrées surprises!
 				</p>
 				<div class="card-action">
-				    <jl-paragraph-editor model="articleCreatorCtrl.paragraphEditor.input"
+				    <jl-paragraph-editor model="articleCreatorCtrl.paragraphEditor"
 				                         mode="creation"
                                          save="articleCreatorCtrl.addParagraph()"
-                                         cancel="articleCreatorCtrl.resetParagraph()">
+                                         cancel="articleCreatorCtrl.resetParagraphEditor()">
                     </jl-paragraph-editor>
 				</div>
 			</div>
@@ -86,5 +86,10 @@
 @endsection
 
 @section('scripts')
+<script>
+var preload = {
+    articleId: {{ $id }}
+}
+</script>
 <script src="{{ asset('/js/articleCreator.js') }}"></script>
 @endsection

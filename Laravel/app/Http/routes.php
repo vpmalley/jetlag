@@ -39,7 +39,7 @@ Route::get('me/edit', 'Web\TravellerController@getMyEdit');
   // Test only - TODO: remove before to merge in master
 Route::get('travelbook/create', 'Web\TravelbookController@getCreate');
 Route::get('travelbook/edit', 'Web\TravelbookController@getEdit');
-Route::get('article/create', 'Web\ArticleController@getCreate');
+Route::get('article/create/{id}', 'Web\ArticleController@getCreate');
 Route::get('article/edit', 'Web\ArticleController@getEdit');
 
   // Travelbook routes

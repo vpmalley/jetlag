@@ -93,9 +93,10 @@ function paragraphsService(JetlagUtils, typeMapper) {
                 createdAt: serverPicture.created_at,
                 updatedAt: serverPicture.updated_at,
                 deletedAt: serverPicture.deleted_at,
-                smallPicture: _this.mapLink(serverPicture.small_picture),
-                mediumPicture: _this.mapLink(serverPicture.medium_picture),
-                bigPicture: _this.mapLink(serverPicture.big_picture),
+                /* TODO: upload webservice does not return right model at the moment */
+                smallPicture: _this.mapLink(serverPicture.small_picture || serverPicture.small_url),
+                mediumPicture: _this.mapLink(serverPicture.medium_picture || serverPicture.medium_url),
+                bigPicture: _this.mapLink(serverPicture.big_picture || serverPicture.big_url),
                 authors: serverPicture.authors,
                 takenAt: typeMapper.map(serverPicture.taken_at, 'datetime'),
                 mainPlace: _this.mapPlace(serverPicture.main_place)
@@ -331,11 +332,16 @@ function paragraphsService(JetlagUtils, typeMapper) {
             zoom: 15,
             center: {
                 id: 1,
-                latitude:45.7730879,
+                latitude: 45.7730879,
                 longitude: 4.8418078,
                 label: undefined
             },
-            place: undefined
+            place: {
+                id: 2,
+                latitude: 45.778506,
+                longitude: 4.856742,
+                label: 'Le Zoo de la Tête d\'Or'
+            }
         };
 
         fakeLink = {

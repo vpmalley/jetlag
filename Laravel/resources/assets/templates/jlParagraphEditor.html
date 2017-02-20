@@ -2,23 +2,32 @@
 <form name="oklm" novalidate>
 	<div class="paragraph-editor">
 		<div class="btn-group btn-group-justified">
-			<div class="btn jl-tab" ng-class="{'selected':paragraphEditorCtrl.model.type === 'text'}"
-			ng-click="paragraphEditorCtrl.changeInputType('text')"><i class="fa fa-pencil"></i></div>
-			<div class="btn jl-tab" ng-class="{'selected':paragraphEditorCtrl.model.type === 'picture'}"
-			ng-click="paragraphEditorCtrl.changeInputType('picture')"><i class="fa fa-camera-retro"></i></div>
-			<div class="btn jl-tab" ng-class="{'selected':paragraphEditorCtrl.model.type === 'location'}"
-			ng-click="paragraphEditorCtrl.changeInputType('location')"><i class="fa fa-map"></i></div>
-			<div class="btn jl-tab" ng-class="{'selected':paragraphEditorCtrl.model.type === 'external'}"
-			ng-click="paragraphEditorCtrl.changeInputType('external')"><i class="fa fa-link"></i></div>
+			<div class="btn jl-tab"
+				 ng-class="{'selected': paragraphEditorCtrl.isTextType()}"
+			    ng-click="paragraphEditorCtrl.changeInputType(paragraphEditorCtrl.contentTypes.TEXT)">
+                <i class="fa fa-pencil"></i>
+            </div>
+			<div class="btn jl-tab" ng-class="{'selected': paragraphEditorCtrl.isPictureType()}"
+			    ng-click="paragraphEditorCtrl.changeInputType(paragraphEditorCtrl.contentTypes.PICTURE)">
+                <i class="fa fa-camera-retro"></i>
+            </div>
+			<div class="btn jl-tab" ng-class="{'selected': paragraphEditorCtrl.isMapType()}"
+			    ng-click="paragraphEditorCtrl.changeInputType(paragraphEditorCtrl.contentTypes.MAP)">
+                <i class="fa fa-map"></i>
+            </div>
+			<div class="btn jl-tab" ng-class="{'selected': paragraphEditorCtrl.isLinkType()}"
+			    ng-click="paragraphEditorCtrl.changeInputType(paragraphEditorCtrl.contentTypes.LINK)">
+                <i class="fa fa-link"></i>
+            </div>
 		</div>
 		<div class="paragraph-input">
-			<textarea 	ng-if="paragraphEditorCtrl.model.type === 'text'"
+			<textarea 	ng-if="paragraphEditorCtrl.isTextType()"
 						placeholder="Lisez nos conseils juste au dessus si vous êtes bloqués"
-						ng-model="paragraphEditorCtrl.model.text"
+						ng-model="paragraphEditorCtrl.blockContents[paragraphEditorCtrl.contentTypes.TEXT].blockContent.value"
 						name="text"
 						msd-elastic="\n">
 			</textarea>
-			<div ng-if="paragraphEditorCtrl.model.type === 'picture'">
+			<div ng-if="paragraphEditorCtrl.isPictureType()">
 				<div 	ngf-drop="paragraphEditorCtrl.uploadFiles($files)" class="drop-box"
 						ngf-drag-over-class="'dragover'"
 						ngf-pattern="'image/*'"
@@ -30,21 +39,22 @@
 					</div>
 					<div class="strut"></div><div class="drop-text">Drop a picture here</div>
 				</div>
-				<img class="picture-preview" ng-if="paragraphEditorCtrl.model.picture.size > 0" ngf-thumbnail="paragraphEditorCtrl.model.picture">
+				<img class="picture-preview" ng-if="paragraphEditorCtrl.pictureSelected()"
+					 ngf-thumbnail="paragraphEditorCtrl.getPreviewPicture()">
 			</div>
-			<div ng-if="paragraphEditorCtrl.model.type === 'location'">
+			<div ng-if="paragraphEditorCtrl.isMapType()">
 				<div class="jl-table location-searchbar">
 					<input class="jl-table-cell" style="width:90%" type="text" name="name" placeholder="Pays, ville, adresse..."
-					ng-model="paragraphEditorCtrl.model.location.name"></input>
+					ng-model="paragraphEditorCtrl.blockContents[paragraphEditorCtrl.contentTypes.MAP].blockContent.place.label">
 					<button  class="jl-table-cell jl-btn jl-btn-large" ng-click="paragraphEditorCtrl.changeLocation()">Search</button>
 				</div>
-				<leaflet 	id="bad_id" lf-center="paragraphEditorCtrl.model.location.center"
-							markers="paragraphEditorCtrl.model.location.markers">
+				<leaflet 	id="bad_id" lf-center="paragraphEditorCtrl.getMapCenter()"
+							markers="paragraphEditorCtrl.getMapMarkers()">
 				</leaflet>
 			</div>
-			<div ng-if="paragraphEditorCtrl.model.type === 'external'">
+			<div ng-if="paragraphEditorCtrl.isLinkType()">
 				<input type="text" class="external-bar" name="external" placeholder="Entrez l'URL ici"
-				ng-model="paragraphEditorCtrl.model.external.link"></input>
+				ng-model="paragraphEditorCtrl.blockContents[paragraphEditorCtrl.contentTypes.LINK].blockContent.url">
 				<p>Une vignette représentant le contenu de la page distante sera insérée dans votre article</p>
 				<div class="external-preview">
 				</div>
