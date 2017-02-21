@@ -392,5 +392,9 @@ function paragraphsService(JetlagUtils, typeMapper) {
 
         return paragraphs;
     }
+
+    this.isValidContentType = function(contentType) {
+        return contentType != null && this.contentTypes[contentType] !== undefined;
+    }
 }
 })(angular);

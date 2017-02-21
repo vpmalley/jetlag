@@ -21,9 +21,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, pictureUploaderS
 	var ctrl = this;
 	ctrl.paragraphEditor = {
 	    blockContentType: paragraphsService.contentTypes.TEXT,
-	    blockContent: {
-	        value: null
-	    }
+	    blockContent: undefined
 	};
 	ctrl.paragraphs = [];
 	ctrl.article = null;

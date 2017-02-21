@@ -69,26 +69,31 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
   }
 
   ctrl.changeInputType = function(inputType) {
-    if(inputType === paragraphsService.contentTypes.MAP
-        && ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent === undefined) {
-        var blockContent = {};
+    if(inputType === paragraphsService.contentTypes.MAP)
+        /* Need to fill the MAP blockContent with default values */
+        if(ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent == null) {
+            var blockContent = {};
 
-        blockContent.center = {
-            latitude: defaultCenter.lat,
-            longitude: defaultCenter.lng
-        };
-        blockContent.zoom = defaultCenter.zoom;
-        blockContent.place = {
-            label: undefined
-        };
-        ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent = blockContent;
-    }
+            blockContent.center = {
+                latitude: defaultCenter.lat,
+                longitude: defaultCenter.lng
+            };
+            blockContent.zoom = defaultCenter.zoom;
+            blockContent.place = {
+                label: undefined
+            };
+            ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent = blockContent;
+        }
+        /* Need to update the map center and map markers with the MAP blockContent */
+        else {
+            initMap();
+        }
     ctrl.currentContentType = inputType;
   }
 
   ctrl.getMapCenter = function() {
     if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
-        return ctrl.inputMapCenter;
+        return inputMapCenter;
     } else {
         return null;
     }
@@ -96,7 +101,7 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
 
   ctrl.getMapMarkers = function() {
     if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
-        return ctrl.inputMapMarkers;
+        return inputMapMarkers;
     } else {
         return null;
     }
@@ -232,7 +237,23 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
         }
     }
   }
-  initMap();
+
+  this.initFromModel = function() {
+    if(ctrl.model == null) {
+        console.error('Model is null in jlParagraphEditor');
+        return;
+    } else if(ctrl.model.blockContentType == null
+        || !paragraphsService.isValidContentType(ctrl.model.blockContentType)) {
+        console.error('Model is of unexpected type in jlParagraphEditor');
+        return;
+    } else {
+        ctrl.blockContents[ctrl.model.blockContentType].blockContent = ctrl.model.blockContent;
+        ctrl.currentContentType = ctrl.model.blockContentType;
+        if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
+            initMap();
+        }
+    }
+  }
   
 }
 
@@ -253,6 +274,7 @@ function JlParagraphEditorDirective() {
         if(controller.model != null) {
             controller._previous = JSON.parse(JSON.stringify(controller.model));
         }
+        controller.initFromModel()
     }
   }
 }
