@@ -55,9 +55,7 @@ function ArticleCreatorController($scope, ModelsManager, $http, pictureUploaderS
 	ctrl.resetParagraphEditor = function() {
 	  ctrl.paragraphEditor = {
         blockContentType: paragraphsService.contentTypes.TEXT,
-        blockContent: {
-            value: null
-        }
+        blockContent: undefined
 	  };
 	}
 	

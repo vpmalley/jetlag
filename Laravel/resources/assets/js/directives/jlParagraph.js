@@ -92,8 +92,12 @@ function ParagraphController($scope, paragraphsService) {
 
 function ParagraphTextFilter($sce) {
   return function (input) {
-    var formatedInput = input.replace(new RegExp('\n', 'g'), '<br>');
-    return $sce.trustAsHtml(formatedInput);
+    if(input != null) {
+        var formatedInput = input.replace(new RegExp('\n', 'g'), '<br>');
+        return $sce.trustAsHtml(formatedInput);
+    } else {
+        return '';
+    }
   }
 };
 

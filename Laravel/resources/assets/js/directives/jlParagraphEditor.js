@@ -19,24 +19,10 @@ ParagraphEditorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictur
 function ParagraphEditorController($scope, ModelsManager, $http, pictureUploaderService,
     JetlagUtils, geocodingService, paragraphsService) {
   var ctrl = this;
-  ctrl.blockContents = {};
-  ctrl.blockContents[paragraphsService.contentTypes.TEXT] = {
-    blockContentType: paragraphsService.contentTypes.TEXT,
-    blockContent: undefined
-  };
-  ctrl.blockContents[paragraphsService.contentTypes.PICTURE] = {
-    blockContentType: paragraphsService.contentTypes.PICTURE,
-    blockContent: undefined
-  };
-  ctrl.blockContents[paragraphsService.contentTypes.MAP] = {
-    blockContentType: paragraphsService.contentTypes.MAP,
-    blockContent: undefined
-  };
-  ctrl.blockContents[paragraphsService.contentTypes.LINK] = {
-    blockContentType: paragraphsService.contentTypes.LINK,
-    blockContent: undefined
-  };
-  ctrl.currentContentType = paragraphsService.contentTypes.TEXT;
+  ctrl.blockContents = undefined;
+  ctrl.currentContentType = undefined;
+  resetBlockContents();
+
   var defaultCenter = {
         lat: 45.74,
         lng: 4.87,
@@ -197,9 +183,39 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
   
   ctrl.revert = function() {
     if(ctrl._previous !== undefined) {
-        ctrl.model = ctrl._previous;
+        ctrl.model.blockContent = ctrl._previous.blockContent;
+        ctrl.model.blockContentType = ctrl._previous.blockContentType;
     }
     ctrl.cancel();
+  }
+
+  function resetBlockContents() {
+      ctrl.blockContents = {};
+      ctrl.blockContents[paragraphsService.contentTypes.TEXT] = {
+        blockContentType: paragraphsService.contentTypes.TEXT,
+        blockContent: undefined
+      };
+      ctrl.blockContents[paragraphsService.contentTypes.PICTURE] = {
+        blockContentType: paragraphsService.contentTypes.PICTURE,
+        blockContent: undefined
+      };
+      ctrl.blockContents[paragraphsService.contentTypes.MAP] = {
+        blockContentType: paragraphsService.contentTypes.MAP,
+        blockContent: undefined
+      };
+      ctrl.blockContents[paragraphsService.contentTypes.LINK] = {
+        blockContentType: paragraphsService.contentTypes.LINK,
+        blockContent: undefined
+      };
+      ctrl.currentContentType = paragraphsService.contentTypes.TEXT;
+  }
+
+  ctrl.update = function() {
+    ctrl.model.blockContent = ctrl.blockContents[ctrl.currentContentType].blockContent;
+    ctrl.model.blockContentType = ctrl.currentContentType;
+    ctrl.save();
+    resetBlockContents();
+    ctrl._previous = undefined;
   }
 
   ctrl.isCreation = function() {
@@ -238,7 +254,7 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
     }
   }
 
-  this.initFromModel = function() {
+  ctrl.initFromModel = function() {
     if(ctrl.model == null) {
         console.error('Model is null in jlParagraphEditor');
         return;

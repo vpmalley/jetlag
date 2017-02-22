@@ -65,7 +65,7 @@
         <div class="jl-btn jl-btn-big jl-btn-empty" ng-click="paragraphEditorCtrl.revert()">
 			{{ paragraphEditorCtrl.isCreation() ? 'Delete' : 'Cancel' }}
 		</div>
-		<div class="jl-btn jl-btn-big" ng-click="paragraphEditorCtrl.save()" ng-if="!paragraphEditorCtrl.isInputEmpty()">
+		<div class="jl-btn jl-btn-big" ng-click="paragraphEditorCtrl.update()" ng-if="!paragraphEditorCtrl.isInputEmpty()">
 			{{ paragraphEditorCtrl.isCreation() ? 'Add' : 'Update' }}
 		</div>
 	</div>
