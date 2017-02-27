@@ -21,17 +21,14 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
   var ctrl = this;
   ctrl.blockContents = undefined;
   ctrl.currentContentType = undefined;
-  resetBlockContents();
-
   var defaultCenter = {
         lat: 45.74,
         lng: 4.87,
         zoom: 8
   };
-  var inputMapMarkers = [];
-  var inputMapCenter = defaultCenter;
-  var previewPicture;
+  var inputMapMarkers = [], inputMapCenter, previewPicture;
   ctrl.contentTypes = paragraphsService.contentTypes;
+  resetBlockContents();
 
   ctrl.isInputEmpty = function() {
     return ctrl.blockContents[ctrl.currentContentType] === undefined
@@ -154,13 +151,23 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
   function updateMarker() {
     var place = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent.place;
 
-    inputMapMarkers = [{
-        lat: place.latitude,
-        lng: place.longitude,
-        message: place.label,
-        draggable: true,
-        focus: false
-    }];
+    if(inputMapMarkers.length === 1) {
+        inputMapMarkers[0] = {
+            lat: place.latitude,
+            lng: place.longitude,
+            message: place.label,
+            draggable: true,
+            focus: false
+        };
+    } else {
+        inputMapMarkers.push({
+            lat: place.latitude,
+            lng: place.longitude,
+            message: place.label,
+            draggable: true,
+            focus: false
+        });
+    }
   }
 
   $scope.$on('leafletDirectiveMarker.bad_id.dragend', function(e, m) {
@@ -173,7 +180,6 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
         .then(function(results) {
             if(_.isObject(results) && results.features.length > 0) {
                 var firstMatch = results.features[0];
-
                 place.label = firstMatch.properties.label;
                 marker.message = place.label;
             }
@@ -186,6 +192,7 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
         ctrl.model.blockContent = ctrl._previous.blockContent;
         ctrl.model.blockContentType = ctrl._previous.blockContentType;
     }
+    resetBlockContents();
     ctrl.cancel();
   }
 
@@ -208,9 +215,25 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
         blockContent: undefined
       };
       ctrl.currentContentType = paragraphsService.contentTypes.TEXT;
+      inputMapCenter = angular.copy(defaultCenter);
+      inputMapMarkers.length = 0;
   }
 
   ctrl.update = function() {
+    if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
+        var mapBlockContent = ctrl.blockContents[ctrl.currentContentType].blockContent;
+        mapBlockContent.zoom = inputMapCenter.zoom;
+        mapBlockContent.center = {
+            latitude: inputMapCenter.lat,
+            longitude: inputMapCenter.lng
+        };
+        if(inputMapMarkers.length > 0) {
+            mapBlockContent.place.latitude = inputMapMarkers[0].lat;
+            mapBlockContent.place.longitude = inputMapMarkers[0].lng;
+        }
+
+    }
+
     ctrl.model.blockContent = ctrl.blockContents[ctrl.currentContentType].blockContent;
     ctrl.model.blockContentType = ctrl.currentContentType;
     ctrl.save();

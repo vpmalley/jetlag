@@ -1,4 +1,4 @@
-<div ng-if="!paragraphCtrl.isBeingEdited || !paragraphCtrl.isBeingEdited() || !paragraphCtrl.isEmpty()">
+<div ng-if="!paragraphCtrl.isBeingEdited || !paragraphCtrl.isBeingEdited()">
 	<div class="paragraph-type-text" ng-if="paragraphCtrl.isTextType()">
 	  <div ng-bind-html="paragraphCtrl.model.blockContent.value | paragraphText"></div>
 	</div>
@@ -18,7 +18,8 @@
 </div>
 <jl-paragraph-editor model="paragraphCtrl.model"
 					 save="paragraphCtrl.save()"
+					 cancel="paragraphCtrl.cancel()"
 					 mode="edition"
 					 ng-if="paragraphCtrl.isBeingEdited()"
-					 cancel="paragraphCtrl.cancel()">
+					 >
 </jl-paragraph-editor>

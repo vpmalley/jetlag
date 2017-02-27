@@ -61,7 +61,7 @@
 			</div>
 		</div>
 	</div>
-	<div style="text-align: right" ng-if="paragraphEditorCtrl.isCreation() && !paragraphEditorCtrl.isInputEmpty()">
+	<div style="text-align: right" ng-if="!paragraphEditorCtrl.isInputEmpty()">
         <div class="jl-btn jl-btn-big jl-btn-empty" ng-click="paragraphEditorCtrl.revert()">
 			{{ paragraphEditorCtrl.isCreation() ? 'Delete' : 'Cancel' }}
 		</div>
