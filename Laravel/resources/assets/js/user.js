@@ -2,19 +2,11 @@ angular
   .module('jetlag.webapp.user', ['jetlag.webapp.app'])
   .controller('UserController', UserController);
 
-UserController.$inject = ['$scope', 'ModelsManager', 'JLModelsManager'];
+UserController.$inject = ['$scope', 'JLModelsManager'];
 
-function UserController($scope, MM, JLModelsManager) {
+function UserController($scope, JLModelsManager) {
 	var ctrl = this;
 	ctrl.changePasswordChecked = false;
-    
-    /* OLD WAY 
-    
-    ctrl.articles = new MM.ArticleCollection();
-	ctrl.articles.fetch();
-    */
-    
-    /* NEW WAY */
     ctrl.articles = [];
     JLModelsManager.Article.fetchCollection().then(function(collection) {
         ctrl.articles = collection;

@@ -9,15 +9,14 @@ angular
   .module('jetlag.webapp.article', dependencies)
   .controller('ArticleController', ArticleController);
 
-ArticleController.$inject = ['$scope', 'ModelsManager', '$http',
+ArticleController.$inject = ['$scope', '$http',
     'JetlagUtils', 'JLModelsManager', 'paragraphsService'];
 
-function ArticleController($scope, ModelsManager, $http,
+function ArticleController($scope, $http,
     JetlagUtils, JLModelsManager, paragraphsService) {
 	var ctrl = this;
 
 	ctrl.article = null;
-	ctrl.mm = ModelsManager;
 	ctrl.articleLoaded = false;
 
 	function loadArticle(articleID) {

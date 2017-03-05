@@ -13,10 +13,10 @@ angular
   .module('jetlag.webapp.articleCreator', dependencies)
   .controller('ArticleCreatorController', ArticleCreatorController);
 
-ArticleCreatorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictureUploaderService',
+ArticleCreatorController.$inject = ['$scope', '$http', 'pictureUploaderService',
     'JetlagUtils', '$location', 'JLModelsManager', 'geocodingService', 'paragraphsService'];
 
-function ArticleCreatorController($scope, ModelsManager, $http, pictureUploaderService,
+function ArticleCreatorController($scope, $http, pictureUploaderService,
     JetlagUtils, $location, JLModelsManager, geocodingService, paragraphsService) {
 	var ctrl = this;
 	ctrl.paragraphEditor = {
@@ -25,7 +25,6 @@ function ArticleCreatorController($scope, ModelsManager, $http, pictureUploaderS
 	};
 	ctrl.paragraphs = [];
 	ctrl.article = null;
-	ctrl.mm = ModelsManager;
 	ctrl.editedParagraph = null;
 	ctrl.articleLoaded = false;
 	

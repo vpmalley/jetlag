@@ -2,20 +2,12 @@ angular
   .module('jetlag.webapp.home', ['jetlag.webapp.app'])
   .controller('HomepageController', HomepageController);
 
-HomepageController.$inject = ['$scope', 'ModelsManager', 'JLModelsManager'];
+HomepageController.$inject = ['$scope', 'JLModelsManager'];
 
-function HomepageController($scope, MM, JLModelsManager) {
+function HomepageController($scope, JLModelsManager) {
 	var ctrl = this;
     
     ctrl.isSearching = false;
-    
-	/* OLD WAY
-
-	ctrl.articles = new MM.ArticleCollection();
-	ctrl.articles.fetch();
-    */
-
-    /* NEW WAY */
     ctrl.articles = [];
     JLModelsManager.Article.fetchCollection().then(function(collection) {
         ctrl.articles = collection;
@@ -36,7 +28,7 @@ function HomepageController($scope, MM, JLModelsManager) {
     ctrl.search = function() {
         ctrl.isSearching = true;
         if(ctrl.searchInput != null && ctrl.searchInput !== '') {
-            MM.Article.fetchCollection({
+            JLModelsManager.Article.fetchCollection({
                 url: '/api/0.1/search/articles',
                 params: {
                     query: ctrl.searchInput
@@ -48,7 +40,7 @@ function HomepageController($scope, MM, JLModelsManager) {
                 searchHasReturned();
             });
         } else {
-            MM.Article.fetchCollection().then(function(collection) {
+            JLModelsManager.Article.fetchCollection().then(function(collection) {
                 ctrl.articles = collection;
                 searchHasReturned();
             }, function(error) {

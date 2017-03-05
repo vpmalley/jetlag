@@ -114,5 +114,10 @@
 @endsection
 
 @section('scripts')
+<script>
+var preload = {
+    travelbookId: {{ $id }}
+}
+</script>
 <script src="{{ asset('/js/travelbook.js') }}"></script>
 @endsection

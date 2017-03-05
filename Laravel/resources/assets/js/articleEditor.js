@@ -6,7 +6,7 @@ angular
   .module('jetlag.webapp.articleEditor', dependencies)
   .controller('ArticleEditorController', ArticleEditorController);
 
-ArticleEditorController.$inject = ['$scope', 'ModelsManager'];
+ArticleEditorController.$inject = ['$scope', 'JLModelsManager'];
 
-function ArticleEditorController($scope, ModelsManager) {
+function ArticleEditorController($scope, JLModelsManager) {
 }
