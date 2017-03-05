@@ -5,7 +5,7 @@ baseUri: /api/0.1/
 mediaType:  application/json
 
 types:
-  Article : !include schemas.raml
+  Article : !include article.raml
 /articles:
   get:
     description: Get all articles authored (owned or writable) by the logged in user. Limited to 20 results (to be configurable). The content should be enough to display a list of articles (not their full content).

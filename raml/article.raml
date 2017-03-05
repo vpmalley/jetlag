@@ -2,8 +2,28 @@
 title: Jetlag Articles API
 version: v0.1
 baseUri: /api/0.1/
-mediaType:  application/json
+mediaType: application/json
 types:
+  Article:
+    type: object
+    properties:
+      id: integer
+      created_at: timestamp
+      update_at?: timestamp
+      deleted_at?: timestamp
+      title: string
+      url: string
+      description_text: string
+      description_media: Picture
+      main_place: Place
+      is_draft: boolean
+      is_public: boolean
+      authors: Author_user[]
+  Author_user:
+    type: object
+    properties:
+      id: integer
+      role: string
   Paragraph:
     type: object
     properties:
@@ -25,7 +45,7 @@ types:
       small_picture?: Link
       medium_picture?: Link
       big_picture?: Link # the fullsize picture as uploaded
-      authors: User[] # User[] instead of AuthorUser[] which is a bit complex
+      authors: Author_user[]
       taken_at?: timestamp
       main_place?: Place
   Text:
