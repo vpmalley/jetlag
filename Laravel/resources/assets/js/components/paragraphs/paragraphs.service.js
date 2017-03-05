@@ -168,9 +168,11 @@ function paragraphsService(JetlagUtils, typeMapper) {
     this.map = function(serverModel, frontModel) {
         frontModel = frontModel || [];
 
-        serverModel.forEach(function(paragraph) {
-            frontModel.push(_this.mapOne(paragraph));
-        });
+        if(serverModel != null) {
+            serverModel.forEach(function(paragraph) {
+                frontModel.push(_this.mapOne(paragraph));
+            });
+        }
 
         return frontModel;
     }
@@ -285,9 +287,11 @@ function paragraphsService(JetlagUtils, typeMapper) {
     this.unmap = function(frontModel) {
         var serverModel = [];
 
-        frontModel.forEach(function(paragraph) {
-            serverModel.push(_this.unmapOne(paragraph));
-        });
+        if(frontModel != null) {
+            frontModel.forEach(function(paragraph) {
+                serverModel.push(_this.unmapOne(paragraph));
+            });
+        }
 
         return serverModel;
     }

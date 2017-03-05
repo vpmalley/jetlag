@@ -8,7 +8,7 @@
 	  </div>
 	</div>
 	<div class="paragraph-type-location" ng-if="paragraphCtrl.isMapType()">
-	  <leaflet id="bad_id" lf-center="paragraphCtrl.getMapCenter()"
+	  <leaflet id="{{paragraphCtrl.mapUid}}" lf-center="paragraphCtrl.getMapCenter()"
 			 markers="paragraphCtrl.getMapMarkers()">
 	  </leaflet>
 	</div>

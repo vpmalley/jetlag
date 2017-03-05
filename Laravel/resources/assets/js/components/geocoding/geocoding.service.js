@@ -11,16 +11,23 @@ function geocodingService($http, $q) {
     var API_KEY = 'search-KjBcCm0';
     var BASE_URL = 'https://search.mapzen.com/v1/';
 
-    this.geocode = function(input) {
+    this.geocode = function(input, options) {
         var params = {
             text: input,
-            api_key: API_KEY
+            api_key: API_KEY,
+            sources: 'osm'
         };
+        _.extend(params, options);
         var q = $q.defer();
 
         $http.get(BASE_URL + 'search', {
             params: params
         }).success(function(results) {
+            if(_.isObject(results) && results.features.length > 0) {
+                results.features = _.sortBy(results.features, function(result) {
+                    return -1 * result.properties.confidence;
+                });
+            }
             q.resolve(results);
         }).error(function(error) {
             console.warn('Unable to retrieve geocoding results', error);

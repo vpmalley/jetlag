@@ -44,11 +44,11 @@
 			</div>
 			<div ng-if="paragraphEditorCtrl.isMapType()">
 				<div class="jl-table location-searchbar">
-					<input class="jl-table-cell" style="width:90%" type="text" name="name" placeholder="Pays, ville, adresse..."
+					<input class="jl-table-cell" style="width:90%" type="text" name="name" placeholder="Ajoutez un marqueur (optionnel)"
 					ng-model="paragraphEditorCtrl.blockContents[paragraphEditorCtrl.contentTypes.MAP].blockContent.place.label">
 					<button  class="jl-table-cell jl-btn jl-btn-large" ng-click="paragraphEditorCtrl.changeLocation()">Search</button>
 				</div>
-				<leaflet 	id="bad_id" lf-center="paragraphEditorCtrl.getMapCenter()"
+				<leaflet 	id="{{paragraphEditorCtrl.mapUid}}" lf-center="paragraphEditorCtrl.getMapCenter()"
 							markers="paragraphEditorCtrl.getMapMarkers()">
 				</leaflet>
 			</div>

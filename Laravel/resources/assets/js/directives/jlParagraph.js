@@ -1,5 +1,6 @@
 var dependencies = [
   'leaflet-directive',
+  'jetlag.webapp.components.map',
   'jetlag.webapp.components.paragraphs',
   'jetlag.webapp.directives.paragraphEditor'
 ];
@@ -10,22 +11,12 @@ angular
   .controller('ParagraphController', ParagraphController)
   .filter('paragraphText', ParagraphTextFilter);
 
-ParagraphController.$inject = ['$scope', 'paragraphsService'];
+ParagraphController.$inject = ['$scope', 'paragraphsService', 'mapUidService'];
 ParagraphTextFilter.$inject = ['$sce'];
 
-function ParagraphController($scope, paragraphsService) {
+function ParagraphController($scope, paragraphsService, mapUidService) {
   var ctrl = this;
-  
-  $scope.$watch(ctrl.isBeingEdited, function(newValue, oldValue) {
-	 if((newValue === true || newValue === false) && newValue !== oldValue) {
-		 if(ctrl.model.blockContentType === paragraphsService.contentTypes.MAP) {
-			 var place = ctrl.model.blockContent;
-			 if(place.marker != null) {
-				 location.marker.draggable = newValue;
-			 }
-		 }
-	 } 
-  });
+  ctrl.mapUid = mapUidService.generateUid();
 
   ctrl.getPictureUrl = function() {
     if(ctrl.model.blockContentType === paragraphsService.contentTypes.PICTURE
@@ -53,12 +44,12 @@ function ParagraphController($scope, paragraphsService) {
   ctrl.getMapCenter = function() {
     if(ctrl.isMapType()) {
         if(ctrl.mapCenter === undefined) {
-            ctrl.mapCenter = {
-                lat: ctrl.model.blockContent.center.latitude,
-                lng: ctrl.model.blockContent.center.longitude,
-                zoom: ctrl.model.blockContent.zoom
-            };
+            ctrl.mapCenter = {};
         }
+
+        ctrl.mapCenter.lat = ctrl.model.blockContent.center.latitude;
+        ctrl.mapCenter.lng = ctrl.model.blockContent.center.longitude;
+        ctrl.mapCenter.zoom = ctrl.model.blockContent.zoom;
 
         return ctrl.mapCenter;
     } else {
@@ -69,17 +60,20 @@ function ParagraphController($scope, paragraphsService) {
   ctrl.getMapMarkers = function() {
     if(ctrl.isMapType()
     && ctrl.model.blockContent.place != null) {
-        if(ctrl.model.blockContent.place.marker === undefined) {
-            ctrl.model.blockContent.place.marker = {
-              message: ctrl.model.blockContent.place.label,
-              lat: ctrl.model.blockContent.place.latitude,
-              lng: ctrl.model.blockContent.place.longitude,
-              draggable: false,
-              focus: false
+        if(ctrl.mapMarker === undefined) {
+            ctrl.mapMarker = {
+                draggable: false,
+                focus: false
             };
         }
+        ctrl.mapMarker.message = ctrl.model.blockContent.place.label;
+        ctrl.mapMarker.lat = ctrl.model.blockContent.place.latitude;
+        ctrl.mapMarker.lng = ctrl.model.blockContent.place.longitude;
+
         if(ctrl.mapMarkers === undefined) {
-            ctrl.mapMarkers = [ctrl.model.blockContent.place.marker];
+            ctrl.mapMarkers = [ctrl.mapMarker];
+        } else {
+            ctrl.mapMarkers[0] = ctrl.mapMarker;
         }
         return ctrl.mapMarkers;
     } else {

@@ -4,7 +4,8 @@ var dependencies = [
   'monospaced.elastic',
   'jetlag.webapp.components.geocoding',
   'jetlag.webapp.components.uploader',
-  'jetlag.webapp.components.paragraphs'
+  'jetlag.webapp.components.paragraphs',
+  'jetlag.webapp.components.map'
 ];
 
 angular
@@ -13,12 +14,13 @@ angular
   .controller('ParagraphEditorController', ParagraphEditorController);
   
 
-ParagraphEditorController.$inject = ['$scope', 'ModelsManager', '$http', 'pictureUploaderService',
-    'JetlagUtils', 'geocodingService', 'paragraphsService'];
+ParagraphEditorController.$inject = ['$scope', '$http', 'pictureUploaderService',
+    'JetlagUtils', 'geocodingService', 'paragraphsService', 'mapUidService'];
 
-function ParagraphEditorController($scope, ModelsManager, $http, pictureUploaderService,
-    JetlagUtils, geocodingService, paragraphsService) {
+function ParagraphEditorController($scope, $http, pictureUploaderService,
+    JetlagUtils, geocodingService, paragraphsService, mapUidService) {
   var ctrl = this;
+  ctrl.mapUid = mapUidService.generateUid();
   ctrl.blockContents = undefined;
   ctrl.currentContentType = undefined;
   var defaultCenter = {
@@ -127,6 +129,7 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
   ctrl.changeLocation = function() {
     if(ctrl.currentContentType === paragraphsService.contentTypes.MAP) {
         var place = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent.place;
+        var mapCenter = ctrl.getMapCenter();
 
         if(place.label !== undefined) {
             geocodingService.geocode(place.label)
@@ -137,10 +140,19 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
                     place.latitude = firstMatch.geometry.coordinates[1];
                     place.longitude = firstMatch.geometry.coordinates[0];
                     updateMarker();
+                    updateMapCenter();
                 }
             });
 	    }
 	}
+  }
+
+  function updateMapCenter() {
+    var place = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent.place;
+    var mapCenter = ctrl.getMapCenter();
+
+    mapCenter.lat = place.latitude;
+    mapCenter.lng = place.longitude;
   }
 
   /* Since the reference on the Marker object does not change
@@ -170,7 +182,7 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
     }
   }
 
-  $scope.$on('leafletDirectiveMarker.bad_id.dragend', function(e, m) {
+  $scope.$on('leafletDirectiveMarker.' + ctrl.mapUid + '.dragend', function(e, m) {
     var marker, place = ctrl.blockContents[paragraphsService.contentTypes.MAP].blockContent.place;
 
 	marker = m.model;
@@ -181,7 +193,9 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
             if(_.isObject(results) && results.features.length > 0) {
                 var firstMatch = results.features[0];
                 place.label = firstMatch.properties.label;
-                marker.message = place.label;
+                place.latitude = marker.lat;
+                place.longitude = marker.lng;
+                updateMarker();
             }
         });
     }
@@ -230,6 +244,8 @@ function ParagraphEditorController($scope, ModelsManager, $http, pictureUploader
         if(inputMapMarkers.length > 0) {
             mapBlockContent.place.latitude = inputMapMarkers[0].lat;
             mapBlockContent.place.longitude = inputMapMarkers[0].lng;
+        } else {
+            mapBlockContent.place = null;
         }
 
     }
