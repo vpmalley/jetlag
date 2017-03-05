@@ -3,8 +3,8 @@
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 
-@jl-blue: #0A6884;
-@jl-orange: orange;
+@jl-blue: #0a0223;
+@jl-orange: #FEA002;
 @jl-grey: #ccc;
 @jl-dark-grey: #555;
 
@@ -189,15 +189,21 @@ body.jetlag-app {
 	
     .jl-navbar {
 		position: fixed;
+		top: 0%;
 		z-index: 1002;
 		width: 100%;
 		height: 55px;
-		background-color: @jl-blue;
+		background: white;
+		border-bottom: solid 1px #ccc;
+		-webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        transition: all 0.3s;
 		
 		.jl-icon {
 			height: 45px;
 			position: absolute;
-			background-color: @jl-blue;
 			color: @jl-orange;
 			line-height: 35px;
 			font-size: 25px;
@@ -207,7 +213,8 @@ body.jetlag-app {
 	
 			&.jl-icon-right {
 				right: 10px;
-				
+				position: fixed;
+
 				& > span {
 					font-size: 16px;
 					a {
@@ -223,19 +230,15 @@ body.jetlag-app {
 			&.jl-icon-middle {
 				left: 50%;
 				margin-left: -23px;
-				
-				&.pushed-right {
-					margin-left: 122px;
-				}
-				
-				&.pushed-left {
-					margin-left: -168px;
-				}
 			}
 			
 			&.jl-icon-left {
 				left: 10px;
 			}
+		}
+
+		&.minimized {
+		    top: -55px;
 		}
 	}	
 

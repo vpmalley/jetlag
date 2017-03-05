@@ -13,12 +13,14 @@ types:
       deleted_at?: timestamp
       title: string
       url: string
-      description_text: string
-      description_media: Picture
-      main_place: Place
+      description_text?: string
+      description_media?: Picture
+      main_place?: Place
+      date?: timestamp
       is_draft: boolean
       is_public: boolean
       authors: Author_user[]
+      travelbook: Travelbook
   Author_user:
     type: object
     properties:

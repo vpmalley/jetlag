@@ -426,13 +426,17 @@
                   remote: 'title',
                   type: 'string'
                 },
+                date: {
+                    remote: 'date',
+                    type: 'datetime'
+                },
                 descriptionText: {
                   remote: 'description_text',
                   type: 'string'
                 },
                 descriptionMedia: {
-                  remote: 'description_picture',
-                  type: 'integer' //XXX: really few chance to have an integer here
+                  remote: 'description_media',
+                  type: 'Model.Picture'
                 },
                 isDraft: {
                   remote: 'is_draft',
@@ -450,7 +454,7 @@
                   map: paragraphsService.map,
                   unmap: paragraphsService.unmap
                 },
-                authorUsers: {
+                authors: {
                   remote: 'author_users',
                   type: 'array'
                 },
@@ -461,6 +465,10 @@
                 url: {
                     remote: 'url',
                     type: 'string'
+                },
+                mainPlace: {
+                    remote: 'main_place',
+                    type: 'Model.Place'
                 }
             },
             Travelbook: {

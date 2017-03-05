@@ -29,7 +29,7 @@
 	<![endif]-->
 </head>
 <body ng-controller="AppController as appCtrl" class="jetlag-app">
-	<nav class="jl-navbar">
+	<nav class="jl-navbar" ng-class="{'minimized': appCtrl.isHeaderMinimized}">
 		<div class="jl-icon jl-icon-left clickable" ng-show="!appCtrl.leftMenuOpen">
 			<i class="fa fa-fw fa-bars"
 			ng-click="appCtrl.openLeftMenu()"></i>
