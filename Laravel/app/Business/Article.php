@@ -100,7 +100,7 @@ class Article
    * The rules for validating input
    */
   static $updateRules = [
-    'title' => 'required|min:3|max:200',
+    'title' => 'min:3|max:200',
     'descriptionText' => 'max:500',
     'descriptionMediaUrl' => 'max:200',
     'isDraft' => 'boolean',

@@ -30,8 +30,8 @@ class Link extends Model
   * The rules for validating input
   */
   static $rules = [
-    'caption' => 'string|min:3|max:200',
-    'url' => 'string|required|min:3|max:200',
+    'caption' => 'string|max:200',
+    'url' => 'string|max:200',
   ];
 
   public function fromUrl($url)

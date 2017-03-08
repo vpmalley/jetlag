@@ -23,7 +23,7 @@ class Marker extends Model
   */
   static $rules = [
     'id' => 'numeric',
-    'description' => 'string|min:3|max:500',
+    'description' => 'string|max:500',
   ];
 
   public function map()

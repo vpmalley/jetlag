@@ -23,10 +23,10 @@ class Paragraph extends Model
   */
   static $rules = [
     'id' => 'numeric',
-    'title' => 'string|min:3|max:200',
-    'weather' => 'string|min:3|max:20',
+    'title' => 'string|max:200',
+    'weather' => 'string|max:20',
     'date' => 'date',
-    'block_content_type' => 'string|min:3|max:30|required_with:block_content',
+    'block_content_type' => 'string|max:30|required_with:block_content',
     'block_content' => 'required_with:block_content_type',
   ];
 

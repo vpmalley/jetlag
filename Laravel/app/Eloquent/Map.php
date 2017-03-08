@@ -28,7 +28,7 @@ class Map extends Model
   */
   static $rules = [
     'id' => 'numeric',
-    'caption' => 'string|min:3|max:500',
+    'caption' => 'string|max:500',
   ];
 
   public function paragraph()
