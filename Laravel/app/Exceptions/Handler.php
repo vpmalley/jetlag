@@ -4,6 +4,7 @@ use Log;
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler {
@@ -27,7 +28,9 @@ class Handler extends ExceptionHandler {
   */
   public function report(Exception $e)
   {
-    Log::warning($e->getStatusCode() . ' : ' . $e->getMessage());
+    if ($e instanceof HttpException) {
+      Log::warning($e->getStatusCode() . ' : ' . $e->getMessage());
+    }
     return parent::report($e);
   }
 
@@ -43,7 +46,7 @@ class Handler extends ExceptionHandler {
     if ($e instanceof ModelNotFoundException) {
       abort(404);
     }
-    if ($request->ajax() || 'api' === $request->segment(1)) {
+    if (($e instanceof HttpException) && ($request->ajax() || 'api' === $request->segment(1))) {
       $errorBody =  [
                   'error' => [
                     'status' => $e->getStatusCode(),
