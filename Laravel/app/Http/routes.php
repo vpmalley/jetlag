@@ -56,7 +56,8 @@ Route::resource('api/0.1/pictures', 'Rest\RestPictureController', ['except' => [
 
 Route::get('api/0.1/search/articles', 'Rest\SearchArticleController@search');
 
-Route::post('api/0.1/pix/upload', 'Rest\RestPictureController@upload');
+Route::post('api/0.1/pix/{id}/upload', 'Rest\RestPictureController@upload');
+Route::post('api/0.1/pix/upload', 'Rest\RestPictureController@uploadNew');
 
 Route::controllers([
 	'auth' => 'Auth\AuthController',

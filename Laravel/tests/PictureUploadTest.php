@@ -14,7 +14,7 @@ class PictureUploadTest extends TestCase {
   use DatabaseMigrations;
 
   protected $baseUrl = "http://homestead.app";
-  protected $pictureStorageApiUrl = "/api/0.1/pix/upload";
+  protected $pictureStorageApiUrl = "/api/0.1/pix/";
 
   public function testApiUpdatePicture()
   {
@@ -46,8 +46,7 @@ class PictureUploadTest extends TestCase {
 
     Log::debug(" expecting to store picture " . $picture->id . " from file " . public_path() . '/images/4.jpg');
     $this->actingAs($writer)
-    ->post($this->pictureStorageApiUrl, [
-      'id' => $picture->id,
+    ->post($this->pictureStorageApiUrl . $picture->id . '/upload', [
       'caption' => 'a different caption',
       'file' => $file,
     ])
@@ -67,10 +66,9 @@ class PictureUploadTest extends TestCase {
 
   public function testApiUnknownPicture()
   {
-    Log::debug(" expecting to fail storing picture");
+    Log::debug(" expecting to fail storing picture (400 wrong picture)");
     $this
-    ->post($this->pictureStorageApiUrl, [
-      'id' => 1234,
+    ->post($this->pictureStorageApiUrl . $picture->id . '/upload', [
       'file' => 'some invalid content',
     ])
     ->assertResponseStatus(400);
@@ -88,10 +86,9 @@ class PictureUploadTest extends TestCase {
       'author_id' => $authorId,
     ]);
 
-    Log::debug(" expecting to fail storing picture " . $picture->id);
+    Log::debug(" expecting to fail storing picture " . $picture->id . " (400 wrong format)");
     $this->actingAs($writer)
-    ->post($this->pictureStorageApiUrl, [
-      'id' => $picture->id,
+    ->post($this->pictureStorageApiUrl . $picture->id . '/upload', [
       'file' => 'some content of picture',
     ])
     ->assertResponseStatus(400);
@@ -101,10 +98,9 @@ class PictureUploadTest extends TestCase {
   {
     $picture = factory(Jetlag\Eloquent\Picture::class)->create();
 
-    Log::debug(" expecting to fail storing picture " . $picture->id);
+    Log::debug(" expecting to fail storing picture " . $picture->id . " (403 no writing right)");
     $this
-    ->post($this->pictureStorageApiUrl, [
-      'id' => $picture->id,
+    ->post($this->pictureStorageApiUrl . $picture->id . '/upload', [
       'file' => 'some content of picture',
     ])
     ->assertResponseStatus(403);
