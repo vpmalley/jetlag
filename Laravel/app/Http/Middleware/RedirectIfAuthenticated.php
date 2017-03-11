@@ -33,10 +33,10 @@ class RedirectIfAuthenticated {
   */
   public function handle($request, Closure $next)
   {
-    // redirect to /home if authenticated
-    if ($this->auth->check() && ('home' != $request->path()))
+    $redirectUrl = $request->query('redirectTo', 'home');
+    if ($this->auth->check() && ($redirectUrl != $request->path()) && ($redirectUrl != '/' . $request->path()))
     {
-      return new RedirectResponse(url('/home'));
+      return new RedirectResponse(url($redirectUrl));
     }
     return $next($request);
   }
