@@ -165,6 +165,8 @@
                     var q = $q.defer();
                     var validationErrors, serverAttrs, url, requestPromise;
 
+                    options = options || {};
+
                     /* Can't save deleted models */
                     if(model._status === STATUS.DELETED) {
                         var errorMessage = 'Unable to save resource ' + model._name + ': resource is deleted.';
@@ -246,6 +248,8 @@
                     var model = this;
                     var url = null;
                     var q = $q.defer();
+
+                    options = options || {};
 
                     /* Can't delete deleted models */
                     if(model._status === STATUS.DELETED) {

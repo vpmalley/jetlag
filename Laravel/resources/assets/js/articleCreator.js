@@ -130,7 +130,7 @@ function ArticleCreatorController($scope, $http, pictureUploaderService,
 	
 	ctrl.saveOnlyArticle = function() {
 		ctrl.article.save()
-		.error(function(errors) {
+		.then(null, function(errors) {
 			ctrl.errors = errors.title;
 		});
 	}
@@ -138,7 +138,7 @@ function ArticleCreatorController($scope, $http, pictureUploaderService,
 	ctrl.publishArticle = function() {
 		ctrl.article.isDraft = false;
 		ctrl.article.save()
-		.error(function(errors) {
+		.then(null, function(errors) {
 			ctrl.errors = errors.title;
 		});
 	}
