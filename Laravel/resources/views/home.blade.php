@@ -26,7 +26,9 @@
     
     <!-- first row of articles -->
 	<div class="row hidden-xs">
-		
+		<div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) !== null">
+		    <jl-article-thumbnail model="homepageCtrl.articleAt(0)" />
+		</div>
         <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) !== null"
 		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(0).descriptionMedia.smallUrl+')'}">
 			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(0).id}}" class="book-overview">

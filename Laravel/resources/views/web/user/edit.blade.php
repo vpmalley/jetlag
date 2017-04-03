@@ -22,7 +22,7 @@
                 
                 <div class="col-sm-4 home-thumbnail big" ng-repeat="article in userCtrl.articles"
                 ng-style="{'background-image': 'url('+article.descriptionMedia.smallUrl+')'}">
-                    <a ng-href="@{{'/article/#/'+article.id}}" class="book-overview">
+                    <a ng-href="@{{'/article/'+article.id}}" class="book-overview">
                         <div class="book-overview-content">
                             <div class="sun-line"></div>
                             <div class="book-overview-content-inner">

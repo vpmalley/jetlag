@@ -1,0 +1,24 @@
+<div class="article-thumbnail" ng-click="articleThumbnailCtrl.getArticleUrl()">
+    <div class="thumbnail-photo" ng-style="{'background-image': articleThumbnailCtrl.getThumbnailPhoto()}">
+        <div class="thumbnail-details">
+            <div class="thumbnail-title">
+                {{ articleThumbnailCtrl.model.title }}
+            </div>
+            <div class="thumbnail-authors" ng-if="articleThumbnailCtrl.model.authors != null">
+                {{ articleThumbnailCtrl.getAuthorsString() }}
+            </div>
+            <div class="thumbnail-date">
+                <div ng-if="articleThumbnailCtrl.model.date != null">
+                    <i class="fa fa-fw fa-calendar"></i>
+                    {{ articleThumbnailCtrl.model.date | momentToString }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="thumbnail-location">
+        <div ng-if="articleThumbnailCtrl.model.mainPlace != null">
+            <i class="fa fa-fw fa-map-marker"></i>
+            {{ articleThumbnailCtrl.model.mainPlace.label }}
+        </div>
+    </div>
+</div>
