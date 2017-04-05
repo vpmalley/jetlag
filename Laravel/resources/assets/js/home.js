@@ -1,10 +1,15 @@
+var dependencies = [
+    'jetlag.webapp.app',
+    'jetlag.webapp.directives.articleThumbnail'
+];
+
 angular
-  .module('jetlag.webapp.home', ['jetlag.webapp.app'])
+  .module('jetlag.webapp.home', dependencies)
   .controller('HomepageController', HomepageController);
 
-HomepageController.$inject = ['$scope', 'JLModelsManager'];
+HomepageController.$inject = ['JLModelsManager'];
 
-function HomepageController($scope, JLModelsManager) {
+function HomepageController(JLModelsManager) {
 	var ctrl = this;
     
     ctrl.isSearching = false;

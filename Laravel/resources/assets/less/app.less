@@ -3,9 +3,14 @@
 @btn-font-weight: 300;
 @font-family-sans-serif: "Roboto", Helvetica, Arial, sans-serif;
 
-@jl-blue: #0a0223;
+@jl-light-blue: #bff0ff;
+@jl-dark-blue: #130445;
+@jl-light-pink: #fcc9da;
+@jl-blue: #2d31e8;
 @jl-orange: #FEA002;
-@jl-grey: #ccc;
+@jl-dark-orange: #fe5900;
+@jl-yellow: #fff54b;
+@jl-grey: #ececec;
 @jl-dark-grey: #555;
 
 .strut {
@@ -78,20 +83,28 @@ a.no-decoration {
   }
 }
 .jl-btn {
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  border: solid 2px @jl-blue;
-  border-radius: 0;
-  background-color: @jl-blue;
-  color: @jl-orange;
-  display: inline-block;
-  vertical-align: middle;
-  text-align: center;
-  
-  &:hover, &:focus {
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 1px 5px 0 rgba(0,0,0,0.12), 0 3px 1px -2px rgba(0,0,0,0.2);
+    border: none;
+    border-radius: 0;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
     text-decoration: none;
-	color: @jl-orange;
-  }
+    color: @jl-dark-blue;
+    background-color: @jl-yellow;
+    text-align: center;
+    letter-spacing: .5px;
+    transition: .2s ease-out;
+    cursor: pointer;
+
+    &:hover {
+        box-shadow: 0 3px 3px 0 rgba(0,0,0,0.14), 0 1px 7px 0 rgba(0,0,0,0.12), 0 3px 1px -1px rgba(0,0,0,0.2);
+    }
 
   &.jl-btn-big {
     font-size: 1.6rem;
@@ -100,42 +113,18 @@ a.no-decoration {
   
   &.jl-btn-empty {
     background-color: inherit;
-	color: @jl-blue;
-	font-weight: lighter;
-	
-	&:hover, &:focus {
-      color: @jl-blue;
-    }
-	
-	&.jl-btn-reverse {
-	  background-color: inherit;
-	  color: @jl-orange;
-	  border-color: @jl-orange;
-	  
-	  &:hover, &:focus {
-        color: @jl-orange;
-      }
-	}
+	color: @jl-dark-blue;
   }
   
   &.jl-btn-disabled {
     color: @jl-dark-grey !important;
-	background-color: @jl-grey !important;
-	cursor: default !important;
-	border-color: @jl-grey !important;
-	
-	&:hover, &:focus {
-      color: @jl-dark-grey !important;
-    }
-  }
+	background-color: inherit !important;
+	cursor: not-allowed !important;
+	box-shadow: none !important;
+	font-weight: inherit !important;
 
-  &.jl-btn-reverse {
-    color: @jl-blue;
-	background-color: @jl-orange;
-	border-color: @jl-orange;
-	
 	&:hover, &:focus {
-      color: @jl-blue;
+      background-color: @jl-grey !important;
     }
   }
   
@@ -174,6 +163,18 @@ a.no-decoration {
     border-bottom: solid 2px @jl-blue;
 	color: @jl-orange;
   }
+}
+
+h1 {
+    color: @jl-dark-blue;
+}
+
+h2 {
+    color: @jl-dark-orange;
+}
+
+p {
+    color: @jl-dark-grey;
 }
 
 .jl-input-text  {

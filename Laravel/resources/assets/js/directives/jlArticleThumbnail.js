@@ -12,11 +12,22 @@ function ArticleThumbnailController() {
     var ctrl = this;
 
     ctrl.getThumbnailPhoto = function() {
-        if(ctrl.model.description_media != null) {
-            return ctrl.model.descriptionMedia.bigPicture;
+        if(ctrl.model != null) {
+            if(ctrl.model.description_media != null) {
+                return ctrl.model.descriptionMedia.bigPicture;
+            } else {
+                return 'url(/images/landscape.jpg)';
+            }
         } else {
-            return '';
+            return 'url(/images/lake.jpg)';
         }
+    }
+
+    ctrl.hasNoPhoto = function() {
+        return (ctrl.model != null
+        && (ctrl.model.descriptionMedia == null
+            || ctrl.model.descriptionMedia.bigPicture == null)
+        );
     }
 
     ctrl.getAuthorsString = function() {
@@ -28,7 +39,7 @@ function ArticleThumbnailController() {
     }
 
     ctrl.getArticleUrl = function() {
-        return model.url;
+        return ctrl.model.url;
     }
 }
 
