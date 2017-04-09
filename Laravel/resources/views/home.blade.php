@@ -29,88 +29,26 @@
 		<div class="col-sm-4 home-thumbnail big">
 		    <jl-article-thumbnail model="homepageCtrl.articleAt(0)" />
 		</div>
+
 		<div class="col-sm-4 home-thumbnail big">
 		    <jl-article-thumbnail model="homepageCtrl.articleAt(1)" />
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(2).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(2).title}}</div>
-                    </div>
-                </div>
-			</a>
+
+        <div class="col-sm-4 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(2)" />
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
-		</div>
-        
 	</div>
     <!-- /first row of articles -->
     
     <!-- first mobile row of articles -->
 	<div class="row visible-xs">
     
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(0).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(0).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(0).title}}</div>
-                    </div>
-                </div>
-			</a>
-		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(0) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
+        <div class="col-xs-6 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(0)" />
 		</div>
         
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(1).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(1).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(1).title}}</div>
-                    </div>
-                </div>
-			</a>
-		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(1) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
+        <div class="col-xs-6 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(1)" />
 		</div>
         
 	</div>
@@ -134,80 +72,16 @@
     <!-- second row of articles -->
     <div class="row hidden-xs">
 		
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(3).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(3).title}}</div>
-                    </div>
-				</div>
-			</a>
-		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-				</div>
-			</a>
+        <div class="col-sm-4 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(3)" />
 		</div>
 		
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(4).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(4).title}}</div>
-                    </div>
-				</div>
-			</a>
+        <div class="col-sm-4 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(4)" />
 		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
-		</div>
-        
-        
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(5).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(5).title}}</div>
-                    </div>
-				</div>
-			</a>
-		</div>
-        <div class="col-sm-4 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
+
+        <div class="col-sm-4 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(5)" />
 		</div>
         
 	</div>
@@ -216,54 +90,12 @@
     <!-- second mobile row of articles -->
 	<div class="row visible-xs">
     
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(2).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(2).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(2).title}}</div>
-                    </div>
-				</div>
-			</a>
-		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(2) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
+        <div class="col-xs-6 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(2)" />
 		</div>
         
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(3).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(3).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(3).title}}</div>
-                    </div>
-				</div>
-			</a>
-		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(3) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
+        <div class="col-xs-6 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(3)" />
 		</div>
         
 	</div>
@@ -272,54 +104,12 @@
     <!-- third mobile row of articles -->
 	<div class="row visible-xs">
     
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(4).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(4).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(4).title}}</div>
-                    </div>
-				</div>
-			</a>
-		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(4) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
+        <div class="col-xs-6 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(4)" />
 		</div>
         
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) != null"
-		ng-style="{'background-image': 'url('+homepageCtrl.articleAt(5).descriptionMedia.smallUrl+')'}">
-			<a ng-href="@{{'/article/'+homepageCtrl.articleAt(5).id}}" class="book-overview">
-				<div class="book-overview-content">
-					<div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">@{{homepageCtrl.articleAt(5).title}}</div>
-                    </div>
-				</div>
-			</a>
-		</div>
-        <div class="col-xs-6 home-thumbnail big" ng-if="homepageCtrl.articleAt(5) == null"
-		style="background-image: url('/images/generic.png')">
-			<a href="/auth/login" class="book-overview">
-				<div class="book-overview-content fake">
-                    <div class="sun-line">
-                    </div>
-                    <div class="book-overview-content-inner">
-                        <div class="line">Partagez vos récits en <span class="fake-link">vous connectant</span> ou en <span class="fake-link">vous inscrivant</span>.</div>
-                    </div>
-                </div>
-			</a>
+        <div class="col-xs-6 home-thumbnail big">
+            <jl-article-thumbnail model="homepageCtrl.articleAt(5)" />
 		</div>
         
 	</div>

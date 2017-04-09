@@ -65,3 +65,7 @@ Route::controllers([
   'traveller/{id}' => 'Web\TravellerController',
   'article/{id}' => 'Web\ArticleController',
 ]);
+
+Route::get('color_test', function() {
+    return view('color_test');
+});

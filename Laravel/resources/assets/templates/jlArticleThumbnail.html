@@ -23,10 +23,16 @@
             {{ articleThumbnailCtrl.model.mainPlace.label }}
         </div>
         <div class="thumbnail-no-model" ng-if="articleThumbnailCtrl.model == null">
-            Faites nous voyager
+            <div class="strut"></div><div class="strut-sibling">Faites nous voyager</div>
+            <div class="no-model-message">
+                En vous <a href="/auth/register">inscrivant</a> ou vous <a href="/auth/login">connectant</a>.
+            </div>
         </div>
         <div class="thumbnail-no-photo" ng-if="articleThumbnailCtrl.hasNoPhoto()">
-            <i class="fa fa-camera-retro"></i>
+            <div class="strut"></div><!--
+            --><div class="strut-sibling">
+                <i class="fa fa-camera-retro"></i>
+            </div>
         </div>
     </div>
 </div>
