@@ -27,15 +27,15 @@
     <!-- first row of articles -->
 	<div class="row hidden-xs">
 		<div class="col-sm-4 home-thumbnail big">
-		    <jl-article-thumbnail model="homepageCtrl.articleAt(0)" />
+		    <jl-article-thumbnail model="homepageCtrl.articleAt(0)" context="homepageCtrl.getContext()" />
 		</div>
 
 		<div class="col-sm-4 home-thumbnail big">
-		    <jl-article-thumbnail model="homepageCtrl.articleAt(1)" />
+		    <jl-article-thumbnail model="homepageCtrl.articleAt(1)" context="homepageCtrl.getContext()" />
 		</div>
 
         <div class="col-sm-4 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(2)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(2)" context="homepageCtrl.getContext()" />
 		</div>
 	</div>
     <!-- /first row of articles -->
@@ -44,11 +44,11 @@
 	<div class="row visible-xs">
     
         <div class="col-xs-6 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(0)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(0)" context="homepageCtrl.getContext()" />
 		</div>
         
         <div class="col-xs-6 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(1)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(1)" context="homepageCtrl.getContext()" />
 		</div>
         
 	</div>
@@ -73,15 +73,15 @@
     <div class="row hidden-xs">
 		
         <div class="col-sm-4 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(3)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(3)" context="homepageCtrl.getContext()" />
 		</div>
 		
         <div class="col-sm-4 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(4)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(4)" context="homepageCtrl.getContext()" />
 		</div>
 
         <div class="col-sm-4 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(5)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(5)" context="homepageCtrl.getContext()" />
 		</div>
         
 	</div>
@@ -91,11 +91,11 @@
 	<div class="row visible-xs">
     
         <div class="col-xs-6 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(2)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(2)" context="homepageCtrl.getContext()" />
 		</div>
         
         <div class="col-xs-6 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(3)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(3)" context="homepageCtrl.getContext()" />
 		</div>
         
 	</div>
@@ -105,11 +105,11 @@
 	<div class="row visible-xs">
     
         <div class="col-xs-6 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(4)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(4)" context="homepageCtrl.getContext()" />
 		</div>
         
         <div class="col-xs-6 home-thumbnail big">
-            <jl-article-thumbnail model="homepageCtrl.articleAt(5)" />
+            <jl-article-thumbnail model="homepageCtrl.articleAt(5)" context="homepageCtrl.getContext()" />
 		</div>
         
 	</div>

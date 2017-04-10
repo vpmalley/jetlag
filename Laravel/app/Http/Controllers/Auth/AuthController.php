@@ -40,7 +40,7 @@ class AuthController extends Controller {
     $this->auth = $auth;
     $this->registrar = $registrar;
 
-    $this->middleware('guest', ['except' => 'getLogout']);
+    $this->middleware('guest', ['except' => ['getLogout', 'getStatus']]);
   }
 
   /**
@@ -79,6 +79,14 @@ class AuthController extends Controller {
       $newPublicUser->save();
     });
     return $newUser;
+  }
+
+  public function getStatus() {
+    if($this->auth->guest()) {
+        return ["connected" => false];
+    } else {
+        return ["connected" => true];
+    }
   }
 
 }

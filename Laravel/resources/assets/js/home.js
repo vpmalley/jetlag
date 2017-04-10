@@ -7,9 +7,9 @@ angular
   .module('jetlag.webapp.home', dependencies)
   .controller('HomepageController', HomepageController);
 
-HomepageController.$inject = ['JLModelsManager'];
+HomepageController.$inject = ['JLModelsManager', '$scope'];
 
-function HomepageController(JLModelsManager) {
+function HomepageController(JLModelsManager, $scope) {
 	var ctrl = this;
     
     ctrl.isSearching = false;
@@ -52,6 +52,12 @@ function HomepageController(JLModelsManager) {
                 searchHasReturned();
             });
         }
+    }
+
+    ctrl.getContext = function() {
+        return {
+            isUserConnected: $scope.isUserConnected
+        };
     }
 };
 

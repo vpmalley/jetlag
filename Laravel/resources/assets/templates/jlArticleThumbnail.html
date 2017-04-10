@@ -25,7 +25,12 @@
         <div class="thumbnail-no-model" ng-if="articleThumbnailCtrl.model == null">
             <div class="strut"></div><div class="strut-sibling">Faites nous voyager</div>
             <div class="no-model-message">
-                En vous <a href="/auth/register">inscrivant</a> ou vous <a href="/auth/login">connectant</a>.
+                <span ng-if="!articleThumbnailCtrl.isUserConnected()">
+                    En vous <a href="/auth/register">inscrivant</a> ou vous <a href="/auth/login">connectant</a>.
+                </span>
+                <span ng-if="articleThumbnailCtrl.isUserConnected()">
+                    En écrivant un nouvel article.
+                </span>
             </div>
         </div>
         <div class="thumbnail-no-photo" ng-if="articleThumbnailCtrl.hasNoPhoto()">

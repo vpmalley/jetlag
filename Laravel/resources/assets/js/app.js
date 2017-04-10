@@ -3,22 +3,21 @@ angular
   .config(AppConfig)
   .controller('AppController', AppController);
   
-  AppController.$inject = ['$location', '$scope', '$interval'];
+  AppController.$inject = ['$interval', '$scope', '$http'];
   AppConfig.$inject = ['$locationProvider'];
   
 function AppConfig($locationProvider) {
  //   $locationProvider.html5Mode(false).hashPrefix('');
 }
 
-function AppController($location, $scope, $interval) {
+function AppController($interval, $scope, $http) {
 
   var ctrl = this;
   ctrl.leftMenuOpen = false;
   ctrl.rightMenuOpen = false;
   ctrl.isHeaderMinimized = false;
   ctrl.redirectTo = window.location.pathname+window.location.search;
-  
-  $scope.location = $location;
+  $scope.isUserConnected = false;
   
   ctrl.openLeftMenu = function() {
 	ctrl.rightMenuOpen = false;
@@ -73,4 +72,10 @@ function AppController($location, $scope, $interval) {
 
         lastScrollTop = st;
     }
+
+    $http.get('/auth/status').then(function(result) {
+        $scope.isUserConnected = result.data.connected;
+    }, function(error) {
+        console.error(error);
+    });
 }

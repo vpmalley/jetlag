@@ -41,6 +41,15 @@ function ArticleThumbnailController() {
     ctrl.getArticleUrl = function() {
         return ctrl.model.url;
     }
+
+    ctrl.isUserConnected = function() {
+        if(ctrl.context != null) {
+            var context = ctrl.context();
+            return context.isUserConnected === true;
+        } else {
+            return false;
+        }
+    }
 }
 
 function JlArticleThumbnailDirective() {
@@ -48,7 +57,8 @@ function JlArticleThumbnailDirective() {
     templateUrl: '/templates/jlArticleThumbnail.html',
     scope: {},
 	bindToController: {
-		model: '='
+		model: '=',
+		context: '&?'
 	},
     restrict: 'E',
     controller: 'ArticleThumbnailController',
