@@ -50,6 +50,16 @@ function ArticleThumbnailController() {
             return false;
         }
     }
+
+    ctrl.placeSearchUrl = function() {
+        var base = '/home#q=';
+
+        if(ctrl.model != null) {
+            return base + encodeURIComponent(ctrl.model.mainPlace.label);
+        } else {
+            return null;
+        }
+    }
 }
 
 function JlArticleThumbnailDirective() {

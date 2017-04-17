@@ -20,7 +20,7 @@
         </div>
         <div class="thumbnail-location" ng-if="articleThumbnailCtrl.model.mainPlace != null">
             <i class="fa fa-fw fa-map-marker"></i>
-            {{ articleThumbnailCtrl.model.mainPlace.label }}
+            <a ng-href="{{ articleThumbnailCtrl.placeSearchUrl() }}">{{ articleThumbnailCtrl.model.mainPlace.label }}</a>
         </div>
         <div class="thumbnail-no-model" ng-if="articleThumbnailCtrl.model == null">
             <div class="strut"></div><div class="strut-sibling">Faites nous voyager</div>
