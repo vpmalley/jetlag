@@ -39,7 +39,7 @@ function ArticleThumbnailController() {
     }
 
     ctrl.getArticleUrl = function() {
-        return ctrl.model.url;
+        return '/article/' + ctrl.model.id;
     }
 
     ctrl.isUserConnected = function() {
@@ -59,6 +59,16 @@ function ArticleThumbnailController() {
         } else {
             return null;
         }
+    }
+
+    ctrl.thumbnailClicked = function() {
+        if(ctrl.model != null) {
+            window.location.href = ctrl.getArticleUrl();
+        }
+    }
+
+    ctrl.stopEventPropagation = function(event) {
+        event.stopPropagation();
     }
 }
 

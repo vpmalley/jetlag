@@ -1,5 +1,6 @@
 <?php namespace Jetlag\Http\Controllers\Web;
 
+use Auth;
 use Jetlag\Http\Controllers\Controller;
 use Jetlag\Eloquent\Article;
 use Jetlag\Eloquent\Link;
@@ -46,6 +47,23 @@ class ArticleController extends Controller {
     $article = Article::find($id);
     // ResourceAccess::wantsToReadResource($article->is_public, $article->author_id);
     return view('article', $article);
+  }
+
+  public function initCreation()
+  {
+    if (null == Auth::user())
+    {
+      abort(403);
+    }
+
+    /* Init an empty article */
+    $article = new Article;
+    $requestBody = array_merge(Article::$default_fillable_values, []);
+    $article->extract($requestBody);
+
+    return redirect()->action(
+        'Web\ArticleController@getCreate', ['id' => $article->id]
+    );
   }
 
   /** TODO: remove or merge in master **/

@@ -1,12 +1,15 @@
-<div class="article-thumbnail" ng-click="articleThumbnailCtrl.getArticleUrl()">
+<div class="article-thumbnail">
     <div class="thumbnail-photo"
          ng-style="{'background-image': articleThumbnailCtrl.getThumbnailPhoto()}"
          ng-class="{'with-location': articleThumbnailCtrl.model.mainPlace != null,
-         'no-photo': articleThumbnailCtrl.hasNoPhoto()}"
+         'no-photo': articleThumbnailCtrl.hasNoPhoto(),
+         'clickable': articleThumbnailCtrl.model != null}"
+         ng-click="articleThumbnailCtrl.thumbnailClicked()"
     >
-        <div class="thumbnail-details" ng-if="articleThumbnailCtrl.model != null">
+        <div class="thumbnail-details" ng-if="articleThumbnailCtrl.model != null"
+            ng-click="articleThumbnailCtrl.stopEventPropagation($event)">
             <div class="thumbnail-title">
-                {{ articleThumbnailCtrl.model.title }}
+                <a ng-href="{{ articleThumbnailCtrl.getArticleUrl() }}">{{ articleThumbnailCtrl.model.title }}</a>
             </div>
             <div class="thumbnail-authors" ng-if="articleThumbnailCtrl.model.authors != null">
                 {{ articleThumbnailCtrl.getAuthorsString() }}
@@ -18,18 +21,20 @@
                 </div>
             </div>
         </div>
-        <div class="thumbnail-location" ng-if="articleThumbnailCtrl.model.mainPlace != null">
+        <div class="thumbnail-location" ng-if="articleThumbnailCtrl.model.mainPlace != null"
+            ng-click="articleThumbnailCtrl.stopEventPropagation($event)">
             <i class="fa fa-fw fa-map-marker"></i>
             <a ng-href="{{ articleThumbnailCtrl.placeSearchUrl() }}">{{ articleThumbnailCtrl.model.mainPlace.label }}</a>
         </div>
-        <div class="thumbnail-no-model" ng-if="articleThumbnailCtrl.model == null">
+        <div class="thumbnail-no-model" ng-if="articleThumbnailCtrl.model == null"
+            ng-click="articleThumbnailCtrl.stopEventPropagation($event)">
             <div class="strut"></div><div class="strut-sibling">Faites nous voyager</div>
             <div class="no-model-message">
                 <span ng-if="!articleThumbnailCtrl.isUserConnected()">
                     En vous <a href="/auth/register">inscrivant</a> ou vous <a href="/auth/login">connectant</a>.
                 </span>
                 <span ng-if="articleThumbnailCtrl.isUserConnected()">
-                    En écrivant un nouvel article.
+                    En écrivant <a href="/article/create">un nouvel article</a>.
                 </span>
             </div>
         </div>

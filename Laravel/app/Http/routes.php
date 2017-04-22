@@ -40,6 +40,7 @@ Route::get('me/edit', 'Web\TravellerController@getMyEdit');
   // Test only - TODO: remove before to merge in master
 Route::get('travelbook/create', 'Web\TravelbookController@getCreate');
 Route::get('travelbook/edit', 'Web\TravelbookController@getEdit');
+Route::get('article/create', 'Web\ArticleController@initCreation');
 Route::get('article/create/{id}', 'Web\ArticleController@getCreate');
 Route::get('article/edit', 'Web\ArticleController@getEdit');
 
@@ -67,6 +68,7 @@ Route::controllers([
   'article/{id}' => 'Web\ArticleController',
 ]);
 
+//TODO: remove
 Route::get('color_test', function() {
     return view('color_test');
 });

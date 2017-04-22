@@ -38,13 +38,18 @@
 		<div class="jl-icon jl-icon-middle">
 			<a href="/home" class="no-decoration">Jetlag</a>
 		</div>
-		
-		<div class="jl-icon jl-icon-right clickable" ng-show="!appCtrl.rightMenuOpen">
-			<i class="fa fa-fw fa-user"
-			ng-click="appCtrl.openRightMenu()"></i>
-			@if (Auth::guest())
-			<span><a ng-href="@{{'/auth/login?redirectTo='+appCtrl.redirectTo}}">Login</a> / <a href="{{ url('/auth/register') }}">Register</a></span>
-			@endif
+
+		<div class="jl-icon jl-icon-right">
+		    <a class="create-article"href="/article/create"><i class="fa fa-fw fa-file-text-o">
+		        <i class="fa fa-fw fa-plus"></i>
+		    </i></a>
+			<span ng-show="!appCtrl.rightMenuOpen">
+                <i class="fa fa-fw fa-user clickable"
+                ng-click="appCtrl.openRightMenu()"></i>
+                @if (Auth::guest())
+                <span class="login-register"><a ng-href="@{{'/auth/login?redirectTo='+appCtrl.redirectTo}}">Login</a> / <a href="{{ url('/auth/register') }}">Register</a></span>
+                @endif
+			</span>
 		</div>
 
 	</nav>
